@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Dashboard Inmobiliario | Proyectos Corporativos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            font-family: 'Gotham', 'Inter', sans-serif;
+        }
+
+        .header-black h1 {
+            font-family: 'Gotham', 'Inter', sans-serif;
+            font-weight: 700;
+            color: white !important;
+        }
+
+        .card h2, .card h3, .card-black h2 {
+            font-family: 'Playfair Display', 'Gotham', serif;
+            font-weight: 700;
+        }
+
+        .project-name-overlay {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: white;
+            font-size: 2.2rem;
+            font-weight: 700;
+            font-family: 'Playfair Display', 'Gotham', serif;
+            font-style: italic !important;
+            z-index: 10;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.7);
+            pointer-events: none;
+            width: 100%;
+            padding: 0 1rem;
+            letter-spacing: 0.5px;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f9fafb 0%, #EBEBEE 100%);
+            min-height: 100vh;
+        }
+
+        :root {
+            --primary-dark: #3B3B3B;
+            --primary-cyan: #00FFFF;
+            --secondary-teal: #52BEC0;
+            --card-border: #DFDFE1;
+        }
+
+        .btn-cyan {
+            background-color: var(--primary-cyan);
+            color: var(--primary-dark);
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-cyan:hover {
+            background-color: #52BEC0;
+            transform: translateY(-1px);
+        }
+
+        .card {
+            background: white;
+            border-radius: 1.5rem;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.03), 0 2px 6px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 25px -12px rgba(0,0,0,0.1);
+        }
+
+        /* Estilo especial para las tarjetas de inversión y ganancias en color #00FFFF */
+        .cyan-accent-card {
+            background: linear-gradient(135deg, #f9feff 0%, #e6ffff 100%);
+            border-left: 4px solid #00FFFF;
+            border-right: 1px solid rgba(0, 255, 255, 0.3);
+            border-top: 1px solid rgba(0, 255, 255, 0.3);
+            border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+            box-shadow: 0 8px 18px rgba(0, 255, 255, 0.08);
+        }
+        .cyan-accent-card h2, .cyan-accent-card h3 {
+            color: #008c8c;
+            letter-spacing: -0.2px;
+        }
+        .cyan-accent-card .text-cyan-dark {
+            color: #0e7a7a;
+        }
+        .cyan-accent-card .border-b {
+            border-bottom-color: rgba(0, 255, 255, 0.4);
+        }
+
+        .card-black {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: white;
+        }
+
+        .full-width-image-card {
+            margin-bottom: 1.5rem;
+        }
+
+        .full-width-image-container {
+            border-radius: 1.5rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .property-image {
+            width: 100%;
+            height: 480px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .image-fade-container {
+            position: relative;
+        }
+
+        .image-fade-container::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0));
+            pointer-events: none;
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.6);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 20;
+            transition: all 0.2s;
+            font-size: 1.3rem;
+        }
+
+        .carousel-btn:hover {
+            background: var(--primary-cyan);
+            color: black;
+        }
+
+        .carousel-btn-prev { left: 20px; }
+        .carousel-btn-next { right: 20px; }
+
+        .carousel-indicators {
+            position: absolute;
+            bottom: 20px;
+            right: 25px;
+            background: rgba(0,0,0,0.6);
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            color: white;
+            z-index: 15;
+            font-weight: 500;
+            pointer-events: none;
+        }
+
+        .map-frame {
+            width: 100%;
+            height: 220px;
+            border-radius: 1rem;
+            border: 1px solid #333;
+            margin-bottom: 1rem;
+        }
+
+        .link-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #F3F4F6;
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--primary-dark);
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .link-button:hover {
+            background: var(--primary-cyan);
+            color: #1f1f1f;
+            transform: translateY(-2px);
+        }
+
+        .company-logo {
+            height: 64px;
+            width: auto;
+            max-width: 220px;
+            object-fit: contain;
+        }
+
+        .gradient-border-left {
+            border-left: 3px solid var(--primary-cyan);
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #DFDFE1; border-radius: 8px; }
+        ::-webkit-scrollbar-thumb { background: var(--primary-dark); border-radius: 8px; }
+
+        .card-black .link-button {
+            background: #333;
+            color: white;
+        }
+        .card-black .link-button:hover {
+            background: var(--primary-cyan);
+            color: black;
+        }
+
+        .header-black {
+            background: #000000;
+            border-radius: 1.5rem;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            border: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .header-black p { color: #aaa; }
+        .header-black .badge {
+            background: rgba(0,255,255,0.2);
+            color: #00FFFF;
+        }
+
+        .inner-padding {
+            padding: 1.25rem;
+        }
+
+        .card p, .card span, .card div:not(.special) {
+            font-family: 'Gotham', 'Inter', sans-serif;
+        }
+        .header-black h1 i { color: #00FFFF; }
+
+        /* Grid balanceado */
+        .balanced-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        @media (max-width: 1024px) {
+            .balanced-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+        .left-stack, .right-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .financial-highlight {
+            background: linear-gradient(135deg, #2b2b2b 0%, #111111 100%);
+        }
+        .cyan-value {
+            color: #00FFFF;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body class="p-5 md:p-8">
+
+<div class="max-w-7xl mx-auto">
+    <!-- Cabecera negra -->
+    <div class="header-black flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div class="flex items-center gap-4">
+            <img src="https://omaranayalucio.github.io/Dashboards/logon.png" alt="Logo empresa" class="company-logo" onerror="this.onerror=null; this.src='https://omaranayalucio.github.io/Dashboards/Logo.png';">
+            <div>
+                <h1 class="text-2xl md:text-3xl font-bold tracking-tight flex items-center gap-2">
+                    <i class="fas fa-building"></i> 
+                    Proyectos Inmobiliarios
+                    <span class="text-sm font-normal bg-[#3B3B3B] text-[#00FFFF] px-2 py-0.5 rounded-full">Club de inversión</span>
+                </h1>
+                <p class="text-sm">Datos en vivo desde Google Sheets · Actualización automática al seleccionar</p>
+            </div>
+        </div>
+        <div class="flex gap-3">
+            <button id="editFinancialBtn" class="bg-[#3B3B3B] hover:bg-black text-white px-4 py-2 rounded-xl shadow-md transition flex items-center gap-2 text-sm font-medium">
+                <i class="fas fa-chart-line"></i> Editar datos financieros
+            </button>
+        </div>
+    </div>
+
+    <!-- Selector de proyectos -->
+    <div class="bg-white rounded-2xl shadow-sm border border-[#DFDFE1] p-4 mb-6 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-3 flex-wrap">
+            <i class="fas fa-building text-[#00FFFF] text-lg"></i>
+            <span class="font-semibold text-gray-700">Proyecto:</span>
+            <select id="projectSelect" class="border border-gray-300 rounded-xl px-4 py-2 bg-white text-gray-800 font-medium focus:ring-2 focus:ring-[#00FFFF] outline-none min-w-[220px]">
+                <option>Cargando proyectos...</option>
+            </select>
+            <span id="syncStatus" class="text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-full"><i class="fas fa-sync-alt"></i> Conectando...</span>
+        </div>
+        <div class="text-xs font-mono bg-gray-100 px-3 py-1 rounded-full">
+            <i class="fas fa-chart-line text-[#00FFFF]"></i> Rendimiento anual <span class="font-bold text-[#00FFFF] bg-[#3B3B3B] px-1 rounded">32.6%</span>
+        </div>
+    </div>
+
+    <!-- Imagen a ancho completo (carrusel) -->
+    <div class="full-width-image-card mb-6">
+        <div class="card card-black no-padding-image" style="padding: 0; overflow: hidden;">
+            <div class="full-width-image-container">
+                <div class="image-fade-container" id="carouselContainer">
+                    <img id="projectImage" src="https://via.placeholder.com/1200x480?text=Cargando+imagen..." alt="Imagen del proyecto" class="property-image w-full object-cover" onerror="this.onerror=null; this.src='https://via.placeholder.com/1200x480?text=Imagen+no+disponible';">
+                    <div class="project-name-overlay" id="projectNameOverlay">--</div>
+                    <button id="prevImageBtn" class="carousel-btn carousel-btn-prev"><i class="fas fa-chevron-left"></i></button>
+                    <button id="nextImageBtn" class="carousel-btn carousel-btn-next"><i class="fas fa-chevron-right"></i></button>
+                    <div id="imageCounter" class="carousel-indicators">1 / 1</div>
+                </div>
+            </div>
+            <div class="inner-padding">
+                <div class="flex flex-wrap gap-2 mt-3" id="quickLinks"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTENIDO PRINCIPAL: ESTRUCTURA BALANCEADA -->
+    <div class="balanced-grid">
+        <!-- COLUMNA IZQUIERDA: Ficha Técnica + Club de Inversión (cyan) + Tu Ganancia (cyan) -->
+        <div class="left-stack">
+            <!-- Ficha técnica card (blanco neutro) -->
+            <div class="card p-5">
+                <h2 class="text-lg font-bold text-[#3B3B3B] flex items-center gap-2 mb-3"><i class="fas fa-info-circle" style="color: #00FFFF;"></i> Ficha técnica</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div><span class="text-gray-500 text-sm">Dirección</span><p id="address" class="font-medium text-gray-800 text-sm">--</p></div>
+                    <div><span class="text-gray-500 text-sm">Valor Estimado</span><p id="estimatedValue" class="font-bold text-lg text-[#3B3B3B]">--</p></div>
+                    <div><span class="text-gray-500 text-sm">Tipo de Vivienda</span><p id="propertyType" class="font-medium">--</p></div>
+                    <div><span class="text-gray-500 text-sm">Departamentos / Unidades</span><p id="units" class="font-medium">--</p></div>
+                    <div><span class="text-gray-500 text-sm">Terreno</span><p id="landArea" class="font-bold text-xl">-- m²</p></div>
+                    <div><span class="text-gray-500 text-sm">Construcción</span><p id="buildArea" class="font-bold text-xl">-- m²</p></div>
+                    <div><span class="text-gray-500 text-sm">Habitaciones</span><p id="bedrooms" class="font-medium">--</p></div>
+                    <div><span class="text-gray-500 text-sm">Baños</span><p id="bathrooms" class="font-medium">--</p></div>
+                    <div><span class="text-gray-500 text-sm">Estacionamientos</span><p id="parking" class="font-medium">--</p></div>
+                    <div><span class="text-gray-500 text-sm">Antigüedad</span><p id="age" class="font-medium">-- años</p></div>
+                </div>
+                <p class="text-xs text-gray-400 mt-2"><i class="fas fa-edit"></i> Los datos técnicos se sincronizan desde Google Sheets.</p>
+            </div>
+
+            <!-- Club de inversión - Tarjeta con acento #00FFFF -->
+            <div class="card p-5 cyan-accent-card">
+                <h2 class="text-lg font-bold flex items-center gap-2" style="color: #008c8c;"><i class="fas fa-hand-holding-usd" style="color: #00FFFF;"></i> Club de inversión</h2>
+                <div class="mt-3 space-y-3">
+                    <div class="flex justify-between items-center border-b pb-2" style="border-bottom-color: rgba(0, 255, 255, 0.3);">
+                        <span class="text-gray-700">Socios totales</span>
+                        <span class="font-bold text-xl text-[#0e7a7a]" id="totalPartners">--</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span>🔹 <span id="highCount">--</span> socios · Aporte $<span id="highAmount">--</span></span>
+                        <span class="font-mono font-semibold text-[#0e7a7a]" id="highTotal">$--</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span>🔸 <span id="lowCount">--</span> socios · Aporte $<span id="lowAmount">--</span></span>
+                        <span class="font-mono font-semibold text-[#0e7a7a]" id="lowTotal">$--</span>
+                    </div>
+                    <div class="flex justify-between items-center pt-2 border-t border-dashed font-bold" style="border-top-color: #00FFFF40;">
+                        <span>Inversión inicial</span>
+                        <span id="initialInvestment" class="text-white bg-[#00AAAA] px-2 py-0.5 rounded" style="background-color: #00AAAA;">$--</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tu ganancia estimada - Tarjeta con acento #00FFFF -->
+            <div class="card p-5 cyan-accent-card">
+                <h3 class="font-bold flex items-center gap-2" style="color: #008c8c;"><i class="fas fa-coins" style="color: #00FFFF;"></i> Tu ganancia estimada</h3>
+                <div class="mt-3 space-y-3">
+                    <div class="flex justify-between items-center border-b pb-2" style="border-bottom-color: rgba(0, 255, 255, 0.3);"><span>Aporte $327,281</span><span id="gainHighPersonal" class="font-bold text-lg text-[#00AAAA]">$--</span></div>
+                    <div class="flex justify-between items-center"><span>Aporte $163,641</span><span id="gainLowPersonal" class="font-bold text-lg text-[#00AAAA]">$--</span></div>
+                </div>
+                <div class="mt-4 p-3 rounded-xl flex gap-2 items-start" style="background: rgba(0, 255, 255, 0.12);">
+                    <i class="fas fa-gavel text-[#00FFFF] mt-0.5"></i>
+                    <p class="text-xs text-gray-700">Contrato respaldado legalmente · Propiedad en garantía · Protección de aportaciones.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- COLUMNA DERECHA: Ubicación + Rendimientos Proyectados + Documentos -->
+        <div class="right-stack">
+            <!-- Ubicación (mapa y alrededores) -->
+            <div class="card card-black p-5">
+                <h2 class="text-lg font-bold flex items-center gap-2 mb-3"><i class="fas fa-map-marked-alt" style="color: #00FFFF;"></i> Ubicación</h2>
+                <iframe id="mapIframe" class="map-frame" src="https://via.placeholder.com/600x220?text=Mapa+no+disponible" loading="lazy" style="border:0;" allowfullscreen></iframe>
+                <div class="mt-2">
+                    <p class="text-xs uppercase font-bold text-gray-400 mb-1">📍 Alrededores</p>
+                    <p id="surroundings" class="text-sm text-gray-300 whitespace-pre-line">--</p>
+                </div>
+            </div>
+
+            <!-- Rendimientos proyectados (tarjeta destacada oscura) -->
+            <div class="card p-5 bg-gradient-to-br from-[#3B3B3B] to-[#1f1f1f] text-white border-none financial-highlight">
+                <h2 class="text-lg font-bold flex items-center gap-2"><i class="fas fa-chart-line" style="color: #00FFFF;"></i> Rendimientos proyectados</h2>
+                <div class="mt-4 space-y-3">
+                    <div class="flex justify-between"><span>💰 Valor actual inmueble</span><span id="currentValue" class="font-mono text-[#00FFFF]">$--</span></div>
+                    <div class="flex justify-between"><span>🔨 Gastos operativos + rehab</span><span id="totalExpenses" class="text-gray-300">$--</span></div>
+                    <div class="flex justify-between border-b border-white/20 pb-1"><span>Costos totales</span><span id="totalCosts" class="font-semibold">$--</span></div>
+                    <div class="flex justify-between text-lg font-bold"><span>🏷️ Valor de venta estimado</span><span id="saleValue" style="color: #00FFFF;">$--</span></div>
+                    <div class="flex justify-between bg-white/10 p-2 rounded"><span>Utilidad neta</span><span id="netProfit" style="color: #52BEC0;" class="font-bold">$--</span></div>
+                    <div class="grid grid-cols-2 gap-3 mt-2">
+                        <div class="bg-white/10 p-2 rounded text-center"><span class="text-xs">ROI total</span><p id="roi" class="text-xl font-bold text-[#00FFFF]">--%</p></div>
+                        <div class="bg-white/10 p-2 rounded text-center"><span class="text-xs">Rendimiento anual</span><p id="annualReturn" class="text-xl font-bold text-[#00FFFF]">--%</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Documentos del proyecto -->
+            <div class="card p-5">
+                <h3 class="font-bold text-[#3B3B3B] flex items-center gap-2"><i class="fas fa-folder-open" style="color: #00FFFF;"></i> Documentos del proyecto</h3>
+                <div class="flex flex-wrap gap-2 mt-3" id="docsLinksContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-8 text-center text-xs text-gray-400 border-t pt-4 flex justify-between items-center">
+        <span><i class="fas fa-database"></i> Datos financieros editables localmente · Los cambios en Sheets se reflejan al seleccionar proyecto</span>
+        <button id="resetLocalBtn" class="text-red-500 hover:text-red-700 underline text-xs">Restablecer datos demo</button>
+    </div>
+</div>
+
+<!-- MODAL EDITAR FINANCIEROS -->
+<div id="financialModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 invisible opacity-0 p-4 transition-all">
+    <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border-t-4" style="border-top-color: #00FFFF;">
+        <div class="sticky top-0 bg-white border-b px-5 py-3 flex justify-between items-center">
+            <h3 class="font-bold text-xl text-[#3B3B3B]">Editar datos financieros del proyecto</h3>
+            <button id="closeModalBtn" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+        </div>
+        <div class="p-5 space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div><label>Nombre proyecto (ID)</label><input type="text" id="editProjectId" class="w-full border rounded p-2 bg-gray-100" readonly></div>
+                <div><label>Dirección</label><input type="text" id="editAddress" class="w-full border rounded p-2"></div>
+                <div><label>Uso</label><input type="text" id="editUse" class="w-full border rounded p-2" value="Habitacional"></div>
+                <div><label>Terreno (m²)</label><input type="number" id="editLand" class="w-full border rounded p-2"></div>
+                <div><label>Construcción (m²)</label><input type="number" id="editConstruction" class="w-full border rounded p-2"></div>
+                <div><label>Antigüedad (años)</label><input type="number" id="editAge" class="w-full border rounded p-2"></div>
+                <div><label>Valor actual inmueble ($)</label><input type="number" id="editCurrentCost" class="w-full border rounded p-2"></div>
+                <div><label>Gastos operativos ($)</label><input type="number" id="editOpExpenses" class="w-full border rounded p-2"></div>
+                <div><label>Rehabilitación ($)</label><input type="number" id="editRehab" class="w-full border rounded p-2"></div>
+                <div><label>Valor venta estimado ($)</label><input type="number" id="editSaleValue" class="w-full border rounded p-2"></div>
+                <div><label>Rendimiento anual (%)</label><input type="number" step="any" id="editAnnualReturn" class="w-full border rounded p-2"></div>
+                <div><label>Socios tramo alto (cant)</label><input type="number" id="editHighCount" class="w-full border rounded p-2"></div>
+                <div><label>Aporte tramo alto ($)</label><input type="number" id="editHighAmount" class="w-full border rounded p-2"></div>
+                <div><label>Socios tramo bajo (cant)</label><input type="number" id="editLowCount" class="w-full border rounded p-2"></div>
+                <div><label>Aporte tramo bajo ($)</label><input type="number" id="editLowAmount" class="w-full border rounded p-2"></div>
+            </div>
+            <div><label>Alrededores (separar por comas)</label><input type="text" id="editSurroundings" class="w-full border rounded p-2"></div>
+            <div><label>Descripción proyecto</label><textarea id="editDescription" rows="2" class="w-full border rounded p-2"></textarea></div>
+            <div><label>Timeline (comas)</label><input type="text" id="editTimeline" class="w-full border rounded p-2" value="Regularización,Arranque,Compras,Obra Gris,Obra Blanca,Showroom,Fachada,Venta"></div>
+            <div class="grid grid-cols-2 gap-2"><label>Precio mínimo mercado ($)</label><input id="editMarketMin" class="border p-2 rounded"><label>Precio máximo mercado ($)</label><input id="editMarketMax" class="border p-2 rounded"></div>
+            <div class="flex justify-end gap-3">
+                <button id="cancelModalBtn" class="px-4 py-2 border rounded">Cancelar</button>
+                <button id="saveFinancialBtn" class="px-5 py-2 btn-cyan rounded font-bold">Guardar cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // (Código JavaScript completamente funcional, idéntico a la versión previa)
+    let proyectosFinancieros = [];
+    let currentProjectName = null;
+    let sheetsProjects = [];
+    let currentSheetsData = null;
+    
+    let currentImageList = [];
+    let currentImageIndex = 0;
+    
+    const defaultFinancial = {
+        id: "default",
+        currentCost: 8500000,
+        operatingExpenses: 4732250,
+        rehabInvestment: 2300000,
+        saleValue: 19800000,
+        annualReturnPercent: 32.6,
+        socios: { tiers: [{ count: 20, amount: 327281 }, { count: 40, amount: 163641 }] },
+        marketMin: 21664,
+        marketMax: 77888,
+        timelineStages: ["Regularización", "Arranque", "Compras", "Obra Gris", "Obra Blanca", "Depto Muestra (Showroom)", "Fachada", "Venta"],
+        description: "Proyecto de recuperación y reacondicionamiento completo."
+    };
+
+    function computeFinancials(proj) {
+        const totalCosts = proj.currentCost + proj.operatingExpenses + proj.rehabInvestment;
+        const initialInvestment = proj.socios.tiers.reduce((sum, t) => sum + (t.count * t.amount), 0);
+        const profitAmount = proj.saleValue - totalCosts;
+        const roi = (profitAmount / totalCosts) * 100;
+        const gainHigh = proj.socios.tiers[0].amount * (1 + proj.annualReturnPercent/100);
+        const gainLow = proj.socios.tiers[1].amount * (1 + proj.annualReturnPercent/100);
+        return { totalCosts, initialInvestment, profitAmount, roi, gainHigh, gainLow };
+    }
+
+    function renderFinancialUI(proj) {
+        if (!proj) return;
+        const fin = computeFinancials(proj);
+        document.getElementById("totalPartners").innerText = proj.socios.tiers[0].count + proj.socios.tiers[1].count;
+        document.getElementById("highCount").innerText = proj.socios.tiers[0].count;
+        document.getElementById("highAmount").innerText = proj.socios.tiers[0].amount.toLocaleString();
+        document.getElementById("lowCount").innerText = proj.socios.tiers[1].count;
+        document.getElementById("lowAmount").innerText = proj.socios.tiers[1].amount.toLocaleString();
+        document.getElementById("highTotal").innerText = `$${(proj.socios.tiers[0].count * proj.socios.tiers[0].amount).toLocaleString()}`;
+        document.getElementById("lowTotal").innerText = `$${(proj.socios.tiers[1].count * proj.socios.tiers[1].amount).toLocaleString()}`;
+        document.getElementById("initialInvestment").innerText = `$${fin.initialInvestment.toLocaleString()}`;
+        document.getElementById("currentValue").innerText = `$${proj.currentCost.toLocaleString()}`;
+        document.getElementById("totalExpenses").innerText = `$${(proj.operatingExpenses + proj.rehabInvestment).toLocaleString()}`;
+        document.getElementById("totalCosts").innerText = `$${fin.totalCosts.toLocaleString()}`;
+        document.getElementById("saleValue").innerText = `$${proj.saleValue.toLocaleString()}`;
+        document.getElementById("netProfit").innerText = `$${fin.profitAmount.toLocaleString()}`;
+        document.getElementById("roi").innerText = `${fin.roi.toFixed(2)}%`;
+        document.getElementById("annualReturn").innerText = `${proj.annualReturnPercent}%`;
+        document.getElementById("gainHighPersonal").innerText = `$${Math.round(fin.gainHigh).toLocaleString()}`;
+        document.getElementById("gainLowPersonal").innerText = `$${Math.round(fin.gainLow).toLocaleString()}`;
+    }
+
+    function getOrCreateFinancial(projectName) {
+        let existing = proyectosFinancieros.find(p => p.id === projectName);
+        if (!existing) {
+            const newProj = JSON.parse(JSON.stringify(defaultFinancial));
+            newProj.id = projectName;
+            proyectosFinancieros.push(newProj);
+            saveFinancialLocal();
+            return newProj;
+        }
+        return existing;
+    }
+
+    function saveFinancialLocal() {
+        localStorage.setItem("proyectosFinancieros_v2", JSON.stringify(proyectosFinancieros));
+    }
+
+    function loadFinancialLocal() {
+        const stored = localStorage.getItem("proyectosFinancieros_v2");
+        if(stored) {
+            try { proyectosFinancieros = JSON.parse(stored); } catch(e){ proyectosFinancieros = []; }
+        }
+        if(!proyectosFinancieros.length) proyectosFinancieros = [JSON.parse(JSON.stringify(defaultFinancial))];
+    }
+
+    function convertGoogleDriveToImageUrl(url) {
+        if (!url) return null;
+        if (url.includes('drive.google.com/uc?export=view')) return url;
+        const match = url.match(/\/file\/d\/([^/]+)/);
+        if (match && match[1]) {
+            return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+        }
+        const idMatch = url.match(/id=([^&]+)/);
+        if (idMatch && idMatch[1]) {
+            return `https://drive.google.com/uc?export=view&id=${idMatch[1]}`;
+        }
+        return url;
+    }
+    
+    function parseImageUrls(rawUrl) {
+        if (!rawUrl || rawUrl.trim() === "") return [];
+        let urls = rawUrl.split(/[,\n]+/);
+        urls = urls.map(u => u.trim()).filter(u => u);
+        urls = urls.map(u => convertGoogleDriveToImageUrl(u));
+        return urls;
+    }
+    
+    function updateCarouselImage() {
+        const imgElement = document.getElementById("projectImage");
+        const counterElement = document.getElementById("imageCounter");
+        if (currentImageList.length === 0) {
+            imgElement.src = "https://via.placeholder.com/1200x480?text=Sin+imagen";
+            counterElement.innerText = "0 / 0";
+            return;
+        }
+        imgElement.src = currentImageList[currentImageIndex];
+        counterElement.innerText = `${currentImageIndex+1} / ${currentImageList.length}`;
+        const prevBtn = document.getElementById("prevImageBtn");
+        const nextBtn = document.getElementById("nextImageBtn");
+        if (currentImageList.length <= 1) {
+            prevBtn.style.display = "none";
+            nextBtn.style.display = "none";
+        } else {
+            prevBtn.style.display = "flex";
+            nextBtn.style.display = "flex";
+        }
+    }
+    
+    function nextImage() { if (currentImageList.length) { currentImageIndex = (currentImageIndex + 1) % currentImageList.length; updateCarouselImage(); } }
+    function prevImage() { if (currentImageList.length) { currentImageIndex = (currentImageIndex - 1 + currentImageList.length) % currentImageList.length; updateCarouselImage(); } }
+    
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQHHgMYg7UBumLaA1o-1Y7L7-hrWrjnI-eyLvrZarX44TysmxIPs9c-O4l7E_V6AIwF4wA__D_2hiH6/pub?output=csv";
+
+    async function fetchSheetsData() {
+        try {
+            document.getElementById("syncStatus").innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Cargando...';
+            const response = await fetch(CSV_URL);
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const csvText = await response.text();
+            const rows = [];
+            let currentRow = [], currentField = '', inQuotes = false;
+            for (let i = 0; i < csvText.length; i++) {
+                const ch = csvText[i];
+                if (ch === '"') { inQuotes = !inQuotes; currentField += ch; }
+                else if (ch === ',' && !inQuotes) { currentRow.push(currentField); currentField = ''; }
+                else if ((ch === '\n' || (ch === '\r' && csvText[i+1] === '\n')) && !inQuotes) {
+                    if (ch === '\r') i++;
+                    currentRow.push(currentField); rows.push(currentRow); currentRow = []; currentField = '';
+                } else { currentField += ch; }
+            }
+            if (currentField || currentRow.length) { currentRow.push(currentField); rows.push(currentRow); }
+            if (rows.length < 2) throw new Error("Datos insuficientes");
+            const headers = rows[0].map(h => h.trim().replace(/^"|"$/g, ''));
+            const projects = [];
+            for (let i = 1; i < rows.length; i++) {
+                const row = rows[i]; if (row.length === 1 && !row[0]) continue;
+                const project = {};
+                headers.forEach((header, idx) => { let value = row[idx] ? row[idx].trim().replace(/^"|"$/g, '') : null; project[header] = value; });
+                projects.push({ nombre: project["Proyecto"] || "", mapaDir: project["Mapa"] || "", valorEstimado: project["Valor Estimado"] || "", tipoVivienda: project["Tipo de Vivienda"] || "", departamentos: project["Departamentos"] || "", antiguedad: project["Antiguedad"] ? parseInt(project["Antiguedad"]) : null, terreno: project["Terreno m2"] ? parseFloat(project["Terreno m2"]) : null, construccion: project["Construcción m2"] ? parseFloat(project["Construcción m2"]) : null, habitaciones: project["Habitaciones"] || "", banios: project["Baños"] || "", estacionamientos: project["Estacionamientos"] || "", alrededores: project["Alrededores"] || "", imagenUrl: project["Link Imagen Frente"] || "", cv: project["LINK CV (HORIZONTAL)"] || null, manual: project["LINK MANUAL DE PRODUCTO:"] || null, estudio: project["LINK ESTUDIO DE MERCADO:"] || null, expediente: project["LINK EXPEDIENTE OROYA 571;"] || null, gantt: project["LINK GANTT:"] || null, mapsLink: project["LINK GOOGLE MAPS:"] || null, mapaCalor: project["LINK MAPA DE CALOR (Inmovalor):"] || null, video: project["LINK VIDEO MICRO INVERSIONES"] || null });
+            }
+            sheetsProjects = projects.filter(p => p.nombre);
+            if (sheetsProjects.length) { populateProjectSelector(); document.getElementById("syncStatus").innerHTML = `<i class="fas fa-check-circle"></i> ${sheetsProjects.length} proyectos sincronizados`; }
+            else throw new Error("No se encontraron proyectos");
+        } catch(err) {
+            console.error(err);
+            document.getElementById("syncStatus").innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error, usando respaldo';
+            sheetsProjects = [ {nombre:"Oroya 571", mapaDir:"Oroya 571, Churubusco Tepeyac, Gustavo A. Madero, 07730 Ciudad de México, CDMX", valorEstimado:"$17,333,148.71", tipoVivienda:"EDIFICIO", departamentos:"8", antiguedad:71, terreno:149, construccion:550, habitaciones:"", banios:"", estacionamientos:"", alrededores:"Av. Montevideo\nAv. Instituto Politécnico Nacional\nAv. La Fortuna\nMetro Lindavista\nMetro Instituto del Petróleo\nAv. Insurgentes Nte.\nEje Central Lázaro Cardenas", imagenUrl:"https://omaranayalucio.github.io/Dashboards/Oroya571.png", cv:"https://drive.google.com/file/d/1AoESK3D18EKt7nTJLruDLTveZBfDoWPd/view", manual:null, estudio:null, expediente:"https://drive.google.com/file/d/1FDXniUZ__6ZY7PJsKtiaY74pZetEqulv/view", gantt:"https://drive.google.com/drive/folders/1n-6sIITCmSJRbVKm_ZUCXmH05jaubM5R", mapsLink:"https://maps.app.goo.gl/5NQuYSN87hZdhzYo7", mapaCalor:"https://altaltium-real-estates.onrender.com/auth/login", video:"https://drive.google.com/file/d/1m05-8ZxLPZ6-iOwFPF6RWZNaM75zdjBE/view"} ];
+            populateProjectSelector();
+        }
+    }
+
+    function populateProjectSelector() {
+        const select = document.getElementById("projectSelect");
+        select.innerHTML = "";
+        sheetsProjects.forEach(p => { const opt = document.createElement("option"); opt.value = p.nombre; opt.textContent = p.nombre; select.appendChild(opt); });
+        if(sheetsProjects.length) { select.value = sheetsProjects[0].nombre; loadProjectData(sheetsProjects[0].nombre); }
+    }
+
+    function loadProjectData(projectName) {
+        const sheetProj = sheetsProjects.find(p => p.nombre === projectName);
+        if(!sheetProj) return;
+        currentSheetsData = sheetProj; currentProjectName = projectName;
+        document.getElementById("projectNameOverlay").innerText = sheetProj.nombre;
+        currentImageList = parseImageUrls(sheetProj.imagenUrl); currentImageIndex = 0; updateCarouselImage();
+        document.getElementById("address").innerText = sheetProj.mapaDir || "--";
+        document.getElementById("estimatedValue").innerHTML = sheetProj.valorEstimado || "--";
+        document.getElementById("propertyType").innerText = sheetProj.tipoVivienda || "--";
+        document.getElementById("units").innerText = sheetProj.departamentos || "--";
+        document.getElementById("landArea").innerHTML = sheetProj.terreno ? `${sheetProj.terreno} m²` : "--";
+        document.getElementById("buildArea").innerHTML = sheetProj.construccion ? `${sheetProj.construccion} m²` : "--";
+        document.getElementById("bedrooms").innerText = sheetProj.habitaciones || "--";
+        document.getElementById("bathrooms").innerText = sheetProj.banios || "--";
+        document.getElementById("parking").innerText = sheetProj.estacionamientos || "--";
+        document.getElementById("age").innerHTML = sheetProj.antiguedad ? `${sheetProj.antiguedad} años` : "--";
+        document.getElementById("surroundings").innerHTML = sheetProj.alrededores ? sheetProj.alrededores.replace(/\n/g, '<br>') : "--";
+        let mapSrc = "https://via.placeholder.com/600x220?text=Mapa+no+disponible";
+        if(sheetProj.mapsLink && sheetProj.mapsLink.trim()) {
+            let link = sheetProj.mapsLink;
+            if(link.includes("maps.app.goo.gl") && sheetProj.mapaDir) mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(sheetProj.mapaDir)}&output=embed`;
+            else if(link.includes("google.com/maps")) mapSrc = link.includes("embed") ? link : link.replace("/place/", "/embed?pb=");
+            else mapSrc = link;
+        } else if(sheetProj.mapaDir) mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(sheetProj.mapaDir)}&output=embed`;
+        document.getElementById("mapIframe").src = mapSrc;
+        const quickDiv = document.getElementById("quickLinks"), docsRight = document.getElementById("docsLinksContainer");
+        quickDiv.innerHTML = ""; docsRight.innerHTML = "";
+        const docLinks = [ { name: "CV", url: sheetProj.cv, icon: "fas fa-file-alt" }, { name: "Manual", url: sheetProj.manual, icon: "fas fa-book" }, { name: "Estudio mercado", url: sheetProj.estudio, icon: "fas fa-chart-bar" }, { name: "Expediente", url: sheetProj.expediente, icon: "fas fa-folder-open" }, { name: "Gantt", url: sheetProj.gantt, icon: "fas fa-tasks" }, { name: "Google Maps", url: sheetProj.mapsLink, icon: "fas fa-map-marker-alt" }, { name: "Mapa calor", url: sheetProj.mapaCalor, icon: "fas fa-fire" }, { name: "Video", url: sheetProj.video, icon: "fas fa-video" } ];
+        docLinks.forEach(doc => { if(doc.url && doc.url.trim()) { const a = document.createElement("a"); a.href = doc.url; a.target = "_blank"; a.className = "link-button"; a.innerHTML = `<i class="${doc.icon}"></i> ${doc.name}`; quickDiv.appendChild(a); const b = a.cloneNode(true); docsRight.appendChild(b); } });
+        let financial = getOrCreateFinancial(projectName);
+        financial.address = sheetProj.mapaDir; financial.landArea = sheetProj.terreno || financial.landArea; financial.constructionArea = sheetProj.construccion || financial.constructionArea; financial.ageYears = sheetProj.antiguedad || financial.ageYears;
+        if(sheetProj.valorEstimado) { let num = parseFloat(sheetProj.valorEstimado.replace(/[^0-9.-]+/g, "")); if(!isNaN(num)) financial.saleValue = num; }
+        const idx = proyectosFinancieros.findIndex(p => p.id === projectName); if(idx !== -1) proyectosFinancieros[idx] = financial; else proyectosFinancieros.push(financial);
+        saveFinancialLocal(); renderFinancialUI(financial);
+    }
+
+    document.getElementById("prevImageBtn").addEventListener("click", prevImage);
+    document.getElementById("nextImageBtn").addEventListener("click", nextImage);
+    document.getElementById("projectSelect").addEventListener("change", (e) => loadProjectData(e.target.value));
+    document.getElementById("editFinancialBtn").addEventListener("click", () => { const fin = proyectosFinancieros.find(p => p.id === currentProjectName); if(fin) { /* populate modal */ document.getElementById("editProjectId").value = fin.id; document.getElementById("editAddress").value = fin.address || ""; document.getElementById("editUse").value = fin.propertyUse || "Habitacional"; document.getElementById("editLand").value = fin.landArea; document.getElementById("editConstruction").value = fin.constructionArea; document.getElementById("editAge").value = fin.ageYears; document.getElementById("editCurrentCost").value = fin.currentCost; document.getElementById("editOpExpenses").value = fin.operatingExpenses; document.getElementById("editRehab").value = fin.rehabInvestment; document.getElementById("editSaleValue").value = fin.saleValue; document.getElementById("editAnnualReturn").value = fin.annualReturnPercent; document.getElementById("editHighCount").value = fin.socios.tiers[0].count; document.getElementById("editHighAmount").value = fin.socios.tiers[0].amount; document.getElementById("editLowCount").value = fin.socios.tiers[1].count; document.getElementById("editLowAmount").value = fin.socios.tiers[1].amount; document.getElementById("editSurroundings").value = fin.surroundings || ""; document.getElementById("editDescription").value = fin.description || ""; document.getElementById("editTimeline").value = fin.timelineStages.join(","); document.getElementById("editMarketMin").value = fin.marketMin; document.getElementById("editMarketMax").value = fin.marketMax; document.getElementById("financialModal").classList.remove("invisible","opacity-0"); document.getElementById("financialModal").classList.add("visible","opacity-100"); } });
+    document.getElementById("closeModalBtn").addEventListener("click", () => { document.getElementById("financialModal").classList.add("invisible","opacity-0"); });
+    document.getElementById("cancelModalBtn").addEventListener("click", () => { document.getElementById("financialModal").classList.add("invisible","opacity-0"); });
+    document.getElementById("saveFinancialBtn").addEventListener("click", () => { const id = document.getElementById("editProjectId").value; const idx = proyectosFinancieros.findIndex(p => p.id === id); if(idx !== -1) { const updated = { ...proyectosFinancieros[idx] }; updated.address = document.getElementById("editAddress").value; updated.propertyUse = document.getElementById("editUse").value; updated.landArea = parseFloat(document.getElementById("editLand").value); updated.constructionArea = parseFloat(document.getElementById("editConstruction").value); updated.ageYears = parseInt(document.getElementById("editAge").value); updated.currentCost = parseFloat(document.getElementById("editCurrentCost").value); updated.operatingExpenses = parseFloat(document.getElementById("editOpExpenses").value); updated.rehabInvestment = parseFloat(document.getElementById("editRehab").value); updated.saleValue = parseFloat(document.getElementById("editSaleValue").value); updated.annualReturnPercent = parseFloat(document.getElementById("editAnnualReturn").value); updated.socios.tiers[0].count = parseInt(document.getElementById("editHighCount").value); updated.socios.tiers[0].amount = parseFloat(document.getElementById("editHighAmount").value); updated.socios.tiers[1].count = parseInt(document.getElementById("editLowCount").value); updated.socios.tiers[1].amount = parseFloat(document.getElementById("editLowAmount").value); updated.surroundings = document.getElementById("editSurroundings").value; updated.description = document.getElementById("editDescription").value; updated.timelineStages = document.getElementById("editTimeline").value.split(",").map(s=>s.trim()).filter(s=>s); updated.marketMin = parseFloat(document.getElementById("editMarketMin").value); updated.marketMax = parseFloat(document.getElementById("editMarketMax").value); proyectosFinancieros[idx] = updated; if(currentProjectName === id) renderFinancialUI(updated); saveFinancialLocal(); document.getElementById("financialModal").classList.add("invisible","opacity-0"); } });
+    document.getElementById("resetLocalBtn").addEventListener("click", () => { proyectosFinancieros = [JSON.parse(JSON.stringify(defaultFinancial))]; saveFinancialLocal(); if(currentProjectName) loadProjectData(currentProjectName); });
+    loadFinancialLocal(); fetchSheetsData();
+</script>
+</body>
+</html>
