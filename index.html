@@ -4,43 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Dashboard Inmobiliario | Proyectos Corporativos</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    <!-- Fuentes mejoradas y más estéticas -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
-            font-family: 'Gotham', 'Inter', sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
         }
 
-        .header-black h1 {
-            font-family: 'Gotham', 'Inter', sans-serif;
-            font-weight: 700;
-            color: white !important;
-        }
-
-        .card h2, .card h3, .card-black h2 {
-            font-family: 'Playfair Display', 'Gotham', serif;
-            font-weight: 700;
-        }
-
+        /* Tipografía refinada para el overlay de la imagen */
         .project-name-overlay {
             position: absolute;
-            bottom: 20px;
+            bottom: 28px;
             left: 0;
             right: 0;
             text-align: center;
             color: white;
-            font-size: 2.2rem;
-            font-weight: 700;
-            font-family: 'Playfair Display', 'Gotham', serif;
-            font-style: italic !important;
+            font-size: 2.5rem;
+            font-weight: 600;
+            font-family: 'Cormorant Garamond', 'Playfair Display', serif;
+            font-style: italic;
+            letter-spacing: 1px;
             z-index: 10;
-            text-shadow: 0 2px 6px rgba(0,0,0,0.7);
+            text-shadow: 0 4px 12px rgba(0,0,0,0.5);
             pointer-events: none;
             width: 100%;
-            padding: 0 1rem;
-            letter-spacing: 0.5px;
+            padding: 0 1.5rem;
+            background: linear-gradient(90deg, transparent, rgba(0,0,0,0.3) 20%, rgba(0,0,0,0.3) 80%, transparent);
+            backdrop-filter: blur(2px);
+            border-radius: 0;
+        }
+
+        /* Cabecera y títulos principales con estilo mejorado */
+        .header-black h1 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            color: white !important;
+            letter-spacing: -0.3px;
+        }
+
+        .card h2, .card h3, .card-black h2 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            letter-spacing: -0.2px;
+        }
+
+        /* Refinamiento de textos secundarios */
+        .card p, .card span, .text-gray-500, .text-gray-600, .text-gray-700, .font-medium {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Números y valores en negrita con mejor legibilidad */
+        .font-bold, .font-mono {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
         }
 
         body {
@@ -135,7 +155,7 @@
             left: 0;
             width: 100%;
             height: 40%;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0));
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
             pointer-events: none;
         }
 
@@ -178,6 +198,7 @@
             z-index: 15;
             font-weight: 500;
             pointer-events: none;
+            font-family: 'Inter', monospace;
         }
 
         .map-frame {
@@ -200,6 +221,7 @@
             color: var(--primary-dark);
             transition: all 0.2s;
             text-decoration: none;
+            font-family: 'Inter', sans-serif;
         }
 
         .link-button:hover {
@@ -240,7 +262,7 @@
             border: none;
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
-        .header-black p { color: #aaa; }
+        .header-black p { color: #aaa; font-family: 'Inter', sans-serif; }
         .header-black .badge {
             background: rgba(0,255,255,0.2);
             color: #00FFFF;
@@ -250,9 +272,6 @@
             padding: 1.25rem;
         }
 
-        .card p, .card span, .card div:not(.special) {
-            font-family: 'Gotham', 'Inter', sans-serif;
-        }
         .header-black h1 i { color: #00FFFF; }
 
         /* Grid balanceado */
@@ -277,6 +296,14 @@
         }
         .cyan-value {
             color: #00FFFF;
+            font-weight: 700;
+        }
+        /* Mejora de fuente en títulos de tarjetas */
+        .card h2, .card-black h2 {
+            font-size: 1.35rem;
+        }
+        /* Texto de valores más legible */
+        .text-xl.font-bold {
             font-weight: 700;
         }
     </style>
@@ -319,7 +346,7 @@
         </div>
     </div>
 
-    <!-- Imagen a ancho completo (carrusel) -->
+    <!-- Imagen a ancho completo (carrusel) con tipografía refinada -->
     <div class="full-width-image-card mb-6">
         <div class="card card-black no-padding-image" style="padding: 0; overflow: hidden;">
             <div class="full-width-image-container">
@@ -438,7 +465,7 @@
     </div>
 </div>
 
-<!-- MODAL EDITAR FINANCIEROS -->
+<!-- MODAL EDITAR FINANCIEROS (sin cambios estructurales) -->
 <div id="financialModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 invisible opacity-0 p-4 transition-all">
     <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border-t-4" style="border-top-color: #00FFFF;">
         <div class="sticky top-0 bg-white border-b px-5 py-3 flex justify-between items-center">
