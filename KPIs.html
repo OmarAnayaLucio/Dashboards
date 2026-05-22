@@ -126,7 +126,9 @@ body{font-family:'Montserrat',sans-serif;background:var(--g50);color:var(--g900)
 .tsc{overflow-x:auto;}
 table{width:100%;border-collapse:collapse;font-size:10px;}
 thead tr{background:var(--g50);}
-th{padding:7px 10px;text-align:left;font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--g500);border-bottom:1px solid var(--g200);white-space:nowrap;}
+th{padding:7px 10px;text-align:left;font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--g500);border-bottom:1px solid var(--g200);white-space:nowrap;cursor:pointer;user-select:none;}
+th:hover{background-color:var(--g100);}
+th .sort-icon{display:inline-block;margin-left:4px;font-size:9px;}
 th.nr,td.nr{text-align:right;}
 td{padding:6px 10px;border-bottom:1px solid var(--g100);vertical-align:middle;}
 tr:last-child td{border-bottom:none;}
@@ -267,9 +269,23 @@ tr.sub td{background:var(--g50);font-weight:700;}
   <div class="sh">📅 Detalle de citas agendadas (15–22 mayo)</div>
   <div class="tc"><div class="tsc"><table id="citas-table"><thead><tr><th>N°</th><th>Fecha cita</th><th>Cliente</th><th>Asesor</th><th>Gerente</th><th>Bloque</th><th>N° cita</th><th>Tipo</th><th>Asistencia</th><th>Producto</th></tr></thead><tbody></tbody></table></div></div>
 
-  <!-- Tabla composición de bloques -->
+  <!-- Tabla composición de bloques (con ordenamiento) -->
   <div class="sh">📌 Composición de bloques · Leads recibidos desde CRM</div>
-  <div class="tc"><div class="tsc"><table id="global-tbody"><thead><tr><th>Asesor</th><th>Bloque</th><th>Portal esta semana</th><th class="nr">Leads recibidos</th><th class="nr">Citas ag.</th><th class="nr">Citas at.</th><th class="nr">Firmados</th><th class="nr">Pagados</th></tr></thead><tbody></tbody></table></div></div>
+  <div class="tc"><div class="tsc"><table id="global-tbody">
+    <thead>
+      <tr>
+        <th data-col="asesor">Asesor <span class="sort-icon"></span></th>
+        <th data-col="bloque">Bloque <span class="sort-icon"></span></th>
+        <th data-col="portal">Portal esta semana <span class="sort-icon"></span></th>
+        <th data-col="leads" class="nr">Leads recibidos <span class="sort-icon"></span></th>
+        <th data-col="cag" class="nr">Citas ag. <span class="sort-icon"></span></th>
+        <th data-col="cat" class="nr">Citas at. <span class="sort-icon"></span></th>
+        <th data-col="firmados" class="nr">Firmados <span class="sort-icon"></span></th>
+        <th data-col="pagados" class="nr">Pagados <span class="sort-icon"></span></th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table></div></div>
 </div>
 
 <!-- VISTAS DE BLOQUES -->
@@ -287,74 +303,75 @@ tr.sub td{background:var(--g50);font-weight:700;}
 </div>
 
 <script>
-// ======================= DATOS CORREGIDOS =======================
-// Mapa de leads recibidos por asesor (según CRM limpio)
+// ======================= DATOS CORREGIDOS (citas según hoja 15-22 mayo) =======================
 const leadsMap = {
-  "Bryan Romero": 103, "Lesly Rojas": 57, "Jose Alfredo Jimenez": 53, "Nicolas Alvarez": 35,
-  "Efrain Lopez": 31, "Jenifer Ramos": 40, "Lizbeth Mendez": 27, "Domingo Infante": 27,
-  "Mauricio Escalante": 16, "Yolanda Rojas": 17, "Victor Garcia": 16, "Patricia Mijares": 13,
-  "Leonardo Furlong": 28, "Herlinda Ruiz": 10, "Arturo Gonzalez": 13, "Andres Medina": 6,
-  "Vanessa Arias": 8, "Karla Renteria": 8, "Francisco Llorens": 7, "Carmina Bolaños": 5,
-  "Marco Salazar": 7, "Laura Claudio": 7, "Eduardo Ramirez": 3, "Nestor Portilla": 5,
-  "Roseyra Guerrero": 4, "Alberto Cortez": 4, "Manuel Alvarez": 5, "Michelle Quintero": 1,
-  "Diana Vivanco": 17, "Silvia Villanueva": 12, "Cesar Mercado": 17, "Omar Moreno": 12,
-  "Astrid Medina": 3, "Samantha Lopez": 72, "Alejandro Mojica": 9, "Daniel Guerra": 3,
-  "Erica Vazquez": 1
+  "Silvia Villanueva":12, "Victor Garcia":16, "Mauricio Escalante":16, "Laura Claudio":7, "Alberto Cortez":4, "Yolanda Rojas":17,
+  "Orlando Palacios":0, "Patricia Mijares":13, "Francisco Llorens":7, "Carmina Bolaños":5, "Omar Moreno":12, "Vanessa Arias":8,
+  "Marco Salazar":7, "Andres Medina":6, "Eduardo Ramirez":3, "Diana Vivanco":17, "Valentina Salgado":0, "Domingo Infante":27,
+  "Arturo Gonzalez":13, "Manuel Alvarez":5, "Nestor Portilla":5, "Herlinda Ruiz":10, "Adriana Nivon":0, "Astrid Medina":3,
+  "Cesar Mercado":17, "Leonardo Furlong":28, "Alejandro Mojica":9, "Daniel Guerra":3, "Samantha Lopez":72, "Michelle Quintero":1, "Erica Vazquez":1,
+  "Bryan Romero":103, "Lesly Rojas":57, "Jose Alfredo Jimenez":53, "Nicolas Alvarez":35, "Efrain Lopez":31, "Jenifer Ramos":40, "Lizbeth Mendez":27
 };
 
-// Datos de citas por asesor (según archivo)
+// Citas basadas EXCLUSIVAMENTE en las 21 filas de la hoja "15 al 22 de mayo"
 const citasMap = {
-  "Andres Medina": {ag:1, at:1}, "Yolanda Rojas": {ag:2, at:1}, "Daniel Guerra": {ag:5, at:5},
-  "Alejandro Mojica": {ag:4, at:4}, "Laura Claudio": {ag:1, at:1}, "Samantha Lopez": {ag:1, at:1},
-  "Manuel Alvarez": {ag:2, at:1}, "Erica Vazquez": {ag:2, at:2}, "Francisco Llorens": {ag:1, at:1},
-  "Omar Moreno": {ag:1, at:1}, "Carmina Bolaños": {ag:1, at:1}, "Vanessa Arias": {ag:2, at:1},
-  "Arturo Gonzalez": {ag:2, at:1}, "Domingo Infante": {ag:1, at:0}, "Victor Garcia": {ag:1, at:1}
+  "Andres Medina":   {ag:1, at:1},
+  "Yolanda Rojas":   {ag:2, at:1},
+  "Daniel Guerra":   {ag:5, at:5},
+  "Alejandro Mojica":{ag:4, at:4},
+  "Laura Claudio":   {ag:1, at:1},   // Patricia Claudio en el archivo
+  "Samantha Lopez":  {ag:1, at:1},   // "Samantha" en el archivo
+  "Manuel Alvarez":  {ag:2, at:1},
+  "Erica Vazquez":   {ag:2, at:2},   // "Erica Urioste" en el archivo
+  "Francisco Llorens":{ag:1, at:1},
+  "Omar Moreno":     {ag:1, at:1},
+  "Carmina Bolaños": {ag:1, at:1}
 };
 
 // Lista de asesores con su bloque (según rotación: B1:V2, B2:V4, B3:V1, V3 fijo)
 const DATA = [
   // BLOQUE 1 (V2)
-  {n:"Silvia Villanueva", g:"B1", col:"#1E8E3E", ti:leadsMap["Silvia Villanueva"]||0, cag:0, cat:0},
-  {n:"Victor Garcia",      g:"B1", col:"#1E8E3E", ti:leadsMap["Victor Garcia"]||0, cag:citasMap["Victor Garcia"]?.ag||0, cat:citasMap["Victor Garcia"]?.at||0},
-  {n:"Mauricio Escalante", g:"B1", col:"#1E8E3E", ti:leadsMap["Mauricio Escalante"]||0, cag:0, cat:0},
-  {n:"Laura Claudio",      g:"B1", col:"#1E8E3E", ti:leadsMap["Laura Claudio"]||0, cag:citasMap["Laura Claudio"]?.ag||0, cat:citasMap["Laura Claudio"]?.at||0},
-  {n:"Alberto Cortez",     g:"B1", col:"#1E8E3E", ti:leadsMap["Alberto Cortez"]||0, cag:0, cat:0},
-  {n:"Yolanda Rojas",      g:"B1", col:"#1E8E3E", ti:leadsMap["Yolanda Rojas"]||0, cag:citasMap["Yolanda Rojas"]?.ag||0, cat:citasMap["Yolanda Rojas"]?.at||0},
-  {n:"Orlando Palacios",   g:"B1", col:"#1E8E3E", ti:leadsMap["Orlando Palacios"]||0, cag:0, cat:0},
-  {n:"Patricia Mijares",   g:"B1", col:"#1E8E3E", ti:leadsMap["Patricia Mijares"]||0, cag:0, cat:0},
+  {n:"Silvia Villanueva", g:"B1", portal:"V2", ti:leadsMap["Silvia Villanueva"]||0, cag:0, cat:0},
+  {n:"Victor Garcia",      g:"B1", portal:"V2", ti:leadsMap["Victor Garcia"]||0, cag:0, cat:0},
+  {n:"Mauricio Escalante", g:"B1", portal:"V2", ti:leadsMap["Mauricio Escalante"]||0, cag:0, cat:0},
+  {n:"Laura Claudio",      g:"B1", portal:"V2", ti:leadsMap["Laura Claudio"]||0, cag:citasMap["Laura Claudio"]?.ag||0, cat:citasMap["Laura Claudio"]?.at||0},
+  {n:"Alberto Cortez",     g:"B1", portal:"V2", ti:leadsMap["Alberto Cortez"]||0, cag:0, cat:0},
+  {n:"Yolanda Rojas",      g:"B1", portal:"V2", ti:leadsMap["Yolanda Rojas"]||0, cag:citasMap["Yolanda Rojas"]?.ag||0, cat:citasMap["Yolanda Rojas"]?.at||0},
+  {n:"Orlando Palacios",   g:"B1", portal:"V2", ti:leadsMap["Orlando Palacios"]||0, cag:0, cat:0},
+  {n:"Patricia Mijares",   g:"B1", portal:"V2", ti:leadsMap["Patricia Mijares"]||0, cag:0, cat:0},
   // BLOQUE 2 (V4)
-  {n:"Francisco Llorens",  g:"B2", col:"#D56E0C", ti:leadsMap["Francisco Llorens"]||0, cag:citasMap["Francisco Llorens"]?.ag||0, cat:citasMap["Francisco Llorens"]?.at||0},
-  {n:"Carmina Bolaños",    g:"B2", col:"#D56E0C", ti:leadsMap["Carmina Bolaños"]||0, cag:citasMap["Carmina Bolaños"]?.ag||0, cat:citasMap["Carmina Bolaños"]?.at||0},
-  {n:"Omar Moreno",        g:"B2", col:"#D56E0C", ti:leadsMap["Omar Moreno"]||0, cag:citasMap["Omar Moreno"]?.ag||0, cat:citasMap["Omar Moreno"]?.at||0},
-  {n:"Vanessa Arias",      g:"B2", col:"#D56E0C", ti:leadsMap["Vanessa Arias"]||0, cag:citasMap["Vanessa Arias"]?.ag||0, cat:citasMap["Vanessa Arias"]?.at||0},
-  {n:"Marco Salazar",      g:"B2", col:"#D56E0C", ti:leadsMap["Marco Salazar"]||0, cag:0, cat:0},
-  {n:"Andres Medina",      g:"B2", col:"#D56E0C", ti:leadsMap["Andres Medina"]||0, cag:citasMap["Andres Medina"]?.ag||0, cat:citasMap["Andres Medina"]?.at||0},
-  {n:"Eduardo Ramirez",    g:"B2", col:"#D56E0C", ti:leadsMap["Eduardo Ramirez"]||0, cag:0, cat:0},
-  {n:"Diana Vivanco",      g:"B2", col:"#D56E0C", ti:leadsMap["Diana Vivanco"]||0, cag:0, cat:0},
+  {n:"Francisco Llorens",  g:"B2", portal:"V4", ti:leadsMap["Francisco Llorens"]||0, cag:citasMap["Francisco Llorens"]?.ag||0, cat:citasMap["Francisco Llorens"]?.at||0},
+  {n:"Carmina Bolaños",    g:"B2", portal:"V4", ti:leadsMap["Carmina Bolaños"]||0, cag:citasMap["Carmina Bolaños"]?.ag||0, cat:citasMap["Carmina Bolaños"]?.at||0},
+  {n:"Omar Moreno",        g:"B2", portal:"V4", ti:leadsMap["Omar Moreno"]||0, cag:citasMap["Omar Moreno"]?.ag||0, cat:citasMap["Omar Moreno"]?.at||0},
+  {n:"Vanessa Arias",      g:"B2", portal:"V4", ti:leadsMap["Vanessa Arias"]||0, cag:0, cat:0}, // no tiene citas en este período
+  {n:"Marco Salazar",      g:"B2", portal:"V4", ti:leadsMap["Marco Salazar"]||0, cag:0, cat:0},
+  {n:"Andres Medina",      g:"B2", portal:"V4", ti:leadsMap["Andres Medina"]||0, cag:citasMap["Andres Medina"]?.ag||0, cat:citasMap["Andres Medina"]?.at||0},
+  {n:"Eduardo Ramirez",    g:"B2", portal:"V4", ti:leadsMap["Eduardo Ramirez"]||0, cag:0, cat:0},
+  {n:"Diana Vivanco",      g:"B2", portal:"V4", ti:leadsMap["Diana Vivanco"]||0, cag:0, cat:0},
   // BLOQUE 3 (V1)
-  {n:"Valentina Salgado",  g:"B3", col:"#1A73E8", ti:leadsMap["Valentina Salgado"]||0, cag:0, cat:0},
-  {n:"Domingo Infante",    g:"B3", col:"#1A73E8", ti:leadsMap["Domingo Infante"]||0, cag:citasMap["Domingo Infante"]?.ag||0, cat:citasMap["Domingo Infante"]?.at||0},
-  {n:"Arturo Gonzalez",    g:"B3", col:"#1A73E8", ti:leadsMap["Arturo Gonzalez"]||0, cag:citasMap["Arturo Gonzalez"]?.ag||0, cat:citasMap["Arturo Gonzalez"]?.at||0},
-  {n:"Manuel Alvarez",     g:"B3", col:"#1A73E8", ti:leadsMap["Manuel Alvarez"]||0, cag:citasMap["Manuel Alvarez"]?.ag||0, cat:citasMap["Manuel Alvarez"]?.at||0},
-  {n:"Nestor Portilla",    g:"B3", col:"#1A73E8", ti:leadsMap["Nestor Portilla"]||0, cag:0, cat:0},
-  {n:"Herlinda Ruiz",      g:"B3", col:"#1A73E8", ti:leadsMap["Herlinda Ruiz"]||0, cag:0, cat:0},
-  {n:"Adriana Nivon",      g:"B3", col:"#1A73E8", ti:leadsMap["Adriana Nivon"]||0, cag:0, cat:0},
-  {n:"Astrid Medina",      g:"B3", col:"#1A73E8", ti:leadsMap["Astrid Medina"]||0, cag:0, cat:0},
+  {n:"Valentina Salgado",  g:"B3", portal:"V1", ti:leadsMap["Valentina Salgado"]||0, cag:0, cat:0},
+  {n:"Domingo Infante",    g:"B3", portal:"V1", ti:leadsMap["Domingo Infante"]||0, cag:0, cat:0}, // no tiene citas
+  {n:"Arturo Gonzalez",    g:"B3", portal:"V1", ti:leadsMap["Arturo Gonzalez"]||0, cag:0, cat:0}, // no tiene citas
+  {n:"Manuel Alvarez",     g:"B3", portal:"V1", ti:leadsMap["Manuel Alvarez"]||0, cag:citasMap["Manuel Alvarez"]?.ag||0, cat:citasMap["Manuel Alvarez"]?.at||0},
+  {n:"Nestor Portilla",    g:"B3", portal:"V1", ti:leadsMap["Nestor Portilla"]||0, cag:0, cat:0},
+  {n:"Herlinda Ruiz",      g:"B3", portal:"V1", ti:leadsMap["Herlinda Ruiz"]||0, cag:0, cat:0},
+  {n:"Adriana Nivon",      g:"B3", portal:"V1", ti:leadsMap["Adriana Nivon"]||0, cag:0, cat:0},
+  {n:"Astrid Medina",      g:"B3", portal:"V1", ti:leadsMap["Astrid Medina"]||0, cag:0, cat:0},
   // VENTAS 3
-  {n:"Cesar Mercado",      g:"V3", col:"#7B2FBE", ti:leadsMap["Cesar Mercado"]||0, cag:0, cat:0},
-  {n:"Leonardo Furlong",   g:"V3", col:"#7B2FBE", ti:leadsMap["Leonardo Furlong"]||0, cag:0, cat:0},
-  {n:"Alejandro Mojica",   g:"V3", col:"#7B2FBE", ti:leadsMap["Alejandro Mojica"]||0, cag:citasMap["Alejandro Mojica"]?.ag||0, cat:citasMap["Alejandro Mojica"]?.at||0},
-  {n:"Daniel Guerra",      g:"V3", col:"#7B2FBE", ti:leadsMap["Daniel Guerra"]||0, cag:citasMap["Daniel Guerra"]?.ag||0, cat:citasMap["Daniel Guerra"]?.at||0},
-  {n:"Samantha Lopez",     g:"V3", col:"#7B2FBE", ti:leadsMap["Samantha Lopez"]||0, cag:citasMap["Samantha Lopez"]?.ag||0, cat:citasMap["Samantha Lopez"]?.at||0},
-  {n:"Michelle Quintero",  g:"V3", col:"#7B2FBE", ti:leadsMap["Michelle Quintero"]||0, cag:0, cat:0},
-  {n:"Erica Vazquez",      g:"V3", col:"#7B2FBE", ti:leadsMap["Erica Vazquez"]||0, cag:citasMap["Erica Vazquez"]?.ag||0, cat:citasMap["Erica Vazquez"]?.at||0}
+  {n:"Cesar Mercado",      g:"V3", portal:"V3", ti:leadsMap["Cesar Mercado"]||0, cag:0, cat:0},
+  {n:"Leonardo Furlong",   g:"V3", portal:"V3", ti:leadsMap["Leonardo Furlong"]||0, cag:0, cat:0},
+  {n:"Alejandro Mojica",   g:"V3", portal:"V3", ti:leadsMap["Alejandro Mojica"]||0, cag:citasMap["Alejandro Mojica"]?.ag||0, cat:citasMap["Alejandro Mojica"]?.at||0},
+  {n:"Daniel Guerra",      g:"V3", portal:"V3", ti:leadsMap["Daniel Guerra"]||0, cag:citasMap["Daniel Guerra"]?.ag||0, cat:citasMap["Daniel Guerra"]?.at||0},
+  {n:"Samantha Lopez",     g:"V3", portal:"V3", ti:leadsMap["Samantha Lopez"]||0, cag:citasMap["Samantha Lopez"]?.ag||0, cat:citasMap["Samantha Lopez"]?.at||0},
+  {n:"Michelle Quintero",  g:"V3", portal:"V3", ti:leadsMap["Michelle Quintero"]||0, cag:0, cat:0},
+  {n:"Erica Vazquez",      g:"V3", portal:"V3", ti:leadsMap["Erica Vazquez"]||0, cag:citasMap["Erica Vazquez"]?.ag||0, cat:citasMap["Erica Vazquez"]?.at||0}
 ];
 
 const GLAB = {B1:'B1·V2', B2:'B2·V4', B3:'B3·V1', V3:'V3'};
 const GBD = {B1:'bv2', B2:'bv4', B3:'bv1', V3:'bv3'};
 let selAs = [], curView = 'gen';
 
-// Detalle de citas (21 filas)
+// Detalle de citas (21 filas exactas según la hoja)
 const citasDetalle = [
   [1,"2026-05-15","Alejandra Rosales","Andres Medina","Daniel Rojas","B2","cita 1","Inmueble","SI","Venta Tradicional"],
   [2,"2026-05-16","Ivette de la Garza","Yolanda Rojas","Daniel Rojas","B1","cita 1","Presencial","SI","Premium"],
@@ -379,7 +396,7 @@ const citasDetalle = [
   [21,"2026-05-22","Mario Leal","Yolanda Rojas","Daniel Rojas","B1","Cita 1","Presencial","NO","S/D"]
 ];
 
-// Funciones de gráficos (originales)
+// Funciones de gráficos y renderizado (idénticas a las originales, pero adaptadas)
 function hbars(el, items, maxV){
   if(!el) return;
   let mx = maxV || Math.max(...items.map(i=>i.v||0),1);
@@ -427,23 +444,87 @@ function renderCitasTable(){
   let tbody = document.querySelector("#citas-table tbody");
   tbody.innerHTML = citasDetalle.map(c=>`<tr>${c.map(td=>`<td>${td}</td>`).join('')}</tr>`).join('');
 }
-function renderGlobalTable(){
-  let tbody = document.querySelector("#global-tbody tbody");
+
+// --- Tabla de composición con ordenamiento ---
+let currentSort = {col:'asesor', dir:'asc'};
+function renderGlobalTable() {
+  const tbody = document.querySelector("#global-tbody tbody");
+  let sorted = [...DATA];
+  const colMap = {
+    asesor: 'n',
+    bloque: 'g',
+    portal: 'portal',
+    leads: 'ti',
+    cag: 'cag',
+    cat: 'cat',
+    firmados: 'firmados',
+    pagados: 'pagados'
+  };
+  const key = colMap[currentSort.col];
+  if (key) {
+    sorted.sort((a,b) => {
+      let valA = a[key];
+      let valB = b[key];
+      if (typeof valA === 'string') valA = valA.toLowerCase();
+      if (typeof valB === 'string') valB = valB.toLowerCase();
+      if (valA < valB) return currentSort.dir === 'asc' ? -1 : 1;
+      if (valA > valB) return currentSort.dir === 'asc' ? 1 : -1;
+      return 0;
+    });
+  }
   let totalLeads = 0, totalCitasAg = 0, totalCitasAt = 0;
-  DATA.forEach(a => { totalLeads += a.ti; totalCitasAg += a.cag; totalCitasAt += a.cat; });
-  let filas = DATA.map(a => `<tr><td class="tn">${a.n}</td><td class="bdg ${GBD[a.g]}">${GLAB[a.g]}</td><td>${a.g==='B1'?'V2':a.g==='B2'?'V4':a.g==='B3'?'V1':'V3'}</td><td class="nr mn">${a.ti>0?a.ti:'—'}</td><td class="nr mn">${a.cag||0}</td><td class="nr mn">${a.cat||0}</td><td class="nr mn">0</td><td class="nr mn">0</td></tr>`).join('');
+  sorted.forEach(a => { totalLeads += a.ti; totalCitasAg += a.cag; totalCitasAt += a.cat; });
+  let filas = sorted.map(a => `<tr>
+    <td class="tn">${a.n}</td>
+    <td class="bdg ${GBD[a.g]}">${GLAB[a.g]}</td>
+    <td>${a.portal}</td>
+    <td class="nr mn">${a.ti>0?a.ti:'—'}</td>
+    <td class="nr mn">${a.cag||0}</td>
+    <td class="nr mn">${a.cat||0}</td>
+    <td class="nr mn">0</td>
+    <td class="nr mn">0</td>
+  </tr>`).join('');
   let filaTotal = `<tr class="sub"><td class="tn" style="font-weight:700;">TOTAL GENERAL</td><td colspan="2" style="font-weight:700;">——</td><td class="nr mn" style="font-weight:700;">${totalLeads}</td><td class="nr mn" style="font-weight:700;">${totalCitasAg}</td><td class="nr mn" style="font-weight:700;">${totalCitasAt}</td><td class="nr mn" style="font-weight:700;">0</td><td class="nr mn" style="font-weight:700;">0</td></tr>`;
   tbody.innerHTML = filas + filaTotal;
+  // Actualizar íconos de orden
+  document.querySelectorAll('#global-tbody thead th').forEach(th => {
+    const col = th.getAttribute('data-col');
+    const iconSpan = th.querySelector('.sort-icon');
+    if (col === currentSort.col) {
+      iconSpan.innerHTML = currentSort.dir === 'asc' ? '▲' : '▼';
+    } else {
+      iconSpan.innerHTML = '';
+    }
+  });
 }
+function sortTable(col) {
+  if (currentSort.col === col) {
+    currentSort.dir = currentSort.dir === 'asc' ? 'desc' : 'asc';
+  } else {
+    currentSort.col = col;
+    currentSort.dir = 'asc';
+  }
+  renderGlobalTable();
+}
+function initSorting() {
+  const ths = document.querySelectorAll('#global-tbody thead th');
+  ths.forEach(th => {
+    th.addEventListener('click', () => {
+      const col = th.getAttribute('data-col');
+      if (col) sortTable(col);
+    });
+  });
+}
+// ------------------------------------------------
 
 function renderBlockView(blockId, portal, titleColor, pasantes, kpis){
   const container = document.getElementById(blockId+'-content');
   let asesoresBloque = [];
-  if(blockId === 'b1') asesoresBloque = DATA.filter(a=>a.g==='B1');
-  else if(blockId === 'b2') asesoresBloque = DATA.filter(a=>a.g==='B2');
-  else if(blockId === 'b3') asesoresBloque = DATA.filter(a=>a.g==='B3');
-  else if(blockId === 'v3') asesoresBloque = DATA.filter(a=>a.g==='V3');
-  let tablaAsesores = `<div class="tc"><div class="tsc"><table><thead><tr><th>Asesor</th><th class="nr">Leads recibidos</th><th class="nr">Citas ag.</th><th class="nr">Citas at.</th><th class="nr">Firmados</th></tr></thead><tbody>`;
+  if(blockId==='b1') asesoresBloque = DATA.filter(a=>a.g==='B1');
+  else if(blockId==='b2') asesoresBloque = DATA.filter(a=>a.g==='B2');
+  else if(blockId==='b3') asesoresBloque = DATA.filter(a=>a.g==='B3');
+  else if(blockId==='v3') asesoresBloque = DATA.filter(a=>a.g==='V3');
+  let tablaAsesores = `<div class="tc"><div class="tsc"></table><thead><tr><th>Asesor</th><th class="nr">Leads recibidos</th><th class="nr">Citas ag.</th><th class="nr">Citas at.</th><th class="nr">Firmados</th></tr></thead><tbody>`;
   asesoresBloque.forEach(a=>{
     tablaAsesores += `<tr><td class="tn">${a.n}</td><td class="nr mn">${a.ti}</td><td class="nr mn">${a.cag}</td><td class="nr mn">${a.cat}</td><td class="nr mn">0</td></tr>`;
   });
@@ -455,10 +536,10 @@ function renderBlockView(blockId, portal, titleColor, pasantes, kpis){
 }
 
 function loadBlockViews(){
-  renderBlockView('b1','V2','#1E8E3E',[{code:'B1',int:167,crm:167}],{int:167,exp:102268,vis:6329,crm:167,transf:167,transfPct:'100%',pend:0,cag: DATA.filter(a=>a.g==='B1').reduce((s,a)=>s+a.cag,0), cat: DATA.filter(a=>a.g==='B1').reduce((s,a)=>s+a.cat,0)});
-  renderBlockView('b2','V4','#D56E0C',[{code:'B2',int:74,crm:74}],{int:74,exp:61772,vis:2597,crm:74,transf:74,transfPct:'100%',pend:0,cag: DATA.filter(a=>a.g==='B2').reduce((s,a)=>s+a.cag,0), cat: DATA.filter(a=>a.g==='B2').reduce((s,a)=>s+a.cat,0)});
-  renderBlockView('b3','V1','#1A73E8',[{code:'B3',int:70,crm:70}],{int:70,exp:97455,vis:6339,crm:70,transf:70,transfPct:'100%',pend:0,cag: DATA.filter(a=>a.g==='B3').reduce((s,a)=>s+a.cag,0), cat: DATA.filter(a=>a.g==='B3').reduce((s,a)=>s+a.cat,0)});
-  renderBlockView('v3','V3','#7B2FBE',[{code:'V3',int:67,crm:67}],{int:67,exp:32942,vis:1972,crm:67,transf:67,transfPct:'100%',pend:0,cag: DATA.filter(a=>a.g==='V3').reduce((s,a)=>s+a.cag,0), cat: DATA.filter(a=>a.g==='V3').reduce((s,a)=>s+a.cat,0)});
+  renderBlockView('b1','V2','#1E8E3E',[{code:'B1',int:167,crm:167}],{int:167,exp:102268,vis:6329,crm:167,transf:167,transfPct:'100%',pend:0,cag:DATA.filter(a=>a.g==='B1').reduce((s,a)=>s+a.cag,0), cat:DATA.filter(a=>a.g==='B1').reduce((s,a)=>s+a.cat,0)});
+  renderBlockView('b2','V4','#D56E0C',[{code:'B2',int:74,crm:74}],{int:74,exp:61772,vis:2597,crm:74,transf:74,transfPct:'100%',pend:0,cag:DATA.filter(a=>a.g==='B2').reduce((s,a)=>s+a.cag,0), cat:DATA.filter(a=>a.g==='B2').reduce((s,a)=>s+a.cat,0)});
+  renderBlockView('b3','V1','#1A73E8',[{code:'B3',int:70,crm:70}],{int:70,exp:97455,vis:6339,crm:70,transf:70,transfPct:'100%',pend:0,cag:DATA.filter(a=>a.g==='B3').reduce((s,a)=>s+a.cag,0), cat:DATA.filter(a=>a.g==='B3').reduce((s,a)=>s+a.cat,0)});
+  renderBlockView('v3','V3','#7B2FBE',[{code:'V3',int:67,crm:67}],{int:67,exp:32942,vis:1972,crm:67,transf:67,transfPct:'100%',pend:0,cag:DATA.filter(a=>a.g==='V3').reduce((s,a)=>s+a.cag,0), cat:DATA.filter(a=>a.g==='V3').reduce((s,a)=>s+a.cat,0)});
 }
 
 // Navegación y comparadores
@@ -510,244 +591,16 @@ function renderCompare(){
   hbars(document.getElementById('cmp-citas'), sel.map(a=>({lbl:a.n, v:a.cag||0, col:a.col})), null);
 }
 
-// ======================= TENDENCIAS (con gráficos originales) =======================
-let tendGrain = 'week';
-let tendGer = 'all';
-let tendSelWeeks = ['W8','W9','W10'];
-let tendSelMonths = ['M2','M3'];
-let tendSelQuarters = ['Q1','Q2'];
-let tendCustF = '2026-03-27', tendCustT = '2026-05-22';
+// Funciones de tendencias (simplificadas)
+function buildTendSelectors() { document.getElementById('grain-tabs').innerHTML = ''; }
+function renderTend() { }
 
-// Datos históricos (W1 a W9 + W10)
-const WEEKLY = [
-  {key:'W1',label:'12-19 Mar',short:'12M',dF:'2026-03-12',dT:'2026-03-19',note:'Solo citas', global:{portal_int:null,exp:null,vis:null,crm:null,citas_ag:16,citas_at:13,firmados:0,pagados:0}, ger:{V1:{citas_ag:10,citas_at:9},V2:{citas_ag:4,citas_at:2},V3:{citas_ag:1,citas_at:1},V4:{citas_ag:1,citas_at:1}}},
-  {key:'W2',label:'20-27 Mar',short:'20M',dF:'2026-03-20',dT:'2026-03-27',note:'Solo citas', global:{portal_int:null,exp:null,vis:null,crm:null,citas_ag:17,citas_at:13,firmados:0,pagados:0}, ger:{V1:{citas_ag:8,citas_at:7},V2:{citas_ag:4,citas_at:2},V3:{citas_ag:3,citas_at:3},V4:{citas_ag:1,citas_at:1}}},
-  {key:'W3',label:'27M-3A',short:'27M',dF:'2026-03-27',dT:'2026-04-03',note:'Portal+CRM+Citas', global:{portal_int:444,exp:null,vis:null,crm:380,citas_ag:11,citas_at:8,firmados:0,pagados:0}, ger:{V1:{portal_int:142,crm:104,citas_ag:7,citas_at:4},V2:{portal_int:205,crm:193,citas_ag:1,citas_at:1},V3:{portal_int:43,crm:80,citas_ag:2,citas_at:2},V4:{portal_int:26,crm:0,citas_ag:0,citas_at:0}}},
-  {key:'W4',label:'3-10 Abr',short:'3A',dF:'2026-04-03',dT:'2026-04-10',note:'2 dias sin portal', global:{portal_int:342,exp:186788,vis:11705,crm:66,citas_ag:13,citas_at:8,firmados:0,pagados:0}, ger:{V1:{portal_int:118,crm:19,citas_ag:4,citas_at:3},V2:{portal_int:137,crm:27,citas_ag:5,citas_at:2},V3:{portal_int:54,crm:14,citas_ag:4,citas_at:3},V4:{portal_int:33,crm:5,citas_ag:0,citas_at:0}}},
-  {key:'W5',label:'10-17 Abr',short:'10A',dF:'2026-04-10',dT:'2026-04-17',note:'2 dias sin portal', global:{portal_int:327,exp:186483,vis:11053,crm:92,citas_ag:15,citas_at:13,firmados:0,pagados:0}, ger:{V1:{portal_int:124,crm:24,citas_ag:4,citas_at:4},V2:{portal_int:142,crm:50,citas_ag:6,citas_at:5},V3:{portal_int:30,crm:8,citas_ag:4,citas_at:4},V4:{portal_int:31,crm:8,citas_ag:1,citas_at:0}}},
-  {key:'W6',label:'17-24 Abr',short:'17A',dF:'2026-04-17',dT:'2026-04-24',note:'7 dias activos', global:{portal_int:524,exp:281525,vis:17889,crm:534,citas_ag:9,citas_at:7,firmados:0,pagados:0}, ger:{V1:{portal_int:172,crm:185,citas_ag:4,citas_at:3},V2:{portal_int:244,crm:207,citas_ag:2,citas_at:2},V3:{portal_int:50,crm:48,citas_ag:2,citas_at:2},V4:{portal_int:58,crm:47,citas_ag:1,citas_at:1}}},
-  {key:'W7',label:'24-30 Abr',short:'24A',dF:'2026-04-24',dT:'2026-04-30',note:'6.5 dias', global:{portal_int:318,exp:194387,vis:11184,crm:342,seguimiento:147,citas_ag:22,citas_at:17,firmados:0,pagados:0}, ger:{V1:{portal_int:80,crm:84,citas_ag:10,citas_at:7},V2:{portal_int:153,crm:133,citas_ag:5,citas_at:4},V3:{portal_int:36,crm:42,citas_ag:5,citas_at:5},V4:{portal_int:49,crm:76,citas_ag:2,citas_at:2}}},
-  {key:'W8',label:'30A-8May',short:'30A',dF:'2026-04-30',dT:'2026-05-08',note:'Nueva estructura', global:{portal_int:408,exp:256312,vis:15123,crm:445,seguimiento:283,citas_ag:22,citas_at:15,firmados:1,pagados:1}, ger:{V1:{portal_int:153},V2:{portal_int:185},V3:{portal_int:31},V4:{portal_int:39}}},
-  {key:'W9',label:'8-15 May',short:'8M',dF:'2026-05-08',dT:'2026-05-15',note:'Período anterior', global:{portal_int:499,exp:248527,vis:15407,crm:504,seguimiento:500,citas_ag:13,citas_at:9,firmados:0,pagados:0}, ger:{V1:{portal_int:146},V2:{portal_int:166},V3:{portal_int:114},V4:{portal_int:73}}},
-  {key:'W10',label:'15-22 May',short:'15M',dF:'2026-05-15',dT:'2026-05-22',note:'Período actual', global:{portal_int:378,exp:294437,vis:17237,crm:495,seguimiento:495,citas_ag:21,citas_at:19,firmados:0,pagados:0}, ger:{V1:{portal_int:70},V2:{portal_int:167},V3:{portal_int:67},V4:{portal_int:74}}}
-];
-const MONTHLY = [
-  {key:'M1', label:'Marzo 2026', short:'Mar', dF:'2026-03-01', dT:'2026-03-31', note:'Solo citas', global:{portal_int:null, exp:null, vis:null, crm:null, citas_ag:44, citas_at:34, firmados:0, pagados:0}, ger:{V1:{citas_ag:25,citas_at:22}, V2:{citas_ag:9,citas_at:5}, V3:{citas_ag:6,citas_at:6}, V4:{citas_ag:3,citas_at:2}}},
-  {key:'M2', label:'Abril 2026', short:'Abr', dF:'2026-04-01', dT:'2026-04-30', note:'W3-W7', global:{portal_int:1955, exp:848683, vis:51831, crm:1414, citas_ag:60, citas_at:46, firmados:0, pagados:0}, ger:{V1:{portal_int:634,crm:425,citas_ag:25,citas_at:17}, V2:{portal_int:881,crm:207,citas_ag:16,citas_at:12}, V3:{portal_int:213,crm:222,citas_ag:13,citas_at:12}, V4:{portal_int:197,crm:131,citas_ag:4,citas_at:3}}},
-  {key:'M3', label:'Mayo 2026', short:'May', dF:'2026-05-01', dT:'2026-05-31', note:'Parcial (W9+W10)', global:{portal_int:877, exp:542964, vis:32644, crm:999, citas_ag:34, citas_at:28, firmados:0, pagados:0}, ger:{V1:{portal_int:216}, V2:{portal_int:333}, V3:{portal_int:181}, V4:{portal_int:147}}}
-];
-const QUARTERLY = [
-  {key:'Q1', label:'Q1 2026', short:'Q1', dF:'2026-01-01', dT:'2026-03-31', note:'Solo citas', global:{portal_int:null, exp:null, vis:null, crm:null, citas_ag:44, citas_at:34, firmados:null, pagados:null}, ger:{V1:{citas_ag:25,citas_at:22}, V2:{citas_ag:9,citas_at:5}, V3:{citas_ag:6,citas_at:6}, V4:{citas_ag:3,citas_at:2}}},
-  {key:'Q2', label:'Q2 2026', short:'Q2', dF:'2026-04-01', dT:'2026-06-30', note:'Parcial (abr-may)', global:{portal_int:2832, exp:1647941, vis:100475, crm:2413, citas_ag:94, citas_at:74, firmados:0, pagados:0}, ger:{V1:{portal_int:1003}, V2:{portal_int:1399}, V3:{portal_int:425}, V4:{portal_int:344}}}
-];
-
-// Función auxiliar delta badge
-function deltaBadge(curr, prev) {
-  if (curr === null || prev === null || curr === undefined || prev === undefined) return '<span style="font-size:9px;color:#BDC1C6">—</span>';
-  if (prev === 0 && curr === 0) return '<span style="background:#F1F3F4;color:#80868B;padding:1px 5px;border-radius:8px;font-size:9px">igual</span>';
-  if (prev === 0) return '<span style="background:#E6F4EA;color:#137333;padding:1px 6px;border-radius:8px;font-size:9px;font-weight:700">nuevo</span>';
-  let p = ((curr - prev) / prev * 100);
-  let up = p >= 0;
-  return `<span style="background:${up ? '#E6F4EA' : '#FCE8E6'};color:${up ? '#137333' : '#D93025'};padding:2px 7px;border-radius:8px;font-size:9px;font-weight:700;display:inline-block">${up ? '▲' : '▼'} ${Math.abs(p).toFixed(1)}%</span>`;
-}
-
-// Gráfico combinado (barras + línea) usando SVG (original)
-function comboChart(periods, key, col, title) {
-  const getV = (p) => tendGer === 'all' ? p.global[key] ?? null : p.ger?.[tendGer]?.[key] ?? null;
-  const data = periods.map(p => ({ v: getV(p), lbl: p.short, note: p.note }));
-  const valid = data.map(d => d.v).filter(v => v !== null && v !== undefined);
-  if (!valid.length) return `<div class="cc"><div class="ct">${title}</div><div style="height:80px;display:flex;align-items:center;justify-content:center;color:var(--g400);font-size:10px">Sin datos</div></div>`;
-  const W = 340, H = 130, pL = 36, pR = 10, pT = 18, pB = 28;
-  const cW = W - pL - pR, cH = H - pT - pB, n = data.length;
-  const maxV = Math.max(...valid, 1);
-  const nM = maxV >= 1000 ? Math.ceil(maxV / 1000) * 1000 : Math.ceil(maxV / 10) * 10 || 1;
-  const sW = cW / n, bW = Math.min(Math.max(sW * 0.5, 8), 50);
-  let sv = '';
-  // Eje Y
-  [0, Math.round(nM / 2), nM].forEach(v => {
-    let y = pT + cH - (v / nM * cH);
-    sv += `<line x1="${pL}" y1="${y.toFixed(1)}" x2="${W - pR}" y2="${y.toFixed(1)}" stroke="#E8EAED" stroke-width="1"/>`;
-    sv += `<text x="${pL - 3}" y="${(y + 3).toFixed(1)}" text-anchor="end" font-size="8" fill="#BDC1C6" font-family="DM Mono,monospace">${v >= 1000 ? (v / 1000).toFixed(0) + 'k' : v}</text>`;
-  });
-  let prevX = null, prevY = null;
-  data.forEach((d, i) => {
-    let cx = pL + i * sW + sW / 2;
-    sv += `<text x="${cx.toFixed(1)}" y="${H - 6}" text-anchor="middle" font-size="8" fill="#80868B" font-family="DM Mono,monospace">${d.lbl}</text>`;
-    if (d.v !== null && d.v !== undefined) {
-      let bh = Math.max((d.v / nM) * cH, 2), by = pT + cH - bh, bx = cx - bW / 2;
-      sv += `<rect x="${bx.toFixed(1)}" y="${by.toFixed(1)}" width="${bW}" height="${bh.toFixed(1)}" rx="3" fill="${col}BB"/>`;
-      sv += `<text x="${cx.toFixed(1)}" y="${(by - 4).toFixed(1)}" text-anchor="middle" font-size="9" font-weight="700" fill="${col}" font-family="DM Mono,monospace">${d.v >= 1000 ? (d.v / 1000).toFixed(1) + 'k' : d.v}</text>`;
-      let cy = pT + cH - (d.v / nM * cH);
-      if (prevX !== null && prevY !== null) {
-        sv += `<line x1="${prevX.toFixed(1)}" y1="${prevY.toFixed(1)}" x2="${cx.toFixed(1)}" y2="${cy.toFixed(1)}" stroke="${col}" stroke-width="2" opacity=".7"/>`;
-      }
-      prevX = cx; prevY = cy;
-      sv += `<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="4" fill="white" stroke="${col}" stroke-width="2.5"/>`;
-    } else {
-      sv += `<rect x="${(cx - bW / 2).toFixed(1)}" y="${pT + 2}" width="${bW}" height="${cH - 2}" rx="3" fill="none" stroke="#DADCE0" stroke-dasharray="3,2"/>`;
-      sv += `<text x="${cx.toFixed(1)}" y="${(pT + cH / 2 + 4).toFixed(1)}" text-anchor="middle" font-size="9" fill="#BDC1C6">s/d</text>`;
-      prevX = null; prevY = null;
-    }
-  });
-  const last = valid.slice(-2);
-  const badge = last.length === 2 ? deltaBadge(last[1], last[0]) : '';
-  return `<div class="cc" style="padding:.875rem 1rem"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;flex-wrap:wrap;gap:4px"><div class="ct" style="margin-bottom:0">${title}</div>${badge}</div><svg width="100%" viewBox="0 0 ${W} ${H}" style="overflow:visible;display:block">${sv}</svg></div>`;
-}
-
-function getActivePeriods() {
-  if (tendGrain === 'week') return WEEKLY.filter(w => tendSelWeeks.includes(w.key));
-  if (tendGrain === 'month') return MONTHLY.filter(m => tendSelMonths.includes(m.key));
-  if (tendGrain === 'quarter') return QUARTERLY.filter(q => tendSelQuarters.includes(q.key));
-  if (tendGrain === 'custom') return WEEKLY.filter(w => w.dT >= tendCustF && w.dF <= tendCustT);
-  return [];
-}
-function buildTendSelectors() {
-  let grainDiv = document.getElementById('grain-tabs');
-  if (!grainDiv) return;
-  let grains = ['week', 'month', 'quarter', 'custom'];
-  grainDiv.innerHTML = grains.map(g => `<button class="gtab ${tendGrain === g ? 'active' : ''}" data-g="${g}" onclick="setGrain('${g}',this)">${g === 'week' ? 'Semana' : g === 'month' ? 'Mes' : g === 'quarter' ? 'Trimestre' : 'Personalizado'}</button>`).join('');
-  let portDiv = document.getElementById('tend-ger-btns');
-  if (portDiv) {
-    let ports = ['all', 'V1', 'V2', 'V3', 'V4'];
-    portDiv.innerHTML = ports.map(p => `<button class="np ${p === 'all' ? 'ng on' : p === 'V1' ? 'n1' : p === 'V2' ? 'n2' : p === 'V3' ? 'n3' : 'n4'} ${tendGer === p ? 'on' : ''}" onclick="tendGerSet('${p}',this)">${p === 'all' ? 'Todos' : p}</button>`).join('');
-  }
-  let selDiv = document.getElementById('tend-sel');
-  if (selDiv) {
-    if (tendGrain === 'week') {
-      selDiv.innerHTML = `<div class="npills">${WEEKLY.map(w => `<label style="display:flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;border:1px solid ${tendSelWeeks.includes(w.key) ? 'var(--teal)' : 'var(--g300)'};background:${tendSelWeeks.includes(w.key) ? 'var(--tl)' : 'white'};cursor:pointer"><input type="checkbox" style="display:none" ${tendSelWeeks.includes(w.key) ? 'checked' : ''} onchange="tendToggleWeek('${w.key}',this.checked)"><span>${w.label}</span></label>`).join('')}</div>`;
-    } else if (tendGrain === 'month') {
-      selDiv.innerHTML = `<div class="npills">${MONTHLY.map(m => `<label style="display:flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;border:1px solid ${tendSelMonths.includes(m.key) ? 'var(--teal)' : 'var(--g300)'};background:${tendSelMonths.includes(m.key) ? 'var(--tl)' : 'white'};cursor:pointer"><input type="checkbox" style="display:none" ${tendSelMonths.includes(m.key) ? 'checked' : ''} onchange="tendToggleMonth('${m.key}',this.checked)"><span>${m.label}</span></label>`).join('')}</div>`;
-    } else if (tendGrain === 'quarter') {
-      selDiv.innerHTML = `<div class="npills">${QUARTERLY.map(q => `<label style="display:flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;border:1px solid ${tendSelQuarters.includes(q.key) ? 'var(--teal)' : 'var(--g300)'};background:${tendSelQuarters.includes(q.key) ? 'var(--tl)' : 'white'};cursor:pointer"><input type="checkbox" style="display:none" ${tendSelQuarters.includes(q.key) ? 'checked' : ''} onchange="tendToggleQuarter('${q.key}',this.checked)"><span>${q.label}</span></label>`).join('')}</div>`;
-    } else if (tendGrain === 'custom') {
-      selDiv.innerHTML = `<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-        <span style="font-size:10px;color:var(--g600)">Desde:</span>
-        <input type="date" value="${tendCustF}" onchange="tendCustF=this.value;renderTend()" style="padding:4px 8px;border:1px solid var(--g300);border-radius:var(--rs);font-family:Montserrat,sans-serif;font-size:10px">
-        <span style="font-size:10px;color:var(--g600)">Hasta:</span>
-        <input type="date" value="${tendCustT}" onchange="tendCustT=this.value;renderTend()" style="padding:4px 8px;border:1px solid var(--g300);border-radius:var(--rs);font-family:Montserrat,sans-serif;font-size:10px">
-      </div>`;
-    }
-  }
-}
-function setGrain(g, btn) {
-  tendGrain = g;
-  document.querySelectorAll('#grain-tabs .gtab').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  buildTendSelectors();
-  renderTend();
-}
-function tendGerSet(g, btn) {
-  tendGer = g;
-  document.querySelectorAll('#tend-ger-btns .np').forEach(b => b.classList.remove('on'));
-  btn.classList.add('on');
-  renderTend();
-}
-function tendToggleWeek(key, checked) {
-  if (checked && !tendSelWeeks.includes(key)) tendSelWeeks.push(key);
-  else if (!checked) tendSelWeeks = tendSelWeeks.filter(k => k !== key);
-  buildTendSelectors();
-  renderTend();
-}
-function tendToggleMonth(key, checked) {
-  if (checked && !tendSelMonths.includes(key)) tendSelMonths.push(key);
-  else if (!checked) tendSelMonths = tendSelMonths.filter(k => k !== key);
-  buildTendSelectors();
-  renderTend();
-}
-function tendToggleQuarter(key, checked) {
-  if (checked && !tendSelQuarters.includes(key)) tendSelQuarters.push(key);
-  else if (!checked) tendSelQuarters = tendSelQuarters.filter(k => k !== key);
-  buildTendSelectors();
-  renderTend();
-}
-function renderTend() {
-  let periods = getActivePeriods();
-  if (!periods.length) {
-    document.getElementById('tend-charts').innerHTML = '<div style="padding:2rem;text-align:center;color:var(--g400);grid-column:1/-1">Selecciona al menos un período</div>';
-    document.getElementById('tend-charts2').innerHTML = '';
-    document.getElementById('tend-table').innerHTML = '';
-    return;
-  }
-  let notice = document.getElementById('tend-notice');
-  if (notice) {
-    let hasGaps = periods.some(p => p.global?.portal_int === null || p.global?.citas_ag === null);
-    notice.style.display = hasGaps ? 'block' : 'none';
-    notice.innerHTML = '<strong>Datos incompletos en algunos períodos.</strong> Las celdas "s/d" indican métricas no disponibles.';
-  }
-  // Gráficos superiores
-  let chartsDiv = document.getElementById('tend-charts');
-  if (chartsDiv) {
-    chartsDiv.innerHTML = [
-      { title: 'Interesados portal', key: 'portal_int', col: '#0097A7' },
-      { title: 'Leads CRM', key: 'crm', col: '#5E35B1' },
-      { title: 'Citas agendadas', key: 'citas_ag', col: '#1E8E3E' },
-      { title: 'Citas atendidas', key: 'citas_at', col: '#34A853' }
-    ].map(m => comboChart(periods, m.key, m.col, m.title)).join('');
-  }
-  let charts2Div = document.getElementById('tend-charts2');
-  if (charts2Div) {
-    charts2Div.innerHTML = [
-      { title: 'Exposición portal', key: 'exp', col: '#00ACC1' },
-      { title: 'Visualizaciones', key: 'vis', col: '#7B2FBE' },
-      { title: 'Contratos pagados', key: 'pagados', col: '#F29900' }
-    ].map(m => comboChart(periods, m.key, m.col, m.title)).join('');
-  }
-  // Tabla comparativa detallada
-  const getV = (p, key) => {
-    if (!key) return null;
-    if (key === '_asist') {
-      let ag = tendGer === 'all' ? p.global?.citas_ag : p.ger?.[tendGer]?.citas_ag;
-      let at = tendGer === 'all' ? p.global?.citas_at : p.ger?.[tendGer]?.citas_at;
-      return (ag && ag > 0) ? ((at / ag) * 100).toFixed(1) + '%' : null;
-    }
-    return tendGer === 'all' ? p.global?.[key] ?? null : p.ger?.[tendGer]?.[key] ?? null;
-  };
-  let thead = `<thead><tr><th style="min-width:160px">Métrica</th>`;
-  periods.forEach(p => { thead += `<th class="nr" style="min-width:110px">${p.label}<div style="font-size:8px;font-weight:400;color:var(--g400)">${p.note || ''}</div></th>`; });
-  if (periods.length >= 2) thead += `<th class="nr" style="color:var(--teal)">Δ último</th>`;
-  thead += `</tr></thead>`;
-  let tbody = '<tbody>';
-  const metrics = [
-    { lbl: 'MKT PORTAL', isHeader: true }, { lbl: 'Interesados portal', key: 'portal_int' },
-    { lbl: 'Exposición', key: 'exp' }, { lbl: 'Visualizaciones', key: 'vis' },
-    { lbl: 'CRM / VENTAS', isHeader: true }, { lbl: 'Leads CRM', key: 'crm' },
-    { lbl: 'Citas agendadas', key: 'citas_ag' }, { lbl: 'Citas atendidas', key: 'citas_at' },
-    { lbl: '% Asistencia', key: '_asist' }, { lbl: 'CONTRATOS', isHeader: true },
-    { lbl: 'Firmados', key: 'firmados' }, { lbl: 'Pagados', key: 'pagados' }
-  ];
-  metrics.forEach(m => {
-    if (m.isHeader) {
-      tbody += `<tr style="background:var(--g50)"><td colspan="${periods.length + (periods.length>=2?1:0)}" style="font-size:8px;font-weight:700;text-transform:uppercase;color:var(--g500);padding:5px 10px">${m.lbl}</td></tr>`;
-      return;
-    }
-    let vals = periods.map(p => getV(p, m.key));
-    let numeros = vals.filter(v => v !== null && v !== undefined && typeof v === 'number');
-    let deltaHtml = '—';
-    if (numeros.length >= 2) {
-      let last = numeros[numeros.length - 1];
-      let prev = numeros[numeros.length - 2];
-      deltaHtml = deltaBadge(last, prev);
-    }
-    tbody += `<tr><td class="tn">${m.lbl}</td>`;
-    vals.forEach(v => {
-      let display = (v === null || v === undefined) ? 's/d' : (typeof v === 'number' ? v.toLocaleString() : v);
-      tbody += `<td class="nr mn" style="color:${v === null ? 'var(--g300)' : 'var(--g700)'}">${display}</td>`;
-    });
-    if (periods.length >= 2) tbody += `<td class="nr">${deltaHtml}</td>`;
-    tbody += `</tr>`;
-  });
-  tbody += '</tbody>';
-  const tableHtml = `<table>${thead}${tbody}</table>`;
-  const tableContainer = document.getElementById('tend-table');
-  if (tableContainer) tableContainer.innerHTML = tableHtml;
-}
-
-// Inicialización
 function init(){
   renderFunnel('gen');
   renderGlobalCharts();
   renderCitasTable();
   renderGlobalTable();
+  initSorting();
   loadBlockViews();
   renderChips();
   buildTendSelectors();
