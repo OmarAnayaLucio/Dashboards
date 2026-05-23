@@ -226,9 +226,9 @@ tr.sub td{background:var(--g50);font-weight:700;}
   <div class="al al-amber"><span class="al-ico">🔄</span><div><strong>Rotación esta semana:</strong> Bloque 1 → V2 · Bloque 2 → V4 · Bloque 3 → V1 · Ventas 3 → V3 (fijo). &nbsp;|&nbsp;<strong>Citas:</strong> 21 agendadas, 19 atendidas (tasa 90.5%).</div></div>
   <div class="sec-mkt"><div class="sec-mkt-bar"></div><div class="sec-mkt-lbl">KPIs Marketing — Pasantes · Flujo de entrada</div></div>
   <div class="kr k6">
-    <div class="kc kmkt"><div class="kl">Interesados portal (total)</div><div class="kv" style="color:var(--mkt)">378</div><div class="ks">V1=70 · V2=167 · V3=67 · V4=74</div></div>
+    <div class="kc kmkt"><div class="kl">Interesados portal (total)</div><div class="kv" style="color:var(--mkt)">507</div><div class="ks">V1=162 · V2=167 · V3=105 · V4=73</div></div>
     <div class="kc kmkt"><div class="kl">Leads registrados CRM</div><div class="kv" style="color:var(--mkt)">495</div><div class="ks">Pasantes=485 · MKT-AG=1 · Otros=9</div></div>
-    <div class="kc kmkt"><div class="kl">Tasa de registro</div><div class="kv" style="color:var(--mkt)">131.0%</div><div class="ks">495 CRM / 378 interesados portal</div></div>
+    <div class="kc kmkt"><div class="kl">Tasa de registro</div><div class="kv" style="color:var(--mkt)">97.6%</div><div class="ks">495 CRM / 507 interesados portal</div></div>
     <div class="kc kvta"><div class="kl">Leads transferidos</div><div class="kv" style="color:var(--vta)">495</div><div class="ks">Actualizado según lista de asesores</div></div>
     <div class="kc kamber"><div class="kl">Pendientes traspaso</div><div class="kv" style="color:var(--amber)">0</div><div class="ks">495 registrados - 495 transferidos</div></div>
     <div class="kc kvta"><div class="kl">Tasa traspaso</div><div class="kv" style="color:var(--vta)">100%</div><div class="ks">495 / 495</div></div>
@@ -410,7 +410,7 @@ function pbars(el, items){
   el.innerHTML = items.map(i=>`<div class="pbr"><div class="pbh"><span class="pbl" style="color:${i.col||'var(--g700)'}">${i.lbl}</span><span class="pbv" style="color:${i.col}">${i.v.toFixed(1)}%</span></div><div class="pbt"><div class="pbf" style="width:${Math.min(i.v,100)}%;background:${i.col||'#ccc'}"></div></div><div style="font-size:8px;color:var(--g400);margin-top:2px">${i.sub||''}</div></div>`).join('');
 }
 function renderFunnel(key){
-  const d = {portal_exp:294437, portal_vis:17237, portal_int:378, crm:495, seguimiento:495, citas_ag:21, citas_at:19, firmados:0, pagados:0};
+  const d = {portal_exp:294437, portal_vis:17237, portal_int:507, crm:495, seguimiento:495, citas_ag:21, citas_at:19, firmados:0, pagados:0};
   let steps = [
     {lbl:'Exposición', v:d.portal_exp, col:'#0097A7'},{lbl:'Visualiz.', v:d.portal_vis, col:'#0097A7'},
     {lbl:'Interesados', v:d.portal_int, col:'#0097A7'},{lbl:'CRM', v:d.crm, col:'#5E35B1'},
@@ -435,14 +435,19 @@ function renderGlobalCharts(){
     {lbl:'Lizbeth Méndez LM06',v:28,col:'#D56E0C'},{lbl:'Nicolás Álvarez NA03',v:36,col:'#1A73E8'},
     {lbl:'Efraín López EL07',v:41,col:'#D56E0C'},{lbl:'MKT-AG',v:1,col:'#0097A7'}
   ],118);
-  hbars(document.getElementById('ch-int'),[{lbl:'V2',v:167,col:'#1E8E3E'},{lbl:'V1',v:70,col:'#1A73E8'},{lbl:'V3',v:67,col:'#7B2FBE'},{lbl:'V4',v:74,col:'#D56E0C'}],167);
+  hbars(document.getElementById('ch-int'),[
+    {lbl:'V2',v:167,col:'#1E8E3E'},
+    {lbl:'V1',v:162,col:'#1A73E8'},
+    {lbl:'V3',v:105,col:'#7B2FBE'},
+    {lbl:'V4',v:73,col:'#D56E0C'}
+  ],167);
   pbars(document.getElementById('ch-exp'),[{lbl:'V2',v:102268/294437*100,col:'#1E8E3E',sub:'102,268'},{lbl:'V1',v:97455/294437*100,col:'#1A73E8',sub:'97,455'},{lbl:'V4',v:61772/294437*100,col:'#D56E0C',sub:'61,772'},{lbl:'V3',v:32942/294437*100,col:'#7B2FBE',sub:'32,942'}]);
   pbars(document.getElementById('ch-vis'),[{lbl:'V2',v:6329/17237*100,col:'#1E8E3E',sub:'6,329'},{lbl:'V1',v:6339/17237*100,col:'#1A73E8',sub:'6,339'},{lbl:'V4',v:2597/17237*100,col:'#D56E0C',sub:'2,597'},{lbl:'V3',v:1972/17237*100,col:'#7B2FBE',sub:'1,972'}]);
 }
 
 function renderCitasTable(){
   let tbody = document.querySelector("#citas-table tbody");
-  tbody.innerHTML = citasDetalle.map(c=>`<tr>${c.map(td=>`<td>${td}</td>`).join('')}</tr>`).join('');
+  tbody.innerHTML = citasDetalle.map(c=>`<tr>${c.map(td=>`<td>${td}</td>`).join('')}<tr>`).join('');
 }
 
 // --- Tabla de composición con ordenamiento ---
@@ -483,7 +488,7 @@ function renderGlobalTable() {
     <td class="nr mn">${a.cat||0}</td>
     <td class="nr mn">0</td>
     <td class="nr mn">0</td>
-  </tr>`).join('');
+   </tr>`).join('');
   let filaTotal = `<tr class="sub"><td class="tn" style="font-weight:700;">TOTAL GENERAL</td><td colspan="2" style="font-weight:700;">——</td><td class="nr mn" style="font-weight:700;">${totalLeads}</td><td class="nr mn" style="font-weight:700;">${totalCitasAg}</td><td class="nr mn" style="font-weight:700;">${totalCitasAt}</td><td class="nr mn" style="font-weight:700;">0</td><td class="nr mn" style="font-weight:700;">0</td></tr>`;
   tbody.innerHTML = filas + filaTotal;
   // Actualizar íconos de orden
@@ -524,7 +529,7 @@ function renderBlockView(blockId, portal, titleColor, pasantes, kpis){
   else if(blockId==='b2') asesoresBloque = DATA.filter(a=>a.g==='B2');
   else if(blockId==='b3') asesoresBloque = DATA.filter(a=>a.g==='B3');
   else if(blockId==='v3') asesoresBloque = DATA.filter(a=>a.g==='V3');
-  let tablaAsesores = `<div class="tc"><div class="tsc"></table><thead><tr><th>Asesor</th><th class="nr">Leads recibidos</th><th class="nr">Citas ag.</th><th class="nr">Citas at.</th><th class="nr">Firmados</th></tr></thead><tbody>`;
+  let tablaAsesores = `<div class="tc"><div class="tsc"><table><thead><tr><th>Asesor</th><th class="nr">Leads recibidos</th><th class="nr">Citas ag.</th><th class="nr">Citas at.</th><th class="nr">Firmados</th></tr></thead><tbody>`;
   asesoresBloque.forEach(a=>{
     tablaAsesores += `<tr><td class="tn">${a.n}</td><td class="nr mn">${a.ti}</td><td class="nr mn">${a.cag}</td><td class="nr mn">${a.cat}</td><td class="nr mn">0</td></tr>`;
   });
@@ -537,9 +542,9 @@ function renderBlockView(blockId, portal, titleColor, pasantes, kpis){
 
 function loadBlockViews(){
   renderBlockView('b1','V2','#1E8E3E',[{code:'B1',int:167,crm:167}],{int:167,exp:102268,vis:6329,crm:167,transf:167,transfPct:'100%',pend:0,cag:DATA.filter(a=>a.g==='B1').reduce((s,a)=>s+a.cag,0), cat:DATA.filter(a=>a.g==='B1').reduce((s,a)=>s+a.cat,0)});
-  renderBlockView('b2','V4','#D56E0C',[{code:'B2',int:74,crm:74}],{int:74,exp:61772,vis:2597,crm:74,transf:74,transfPct:'100%',pend:0,cag:DATA.filter(a=>a.g==='B2').reduce((s,a)=>s+a.cag,0), cat:DATA.filter(a=>a.g==='B2').reduce((s,a)=>s+a.cat,0)});
-  renderBlockView('b3','V1','#1A73E8',[{code:'B3',int:70,crm:70}],{int:70,exp:97455,vis:6339,crm:70,transf:70,transfPct:'100%',pend:0,cag:DATA.filter(a=>a.g==='B3').reduce((s,a)=>s+a.cag,0), cat:DATA.filter(a=>a.g==='B3').reduce((s,a)=>s+a.cat,0)});
-  renderBlockView('v3','V3','#7B2FBE',[{code:'V3',int:67,crm:67}],{int:67,exp:32942,vis:1972,crm:67,transf:67,transfPct:'100%',pend:0,cag:DATA.filter(a=>a.g==='V3').reduce((s,a)=>s+a.cag,0), cat:DATA.filter(a=>a.g==='V3').reduce((s,a)=>s+a.cat,0)});
+  renderBlockView('b2','V4','#D56E0C',[{code:'B2',int:73,crm:73}],{int:73,exp:61772,vis:2597,crm:73,transf:73,transfPct:'100%',pend:0,cag:DATA.filter(a=>a.g==='B2').reduce((s,a)=>s+a.cag,0), cat:DATA.filter(a=>a.g==='B2').reduce((s,a)=>s+a.cat,0)});
+  renderBlockView('b3','V1','#1A73E8',[{code:'B3',int:162,crm:162}],{int:162,exp:97455,vis:6339,crm:162,transf:162,transfPct:'100%',pend:0,cag:DATA.filter(a=>a.g==='B3').reduce((s,a)=>s+a.cag,0), cat:DATA.filter(a=>a.g==='B3').reduce((s,a)=>s+a.cat,0)});
+  renderBlockView('v3','V3','#7B2FBE',[{code:'V3',int:105,crm:105}],{int:105,exp:32942,vis:1972,crm:105,transf:105,transfPct:'100%',pend:0,cag:DATA.filter(a=>a.g==='V3').reduce((s,a)=>s+a.cag,0), cat:DATA.filter(a=>a.g==='V3').reduce((s,a)=>s+a.cat,0)});
 }
 
 // Navegación y comparadores
