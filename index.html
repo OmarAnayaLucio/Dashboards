@@ -31,13 +31,13 @@
     --red-bg:     #FDECEA;
 
     /* TYPOGRAPHY SCALE — 3 levels only */
-    --fs-base:    12px;   /* labels, secondary info */
-    --fs-sm:      11px;   /* tertiary / table cells */
-    --fs-xs:      10px;   /* badge text, ultra-small caps */
-    --fs-h1:      36px;   /* hero numbers */
-    --fs-h2:      28px;   /* card primary values */
-    --fs-h3:      22px;   /* section values */
-    --fs-h4:      17px;   /* sub-values */
+    --fs-base:    12px;
+    --fs-sm:      11px;
+    --fs-xs:      10px;
+    --fs-h1:      36px;
+    --fs-h2:      28px;
+    --fs-h3:      22px;
+    --fs-h4:      17px;
 
     --radius-sm:  8px;
     --radius-md:  12px;
@@ -294,7 +294,7 @@ body {
     inset: 0;
     background: linear-gradient(to bottom, transparent 35%, rgba(10,10,10,0.90) 88%);
 }
-.card-img .overlay { display: none; } /* replaced by ::after */
+.card-img .overlay { display: none; }
 .card-img .proj-number {
     position: absolute;
     bottom: 68px; left: 12px;
@@ -490,22 +490,22 @@ body {
 }
 .image-overlay .proj-title {
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 26px;
+    font-size: 34px;
     font-weight: 700;
     color: white;
     margin-bottom: 4px;
 }
 .image-overlay .proj-address {
-    font-size: var(--fs-sm);
+    font-size: 13px;
     color: rgba(255,255,255,0.8);
-    margin-bottom: 12px;
+    margin-bottom: 16px;
     border-left: 3px solid var(--teal);
     padding-left: 10px;
 }
 .tech-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 5px 14px; }
 .tech-item { display: flex; justify-content: space-between; align-items: baseline; }
-.tech-label { color: rgba(255,255,255,0.65); font-weight: 500; font-size: var(--fs-xs); }
-.tech-value { color: var(--teal); font-weight: 600; text-align: right; font-size: var(--fs-xs); }
+.tech-label { color: rgba(255,255,255,0.65); font-weight: 900; font-size: 13px; }
+.tech-value { color: var(--teal); font-weight: 900; text-align: right; font-size: 13px; }
 
 /* Docs / description card */
 .docs-description-card {
@@ -793,11 +793,20 @@ body {
     color: #1A1A1A;
     line-height: 1.2;
 }
-/* Highlighted values — bigger but not outrageous */
 .fin-item-value-gray.highlight-teal { color: var(--teal); font-size: var(--fs-h2); }
 .fin-item-value-gray.highlight-cyan { color: #00C8C8; font-size: var(--fs-h2); }
 .fin-item-value-gray.highlight-red { color: #c80000; font-size: var(--fs-h2); }
 .fin-item-sub-gray { font-size: var(--fs-xs); color: #aaa; margin-top: 4px; }
+
+/* NUEVO: resplandor teal para la tarjeta de Ganancia Neta */
+.fin-item-gray.glow-teal {
+    box-shadow: 0 0 18px rgba(82,190,192,0.45);
+    border-color: var(--teal) !important;
+    transition: box-shadow var(--transition), border-color var(--transition);
+}
+.fin-item-gray.glow-teal:hover {
+    box-shadow: 0 0 24px rgba(82,190,192,0.55);
+}
 
 /* ============================================================
    FINANCIERO — INVERSIÓN (DARK CARD)
@@ -1724,7 +1733,6 @@ function renderBreakdownCard(p) {
       ${mainSegs.map(s=>`<div class="bd-legend-item"><div class="bd-legend-left"><span class="bd-legend-dot" style="background:${s.color};"></span>${s.label}</div><span class="bd-legend-pct">−${((s.value/(p.precioVenta||1))*100).toFixed(1)}% (−${mxn(s.value)})</span></div>`).join('')}
       ${p.ganancia>0?`<div class="bd-legend-item" style="border-top:1px solid var(--gray2);padding-top:8px;margin-top:4px;"><div class="bd-legend-left"><span class="bd-legend-dot" style="background:#2E9E6B;"></span><strong style="color:#2E9E6B;">Ganancia neta</strong></div><span class="bd-legend-pct" style="color:#2E9E6B;font-size:var(--fs-h4);">${pct(margenFinal)} (+${mxn(p.ganancia)})</span></div>`:''}`;
 
-    /* NOTE: We render the breakdown card HTML first, then init the donut chart via a deferred script tag */
     return `<div class="breakdown-card">
       <div class="bd-card-header">
         <div class="bd-card-header-title">💰 Desglose de inversión &amp; ganancia</div>
@@ -1755,7 +1763,7 @@ function renderBreakdownCard(p) {
     <\/script>`;
 }
 
-/* ── PROJECT DETAIL ─────────────────────────────────────── */
+/* ── PROJECT DETAIL (con la tarjeta de Ganancia Neta resaltada) ── */
 function renderProjectDetail(p) {
     const con = document.getElementById('tab-detail-container');
     const cid = p.id.replace(/-/g,'');
@@ -1821,17 +1829,54 @@ function renderProjectDetail(p) {
     </div>`;
 
     const margenFinal = p.margenGV || p.margen || 0;
+
+    // ── UPSIDE CARD CON GANANCIA NETA RESALTADA ──
     const upsideHtml = `<div class="fin-card-group-gray">
       <div class="fin-group-title-gray">📈 PRECIO DE VENTA &amp; RENTABILIDAD</div>
+
+      <!-- Fila 1 (principal) -->
       <div class="fin-grid-3cols-gray">
         <div class="fin-item-gray"><div class="fin-item-label-gray">Precio de Venta Proyectado</div><div class="fin-item-value-gray">${mxn(p.precioVenta,1)}</div></div>
         <div class="fin-item-gray"><div class="fin-item-label-gray">Gastos Totales</div><div class="fin-item-value-gray highlight-red">${mxn(p.gastosTotales,1)}</div></div>
-        <div class="fin-item-gray"><div class="fin-item-label-gray">Ganancia Neta</div><div class="fin-item-value-gray highlight-cyan">+${mxn(p.ganancia,1)}</div></div>
+        <!-- Tarjeta de Ganancia Neta con glow teal -->
+        <div class="fin-item-gray glow-teal"><div class="fin-item-label-gray">Ganancia Neta</div><div class="fin-item-value-gray highlight-cyan">+${mxn(p.ganancia,1)}</div></div>
       </div>
+
+      <!-- Fila 2 (secundaria – tamaño reducido) -->
       <div class="fin-grid-3cols-gray">
-        <div class="fin-item-gray"><div class="fin-item-label-gray">Margen Utilidad</div><div class="fin-item-value-gray highlight-teal">${pct(margenFinal)}</div><div class="fin-item-sub-gray">Ganancia / Ventas</div></div>
-        <div class="fin-item-gray"><div class="fin-item-label-gray">Precio / m² Promedio</div><div class="fin-item-value-gray">${p.precioM2Post>0?'$'+Math.round(p.precioM2Post).toLocaleString('es-MX'):'—'}</div><div class="fin-item-sub-gray">Post Renovación</div></div>
-        <div class="fin-item-gray"><div class="fin-item-label-gray">Ganancia / Unidad</div><div class="fin-item-value-gray">${p.gananciaXUnidad>0?mxn(p.gananciaXUnidad,0):'—'}</div></div>
+        <div class="fin-item-gray">
+          <div class="fin-item-label-gray">Margen Utilidad</div>
+          <div class="fin-item-value-gray highlight-teal" style="font-size:var(--fs-h4);">${pct(margenFinal)}</div>
+          <div class="fin-item-sub-gray">Ganancia / Ventas</div>
+        </div>
+        <div class="fin-item-gray">
+          <div class="fin-item-label-gray">Precio / m² Promedio</div>
+          <div class="fin-item-value-gray" style="font-size:var(--fs-h4);">${p.precioM2Post>0?'$'+Math.round(p.precioM2Post).toLocaleString('es-MX'):'—'}</div>
+          <div class="fin-item-sub-gray">Post Renovación</div>
+        </div>
+        <div class="fin-item-gray">
+          <div class="fin-item-label-gray">Ganancia / Unidad</div>
+          <div class="fin-item-value-gray" style="font-size:var(--fs-h4);">${p.gananciaXUnidad>0?mxn(p.gananciaXUnidad,0):'—'}</div>
+        </div>
+      </div>
+
+      <!-- Separador sutil -->
+      <div style="border-top:1px solid var(--gray2); margin:8px 0 14px;"></div>
+
+      <!-- Fila 3 (nuevos indicadores – tamaño reducido) -->
+      <div class="fin-grid-3cols-gray">
+        <div class="fin-item-gray">
+          <div class="fin-item-label-gray">Inversión Inicial</div>
+          <div class="fin-item-value-gray" style="font-size:var(--fs-h4);">${p.inversionOpc2>0 ? mxn(p.inversionOpc2,1) : '—'}</div>
+        </div>
+        <div class="fin-item-gray">
+          <div class="fin-item-label-gray">ROI Ajustado según plazo</div>
+          <div class="fin-item-value-gray highlight-teal" style="font-size:var(--fs-h4);">${p.roiOpc2>0 ? pct(p.roiOpc2) : '—'}</div>
+        </div>
+        <div class="fin-item-gray">
+          <div class="fin-item-label-gray">Plazo (meses)</div>
+          <div class="fin-item-value-gray" style="font-size:var(--fs-h4);">${p.plazoMeses>0 ? p.plazoMeses+' meses' : '—'}</div>
+        </div>
       </div>
     </div>`;
 
