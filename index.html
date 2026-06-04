@@ -5,51 +5,73 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard Ejecutivo · Portafolio RENOVA</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js">
-</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
 :root {
-    --teal: #52BEC0;
-    --cyan: #00E5E5;
-    --black: #0A0A0A;
-    --dark: #3B3B3B;
-    --gray1: #EBEBEE;
-    --gray2: #DFDFE1;
-    --white: #ffffff;
-    --bg: #F4F5F7;
-    --green: #2E9E6B;
-    --mint: #3EB489;
-    --mint-green: #2ECC71;
-    --mint-bg: #E0F5EC;
-    --amber: #C07D20;
-    --amber-bg: #FEF3E2;
-    --red: #C0392B;
-    --red-bg: #FDECEA;
+    --teal:       #52BEC0;
+    --teal-light: rgba(82,190,192,0.12);
+    --teal-mid:   rgba(82,190,192,0.3);
+    --cyan:       #00E5E5;
+    --black:      #0A0A0A;
+    --dark:       #3B3B3B;
+    --gray1:      #EBEBEE;
+    --gray2:      #DFDFE1;
+    --gray3:      #C8C8CB;
+    --white:      #ffffff;
+    --bg:         #F0F2F5;
+    --green:      #2E9E6B;
+    --mint:       #3EB489;
+    --mint-bg:    #E0F5EC;
+    --amber:      #C07D20;
+    --amber-bg:   #FEF3E2;
+    --red:        #C0392B;
+    --red-bg:     #FDECEA;
+
+    /* TYPOGRAPHY SCALE — 3 levels only */
+    --fs-base:    12px;   /* labels, secondary info */
+    --fs-sm:      11px;   /* tertiary / table cells */
+    --fs-xs:      10px;   /* badge text, ultra-small caps */
+    --fs-h1:      36px;   /* hero numbers */
+    --fs-h2:      28px;   /* card primary values */
+    --fs-h3:      22px;   /* section values */
+    --fs-h4:      17px;   /* sub-values */
+
+    --radius-sm:  8px;
+    --radius-md:  12px;
+    --radius-lg:  18px;
+    --radius-xl:  24px;
+    --transition: 0.2s ease;
 }
 
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
     font-family: 'Barlow', sans-serif;
+    font-size: var(--fs-base);
     background: var(--bg);
     min-height: 100vh;
     padding: 24px;
+    -webkit-font-smoothing: antialiased;
 }
 
+/* ============================================================
+   SHELL
+   ============================================================ */
 .dash {
     background: var(--white);
-    border-radius: 16px;
+    border-radius: var(--radius-xl);
     max-width: 1600px;
     margin: 0 auto;
-    box-shadow: 0 4px 40px rgba(0, 0, 0, 0.10);
+    box-shadow: 0 8px 48px rgba(0,0,0,0.12);
+    overflow: visible;
 }
 
+/* ============================================================
+   TOPBAR
+   ============================================================ */
 .topbar {
     background: var(--black);
     padding: 14px 32px;
@@ -58,142 +80,566 @@ body {
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 12px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(82,190,192,0.15);
 }
 .topbar-left { display: flex; align-items: center; gap: 16px; }
-.topbar-logo-img { height: 56px; width: auto; }
-.topbar-logo { font-family: 'Barlow Condensed', sans-serif; font-size: 32px; font-weight: 700; color: #fff; letter-spacing: 1.5px; text-transform: uppercase; }
+.topbar-logo-img { height: 52px; width: auto; }
+.topbar-logo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 30px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
 .topbar-logo span { color: var(--teal); }
-.topbar-sub { font-size: 12px; color: rgba(255,255,255,0.38); letter-spacing: 2.5px; text-transform: uppercase; margin-top: 3px; }
+.topbar-sub {
+    font-size: var(--fs-xs);
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    margin-top: 2px;
+}
 .topbar-right { display: flex; align-items: center; gap: 20px; }
-.topbar-date { font-size: 12px; color: rgba(255,255,255,0.38); text-align: right; }
-.topbar-date strong { display: block; color: #fff; font-size: 14px; font-weight: 500; }
-.topbar-logo-right { height: 76px; width: auto; transition: transform 0.2s ease; }
-.topbar-logo-right:hover { transform: scale(1.02); }
+.topbar-date {
+    font-size: var(--fs-xs);
+    color: rgba(255,255,255,0.35);
+    text-align: right;
+    line-height: 1.6;
+}
+.topbar-date strong {
+    display: block;
+    color: #fff;
+    font-size: var(--fs-base);
+    font-weight: 500;
+}
+.topbar-logo-right {
+    height: 72px;
+    width: auto;
+    transition: transform var(--transition);
+}
+.topbar-logo-right:hover { transform: scale(1.03); }
 
+/* ============================================================
+   TAB NAV
+   ============================================================ */
 .tab-nav {
     background: var(--white);
-    padding: 20px 32px 12px;
+    padding: 16px 32px 0;
     display: flex;
-    gap: 8px;
+    gap: 4px;
     overflow-x: auto;
     scrollbar-width: thin;
-    margin-bottom: 0;
+    scrollbar-color: var(--teal) var(--gray2);
     position: sticky;
     top: 0;
     z-index: 100;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    border-bottom: 1px solid var(--gray2);
+    border-bottom: 1.5px solid var(--gray2);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
 }
-.tab-nav::-webkit-scrollbar { height: 4px; }
-.tab-nav::-webkit-scrollbar-track { background: var(--gray2); border-radius: 4px; }
+.tab-nav::-webkit-scrollbar { height: 3px; }
+.tab-nav::-webkit-scrollbar-track { background: var(--gray2); }
 .tab-nav::-webkit-scrollbar-thumb { background: var(--teal); border-radius: 4px; }
-.tab-btn { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--dark); background: transparent; border: none; padding: 10px 20px; cursor: pointer; border-radius: 2px; transition: all 0.2s ease; white-space: nowrap; position: relative; }
-.tab-btn:hover { background: var(--gray1); color: var(--teal); transform: translateY(-1px); }
-.tab-btn.active { color: var(--teal); background: transparent; border-left: 2px solid var(--teal); border-right: 2px solid var(--teal); border-top: none; border-bottom: none; border-radius: 2px; }
+
+.tab-btn {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: var(--fs-base);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #888;
+    background: transparent;
+    border: none;
+    border-bottom: 2.5px solid transparent;
+    padding: 10px 18px 12px;
+    cursor: pointer;
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    transition: color var(--transition), border-color var(--transition), background var(--transition);
+    white-space: nowrap;
+    margin-bottom: -1.5px;
+}
+.tab-btn:hover { color: var(--teal); background: var(--teal-light); }
+.tab-btn.active { color: var(--teal); border-bottom-color: var(--teal); background: transparent; }
+
+/* ============================================================
+   PANELS
+   ============================================================ */
 .tab-panel { display: none; }
 .tab-panel.active { display: block; }
 
-.section-header { padding: 28px 32px 14px; display: flex; align-items: center; gap: 12px; }
-.section-title { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--dark); white-space: nowrap; }
+/* ============================================================
+   SECTION HEADER
+   ============================================================ */
+.section-header {
+    padding: 28px 32px 14px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+.section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #999;
+    white-space: nowrap;
+}
 .section-line { flex: 1; height: 1px; background: var(--gray2); }
 
-.kpi-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; padding: 0 32px 28px; }
-.kpi-card { background: var(--gray1); border-radius: 12px; padding: 18px 22px; position: relative; overflow: hidden; }
+/* ============================================================
+   KPI ROW
+   ============================================================ */
+.kpi-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    padding: 0 32px 28px;
+}
+.kpi-card {
+    background: var(--gray1);
+    border-radius: var(--radius-md);
+    padding: 18px 20px 16px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid transparent;
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+.kpi-card:hover { border-color: var(--gray3); box-shadow: 0 4px 16px rgba(0,0,0,0.05); }
 .kpi-card.accent { background: var(--black); }
-.kpi-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--teal); }
+.kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--teal);
+    border-radius: 0 0 2px 2px;
+}
 .kpi-card.accent::before { background: var(--cyan); }
-.kpi-label { font-size: 10px; color: #888; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
-.kpi-card.accent .kpi-label { color: rgba(255,255,255,0.4); }
-.kpi-value { font-family: 'Barlow Condensed', sans-serif; font-size: 30px; font-weight: 700; color: var(--black); line-height: 1; }
-.kpi-card.accent .kpi-value { color: #fff; }
-.kpi-unit { font-size: 13px; font-weight: 400; color: #999; margin-left: 2px; }
-.kpi-note { font-size: 10px; color: #aaa; margin-top: 5px; }
+/* Color-coded top bars per card position */
+.kpi-card:nth-child(2)::before { background: var(--mint); }
+.kpi-card:nth-child(3)::before { background: var(--green); }
+.kpi-card:nth-child(4)::before { background: var(--amber); }
 
-.projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; padding: 0 32px 32px; }
-.project-card { background: var(--white); border-radius: 16px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; border: 1px solid var(--gray2); display: flex; flex-direction: column; }
-.project-card:hover { transform: translateY(-3px); box-shadow: 0 12px 24px rgba(0,0,0,0.1); border-color: var(--teal); }
-.card-img { position: relative; height: 160px; background-color: #1a1a1a; background-size: cover; background-position: center; }
-.card-img .overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, rgba(10,10,10,0.85) 85%); }
-.card-img .proj-number { position: absolute; bottom: 68px; left: 12px; font-size: 8px; color: var(--teal); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600; z-index: 2; }
-.card-img .proj-name { position: absolute; bottom: 42px; left: 12px; right: 12px; font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; color: #fff; line-height: 1.1; z-index: 2; }
-.card-img .proj-addr { position: absolute; bottom: 12px; left: 12px; right: 12px; font-size: 9px; color: rgba(255,255,255,0.75); z-index: 2; }
-.stats-grid { display: grid; grid-template-columns: auto 1fr; gap: 8px 12px; padding: 12px 14px; background: #fafafc; border-bottom: 1px solid var(--gray2); font-size: 11px; }
-.stat-label { color: #888; font-weight: 500; }
-.stat-value { font-weight: 600; color: var(--black); text-align: right; word-break: break-word; }
+.kpi-label {
+    font-size: var(--fs-xs);
+    color: #999;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+.kpi-card.accent .kpi-label { color: rgba(255,255,255,0.4); }
+.kpi-value {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: var(--fs-h1);
+    font-weight: 700;
+    color: var(--black);
+    line-height: 1;
+    letter-spacing: -0.5px;
+}
+.kpi-card.accent .kpi-value { color: #fff; }
+.kpi-unit {
+    font-family: 'Barlow', sans-serif;
+    font-size: var(--fs-base);
+    font-weight: 400;
+    color: #aaa;
+    margin-left: 3px;
+}
+.kpi-note {
+    font-size: var(--fs-xs);
+    color: #bbb;
+    margin-top: 6px;
+}
+
+/* ============================================================
+   PROJECT CARDS GRID
+   ============================================================ */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 0 32px 32px;
+}
+.project-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+    cursor: pointer;
+    border: 1px solid var(--gray2);
+    display: flex;
+    flex-direction: column;
+    will-change: transform;
+}
+.project-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 32px rgba(0,0,0,0.1);
+    border-color: var(--teal);
+}
+
+/* Card image */
+.card-img {
+    position: relative;
+    height: 165px;
+    background-color: #1c1c1c;
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+}
+.card-img::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 35%, rgba(10,10,10,0.90) 88%);
+}
+.card-img .overlay { display: none; } /* replaced by ::after */
+.card-img .proj-number {
+    position: absolute;
+    bottom: 68px; left: 12px;
+    font-size: var(--fs-xs);
+    color: var(--teal);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 600;
+    z-index: 2;
+}
+.card-img .proj-name {
+    position: absolute;
+    bottom: 40px; left: 12px; right: 12px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 19px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.1;
+    z-index: 2;
+}
+.card-img .proj-addr {
+    position: absolute;
+    bottom: 12px; left: 12px; right: 12px;
+    font-size: var(--fs-xs);
+    color: rgba(255,255,255,0.7);
+    z-index: 2;
+}
+
+/* Stats grid inside card */
+.stats-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 6px 14px;
+    padding: 12px 14px;
+    background: #fafafc;
+    border-bottom: 1px solid var(--gray2);
+}
+.stat-label { color: #999; font-weight: 500; font-size: var(--fs-sm); }
+.stat-value { font-weight: 600; color: var(--dark); text-align: right; font-size: var(--fs-sm); }
 .stat-value.mint { color: var(--mint); font-weight: 700; }
-.financial-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 14px; border-bottom: 1px solid var(--gray1); font-size: 11px; }
-.fin-label { color: #777; }
-.fin-amount { font-weight: 700; color: var(--black); }
+
+.financial-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px 14px;
+    border-bottom: 1px solid var(--gray1);
+}
+.fin-label { color: #888; font-size: var(--fs-sm); }
+.fin-amount { font-weight: 700; color: var(--black); font-size: var(--fs-sm); }
 .fin-amount.green { color: var(--green); }
-.roi-section { padding: 10px 14px 12px; background: #fff; border-bottom: 1px solid var(--gray1); }
-.roi-title { font-size: 8px; font-weight: 700; letter-spacing: 1.5px; color: #aaa; text-transform: uppercase; margin-bottom: 6px; }
+
+.roi-section {
+    padding: 10px 14px 12px;
+    background: #fff;
+    border-bottom: 1px solid var(--gray1);
+}
+.roi-title {
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #bbb;
+    text-transform: uppercase;
+    margin-bottom: 7px;
+}
 .roi-numbers { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; }
-.roi-big { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 700; color: var(--green); line-height: 1; }
-.roi-big small { font-size: 10px; font-weight: 400; color: #888; }
-.roi-percent { font-size: 12px; font-weight: 700; color: var(--teal); }
-.detail-button { margin: 10px 14px 14px; background: transparent; border: 1.5px solid var(--teal); border-radius: 40px; padding: 7px; font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--teal); cursor: pointer; transition: all 0.2s; text-align: center; }
+.roi-big {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: var(--fs-h3);
+    font-weight: 700;
+    color: var(--green);
+    line-height: 1;
+}
+.roi-percent { font-size: var(--fs-sm); font-weight: 700; color: var(--teal); }
+
+.detail-button {
+    margin: 10px 14px 14px;
+    background: transparent;
+    border: 1.5px solid var(--teal);
+    border-radius: 40px;
+    padding: 8px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--teal);
+    cursor: pointer;
+    transition: background var(--transition), color var(--transition);
+    text-align: center;
+    display: block;
+}
 .detail-button:hover { background: var(--teal); color: white; }
 
-.charts-row { display: grid; grid-template-columns: 1.6fr 1fr; gap: 16px; padding: 0 32px 32px; }
-.chart-wrap { background: var(--white); border-radius: 14px; padding: 22px 24px; border: 1px solid var(--gray2); }
-.chart-header { display: flex; align-items: center; gap: 16px; margin-bottom: 18px; flex-wrap: wrap; }
-.chart-title { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; color: var(--dark); text-transform: uppercase; letter-spacing: 0.8px; white-space: nowrap; }
+/* ============================================================
+   CHARTS ROW
+   ============================================================ */
+.charts-row {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 16px;
+    padding: 0 32px 32px;
+}
+.chart-wrap {
+    background: var(--gray1);
+    border-radius: var(--radius-md);
+    padding: 22px 24px;
+    border: 1px solid var(--gray2);
+}
+.chart-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+}
+.chart-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: var(--fs-sm);
+    font-weight: 700;
+    color: var(--dark);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
 .chart-legend { display: flex; align-items: center; gap: 14px; margin-left: auto; }
-.chart-legend-item { display: flex; align-items: center; gap: 5px; font-size: 10px; color: #666; font-family: 'Barlow', sans-serif; white-space: nowrap; }
+.chart-legend-item { display: flex; align-items: center; gap: 5px; font-size: var(--fs-xs); color: #777; }
 .chart-legend-dot { display: inline-block; width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
 .chart-inner { position: relative; width: 100%; height: 230px; }
 
+/* ============================================================
+   DETAIL WRAP
+   ============================================================ */
 .detail-wrap { padding: 0 32px 40px; }
-.hero-split { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px; }
-.left-col { display: flex; flex-direction: column; gap: 20px; }
-.image-card { position: relative; background-color: #0a0a0a; border-radius: 24px; overflow: hidden; box-shadow: 0 12px 24px rgba(0,0,0,0.15); aspect-ratio: 4/3; }
+
+.hero-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 28px;
+}
+.left-col { display: flex; flex-direction: column; gap: 16px; }
+
+/* Image card / carousel */
+.image-card {
+    position: relative;
+    background-color: #0a0a0a;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+    aspect-ratio: 4/3;
+    min-height: 260px;
+}
 .carousel-container { position: relative; width: 100%; height: 100%; }
-.carousel-slide { width: 100%; height: 100%; object-fit: cover; }
-.carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.6); color: white; border: none; font-size: 24px; cursor: pointer; padding: 8px 14px; border-radius: 50%; transition: background 0.2s; z-index: 20; }
+.carousel-slide { width: 100%; height: 100%; object-fit: cover; display: block; }
+.carousel-btn {
+    position: absolute;
+    top: 50%; transform: translateY(-50%);
+    background: rgba(0,0,0,0.55);
+    color: white;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 8px 13px;
+    border-radius: 50%;
+    transition: background var(--transition);
+    z-index: 20;
+}
 .carousel-btn:hover { background: rgba(0,0,0,0.9); }
 .carousel-prev { left: 12px; }
 .carousel-next { right: 12px; }
-.carousel-dots { position: absolute; bottom: 16px; left: 0; right: 0; text-align: center; z-index: 20; }
-.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.5); margin: 0 4px; cursor: pointer; }
+.carousel-dots { position: absolute; bottom: 14px; left: 0; right: 0; text-align: center; z-index: 20; }
+.dot {
+    display: inline-block;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.45);
+    margin: 0 3px;
+    cursor: pointer;
+    transition: background var(--transition);
+}
 .dot.active { background: white; }
-.image-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.5) 30%, transparent 60%); z-index: 15; display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; pointer-events: none; }
-.image-overlay .proj-title { font-family: 'Barlow Condensed', sans-serif; font-size: 28px; font-weight: 700; color: white; margin-bottom: 4px; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
-.image-overlay .proj-address { font-size: 11px; color: rgba(255,255,255,0.8); margin-bottom: 12px; border-left: 3px solid var(--teal); padding-left: 10px; }
-.tech-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 6px 12px; font-size: 10px; margin-bottom: 0; }
+
+.image-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.48) 32%, transparent 62%);
+    z-index: 15;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 20px;
+    pointer-events: none;
+}
+.image-overlay .proj-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 4px;
+}
+.image-overlay .proj-address {
+    font-size: var(--fs-sm);
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 12px;
+    border-left: 3px solid var(--teal);
+    padding-left: 10px;
+}
+.tech-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 5px 14px; }
 .tech-item { display: flex; justify-content: space-between; align-items: baseline; }
-.tech-label { color: rgba(255,255,255,0.7); font-weight: 500; letter-spacing: 0.3px; }
-.tech-value { color: var(--teal); font-weight: 600; text-align: right; }
-.docs-description-card { background: rgba(10,10,10,0.85); backdrop-filter: blur(4px); border-radius: 20px; padding: 18px 22px; border: 1px solid rgba(255,255,255,0.1); margin-top: 8px; }
-.docs-description-card .section-title-card { display: flex; align-items: center; gap: 8px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--teal); margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; }
-.project-description-text { font-size: 14px; line-height: 1.6; color: #f5f5f5; white-space: pre-wrap; word-break: break-word; margin-bottom: 20px; background: rgba(0,0,0,0.4); padding: 14px; border-radius: 14px; border-left: 3px solid var(--teal); font-weight: 400; }
-.docs-links-flex { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
-.doc-link-dark { background: rgba(255,255,255,0.08); border-radius: 30px; padding: 6px 14px; font-size: 10px; font-weight: 500; color: var(--teal); text-decoration: none; border: 1px solid rgba(82,190,192,0.3); transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+.tech-label { color: rgba(255,255,255,0.65); font-weight: 500; font-size: var(--fs-xs); }
+.tech-value { color: var(--teal); font-weight: 600; text-align: right; font-size: var(--fs-xs); }
+
+/* Docs / description card */
+.docs-description-card {
+    background: rgba(10,10,10,0.88);
+    backdrop-filter: blur(6px);
+    border-radius: var(--radius-xl);
+    padding: 18px 22px;
+    border: 1px solid rgba(255,255,255,0.08);
+}
+.section-title-card {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--teal);
+    margin-bottom: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding-bottom: 8px;
+}
+.project-description-text {
+    font-size: var(--fs-base);
+    line-height: 1.65;
+    color: #f0f0f0;
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin-bottom: 18px;
+    background: rgba(0,0,0,0.35);
+    padding: 14px;
+    border-radius: var(--radius-md);
+    border-left: 3px solid var(--teal);
+    font-weight: 400;
+}
+.docs-links-flex { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+.doc-link-dark {
+    background: rgba(255,255,255,0.07);
+    border-radius: 30px;
+    padding: 6px 14px;
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    color: var(--teal);
+    text-decoration: none;
+    border: 1px solid rgba(82,190,192,0.25);
+    transition: background var(--transition), color var(--transition), border-color var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
 .doc-link-dark:hover { background: var(--teal); color: white; border-color: var(--teal); }
 
-.map-card { background: var(--black); border-radius: 24px; overflow: hidden; box-shadow: 0 12px 24px rgba(0,0,0,0.25); display: flex; flex-direction: column; border: none; }
-.map-header { background: rgba(255,255,255,0.05); padding: 10px 16px; color: var(--teal); font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+/* Map card */
+.map-card {
+    background: var(--black);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.22);
+    display: flex;
+    flex-direction: column;
+}
+.map-header {
+    background: rgba(82,190,192,0.08);
+    padding: 10px 16px;
+    color: var(--teal);
+    font-size: var(--fs-sm);
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+}
 .map-header::before { content: "📍"; font-size: 13px; }
 .map-frame { width: 100%; height: 240px; border: none; display: block; background: #1a1a1a; }
-.map-placeholder { width: 100%; height: 240px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; background: #1a1a1a; color: #aaa; font-size: 13px; }
-.map-link { color: var(--teal); text-decoration: none; font-size: 12px; font-weight: 600; border: 1px solid var(--teal); padding: 6px 16px; border-radius: 20px; transition: all 0.2s; }
+.map-placeholder {
+    width: 100%; height: 240px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 12px;
+    background: #1a1a1a;
+    color: #777;
+    font-size: var(--fs-base);
+}
+.map-link {
+    color: var(--teal);
+    text-decoration: none;
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    border: 1px solid var(--teal);
+    padding: 6px 16px;
+    border-radius: 20px;
+    transition: background var(--transition), color var(--transition);
+}
 .map-link:hover { background: var(--teal); color: white; }
-.surroundings-section { padding: 12px 16px; border-top: 1px solid rgba(255,255,255,0.1); }
-.surroundings-title { display: flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--teal); margin-bottom: 10px; }
+
+.surroundings-section { padding: 12px 16px; border-top: 1px solid rgba(255,255,255,0.07); }
+.surroundings-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--teal);
+    margin-bottom: 10px;
+}
 .surroundings-title::before { content: "🏙️"; font-size: 11px; }
 .surroundings-list { display: flex; flex-wrap: wrap; gap: 6px; }
-.surrounding-badge { background: rgba(255,255,255,0.12); border-radius: 40px; padding: 4px 10px; font-size: 10px; font-weight: 500; color: #ddd; transition: all 0.2s; }
+.surrounding-badge {
+    background: rgba(255,255,255,0.1);
+    border-radius: 40px;
+    padding: 4px 10px;
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    color: #ddd;
+    transition: background var(--transition), color var(--transition);
+    cursor: default;
+}
 .surrounding-badge:hover { background: var(--teal); color: white; }
-.empty-surroundings { font-size: 11px; color: #aaa; font-style: italic; }
+.empty-surroundings { font-size: var(--fs-sm); color: #666; font-style: italic; }
 
-/* Tarjeta de unidades convertida en tabla pivote */
+/* ============================================================
+   UNITS PIVOT TABLE
+   ============================================================ */
 .units-pivot-card {
     background: var(--white);
-    border-radius: 20px;
+    border-radius: var(--radius-lg);
     overflow: hidden;
     border: 1px solid var(--gray2);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
-    margin-bottom: 24px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
 }
 .units-pivot-header {
     background: var(--black);
@@ -206,17 +652,13 @@ body {
 }
 .units-pivot-header-title {
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 13px;
+    font-size: var(--fs-sm);
     font-weight: 700;
     letter-spacing: 2.5px;
     text-transform: uppercase;
     color: var(--teal);
 }
-.units-pivot-header-right {
-    display: flex;
-    gap: 16px;
-    align-items: center;
-}
+.units-pivot-header-right { display: flex; gap: 14px; align-items: center; }
 .units-pivot-pill {
     display: flex;
     align-items: center;
@@ -225,22 +667,20 @@ body {
     border: 1px solid rgba(82,190,192,0.3);
     border-radius: 30px;
     padding: 4px 12px;
-    font-size: 11px;
+    font-size: var(--fs-sm);
     font-weight: 600;
     color: var(--teal);
 }
 .units-pivot-pill .pill-count {
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 18px;
+    font-size: var(--fs-h4);
     font-weight: 700;
     color: #fff;
     line-height: 1;
 }
-.units-pivot-cost-total {
-    text-align: right;
-}
+.units-pivot-cost-total { text-align: right; }
 .units-pivot-cost-total-label {
-    font-size: 9px;
+    font-size: var(--fs-xs);
     color: rgba(255,255,255,0.4);
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -248,64 +688,47 @@ body {
 }
 .units-pivot-cost-total-val {
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 20px;
+    font-size: var(--fs-h3);
     font-weight: 700;
-    color: var(--cyan);
+    color: var(--teal);
 }
 
-.units-pivot-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 11px;
-}
+.units-pivot-table { width: 100%; border-collapse: collapse; }
 .units-pivot-table th {
-    font-size: 9px;
+    font-size: var(--fs-xs);
     font-weight: 700;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    color: #888;
+    color: #999;
     padding: 10px 24px 8px;
     text-align: left;
     border-bottom: 1px solid var(--gray2);
     background: #fafafc;
 }
 .units-pivot-table th:last-child,
-.units-pivot-table td:last-child {
-    text-align: right;
-    padding-right: 24px;
-}
+.units-pivot-table td:last-child { text-align: right; padding-right: 24px; }
 .units-pivot-table td {
     padding: 10px 24px;
     border-bottom: 1px solid var(--gray1);
     color: var(--dark);
     vertical-align: middle;
+    font-size: var(--fs-sm);
 }
-.units-pivot-table td:first-child {
-    font-weight: 600;
-}
-.units-pivot-table tr.subtotal-row {
-    background: #f4f6f9;
-    font-weight: 700;
-}
-.units-pivot-table tr.subtotal-row td {
-    border-top: 2px solid var(--gray2);
-    border-bottom: 2px solid var(--gray2);
-    color: var(--black);
-}
-.units-pivot-table tr.total-row {
-    background: var(--black);
-    color: #fff;
-    font-weight: 700;
-}
+.units-pivot-table td:first-child { font-weight: 600; }
+.units-pivot-table tr.subtotal-row { background: #f4f6f9; font-weight: 700; }
+.units-pivot-table tr.subtotal-row td { border-top: 2px solid var(--gray2); border-bottom: 2px solid var(--gray2); color: var(--black); }
+.units-pivot-table tr.total-row { background: var(--black); }
 .units-pivot-table tr.total-row td {
     border-top: 2px solid var(--teal);
     color: #fff;
-    font-size: 12px;
+    font-size: var(--fs-base);
+    font-weight: 700;
     padding: 12px 24px;
 }
+
 .unit-type-badge {
     display: inline-block;
-    font-size: 9px;
+    font-size: var(--fs-xs);
     font-weight: 700;
     letter-spacing: 1px;
     text-transform: uppercase;
@@ -315,133 +738,417 @@ body {
     color: var(--teal);
     margin-right: 6px;
 }
-.unit-type-badge.local {
-    background: rgba(192,125,32,0.1);
-    color: var(--amber);
-}
-.cost-cell {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 14px;
-    color: var(--dark);
-}
-.cost-cell.total {
-    color: var(--cyan);
-    font-size: 16px;
-}
+.unit-type-badge.local { background: rgba(192,125,32,0.1); color: var(--amber); }
+.cost-cell { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: var(--fs-h4); color: var(--dark); }
+.cost-cell.total { color: var(--teal); font-size: var(--fs-h3); }
 
-/* Estilos para club, finanzas, breakdown, etc. (se mantienen exactamente igual) */
-.club-section { background: #FFFFFF; border-radius: 24px; padding: 28px 30px; margin-bottom: 0; border: 1px solid var(--gray2); box-shadow: 0 8px 20px rgba(0,255,255,0.15); transition: box-shadow 0.2s; display: flex; flex-direction: column; justify-content: center; }
-.club-section:hover { box-shadow: 0 12px 28px rgba(0,0,0,0.1); }
-.club-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; flex-wrap: wrap; gap: 12px; }
-.club-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(82,190,192,0.1); border: 1px solid rgba(82,190,192,0.3); border-radius: 40px; padding: 4px 14px; font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); margin-bottom: 8px; }
-.club-main-title { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 700; color: #0A0A0A; letter-spacing: 0.5px; }
-.club-desc { font-size: 10px; color: #6B6B6B; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 2px; }
-.club-total-inv { text-align: right; }
-.club-total-inv-label { font-size: 9px; color: #8A8A8A; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px; }
-.club-total-inv-val { font-family: 'Barlow Condensed', sans-serif; font-size: 26px; font-weight: 700; color: var(--teal); }
-.club-cards-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 0; }
-.club-card { background: #F8F9FC; border: 1px solid var(--gray2); border-radius: 20px; padding: 18px 20px; position: relative; transition: all 0.2s; }
-.club-card:hover { border-color: var(--teal); box-shadow: 0 4px 12px rgba(82,190,192,0.1); }
-.club-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--teal), rgba(82,190,192,0.3)); border-radius: 2px 2px 0 0; }
-.club-card-num { font-size: 9px; font-weight: 700; letter-spacing: 2px; color: var(--teal); text-transform: uppercase; margin-bottom: 4px; }
-.club-card-aporte-label { font-size: 10px; color: #8A8A8A; margin-bottom: 2px; }
-.club-card-aporte-val { font-family: 'Barlow Condensed', sans-serif; font-size: 26px; font-weight: 700; color: #0A0A0A; line-height: 1.1; margin-bottom: 14px; }
-.club-card-divider { height: 1px; background: var(--gray2); margin-bottom: 12px; }
-.club-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 13px; }
-.club-row-label { color: #6B6B6B; }
-.club-row-val { font-weight: 600; color: #0A0A0A; }
-.club-row-val.gain { color: var(--teal); font-size: 13px; }
-.club-row-val.gold { color: var(--teal); }
-.fin-card-group-gray { background: #EBEBEE; border-radius: 20px; padding: 20px 24px; margin: 12px 12px 12px 12px; border: 1px solid #DFDFE1; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-.fin-group-title-gray { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #3B3B3B; margin-bottom: 16px; border-left: 3px solid #52BEC0; padding-left: 10px; }
-.fin-grid-3cols-gray { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 16px; }
-.fin-item-gray { background: #FFFFFF; border-radius: 16px; padding: 16px; border: 1px solid #DFDFE1; transition: transform 0.2s; }
-.fin-item-gray:hover { transform: translateY(-2px); border-color: #52BEC0; }
-.fin-item-label-gray { font-size: 9px; color: #6B6B6B; letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 6px; font-weight: 600; }
-.fin-item-value-gray { font-family: 'Barlow Condensed', sans-serif; font-size: 26px; font-weight: 700; color: #1A1A1A; line-height: 1.2; }
-.fin-item-value-gray.highlight-teal { color: #52BEC0; font-size: 36px; font-weight: 800; }
-.fin-item-value-gray.highlight-cyan { color: #00FFFF; font-size: 36px; font-weight: 800; text-shadow: 0 0 2px rgba(0,255,255,0.3); }
-.fin-item-sub-gray { font-size: 9px; color: #8A8A8A; margin-top: 4px; }
-.fin-card-group-dark { background: #000000; border-radius: 24px; padding: 24px 28px; margin-bottom: 0; border: 1px solid rgba(82,190,192,0.25); box-shadow: 0 12px 30px rgba(0,0,0,0.2); display: flex; flex-direction: column; justify-content: center; }
-.fin-group-title-dark { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: #52BEC0; margin-bottom: 20px; border-left: 3px solid #52BEC0; padding-left: 12px; }
-.scenario-badge { display: inline-block; background: rgba(82,190,192,0.15); border-left: 3px solid #52BEC0; padding: 4px 12px; font-size: 15px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #ffffff; margin-bottom: 12px; border-radius: 0 8px 8px 0; }
-.fin-grid-3cols-dark { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-bottom: 20px; }
-.fin-grid-3cols-dark-alt { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
-.fin-item-dark { background: #3B3B3B; border-radius: 18px; padding: 18px 20px; border: 1px solid rgba(82,190,192,0.2); transition: transform 0.2s; }
-.fin-item-dark:hover { transform: translateY(-2px); border-color: #52BEC0; }
-.fin-item-label-dark { font-size: 9px; color: #EBEBEE; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; font-weight: 500; }
-.fin-item-value-dark { font-family: 'Barlow Condensed', sans-serif; font-size: 32px; font-weight: 700; color: #fff; line-height: 1.2; }
-.fin-value-mint  { color: #52BEC0; }
+/* ============================================================
+   FINANCIERO — UPSIDE (GRAY CARD)
+   ============================================================ */
+.fin-card-group-gray {
+    background: var(--gray1);
+    border-radius: var(--radius-lg);
+    padding: 20px 24px;
+    margin: 12px 0 0;
+    border: 1px solid var(--gray2);
+}
+.fin-group-title-gray {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: var(--fs-sm);
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--dark);
+    margin-bottom: 16px;
+    border-left: 3px solid var(--teal);
+    padding-left: 10px;
+}
+.fin-grid-3cols-gray {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 14px;
+    margin-bottom: 14px;
+}
+.fin-item-gray {
+    background: var(--white);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+    border: 1px solid var(--gray2);
+    transition: transform var(--transition), border-color var(--transition);
+    will-change: transform;
+}
+.fin-item-gray:hover { transform: translateY(-2px); border-color: var(--teal); }
+.fin-item-label-gray {
+    font-size: var(--fs-xs);
+    color: #888;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    margin-bottom: 7px;
+    font-weight: 600;
+}
+.fin-item-value-gray {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: var(--fs-h2);
+    font-weight: 700;
+    color: #1A1A1A;
+    line-height: 1.2;
+}
+/* Highlighted values — bigger but not outrageous */
+.fin-item-value-gray.highlight-teal { color: var(--teal); font-size: var(--fs-h2); }
+.fin-item-value-gray.highlight-cyan { color: #00C8C8; font-size: var(--fs-h2); }
+.fin-item-value-gray.highlight-red { color: #c80000; font-size: var(--fs-h2); }
+.fin-item-sub-gray { font-size: var(--fs-xs); color: #aaa; margin-top: 4px; }
+
+/* ============================================================
+   FINANCIERO — INVERSIÓN (DARK CARD)
+   ============================================================ */
+.fin-card-group-dark {
+    background: #000;
+    border-radius: var(--radius-xl);
+    padding: 24px 28px;
+    border: 1px solid rgba(82,190,192,0.2);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.18);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.fin-group-title-dark {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: var(--fs-sm);
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 18px;
+    border-left: 3px solid var(--teal);
+    padding-left: 12px;
+}
+.scenario-badge {
+    display: inline-block;
+    background: rgba(82,190,192,0.13);
+    border-left: 3px solid var(--teal);
+    padding: 4px 12px;
+    font-size: var(--fs-base);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #fff;
+    margin-bottom: 12px;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+.fin-grid-3cols-dark {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 18px;
+    margin-bottom: 18px;
+}
+.fin-grid-3cols-dark-alt {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 18px;
+}
+.fin-item-dark {
+    background: #2a2a2a;
+    border-radius: var(--radius-md);
+    padding: 16px 18px;
+    border: 1px solid rgba(82,190,192,0.15);
+    transition: transform var(--transition), border-color var(--transition);
+    will-change: transform;
+}
+.fin-item-dark:hover { transform: translateY(-2px); border-color: var(--teal); }
+.fin-item-label-dark {
+    font-size: var(--fs-xs);
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 7px;
+    font-weight: 600;
+}
+.fin-item-value-dark {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: var(--fs-h2);
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+}
+.fin-value-mint  { color: var(--teal); }
 .fin-value-white { color: #ffffff; }
-.fin-value-green { color: #00FFFF; }
-.fin-separator-dark { height: 1px; background: rgba(255,255,255,0.1); margin: 18px 0; }
+.fin-value-green { color: var(--cyan); }
+.fin-separator-dark { height: 1px; background: rgba(255,255,255,0.08); margin: 18px 0; }
+
 .fin-dual-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: stretch; }
 .fin-dual-col { display: flex; flex-direction: column; }
 .fin-dual-col > * { height: 100%; }
+.fin-section { margin-bottom: 20px; }
 
-/* Breakdown card (sin cambios) */
-.breakdown-card { background: var(--white); border-radius: 20px; overflow: hidden; border: 1px solid var(--gray2); box-shadow: 0 4px 16px rgba(0,0,0,0.06); margin-bottom: 20px; }
-.bd-card-header { background: var(--black); padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
-.bd-card-header-title { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--teal); }
+/* ============================================================
+   CLUB DE SOCIOS
+   ============================================================ */
+.club-section {
+    background: var(--white);
+    border-radius: var(--radius-xl);
+    padding: 24px 26px;
+    border: 1px solid var(--gray2);
+    box-shadow: 0 4px 20px rgba(82,190,192,0.08);
+    transition: box-shadow var(--transition);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.club-section:hover { box-shadow: 0 8px 28px rgba(0,0,0,0.08); }
+.club-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+.club-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--teal-light);
+    border: 1px solid var(--teal-mid);
+    border-radius: 40px;
+    padding: 3px 12px;
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 7px;
+}
+.club-main-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: var(--fs-h3);
+    font-weight: 700;
+    color: var(--black);
+}
+.club-desc { font-size: var(--fs-xs); color: #888; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 2px; }
+.club-total-inv { text-align: right; }
+.club-total-inv-label { font-size: var(--fs-xs); color: #999; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px; }
+.club-total-inv-val { font-family: 'Barlow Condensed', sans-serif; font-size: var(--fs-h2); font-weight: 700; color: var(--teal); }
+.club-cards-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.club-card {
+    background: #F8F9FC;
+    border: 1px solid var(--gray2);
+    border-radius: var(--radius-lg);
+    padding: 16px 18px;
+    position: relative;
+    transition: border-color var(--transition), box-shadow var(--transition);
+    overflow: hidden;
+}
+.club-card:hover { border-color: var(--teal); box-shadow: 0 4px 14px rgba(82,190,192,0.1); }
+.club-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--teal), rgba(82,190,192,0.25));
+}
+.club-card-num { font-size: var(--fs-xs); font-weight: 700; letter-spacing: 2px; color: var(--teal); text-transform: uppercase; margin-bottom: 4px; }
+.club-card-aporte-label { font-size: var(--fs-xs); color: #999; margin-bottom: 2px; }
+.club-card-aporte-val {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: var(--fs-h2);
+    font-weight: 700;
+    color: var(--black);
+    line-height: 1.1;
+    margin-bottom: 12px;
+}
+.club-card-divider { height: 1px; background: var(--gray2); margin-bottom: 10px; }
+.club-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 7px; font-size: var(--fs-base); }
+.club-row-label { color: #777; }
+.club-row-val { font-weight: 600; color: var(--black); }
+.club-row-val.gain { color: var(--teal); }
+.club-row-val.gold { color: var(--teal); }
+
+/* ============================================================
+   BREAKDOWN CARD
+   ============================================================ */
+.breakdown-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--gray2);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+}
+.bd-card-header {
+    background: var(--black);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.bd-card-header-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: var(--fs-sm);
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--teal);
+}
 .bd-card-header-right { text-align: right; }
-.bd-card-header-label { font-size: 9px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
-.bd-card-header-val { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; color: #fff; }
+.bd-card-header-label { font-size: var(--fs-xs); color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
+.bd-card-header-val { font-family: 'Barlow Condensed', sans-serif; font-size: var(--fs-h3); font-weight: 700; color: #fff; }
+
 .bd-body { padding: 20px 24px; }
 .bd-waterfall { display: flex; flex-direction: column; gap: 0; margin-bottom: 16px; }
-.bd-wf-row { display: grid; grid-template-columns: 260px 1fr 110px; align-items: center; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--gray2); }
+
+.bd-wf-row {
+    display: grid;
+    grid-template-columns: minmax(200px,260px) 1fr 110px;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--gray2);
+}
 .bd-wf-row:last-child { border-bottom: none; }
 .bd-wf-left { display: flex; align-items: center; gap: 8px; }
 .bd-wf-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-.bd-wf-label { font-size: 11px; color: #666; line-height: 1.3; }
+.bd-wf-label { font-size: var(--fs-sm); color: #666; line-height: 1.3; }
 .bd-wf-bar-wrap { background: var(--gray1); border-radius: 4px; height: 7px; overflow: hidden; }
 .bd-wf-bar { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
-.bd-wf-amount { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; color: var(--black); text-align: right; }
-.bd-subtotal-row { display: grid; grid-template-columns: 260px 1fr 110px; align-items: center; gap: 12px; padding: 10px 0; border-top: 2px solid var(--gray2); border-bottom: 2px solid var(--gray2); margin-bottom: 16px; }
-.bd-subtotal-label { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--dark); }
-.bd-subtotal-amount { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; color: var(--black); text-align: right; }
+.bd-wf-amount { font-family: 'Barlow Condensed', sans-serif; font-size: var(--fs-h4); font-weight: 700; color: var(--black); text-align: right; }
+
+.bd-subtotal-row {
+    display: grid;
+    grid-template-columns: minmax(200px,260px) 1fr 110px;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-top: 2px solid var(--gray2);
+    border-bottom: 2px solid var(--gray2);
+    margin-bottom: 16px;
+}
+.bd-subtotal-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: var(--fs-sm);
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--dark);
+}
+.bd-subtotal-amount {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: var(--fs-h4);
+    font-weight: 700;
+    color: var(--black);
+    text-align: right;
+}
+
 .bd-main-content { display: grid; grid-template-columns: 1fr 200px; gap: 20px; align-items: center; }
 .bd-legend { display: flex; flex-direction: column; gap: 8px; }
-.bd-legend-item { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 11px; }
+.bd-legend-item { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: var(--fs-sm); }
 .bd-legend-left { display: flex; align-items: center; gap: 7px; color: #666; }
 .bd-legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
-.bd-legend-pct { font-weight: 700; font-size: 12px; color: var(--black); }
+.bd-legend-pct { font-weight: 700; font-size: var(--fs-base); color: var(--black); }
 .bd-donut-wrap { position: relative; height: 180px; }
-.bd-waterfall-scroll { max-height: 500px; overflow-y: auto; padding-right: 8px; }
-.bd-waterfall-scroll::-webkit-scrollbar { width: 4px; }
+
+.bd-waterfall-scroll { max-height: 500px; overflow-y: auto; padding-right: 6px; }
+.bd-waterfall-scroll::-webkit-scrollbar { width: 3px; }
 .bd-waterfall-scroll::-webkit-scrollbar-track { background: var(--gray2); border-radius: 4px; }
 .bd-waterfall-scroll::-webkit-scrollbar-thumb { background: var(--teal); border-radius: 4px; }
-.bd-sub-row { display: grid; grid-template-columns: 260px 1fr 110px; align-items: center; gap: 12px; padding: 6px 0 6px 28px; border-bottom: none; background: #f9f9fc; }
+
+.bd-sub-row {
+    display: grid;
+    grid-template-columns: minmax(200px,260px) 1fr 110px;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 0 6px 28px;
+    background: #f9f9fc;
+}
 .bd-sub-left { display: flex; align-items: center; gap: 8px; margin-left: 16px; }
 .bd-sub-dot { width: 6px; height: 6px; border-radius: 2px; background: #aaa; }
-.bd-sub-label { font-size: 10px; color: #888; }
+.bd-sub-label { font-size: var(--fs-xs); color: #888; }
 .bd-sub-bar-wrap { background: var(--gray1); border-radius: 4px; height: 4px; overflow: hidden; }
 .bd-sub-bar { height: 100%; border-radius: 4px; background: #ccc; }
-.bd-sub-amount { font-size: 11px; font-weight: 500; color: #666; text-align: right; }
+.bd-sub-amount { font-size: var(--fs-sm); font-weight: 500; color: #777; text-align: right; }
 
-.timeline-wrap { background: var(--gray1); border-radius: 14px; padding: 24px; margin-bottom: 20px; }
+/* ============================================================
+   TIMELINE
+   ============================================================ */
+.timeline-wrap {
+    background: var(--gray1);
+    border-radius: var(--radius-md);
+    padding: 22px 24px;
+    margin-bottom: 20px;
+    border: 1px solid var(--gray2);
+}
 .tl-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
-.tl-label { font-size: 10px; color: #888; width: 130px; flex-shrink: 0; text-align: right; }
+.tl-label { font-size: var(--fs-xs); color: #888; width: 130px; flex-shrink: 0; text-align: right; }
 .tl-track { flex: 1; background: var(--gray2); border-radius: 4px; height: 8px; position: relative; overflow: hidden; }
 .tl-bar { position: absolute; top: 0; height: 100%; border-radius: 4px; }
-.tl-weeks { font-size: 10px; color: #aaa; width: 120px; flex-shrink: 0; }
-.pricing-note { margin: 0 32px 32px; background: #f0fafa; border-left: 3px solid var(--teal); border-radius: 0 10px 10px 0; padding: 14px 20px; }
-.pricing-note-title { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); margin-bottom: 5px; }
-.pricing-note p { font-size: 11px; color: #555; line-height: 1.7; }
-.dash-footer { padding: 16px 32px 18px; border-top: 1px solid var(--gray2); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
-.footer-brand { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; color: var(--black); letter-spacing: 1px; }
-.footer-brand span { color: var(--teal); }
-.error-message { background: #ffe6e5; border-left: 4px solid var(--red); padding: 20px; margin: 20px; border-radius: 12px; color: #a00; }
+.tl-weeks { font-size: var(--fs-xs); color: #aaa; width: 120px; flex-shrink: 0; }
 
+/* ============================================================
+   PRICING NOTE & FOOTER
+   ============================================================ */
+.pricing-note {
+    margin: 0 32px 28px;
+    background: rgba(82,190,192,0.06);
+    border-left: 3px solid var(--teal);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 12px 18px;
+}
+.pricing-note-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 4px;
+}
+.pricing-note p { font-size: var(--fs-sm); color: #666; line-height: 1.7; }
+
+.dash-footer {
+    padding: 14px 32px 16px;
+    border-top: 1px solid var(--gray2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    background: #fafafc;
+}
+.footer-brand { font-family: 'Barlow Condensed', sans-serif; font-size: var(--fs-base); font-weight: 700; color: var(--black); letter-spacing: 1px; }
+.footer-brand span { color: var(--teal); }
+.footer-right { font-size: var(--fs-xs); color: #aaa; letter-spacing: 1px; text-transform: uppercase; }
+
+.error-message { background: var(--red-bg); border-left: 4px solid var(--red); padding: 20px; margin: 20px; border-radius: var(--radius-md); color: #900; font-size: var(--fs-base); }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1100px) {
+    .fin-grid-3cols-gray,
+    .fin-grid-3cols-dark,
+    .fin-grid-3cols-dark-alt { grid-template-columns: 1fr 1fr; gap: 12px; }
+}
 @media (max-width: 900px) {
-    .fin-grid-3cols-gray, .fin-grid-3cols-dark, .fin-grid-3cols-dark-alt { grid-template-columns: 1fr; gap: 12px; }
+    .fin-grid-3cols-gray,
+    .fin-grid-3cols-dark,
+    .fin-grid-3cols-dark-alt { grid-template-columns: 1fr; }
     .club-cards-row { grid-template-columns: 1fr; }
-    .hero-split      { grid-template-columns: 1fr; }
-    .kpi-row         { grid-template-columns: repeat(2,1fr); }
-    .charts-row      { grid-template-columns: 1fr; }
-    .fin-dual-row    { grid-template-columns: 1fr; }
+    .hero-split { grid-template-columns: 1fr; }
+    .kpi-row { grid-template-columns: repeat(2,1fr); }
+    .charts-row { grid-template-columns: 1fr; }
+    .fin-dual-row { grid-template-columns: 1fr; }
     .bd-main-content { grid-template-columns: 1fr; }
-    .bd-wf-row, .bd-subtotal-row, .bd-sub-row { grid-template-columns: 180px 1fr 90px; }
+    .bd-wf-row, .bd-subtotal-row, .bd-sub-row { grid-template-columns: minmax(140px,180px) 1fr 80px; }
+    .detail-wrap { padding: 0 16px 32px; }
+    .projects-grid { padding: 0 16px 24px; }
+    .charts-row { padding: 0 16px 24px; }
+}
+@media (max-width: 600px) {
+    .kpi-row { grid-template-columns: 1fr; }
+    .topbar { padding: 12px 16px; }
+    body { padding: 12px; }
 }
 </style>
 </head>
@@ -457,11 +1164,12 @@ body {
         </div>
         <div class="topbar-right">
             <div class="topbar-date">
-                <strong id="header-fecha">Cargando datos...</strong><br>
+                <strong id="header-fecha">Cargando datos...</strong>
             </div>
             <img src="https://omaranayalucio.github.io/Dashboards/logorenova.png" alt="RENOVA Logo" class="topbar-logo-right" onerror="this.style.display='none'">
         </div>
     </div>
+
     <div class="tab-nav" id="tab-nav"></div>
     <div id="tab-portafolio" class="tab-panel active"></div>
     <div id="tab-detail-container" class="tab-panel"></div>
@@ -470,656 +1178,265 @@ body {
 <script>
 const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQHHgMYg7UBumLaA1o-1Y7L7-hrWrjnI-eyLvrZarX44TysmxIPs9c-O4l7E_V6AIwF4wA__D_2hiH6/pub?output=csv";
 
+/* ── CSV PARSER ─────────────────────────────────────────── */
 function parseCSV(text) {
     const rows = [];
-    let currentRow = [], currentField = "", inQuotes = false;
+    let row = [], field = "", inQ = false;
     for (let i = 0; i < text.length; i++) {
         const ch = text[i];
-        if (ch === '"') {
-            if (inQuotes && text[i+1] === '"') { currentField += '"'; i++; }
-            else inQuotes = !inQuotes;
-        } else if (ch === ',' && !inQuotes) {
-            currentRow.push(currentField.trim()); currentField = "";
-        } else if ((ch === '\n' || (ch === '\r' && text[i+1] === '\n')) && !inQuotes) {
+        if (ch === '"') { if (inQ && text[i+1] === '"') { field += '"'; i++; } else inQ = !inQ; }
+        else if (ch === ',' && !inQ) { row.push(field.trim()); field = ""; }
+        else if ((ch === '\n' || (ch === '\r' && text[i+1] === '\n')) && !inQ) {
             if (ch === '\r') i++;
-            currentRow.push(currentField.trim());
-            if (currentRow.length) rows.push(currentRow);
-            currentRow = []; currentField = "";
-        } else { currentField += ch; }
+            row.push(field.trim());
+            if (row.length) rows.push(row);
+            row = []; field = "";
+        } else { field += ch; }
     }
-    if (currentField || currentRow.length) { currentRow.push(currentField.trim()); if (currentRow.length) rows.push(currentRow); }
+    if (field || row.length) { row.push(field.trim()); if (row.length) rows.push(row); }
     return rows;
 }
 
 function toNumber(val) {
     if (!val || val === "" || val === "#DIV/0!") return 0;
-    const num = parseFloat(String(val).replace(/[^0-9.-]/g, ''));
-    return isNaN(num) ? 0 : num;
+    const n = parseFloat(String(val).replace(/[^0-9.-]/g, ''));
+    return isNaN(n) ? 0 : n;
 }
 
 function parseDate(str) {
     if (!str) return null;
     str = str.trim();
     let m;
+    const MESES = { ene:0,jan:0,feb:1,mar:2,abr:3,apr:3,may:4,jun:5,jul:6,ago:7,aug:7,sep:8,oct:9,nov:10,dic:11,dec:11,enero:0,febrero:1,marzo:2,abril:3,mayo:4,junio:5,julio:6,agosto:7,septiembre:8,octubre:9,noviembre:10,diciembre:11 };
     m = str.match(/^([a-zA-Z]{3})\/(\d{2})$/);
-    if (m) {
-        const meses = { ene:0, jan:0, feb:1, mar:2, abr:3, apr:3, may:4, jun:5, jul:6, ago:7, aug:7, sep:8, oct:9, nov:10, dic:11, dec:11 };
-        const mes = meses[m[1].toLowerCase()];
-        if (mes !== undefined) {
-            let año = parseInt(m[2], 10);
-            if (año < 100) año += 2000;
-            return new Date(año, mes, 1);
-        }
-    }
+    if (m) { const mes = MESES[m[1].toLowerCase()]; if (mes !== undefined) { let y = parseInt(m[2],10); if (y<100) y+=2000; return new Date(y,mes,1); } }
     m = str.match(/^([a-zA-Z]{3})\/(\d{4})$/);
-    if (m) {
-        const meses = { ene:0, jan:0, feb:1, mar:2, abr:3, apr:3, may:4, jun:5, jul:6, ago:7, aug:7, sep:8, oct:9, nov:10, dic:11, dec:11 };
-        const mes = meses[m[1].toLowerCase()];
-        if (mes !== undefined) return new Date(parseInt(m[2], 10), mes, 1);
-    }
+    if (m) { const mes = MESES[m[1].toLowerCase()]; if (mes !== undefined) return new Date(parseInt(m[2],10),mes,1); }
     m = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
-    if (m) return new Date(+m[3], +m[2]-1, +m[1]);
+    if (m) return new Date(+m[3],+m[2]-1,+m[1]);
     m = str.match(/^(\d{4})-(\d{2})-(\d{2})$/);
-    if (m) return new Date(+m[1], +m[2]-1, +m[3]);
-    const mesesMap = { ene:0,jan:0,feb:1,mar:2,abr:3,apr:3,may:4,jun:5,jul:6,ago:7,aug:7,sep:8,oct:9,nov:10,dic:11,dec:11,enero:0,febrero:1,marzo:2,abril:3,mayo:4,junio:5,julio:6,agosto:7,septiembre:8,octubre:9,noviembre:10,diciembre:11 };
+    if (m) return new Date(+m[1],+m[2]-1,+m[3]);
     m = str.match(/^([a-záéíóúñ]+)\s+(\d{4})$/i);
-    if (m) { const mes = mesesMap[m[1].toLowerCase()]; if (mes !== undefined) return new Date(+m[2], mes, 1); }
+    if (m) { const mes = MESES[m[1].toLowerCase()]; if (mes !== undefined) return new Date(+m[2],mes,1); }
     const d = new Date(str);
     return isNaN(d) ? null : d;
 }
 
-let projects = [];
-let portfolioMetrics = {};
-let chartComparativoInstance = null;
-let chartROIInstance = null;
-
-function extractImageUrls(cellValue) {
-    if (!cellValue) return [];
-    return cellValue.split(/\r?\n/).map(s => s.trim()).filter(s => s.startsWith('http'));
+function extractImageUrls(cell) {
+    if (!cell) return [];
+    return cell.split(/\r?\n/).map(s => s.trim()).filter(s => s.startsWith('http'));
 }
 
 function findHeaderRow(rows) {
-    const keywords = ["proyecto","mapa","precio de venta","ganancia neta","construcción m2","terreno m2"];
+    const kw = ["proyecto","mapa","precio de venta","ganancia neta","construcción m2","terreno m2"];
     for (let i = 0; i < Math.min(rows.length, 10); i++) {
-        const row = rows[i];
-        if (!row || row.length === 0) continue;
-        const rowText = row.join(" ").toLowerCase();
-        let matches = 0;
-        for (let kw of keywords) if (rowText.includes(kw)) matches++;
-        if (matches >= 2) return i;
+        const txt = (rows[i]||[]).join(" ").toLowerCase();
+        let hits = 0; for (const k of kw) if (txt.includes(k)) hits++;
+        if (hits >= 2) return i;
     }
     return 1;
 }
 
-function buildMapEmbedUrl(rawLink, fallbackAddress) {
-    const link = (rawLink || "").trim();
-    function embedFromAddr(addr) {
-        const clean = (addr || "").replace(/[\n\r]/g,' ').trim();
-        if (!clean) return null;
-        return `https://maps.google.com/maps?q=${encodeURIComponent(clean)}&t=&z=16&ie=UTF8&iwloc=B&output=embed`;
-    }
-    function embedFromCoords(lat, lng) { return `https://maps.google.com/maps?q=${lat},${lng}&t=&z=16&ie=UTF8&iwloc=B&output=embed`; }
-    if (!link || link.includes("goo.gl") || link.includes("maps.app")) return embedFromAddr(fallbackAddress);
+function buildMapEmbedUrl(raw, fallbackAddr) {
+    const fromAddr = (a) => { const clean = (a||"").replace(/[\n\r]/g,' ').trim(); if (!clean) return null; return `https://maps.google.com/maps?q=${encodeURIComponent(clean)}&t=&z=16&ie=UTF8&iwloc=B&output=embed`; };
+    const fromCoords = (lat,lng) => `https://maps.google.com/maps?q=${lat},${lng}&t=&z=16&ie=UTF8&iwloc=B&output=embed`;
+    const link = (raw||"").trim();
+    if (!link || link.includes("goo.gl") || link.includes("maps.app")) return fromAddr(fallbackAddr);
     if (link.includes("output=embed")) return link.replace("www.google.com/maps","maps.google.com/maps");
     if (link.includes("google.com/maps") || link.includes("maps.google.com")) {
-        const coordMatch = link.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
-        if (coordMatch) return embedFromCoords(coordMatch[1], coordMatch[2]);
-        const qMatch = link.match(/[?&]q=([^&]+)/);
-        if (qMatch) return `https://maps.google.com/maps?q=${qMatch[1]}&t=&z=16&ie=UTF8&iwloc=B&output=embed`;
-        const placeMatch = link.match(/\/place\/([^\/]+)\//);
-        if (placeMatch) return `https://maps.google.com/maps?q=${placeMatch[1]}&t=&z=16&ie=UTF8&iwloc=B&output=embed`;
+        const coord = link.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+        if (coord) return fromCoords(coord[1],coord[2]);
+        const q = link.match(/[?&]q=([^&]+)/);
+        if (q) return `https://maps.google.com/maps?q=${q[1]}&t=&z=16&ie=UTF8&iwloc=B&output=embed`;
+        const pl = link.match(/\/place\/([^\/]+)\//);
+        if (pl) return `https://maps.google.com/maps?q=${pl[1]}&t=&z=16&ie=UTF8&iwloc=B&output=embed`;
     }
-    return embedFromAddr(fallbackAddress);
+    return fromAddr(fallbackAddr);
 }
 
 const FASES_CONFIG = [
-    { fase: "Regularización",  inicioKey: ["REGULARIZACIÓN INICIO"],             finKey: ["REGULARIZACIÓN FIN"],             color: "#52BEC0" },
-    { fase: "Arranque",        inicioKey: ["ARRANQUE INICIO"],                    finKey: ["ARRANQUE FIN"],                    color: "#3A9EAD" },
-    { fase: "Compras",         inicioKey: ["COMPRAS INICIO"],                     finKey: ["COMPRAS FIN"],                     color: "#2E7D8A" },
-    { fase: "Obra Gris",       inicioKey: ["OBRA GRIS INICIO"],                   finKey: ["OBRA GRIS FIN"],                   color: "#0D4E4F" },
-    { fase: "Obra Blanca",     inicioKey: ["OBRA BLANCA INICIO"],                 finKey: ["OBRA BLANCA FIN"],                 color: "#1A6B6C" },
-    { fase: "Depto Muestra",   inicioKey: ["DEPTO MUESTRA (SHOWROOM) INICIO"],    finKey: ["DEPTO MUESTRA (SHOWROOM) FIN"],    color: "#7ECFD0" },
-    { fase: "Fachada",         inicioKey: ["FACHADA INICIO"],                     finKey: ["FACHADA FIN"],                     color: "#A8E6E7" },
-    { fase: "Venta",           inicioKey: ["VENTA INICIO"],                       finKey: ["VENTA FIN"],                       color: "#00E5E5" },
+    { fase:"Regularización", inicioKey:["REGULARIZACIÓN INICIO"], finKey:["REGULARIZACIÓN FIN"], color:"#52BEC0" },
+    { fase:"Arranque", inicioKey:["ARRANQUE INICIO"], finKey:["ARRANQUE FIN"], color:"#3A9EAD" },
+    { fase:"Compras", inicioKey:["COMPRAS INICIO"], finKey:["COMPRAS FIN"], color:"#2E7D8A" },
+    { fase:"Obra Gris", inicioKey:["OBRA GRIS INICIO"], finKey:["OBRA GRIS FIN"], color:"#0D4E4F" },
+    { fase:"Obra Blanca", inicioKey:["OBRA BLANCA INICIO"], finKey:["OBRA BLANCA FIN"], color:"#1A6B6C" },
+    { fase:"Depto Muestra", inicioKey:["DEPTO MUESTRA (SHOWROOM) INICIO"], finKey:["DEPTO MUESTRA (SHOWROOM) FIN"], color:"#7ECFD0" },
+    { fase:"Fachada", inicioKey:["FACHADA INICIO"], finKey:["FACHADA FIN"], color:"#A8E6E7" },
+    { fase:"Venta", inicioKey:["VENTA INICIO"], finKey:["VENTA FIN"], color:"#00E5E5" }
 ];
 
+let projects = [];
+let portfolioMetrics = {};
+let chartComparativo = null;
+let chartROI = null;
+
+/* ── BUILD PROJECTS ─────────────────────────────────────── */
 function buildProjectsFromRows(rows) {
     if (rows.length < 2) return [];
-    const headerRowIndex = findHeaderRow(rows);
-    const headers = rows[headerRowIndex].map(h => h.trim());
-
-    function normH(h) { return h.toLowerCase().replace(/\s+/g,' ').replace(/[^a-z0-9#ñáéíóú ]/g,'').trim(); }
-    const normHeaders = headers.map(normH);
-
-    const getIdx = (possibleNames) => {
-        for (let name of possibleNames) {
-            const normName = normH(name);
-            let idx = normHeaders.findIndex(h => h === normName);
-            if (idx !== -1) return idx;
-        }
-        for (let name of possibleNames) {
-            const normName = normH(name);
-            let idx = normHeaders.findIndex(h => h.includes(normName));
-            if (idx !== -1) return idx;
-        }
+    const headerIdx = findHeaderRow(rows);
+    const headers = rows[headerIdx].map(h => h.trim());
+    const norm = h => h.toLowerCase().replace(/\s+/g,' ').replace(/[^a-z0-9#ñáéíóú ]/g,'').trim();
+    const normH = headers.map(norm);
+    const getIdx = (names) => {
+        for (const n of names) { const nn = norm(n); let i = normH.findIndex(h => h === nn); if (i !== -1) return i; }
+        for (const n of names) { const nn = norm(n); let i = normH.findIndex(h => h.includes(nn)); if (i !== -1) return i; }
         return -1;
     };
+    const getV = (row, names) => row[getIdx(names)] || "";
+    const getN = (row, names) => toNumber(getV(row, names));
 
-    function getDeptoBlock(row, blockLabel) {
-        const costoIdx = getIdx([blockLabel, blockLabel.replace(' ','  ')]);
-        if (costoIdx === -1) return null;
-        const costo    = toNumber(row[costoIdx]);
-        const cantidad = toNumber(row[costoIdx + 1]);
-        const m2       = toNumber(row[costoIdx + 2]);
-        const costoM2  = toNumber(row[costoIdx + 3]);
-        const hab      = toNumber(row[costoIdx + 4]);
-        const ban      = toNumber(row[costoIdx + 5]);
-        const estac    = toNumber(row[costoIdx + 6]);
-        if (cantidad === 0 && costo === 0) return null;
-        return { costo, cantidad, m2, costoM2, hab, ban, estac };
+    function getDeptoBlock(row, label) {
+        const i = getIdx([label]);
+        if (i === -1) return null;
+        const costo = toNumber(row[i]), qty = toNumber(row[i+1]);
+        if (costo === 0 && qty === 0) return null;
+        return { costo, cantidad:qty, m2:toNumber(row[i+2]), costoM2:toNumber(row[i+3]), hab:toNumber(row[i+4]), ban:toNumber(row[i+5]), estac:toNumber(row[i+6]) };
+    }
+    function getLocalBlock(row, label) {
+        const i = getIdx([label]);
+        if (i === -1) return null;
+        const costo = toNumber(row[i]), qty = toNumber(row[i+1]);
+        if (costo === 0 && qty === 0) return null;
+        return { costo, cantidad:qty, m2:toNumber(row[i+2]), costoM2:toNumber(row[i+3]) };
     }
 
-    function getLocalBlock(row, blockLabel) {
-        const costoIdx = getIdx([blockLabel]);
-        if (costoIdx === -1) return null;
-        const costo    = toNumber(row[costoIdx]);
-        const cantidad = toNumber(row[costoIdx + 1]);
-        const m2       = toNumber(row[costoIdx + 2]);
-        const costoM2  = toNumber(row[costoIdx + 3]);
-        if (cantidad === 0 && costo === 0) return null;
-        return { costo, cantidad, m2, costoM2 };
-    }
-
-    const proyectos = [];
-    for (let i = headerRowIndex + 1; i < rows.length; i++) {
+    const out = [];
+    for (let i = headerIdx + 1; i < rows.length; i++) {
         const row = rows[i];
-        if (!row || row.length === 0) continue;
-        if (!row[0] || row[0].trim() === "") continue;
+        if (!row || !row[0] || row[0].trim() === "") continue;
 
-        const nombre            = row[getIdx(["Proyecto","PROYECTO"])] || `Proyecto ${i}`;
-        const direccionCompleta = row[getIdx(["Dirección","Direccion","Dirección del Proyecto","Mapa","MAPa"])] || "";
-        let direccionResumida   = direccionCompleta;
-        if (direccionResumida.includes(',')) {
-            const partes = direccionResumida.split(',').map(p => p.trim());
-            if (partes.length >= 3) direccionResumida = `${partes[1]}, ${partes[2]}`;
-            else if (partes.length >= 2) direccionResumida = partes[1];
-        }
+        const nombre     = getV(row,["Proyecto","PROYECTO"]) || `Proyecto ${i}`;
+        const dirFull    = getV(row,["Dirección","Direccion","Dirección del Proyecto","Mapa","MAPa"]);
+        let dirShort     = dirFull;
+        if (dirShort.includes(',')) { const pts = dirShort.split(',').map(p=>p.trim()); dirShort = pts.length >= 3 ? `${pts[1]}, ${pts[2]}` : pts[1]||pts[0]; }
 
-        const precioVenta      = toNumber(row[getIdx(["PRECIO DE VENTA PROYECTADO","Precio de Venta Proyectado"])]);
-        const ganancia         = toNumber(row[getIdx(["GANANCIA NETA"])]);
-        const gastosTotales    = toNumber(row[getIdx(["GASTOS TOTALES"])]);
-        const capitalAltaltium = toNumber(row[getIdx(["INVERSIÓN INICIAL"])]);
-        const rendimiento      = toNumber(row[getIdx(["ROI ASOCIACIÓN EN PART 12 meses","ROI ASOCIACIÓN EN PART"])]);
-        const roiDistressed    = toNumber(row[getIdx(["ROI ADQ DISTRESSED"])]);
-        const margen           = toNumber(row[getIdx(["MARGEN UTILIDAD PROYECTO"])]);
-        const construccion     = toNumber(row[getIdx(["Construcción m2"])]);
-        const terreno          = toNumber(row[getIdx(["Terreno m2"])]);
-        const niveles          = toNumber(row[getIdx(["Niveles"])]);
-        const antiguedadNum    = toNumber(row[getIdx(["Antiguedad"])] || "");
-        const supVendible      = toNumber(row[getIdx(["Sup. Vendible"])]);
-        const frentes          = row[getIdx(["Frentes"])] || "";
-        const cuentaCatastral  = row[getIdx(["Cuenta Catastral"])] || "";
-        const tipoVivienda     = row[getIdx(["Tipo de Vivienda"])] || "—";
-        const usoDeSuelo       = row[getIdx(["Uso de suelo"])] || "—";
-        const descripcion      = row[getIdx(["Descripción del Proyecto"])] || "";
+        const deptoBlocks = [1,2,3].map(d => { const b = getDeptoBlock(row,`COSTO DEPTO #${d}`); return b ? {label:`Tipo ${d}`,...b} : null; }).filter(Boolean);
+        const localBlocks = [1,2].map(l => { const b = getLocalBlock(row,`COSTO LOCAL #${l}`); return b ? {label:`Local ${l}`,...b} : null; }).filter(Boolean);
 
-        const alrededoresRaw   = row[getIdx(["Alrededores"])] || "";
-        let alrededoresList    = [];
-        if (alrededoresRaw) {
-            alrededoresList = alrededoresRaw.split(/\r?\n/).map(s => s.trim()).filter(s => s.length > 0);
-            if (alrededoresList.length === 0) alrededoresList = alrededoresRaw.split(',').map(s => s.trim()).filter(s => s.length > 0);
-        }
+        const tdep = getN(row,["TOTAL DEPTOS","Total Deptos"]) || deptoBlocks.reduce((a,b)=>a+b.cantidad,0);
+        const tloc = getN(row,["TOTAL LOCALES","Total Locales"]) || localBlocks.reduce((a,b)=>a+b.cantidad,0);
+        const unidadesTexto = tdep>0&&tloc>0 ? `${tdep} depto${tdep!==1?'s':''} + ${tloc} local${tloc!==1?'es':''}` : tdep>0 ? `${tdep} depto${tdep!==1?'s':''}` : tloc>0 ? `${tloc} local${tloc!==1?'es':''}` : "—";
 
-        const costoEdificio = toNumber(row[getIdx(["COSTO EDIFICIO"])]);
+        const precioVenta = getN(row,["PRECIO DE VENTA PROYECTADO","Precio de Venta Proyectado"]);
+        const ganancia    = getN(row,["GANANCIA NETA"]);
+        const gastosTot   = getN(row,["GASTOS TOTALES"]);
+        const capital     = getN(row,["INVERSIÓN INICIAL"]);
+        const roi         = getN(row,["ROI ASOCIACIÓN EN PART 12 meses","ROI ASOCIACIÓN EN PART"]);
+        const roiDist     = getN(row,["ROI ADQ DISTRESSED"]);
+        const margen      = getN(row,["MARGEN UTILIDAD PROYECTO","MARGEN UTILIDAD"]);
 
-        const deptoBlocks = [];
-        for (let d = 1; d <= 3; d++) {
-            const block = getDeptoBlock(row, `COSTO DEPTO #${d}`);
-            if (block) deptoBlocks.push({ label: `Tipo ${d}`, ...block });
-        }
+        const imageCell   = getV(row,["Link Imagen Frente","LINK IMAGEN FRENTE"]);
+        const allImages   = extractImageUrls(imageCell);
 
-        const totalDeptos     = toNumber(row[getIdx(["TOTAL DEPTOS","Total Deptos","total deptos"])]);
-        const totalCostoDeptos = toNumber(row[getIdx(["TOTALCOSTO  DEPTOS","TOTAL COSTO DEPTOS","TOTALCOSTO DEPTOS"])]);
-
-        const localBlocks = [];
-        for (let l = 1; l <= 2; l++) {
-            const block = getLocalBlock(row, `COSTO LOCAL #${l}`);
-            if (block) localBlocks.push({ label: `Local ${l}`, ...block });
-        }
-
-        const totalLocales     = toNumber(row[getIdx(["TOTAL LOCALES","Total Locales","total locales"])]);
-        const totalCostoLocales = toNumber(row[getIdx(["TOTAL COSTO LOCALES","TOTALCOSTO LOCALES"])]);
-
-        let unidadesTexto = "";
-        const tdep = totalDeptos || deptoBlocks.reduce((a,b) => a+b.cantidad, 0);
-        const tloc = totalLocales || localBlocks.reduce((a,b) => a+b.cantidad, 0);
-        if (tdep > 0 && tloc > 0) unidadesTexto = `${tdep} depto${tdep!==1?'s':''} + ${tloc} locale${tloc!==1?'s':''}`;
-        else if (tdep > 0) unidadesTexto = `${tdep} depto${tdep!==1?'s':''}`;
-        else if (tloc > 0) unidadesTexto = `${tloc} locale${tloc!==1?'s':''}`;
-        else unidadesTexto = "—";
-
-        const imageColumn = row[getIdx(["Link Imagen Frente","LINK IMAGEN FRENTE"])] || "";
-        const allImages   = extractImageUrls(imageColumn);
-        const coverImage  = allImages.length > 0 ? allImages[0] : "";
-
-        const unidadesDetalle = [];
-        if (tdep > 0)  unidadesDetalle.push({ tipo: "Departamentos",       cantidad: tdep, m2: construccion / tdep });
-        if (tloc > 0)  unidadesDetalle.push({ tipo: "Locales comerciales", cantidad: tloc, m2: 0 });
-
-        const gastosOperativos  = toNumber(row[getIdx(["GASTOS OPERATIVOS (Con Comisiones)","GASTOS OPERATIVOS"])]);
-        const totalGastosOp     = toNumber(row[getIdx(["TOTAL Gastos Operativos Arquitectura","TOTAL GASTOS OPERATIVOS ARQUITECTURA"])]);
-        const costoXUnidad      = toNumber(row[getIdx(["COSTO X UNIDAD"])]);
-        const precioM2Post      = toNumber(row[getIdx(["PRECIO / M2 PROMEDIO","PRECIO / M2 PROMEDIO\n(Post Renovación)"])]);
-        const gananciaXUnidad   = toNumber(row[getIdx(["GANANCIA / UNIDAD"])]);
-        const inversionOpc2     = toNumber(row[getIdx(["INVERSIÓN INICIAL OPC #2","INVERSIÓN INICIAL OPC#2"])]);
-        const roiOpc2           = toNumber(row[getIdx(["ROI ASOCIACIÓN EN PART OPC #2 12 meses","ROI ASOCIACIÓN AJUSTADO SEGUN PLAZO","ROI ASOCIACIÓN EN PART OPC"])]);
-        const clubParte1Inv     = toNumber(row[getIdx(["Club de Socios Parte 1"])]);
-        const clubAporte1       = toNumber(row[getIdx(["Aporte 1"])]);
-        const clubParte2Inv     = toNumber(row[getIdx(["Club de Socios Parte 2"])]);
-        const clubAporte2       = toNumber(row[getIdx(["Aporte 2"])]);
-        const totalInversionClub = toNumber(row[getIdx(["TOTAL INVERSION","TOTAL INVERSIÓN"])]);
-        const sinInviertes      = toNumber(row[getIdx(["SIN INVIERTES"])]);
-        const tuGanancia        = toNumber(row[getIdx(["TU GANANCIA"])]);
-        const totalConGanancia  = toNumber(row[getIdx(["TOTAL CON GANANCIA"])]);
-        const roiAnual          = toNumber(row[getIdx(["ROI ANUAL"])]);
-        const plazoMeses        = toNumber(row[getIdx(["Plazo Meses"])]);
-        const margenGV          = toNumber(row[getIdx(["MARGEN UTILIDAD PROYECTO","MARGEN UTILIDAD"])]);
-        const totalRenova       = toNumber(row[getIdx(["TOTAL RENOVA"])]);
-
-        const getGasto = (nombres) => toNumber(row[getIdx(nombres)]);
-        const gastosArquitectura = getGasto(["TOTAL Gastos Operativos Arquitectura","TOTAL GASTOS OPERATIVOS ARQUITECTURA"]);
-        const aguaLuz            = getGasto(["Agua/Luz/Predial","Agua/Luz"]);
-        const hipoteca           = getGasto(["Hipoteca"]);
-        const gastosLegales      = getGasto(["Gastos Legales"]);
-        const mkt                = getGasto(["MKT"]);
-        const comisionesRenova   = getGasto(["Comisiones RENOVA"]);
-        const comisionesVenta    = getGasto(["Comisiones Venta"]);
-        const comisionesFin      = getGasto(["Comisiones FIN O FONDEO"]);
-        const regimenCond        = getGasto(["Régimen Condominio"]);
-        const licencias          = getGasto(["Licencias"]);
-        const imprevistos        = getGasto(["Imprevistos"]);
-        const pagoSinAnticipo    = getGasto(["Pago sin anticipo (Utilidad Cliente)"]);
-
-        const timeline = FASES_CONFIG.map(f => {
-            const inicioStr = row[getIdx(f.inicioKey)] || "";
-            const finStr    = row[getIdx(f.finKey)]    || "";
-            return { fase: f.fase, inicio: inicioStr, fin: finStr, color: f.color, inicioDate: parseDate(inicioStr), finDate: parseDate(finStr) };
-        }).filter(t => t.inicio || t.fin);
+        const alrRaw = getV(row,["Alrededores"]);
+        let alrededor = alrRaw ? alrRaw.split(/\r?\n/).map(s=>s.trim()).filter(Boolean) : [];
+        if (!alrededor.length && alrRaw) alrededor = alrRaw.split(',').map(s=>s.trim()).filter(Boolean);
 
         const docs = {
-            cv:             row[getIdx(["LINK CV (HORIZONTAL)"])],
-            manual:         row[getIdx(["LINK MANUAL DE PRODUCTO:"])],
-            estudioMercado: row[getIdx(["LINK ESTUDIO DE MERCADO:"])],
-            expediente:     row[getIdx(["LINK EXPEDIENTE;"])],
-            gantt:          row[getIdx(["LINK GANTT:"])],
-            googleMaps:     row[getIdx(["LINK GOOGLE MAPS:"])],
+            cv:getV(row,["LINK CV (HORIZONTAL)"]), manual:getV(row,["LINK MANUAL DE PRODUCTO:"]),
+            estudioMercado:getV(row,["LINK ESTUDIO DE MERCADO:"]), expediente:getV(row,["LINK EXPEDIENTE;"]),
+            gantt:getV(row,["LINK GANTT:"]), googleMaps:getV(row,["LINK GOOGLE MAPS:"])
         };
 
-        proyectos.push({
+        const gD = k => getN(row,[k]);
+        const gastosDetalle = {
+            gastosArquitectura: gD("TOTAL Gastos Operativos Arquitectura") || gD("TOTAL GASTOS OPERATIVOS ARQUITECTURA"),
+            aguaLuz: gD("Agua/Luz/Predial") || gD("Agua/Luz"),
+            hipoteca: gD("Hipoteca"), gastosLegales: gD("Gastos Legales"),
+            mkt: gD("MKT"), comisionesRenova: gD("Comisiones RENOVA"),
+            comisionesVenta: gD("Comisiones Venta"), comisionesFin: gD("Comisiones FIN O FONDEO"),
+            regimenCond: gD("Régimen Condominio"), licencias: gD("Licencias"),
+            imprevistos: gD("Imprevistos"), pagoSinAnticipo: gD("Pago sin anticipo (Utilidad Cliente)")
+        };
+
+        const renovaBreakdown = {
+            costoXDepto:  gD("COSTO RENOVA X DEPTO"),
+            numDeptos:    gD("# Deptos a RENOVA"),
+            totalRef:     gD("TOTAL RENOVA DEPTOS\n(Solo referencia)") || gD("TOTAL RENOVA DEPTOS"),
+            pctCalculadora: gD("% CALCULADORA RENOVA"),
+            totalAjustado:  gD("TOTAL RENOVA AJUSTADO")
+        };
+
+        const timeline = FASES_CONFIG.map(f => {
+            const ini = getV(row,f.inicioKey), fin = getV(row,f.finKey);
+            return { fase:f.fase, inicio:ini, fin, color:f.color, inicioDate:parseDate(ini), finDate:parseDate(fin) };
+        }).filter(t => t.inicio || t.fin);
+
+        out.push({
             id: nombre.toLowerCase().replace(/[^a-z0-9]+/g,'-'),
-            num: (proyectos.length + 1).toString().padStart(2,'0'),
-            nombre, direccion: direccionCompleta, direccionResumida,
-            construccion, terreno, niveles, antiguedad: antiguedadNum,
-            supVendible, frentes, cuentaCatastral, tipoVivienda, usoDeSuelo,
-            descripcion, alrededores: alrededoresList,
-            precioVenta, ganancia, gastosTotales, capitalAltaltium,
-            rendimiento: rendimiento || roiDistressed, roiDistressed,
+            num: (out.length+1).toString().padStart(2,'0'),
+            nombre, direccion:dirFull, direccionResumida:dirShort,
+            construccion: getN(row,["Construcción m2"]), terreno: getN(row,["Terreno m2"]),
+            niveles: getN(row,["Niveles"]), antiguedad: getN(row,["Antiguedad"]),
+            supVendible: getN(row,["Sup. Vendible"]),
+            frentes: getV(row,["Frentes"]),
+            cuentaCatastral: getV(row,["Cuenta Catastral"]),
+            tipoVivienda: getV(row,["Tipo de Vivienda"]) || "—",
+            usoDeSuelo: getV(row,["Uso de suelo"]) || "—",
+            descripcion: getV(row,["Descripción del Proyecto"]),
+            alrededores: alrededor,
+            precioVenta, ganancia, gastosTotales:gastosTot, capitalAltaltium:capital,
+            rendimiento: roi || roiDist, roiDistressed: roiDist,
             margen: margen || (precioVenta ? (ganancia/precioVenta)*100 : 0),
-            unidadesTexto, totalUnidades: tdep + tloc,
-            totalDeptos: tdep, totalLocales: tloc, coverImage, allImages, unidadesDetalle,
-            timeline, docs,
-            costoEdificio, deptoBlocks, totalCostoDeptos, localBlocks, totalCostoLocales,
-            gastosOperativos, totalGastosOp, totalRenova,
-            costoXUnidad, precioM2Post, gananciaXUnidad,
-            inversionOpc2, roiOpc2,
-            clubParte1Inv, clubAporte1, clubParte2Inv, clubAporte2,
-            totalInversionClub, sinInviertes, tuGanancia, totalConGanancia,
-            roiAnual, plazoMeses,
-            margenGV: margenGV || (precioVenta ? (ganancia/precioVenta)*100 : 0),
-            gastosDetalle: {
-                gastosArquitectura, aguaLuz, hipoteca, gastosLegales, mkt,
-                comisionesRenova, comisionesVenta, comisionesFin,
-                regimenCond, licencias, imprevistos, pagoSinAnticipo
-            }
+            unidadesTexto, totalUnidades: tdep+tloc, totalDeptos:tdep, totalLocales:tloc,
+            coverImage: allImages[0]||"", allImages,
+            timeline, docs, deptoBlocks, localBlocks,
+            totalCostoDeptos: getN(row,["TOTALCOSTO  DEPTOS","TOTAL COSTO DEPTOS","TOTALCOSTO DEPTOS"]),
+            totalCostoLocales: getN(row,["TOTAL COSTO LOCALES","TOTALCOSTO LOCALES"]),
+            costoEdificio: getN(row,["COSTO EDIFICIO"]),
+            gastosOperativos: getN(row,["GASTOS OPERATIVOS (Con Comisiones)","GASTOS OPERATIVOS"]),
+            totalRenova: getN(row,["TOTAL RENOVA"]),
+            costoXUnidad: getN(row,["COSTO X UNIDAD"]),
+            precioM2Post: getN(row,["PRECIO / M2 PROMEDIO","PRECIO / M2 PROMEDIO\n(Post Renovación)"]),
+            gananciaXUnidad: getN(row,["GANANCIA / UNIDAD"]),
+            inversionOpc2: getN(row,["INVERSIÓN INICIAL OPC #2","INVERSIÓN INICIAL OPC#2"]),
+            roiOpc2: getN(row,["ROI ASOCIACIÓN EN PART OPC #2 12 meses","ROI ASOCIACIÓN AJUSTADO SEGUN PLAZO","ROI ASOCIACIÓN EN PART OPC"]),
+            clubParte1Inv: getN(row,["Club de Socios Parte 1"]),
+            clubAporte1:   getN(row,["Aporte 1"]),
+            clubParte2Inv: getN(row,["Club de Socios Parte 2"]),
+            clubAporte2:   getN(row,["Aporte 2"]),
+            totalInversionClub: getN(row,["TOTAL INVERSION","TOTAL INVERSIÓN"]),
+            sinInviertes: getN(row,["SIN INVIERTES"]),
+            tuGanancia: getN(row,["TU GANANCIA"]),
+            totalConGanancia: getN(row,["TOTAL CON GANANCIA"]),
+            roiAnual: getN(row,["ROI ANUAL"]),
+            plazoMeses: getN(row,["Plazo Meses"]),
+            margenGV: margen || (precioVenta ? (ganancia/precioVenta)*100 : 0),
+            gastosDetalle, renovaBreakdown
         });
     }
-    return proyectos;
+    return out;
 }
 
-function computeMetrics(projs) {
-    const totalVenta    = projs.reduce((a,p) => a+p.precioVenta, 0);
-    const totalGanancia = projs.reduce((a,p) => a+p.ganancia, 0);
-    const totalCapital  = projs.reduce((a,p) => a+p.capitalAltaltium, 0);
-    const totalGastos   = projs.reduce((a,p) => a+p.gastosTotales, 0);
-    const roiPortafolio = totalCapital ? (totalGanancia/totalCapital)*100 : 0;
-    return { totalVenta, totalGanancia, totalCapital, totalGastos, roiPortafolio, totalUnidades: projs.reduce((a,p) => a+p.totalUnidades, 0) };
+function computeMetrics(ps) {
+    const tv = ps.reduce((a,p)=>a+p.precioVenta,0);
+    const tg = ps.reduce((a,p)=>a+p.ganancia,0);
+    const tc = ps.reduce((a,p)=>a+p.capitalAltaltium,0);
+    const tgast = ps.reduce((a,p)=>a+p.gastosTotales,0);
+    return { totalVenta:tv, totalGanancia:tg, totalCapital:tc, totalGastos:tgast,
+             roiPortafolio: tc ? (tg/tc)*100 : 0,
+             totalUnidades: ps.reduce((a,p)=>a+p.totalUnidades,0) };
 }
 
-function setActiveTab(activeId) {
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.getAttribute('data-id') === activeId);
-    });
-}
-
-function renderPortfolioView() {
-    const metrics   = portfolioMetrics;
-    const container = document.getElementById('tab-portafolio');
-    if (!container) return;
-    container.innerHTML = `
-    <div class="section-header"><span class="section-title">KPIs DEL PORTAFOLIO</span><div class="section-line"></div></div>
-    <div class="kpi-row">
-      <div class="kpi-card"><div class="kpi-label">Proyectos Activos</div><div class="kpi-value">${projects.length} <span class="kpi-unit">proyectos</span></div><div class="kpi-note">+ ${metrics.totalUnidades} unidades</div></div>
-      <div class="kpi-card"><div class="kpi-label">Venta Total Proyectada</div><div class="kpi-value">$${(metrics.totalVenta/1e6).toFixed(1)}<span class="kpi-unit">M MXN</span></div></div>
-      <div class="kpi-card"><div class="kpi-label">Ganancia Neta Total</div><div class="kpi-value">$${(metrics.totalGanancia/1e6).toFixed(1)}<span class="kpi-unit">M MXN</span></div></div>
-      <div class="kpi-card"><div class="kpi-label">ROI Distressed Pool</div><div class="kpi-value">${metrics.totalGastos ? (metrics.totalGanancia/metrics.totalGastos*100).toFixed(1) : 0}<span class="kpi-unit">%</span></div></div>
-      <div class="kpi-card accent"><div class="kpi-label">ROI Asociación en Part.</div><div class="kpi-value">${metrics.roiPortafolio.toFixed(1)}<span class="kpi-unit">%</span></div><div class="kpi-note">Ganancia / Capital invertido</div></div>
-    </div>
-    <div class="section-header"><span class="section-title">PROYECTOS</span><div class="section-line"></div></div>
-    <div class="projects-grid" id="portfolio-grid"></div>
-    <div class="section-header"><span class="section-title">COMPARATIVO FINANCIERO</span><div class="section-line"></div></div>
-    <div class="charts-row">
-      <div class="chart-wrap">
-        <div class="chart-header"><span class="chart-title">PRECIO DE VENTA VS. GASTOS TOTALES</span><div class="chart-legend"><span class="chart-legend-item"><span class="chart-legend-dot" style="background:#52BEC0;"></span>Precio de venta</span><span class="chart-legend-item"><span class="chart-legend-dot" style="background:#DFDFE1;border:1px solid #C8C8CB;"></span>Gastos totales</span></div></div>
-        <div class="chart-inner"><canvas id="chartComparativo"></canvas></div>
-      </div>
-      <div class="chart-wrap">
-        <div class="chart-header"><span class="chart-title">ROI POR PROYECTO — ASOCIACIÓN EN PARTICIPACIÓN (%)</span></div>
-        <div class="chart-inner"><canvas id="chartROI"></canvas></div>
-      </div>
-    </div>
-    <div class="pricing-note"><div class="pricing-note-title">FUENTE DE DATOS</div><p>Indicadores calculados desde Google Sheets en tiempo real.</p></div>
-    <div class="dash-footer"><div class="footer-brand">ALTALTIUM<span>.</span>REAL ESTATE SOLUTIONS</div><div>DATOS EN VIVO · ACTUALIZACIÓN AUTOMÁTICA</div></div>`;
-    const grid = document.getElementById('portfolio-grid');
-    if (grid) {
-        grid.innerHTML = projects.map(p => {
-            const bgStyle = p.coverImage ? `background-image: url('${p.coverImage}');` : 'background-color: #2c2c2c;';
-            return `<div class="project-card" onclick="showProjectDetail('${p.id}')"><div class="card-img" style="${bgStyle} background-size:cover;background-position:center;"><div class="overlay"></div><div class="proj-number">PROYECTO ${p.num}</div><div class="proj-name">${p.nombre}</div><div class="proj-addr">${p.direccionResumida || p.direccion}</div></div><div class="stats-grid"><div class="stat-label">Unidades</div><div class="stat-value mint">${p.unidadesTexto}</div><div class="stat-label">Construcción</div><div class="stat-value">${p.construccion||0} m²</div><div class="stat-label">Terreno</div><div class="stat-value">${p.terreno||0} m²</div><div class="stat-label">Niveles</div><div class="stat-value">${p.niveles||0}</div><div class="stat-label">Edad</div><div class="stat-value">${p.antiguedad ? p.antiguedad+" años" : "—"}</div><div class="stat-label">Tipo Vivienda</div><div class="stat-value">${p.tipoVivienda}</div><div class="stat-label">Uso de Suelo</div><div class="stat-value">${p.usoDeSuelo}</div></div><div class="financial-row"><span class="fin-label">Precio de venta proy.</span><span class="fin-amount">$${(p.precioVenta/1e6).toFixed(2)}M</span></div><div class="financial-row"><span class="fin-label">Gastos totales</span><span class="fin-amount">$${(p.gastosTotales/1e6).toFixed(2)}M</span></div><div class="financial-row"><span class="fin-label">Ganancia neta</span><span class="fin-amount green">+$${(p.ganancia/1e6).toFixed(2)}M</span></div><div class="financial-row"><span class="fin-label">Margen</span><span class="fin-amount">${p.margen.toFixed(1)}%</span></div><div class="roi-section"><div class="roi-title">RENDIMIENTO</div><div class="roi-numbers"><span class="roi-big">+$${(p.ganancia/1e6).toFixed(2)}M</span><div><span class="roi-percent">ROI - ASOCIACIÓN</span> ${p.rendimiento.toFixed(1)}%</div><div><span class="roi-percent">ROI - DISTRESSED</span> ${p.roiDistressed.toFixed(1)}%</div></div></div><div class="detail-button">VER DETALLE →</div></div>`;
-        }).join('');
-    }
-    setTimeout(() => {
-        const ctx1 = document.getElementById('chartComparativo')?.getContext('2d');
-        const ctx2 = document.getElementById('chartROI')?.getContext('2d');
-        const FONT = "'Barlow', sans-serif";
-        Chart.defaults.font.family = FONT;
-        if (ctx1 && projects.length) {
-            if (chartComparativoInstance) chartComparativoInstance.destroy();
-            const labels = projects.map(p => p.nombre);
-            chartComparativoInstance = new Chart(ctx1, { type: 'bar', data: { labels, datasets: [{ label: 'Precio Venta', data: projects.map(p => p.precioVenta), backgroundColor: '#52BEC0' }, { label: 'Gastos Totales', data: projects.map(p => p.gastosTotales), backgroundColor: '#DFDFE1' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { callback: (val, idx) => labels[idx]?.length > 12 ? labels[idx].slice(0,12)+'…' : labels[idx] } }, y: { ticks: { callback: v => v===0?'$0.00M':`$${(v/1e6).toFixed(2)}M` } } } } });
-        }
-        if (ctx2 && projects.length) {
-            if (chartROIInstance) chartROIInstance.destroy();
-            chartROIInstance = new Chart(ctx2, { type: 'bar', data: { labels: projects.map(p => p.nombre), datasets: [{ label: 'ROI %', data: projects.map(p => p.rendimiento), backgroundColor: '#52BEC0' }] }, options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { callback: v => `${v}%` } } } } });
-        }
-    }, 120);
-}
-
-/* ===== NUEVA TARJETA DE UNIDADES (TABLA PIVOTE) ===== */
-function renderUnitsPivotCard(p) {
-    const mxn = (n) => {
-        if (!n || n === 0) return '—';
-        return n >= 1e6 ? `$${(n/1e6).toFixed(2)}M` : n >= 1e3 ? `$${(n/1e3).toFixed(0)}K` : `$${Math.round(n).toLocaleString('es-MX')}`;
-    };
-
-    const hasDeptos  = p.deptoBlocks && p.deptoBlocks.length > 0;
-    const hasLocales = p.localBlocks && p.localBlocks.length > 0;
-    if (!hasDeptos && !hasLocales) return '';
-
-    const tdep = p.totalDeptos || (hasDeptos ? p.deptoBlocks.reduce((a,b) => a+b.cantidad, 0) : 0);
-    const tloc = p.totalLocales || (hasLocales ? p.localBlocks.reduce((a,b) => a+b.cantidad, 0) : 0);
-    const costoDepTotal  = p.totalCostoDeptos  || (hasDeptos  ? p.deptoBlocks.reduce((a,b)  => a+b.costo, 0) : 0);
-    const costoLocTotal  = p.totalCostoLocales || (hasLocales ? p.localBlocks.reduce((a,b)  => a+b.costo, 0) : 0);
-    const costoTotalAll = (costoDepTotal||0) + (costoLocTotal||0);
-
-    let headerPills = '';
-    if (tdep > 0) headerPills += `<div class="units-pivot-pill"><span class="pill-count">${tdep}</span> Deptos</div>`;
-    if (tloc > 0) headerPills += `<div class="units-pivot-pill" style="border-color:rgba(192,125,32,0.4);color:#C07D20;"><span class="pill-count">${tloc}</span> Locales</div>`;
-
-    let deptosRows = '';
-    if (hasDeptos) {
-        deptosRows += `<tr><td colspan="5" style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--dark);padding:16px 24px 8px;background:#fafafc;border-bottom:1px solid var(--gray2);">🏢 Departamentos</td></tr>`;
-        deptosRows += `<tr><th>Tipo</th><th>Cantidad</th><th>m² / Unidad</th><th>Costo Unitario</th><th>Costo Total</th></tr>`;
-        for (let d of p.deptoBlocks) {
-            const costoTotal = d.costo > 0 ? d.costo * d.cantidad : 0;
-            deptosRows += `<tr>
-                <td><span class="unit-type-badge">DEPTO ${d.label.split(' ')[1]}</span></td>
-                <td>${d.cantidad||0}</td>
-                <td>${d.m2 > 0 ? d.m2+' m²' : '—'}</td>
-                <td class="cost-cell">${d.costo > 0 ? mxn(d.costo) : '—'}</td>
-                <td class="cost-cell">${costoTotal > 0 ? mxn(costoTotal) : mxn(d.costo)}</td>
-            </tr>`;
-        }
-        if (tdep > 0 || costoDepTotal > 0) {
-            deptosRows += `<tr class="subtotal-row">
-                <td><strong>Total Departamentos</strong></td>
-                <td><strong>${tdep}</strong></td>
-                <td></td>
-                <td></td>
-                <td class="cost-cell"><strong>${mxn(costoDepTotal)}</strong></td>
-            </tr>`;
-        }
-    }
-
-    let localesRows = '';
-    if (hasLocales) {
-        localesRows += `<tr><td colspan="5" style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--dark);padding:16px 24px 8px;background:#fafafc;border-bottom:1px solid var(--gray2);">🏪 Locales Comerciales</td></tr>`;
-        localesRows += `<tr><th>Tipo</th><th>Cantidad</th><th>m² / Unidad</th><th>Costo Unitario</th><th>Costo Total</th></tr>`;
-        for (let l of p.localBlocks) {
-            const costoTotal = l.costo > 0 ? l.costo * l.cantidad : 0;
-            localesRows += `<tr>
-                <td><span class="unit-type-badge local">LOCAL ${l.label.split(' ')[1]}</span></td>
-                <td>${l.cantidad||0}</td>
-                <td>${l.m2 > 0 ? l.m2+' m²' : '—'}</td>
-                <td class="cost-cell">${l.costo > 0 ? mxn(l.costo) : '—'}</td>
-                <td class="cost-cell">${costoTotal > 0 ? mxn(costoTotal) : mxn(l.costo)}</td>
-            </tr>`;
-        }
-        if (tloc > 0 || costoLocTotal > 0) {
-            localesRows += `<tr class="subtotal-row">
-                <td><strong>Total Locales</strong></td>
-                <td><strong>${tloc}</strong></td>
-                <td></td>
-                <td></td>
-                <td class="cost-cell"><strong>${mxn(costoLocTotal)}</strong></td>
-            </tr>`;
-        }
-    }
-
-    const totalUnidades = tdep + tloc;
-    const totalRow = (costoTotalAll > 0 || totalUnidades > 0) ? `
-        <tr class="total-row">
-            <td><strong>TOTAL UNIDADES</strong></td>
-            <td><strong>${totalUnidades}</strong></td>
-            <td></td>
-            <td></td>
-            <td class="cost-cell total">${mxn(costoTotalAll)}</td>
-        </tr>` : '';
-
-    return `
-    <div class="units-pivot-card">
-        <div class="units-pivot-header">
-            <div class="units-pivot-header-title">🏘️ Desglose de Unidades</div>
-            <div class="units-pivot-header-right">
-                ${headerPills}
-                ${costoTotalAll > 0 ? `<div class="units-pivot-cost-total"><div class="units-pivot-cost-total-label">Costo Total</div><div class="units-pivot-cost-total-val">${mxn(costoTotalAll)}</div></div>` : ''}
-            </div>
-        </div>
-        <div style="overflow-x: auto;">
-            <table class="units-pivot-table">
-                ${deptosRows}
-                ${localesRows}
-                ${totalRow}
-            </table>
-        </div>
-    </div>`;
-}
-
-/* ===== DESGLOSE DE INVERSIÓN (BREAKDOWN) ===== */
-function renderBreakdownCard(p) {
-    const mxn = (n) => { if (!n || n === 0) return '—'; if (n >= 1e6) return `$${(n/1e6).toFixed(2)}M`; if (n >= 1e3) return `$${(n/1e3).toFixed(0)}K`; return `$${Math.round(n).toLocaleString('es-MX')}`; };
-    const pct = (n) => (n && !isNaN(n)) ? `${n.toFixed(1)}%` : '0.0%';
-    const mainSegments = [];
-    if (p.costoEdificio > 0) mainSegments.push({ label: 'Costo del edificio', value: p.costoEdificio, color: '#52BEC0' });
-    if (p.totalRenova > 0) mainSegments.push({ label: 'Renovación RENOVA', value: p.totalRenova, color: '#3A9EAD' });
-    const subGastos = [
-        { label: 'Gastos Operativos Arquitectura', key: 'gastosArquitectura', color: '#1F6D6E' },
-        { label: 'Agua/Luz/Predial',               key: 'aguaLuz',            color: '#278A8C' },
-        { label: 'Hipoteca',                       key: 'hipoteca',           color: '#2FA8AA' },
-        { label: 'Gastos Legales',                 key: 'gastosLegales',      color: '#52BEC0' },
-        { label: 'MKT',                            key: 'mkt',                color: '#7ECFD0' },
-        { label: 'Comisiones RENOVA',              key: 'comisionesRenova',   color: '#A8E6E7' },
-        { label: 'Comisiones Venta',               key: 'comisionesVenta',    color: '#E67E22' },
-        { label: 'Comisiones FIN O FONDEO',        key: 'comisionesFin',      color: '#F39C12' },
-        { label: 'Régimen Condominio',             key: 'regimenCond',        color: '#F1C40F' },
-        { label: 'Licencias',                      key: 'licencias',          color: '#9B59B6' },
-        { label: 'Imprevistos',                    key: 'imprevistos',        color: '#E74C3C' },
-        { label: 'Pago sin anticipo',              key: 'pagoSinAnticipo',    color: '#C0392B' }
-    ];
-    let gastosOpTotal = 0;
-    subGastos.forEach(g => { const val = p.gastosDetalle[g.key]; if (val > 0) gastosOpTotal += val; });
-    if (gastosOpTotal > 0) mainSegments.push({ label: 'Gastos operativos (con comisiones)', value: gastosOpTotal, color: '#E67E22' });
-    if (mainSegments.length === 0 && p.gastosTotales > 0) mainSegments.push({ label: 'Gastos totales', value: p.gastosTotales, color: '#3B3B3B' });
-    const totalGastosSeg = mainSegments.reduce((a,s) => a + s.value, 0);
-    const maxVal = Math.max(...mainSegments.map(s => s.value), 1);
-    const margenFinal = p.margenGV || p.margen || 0;
-    const donutData = [...mainSegments.map(s => s.value), p.ganancia > 0 ? p.ganancia : 0];
-    const donutColors = [...mainSegments.map(s => s.color), '#2E9E6B'];
-    const donutLabels = [...mainSegments.map(s => s.label), 'Ganancia neta'];
-    const cardId = 'bd-' + p.id.replace(/-/g,'');
-    let filasHtml = '';
-    for (let seg of mainSegments) {
-        const barPct = Math.round((seg.value / maxVal) * 100);
-        filasHtml += `<div class="bd-wf-row"><div class="bd-wf-left"><span class="bd-wf-dot" style="background:${seg.color};"></span><span class="bd-wf-label">${seg.label}</span></div><div class="bd-wf-bar-wrap"><div class="bd-wf-bar" style="width:${barPct}%;background:${seg.color};"></div></div><div class="bd-wf-amount">${mxn(seg.value)}</div></div>`;
-        if (seg.label === 'Gastos operativos (con comisiones)' && gastosOpTotal > 0) {
-            for (let sub of subGastos) {
-                const subVal = p.gastosDetalle[sub.key];
-                if (subVal > 0) {
-                    const subBarPct = Math.round((subVal / maxVal) * 100);
-                    filasHtml += `<div class="bd-sub-row"><div class="bd-sub-left"><span class="bd-sub-dot" style="background:${sub.color};"></span><span class="bd-sub-label">${sub.label}</span></div><div class="bd-sub-bar-wrap"><div class="bd-sub-bar" style="width:${subBarPct}%;background:${sub.color};"></div></div><div class="bd-sub-amount">${mxn(subVal)}</div></div>`;
-                }
-            }
-        }
-    }
-    const legendaItems = mainSegments.map(s => `<div class="bd-legend-item"><div class="bd-legend-left"><span class="bd-legend-dot" style="background:${s.color};border-radius:2px;"></span>${s.label}</div><span class="bd-legend-pct">${((s.value/p.precioVenta)*100).toFixed(1)}% (${mxn(s.value)})</span></div>`).join('');
-    const leyendaConGanancia = legendaItems + (p.ganancia > 0 ? `<div class="bd-legend-item" style="border-top:1px solid var(--gray2);padding-top:8px;margin-top:4px;"><div class="bd-legend-left"><span class="bd-legend-dot" style="background:#2E9E6B;border-radius:2px;"></span><strong style="color:#2E9E6B;">Ganancia neta</strong></div><span class="bd-legend-pct" style="color:#2E9E6B;font-size:14px;">${pct(margenFinal)} (${mxn(p.ganancia)})</span></div>` : '');
-    return `<div class="breakdown-card" id="${cardId}-wrap"><div class="bd-card-header"><div class="bd-card-header-title">💰 Desglose de inversión & ganancia</div><div class="bd-card-header-right"><div class="bd-card-header-label">Precio de venta proyectado</div><div class="bd-card-header-val">${mxn(p.precioVenta)}</div></div></div><div class="bd-body"><div class="bd-waterfall-scroll"><div class="bd-waterfall">${filasHtml}</div></div><div class="bd-subtotal-row"><div class="bd-subtotal-label">Total gastos</div><div></div><div class="bd-subtotal-amount">${mxn(p.gastosTotales || totalGastosSeg)}</div></div><div class="bd-main-content"><div class="bd-legend">${leyendaConGanancia}</div><div class="bd-donut-wrap"><canvas id="${cardId}-donut"></canvas></div></div></div></div><script>(function(){var canvas=document.getElementById('${cardId}-donut');if(!canvas||!window.Chart)return;new Chart(canvas.getContext('2d'),{type:'doughnut',data:{labels:${JSON.stringify(donutLabels)},datasets:[{data:${JSON.stringify(donutData)},backgroundColor:${JSON.stringify(donutColors)},borderWidth:2,borderColor:'#0A0A0A'}]},options:{responsive:true,maintainAspectRatio:false,cutout:'66%',plugins:{legend:{display:false}}}});})();<\/script>`;
-}
-
-/* ===== VISTA DE DETALLE (ORDEN CORREGIDO) ===== */
-function renderProjectDetail(p) {
-    const container  = document.getElementById('tab-detail-container');
-    const carouselId = p.id.replace(/-/g,'');
-    let carouselHtml = '';
-    if (p.allImages && p.allImages.length > 0) {
-        window[`carouselImages_${carouselId}`] = p.allImages;
-        window[`carouselIndex_${carouselId}`]  = 0;
-        carouselHtml = `<div id="carousel-${carouselId}" class="carousel-container"><img id="carousel-img-${carouselId}" class="carousel-slide" src="${p.allImages[0]}" alt="Imagen"><button class="carousel-btn carousel-prev" onclick="changeImage('${carouselId}',-1,${p.allImages.length})">❮</button><button class="carousel-btn carousel-next" onclick="changeImage('${carouselId}',1,${p.allImages.length})">❯</button><div class="carousel-dots" id="carousel-dots-${carouselId}">${p.allImages.map((_,idx)=>`<span id="dot-${carouselId}-${idx}" class="dot ${idx===0?'active':''}" onclick="goToSlide('${carouselId}',${idx},${p.allImages.length})"></span>`).join('')}</div></div>`;
-    } else {
-        carouselHtml = `<div class="carousel-container" style="background:#2c2c2c;display:flex;align-items:center;justify-content:center;color:white;">Sin imágenes disponibles</div>`;
-    }
-    const deptosLocalesText = `${p.totalDeptos>0 ? p.totalDeptos+(p.totalDeptos===1?' depto':' deptos') : ''}${p.totalLocales>0 ? (p.totalDeptos>0?' + ':'')+p.totalLocales+(p.totalLocales===1?' local':' locales') : ''}`;
-    const techOverlay = `<div class="image-overlay"><div class="proj-title">${p.nombre}</div><div class="proj-address">${p.direccion}</div><div class="tech-grid">${['Unidades','Tipo Vivienda','Antigüedad','Terreno','Construcción','Sup. Vendible','Niveles','Frentes','Uso de suelo','Cuenta Catastral'].map((lbl,i)=>`<div class="tech-item"><span class="tech-label">${lbl}</span><span class="tech-value">${[deptosLocalesText||'—',p.tipoVivienda,p.antiguedad?p.antiguedad+' años':'—',p.terreno+' m²',p.construccion+' m²',(p.supVendible||'—')+' m²',p.niveles,p.frentes||'—',p.usoDeSuelo,p.cuentaCatastral||'—'][i]}</span></div>`).join('')}</div></div>`;
-    const rawMapsLink = (p.docs.googleMaps || "").trim();
-    const mapEmbedUrl = buildMapEmbedUrl(rawMapsLink, p.direccion);
-    let directMapLink = rawMapsLink || "";
-    if (!directMapLink && p.direccion) directMapLink = `https://www.google.com/maps?q=${encodeURIComponent(p.direccion.replace(/\n/g,' ').trim())}`;
-    const mapHtml = mapEmbedUrl ? `<iframe class="map-frame" src="${mapEmbedUrl}" allowfullscreen loading="lazy"></iframe><div class="map-placeholder" id="map-placeholder-${carouselId}" style="display:none;"><span>📍 No se pudo cargar el mapa</span>${directMapLink ? `<a href="${directMapLink}" target="_blank" class="map-link">Abrir en Google Maps →</a>` : ''}</div>` : `<div class="map-placeholder"><span>📍 Sin dirección</span>${directMapLink ? `<a href="${directMapLink}" target="_blank" class="map-link">Abrir →</a>` : ''}</div>`;
-    const surroundingsHtml = p.alrededores?.length ? `<div class="surroundings-section"><div class="surroundings-title">Alrededores</div><div class="surroundings-list">${p.alrededores.map(pl=>`<span class="surrounding-badge">${pl}</span>`).join('')}</div></div>` : `<div class="surroundings-section"><div class="surroundings-title">Alrededores</div><div class="empty-surroundings">No se han registrado puntos de interés cercanos</div></div>`;
-    const docsList = [];
-    if (p.docs.cv) docsList.push({ name:"📄 CV", url:p.docs.cv });
-    if (p.docs.manual) docsList.push({ name:"📘 Manual", url:p.docs.manual });
-    if (p.docs.estudioMercado) docsList.push({ name:"📊 Estudio", url:p.docs.estudioMercado });
-    if (p.docs.expediente) docsList.push({ name:"📁 Expediente", url:p.docs.expediente });
-    if (p.docs.gantt) docsList.push({ name:"📅 Gantt", url:p.docs.gantt });
-    if (directMapLink) docsList.push({ name:"🗺️ Mapa externo", url:directMapLink });
-    const unifiedDocsDescHtml = `<div class="docs-description-card">${p.descripcion ? `<div class="section-title-card">📋 DESCRIPCIÓN DEL PROYECTO</div><div class="project-description-text">${p.descripcion.replace(/\n/g,'<br>')}</div>` : ''}<div class="section-title-card">📎 DOCUMENTACIÓN DEL PROYECTO</div><div class="docs-links-flex">${docsList.map(d => `<a href="${d.url}" target="_blank" class="doc-link-dark">${d.name}</a>`).join('')}</div></div>`;
-    const mxn = (n, dec=2) => { if (!n || n === 0) return '—'; return n >= 1e6 ? `$${(n/1e6).toFixed(dec)}M` : n >= 1e3 ? `$${(n/1e3).toFixed(0)}K` : `$${Math.round(n).toLocaleString('es-MX')}`; };
-    const pct = (n) => (n && !isNaN(n)) ? `${n.toFixed(1)}%` : '—';
-    const margenFinal = p.margenGV || p.margen || 0;
-    const upsideCardHtml = `<div class="fin-card-group-gray"><div class="fin-group-title-gray">📈 PRECIO MÁXIMO (UPSIDE) & RENTABILIDAD</div><div class="fin-grid-3cols-gray"><div class="fin-item-gray"><div class="fin-item-label-gray">Precio de Venta Proyectado</div><div class="fin-item-value-gray">${mxn(p.precioVenta,1)}</div></div><div class="fin-item-gray"><div class="fin-item-label-gray">Gastos Totales</div><div class="fin-item-value-gray">${mxn(p.gastosTotales,1)}</div></div><div class="fin-item-gray"><div class="fin-item-label-gray">Ganancia Neta</div><div class="fin-item-value-gray highlight-cyan">+${mxn(p.ganancia,1)}</div></div></div><div class="fin-grid-3cols-gray"><div class="fin-item-gray"><div class="fin-item-label-gray">Margen Utilidad</div><div class="fin-item-value-gray highlight-teal">${pct(margenFinal)}</div><div class="fin-item-sub-gray">Ganancia / Ventas</div></div><div class="fin-item-gray"><div class="fin-item-label-gray">Precio / m² Promedio</div><div class="fin-item-value-gray">${p.precioM2Post>0 ? '$'+Math.round(p.precioM2Post).toLocaleString('es-MX') : '—'}</div><div class="fin-item-sub-gray">Post Renovación</div></div><div class="fin-item-gray"><div class="fin-item-label-gray">Ganancia / Unidad</div><div class="fin-item-value-gray">${p.gananciaXUnidad>0 ? mxn(p.gananciaXUnidad,0) : '—'}</div></div></div></div>`;
-    const tieneOpc2 = p.inversionOpc2 > 0;
-    const plazoMostrar = p.plazoMeses && p.plazoMeses > 0 ? `${p.plazoMeses} meses` : '—';
-    const inversionCardHtml = `<div class="fin-card-group-dark"><div class="fin-group-title-dark">💰 INVERSIÓN Y RENTABILIDAD (ROI)</div><div class="scenario-badge"> Escenario 1</div><div class="fin-grid-3cols-dark"><div class="fin-item-dark"><div class="fin-item-label-dark">Inversión Inicial</div><div class="fin-item-value-dark fin-value-mint">${mxn(p.capitalAltaltium,1)}</div></div><div class="fin-item-dark"><div class="fin-item-label-dark">ROI Asociación 12 meses</div><div class="fin-item-value-dark fin-value-white">${pct(p.rendimiento)}</div></div><div class="fin-item-dark"><div class="fin-item-label-dark">ROI Adq Distressed</div><div class="fin-item-value-dark fin-value-green">${pct(p.roiDistressed)}</div></div></div><div class="fin-separator-dark"></div><div class="scenario-badge"> Escenario 2</div><div class="fin-grid-3cols-dark-alt"><div class="fin-item-dark"><div class="fin-item-label-dark">Inversión Inicial Opc #2</div><div class="fin-item-value-dark fin-value-mint">${tieneOpc2 ? mxn(p.inversionOpc2,1) : '—'}</div></div><div class="fin-item-dark"><div class="fin-item-label-dark">Plazo (meses)</div><div class="fin-item-value-dark fin-value-white">${plazoMostrar}</div></div><div class="fin-item-dark"><div class="fin-item-label-dark">ROI Ajustado según plazo</div><div class="fin-item-value-dark fin-value-green">${tieneOpc2 ? pct(p.roiOpc2) : '—'}</div></div></div></div>`;
-    const formatNumber = (n) => (!n || n === 0) ? '—' : Math.round(n).toLocaleString('es-MX');
-    const clubHtml = (p.clubParte1Inv > 0 || p.clubParte2Inv > 0 || p.clubAporte1 > 0) ? `<div class="club-section"><div class="club-header"><div class="club-title-wrap"><div class="club-badge">◆ PROGRAMA EXCLUSIVO</div><div class="club-main-title">Club de Socios</div><div class="club-desc">Participa en el crecimiento del portafolio</div></div>${p.totalInversionClub>0 ? `<div class="club-total-inv"><div class="club-total-inv-label">Inversión Total</div><div class="club-total-inv-val">${mxn(p.totalInversionClub,1)}</div></div>` : ''}</div><div class="club-cards-row">${p.clubParte1Inv>0||p.clubAporte1>0 ? `<div class="club-card"><div class="club-card-num">Parte 1</div><div class="club-card-aporte-label">Número de socios</div><div class="club-card-aporte-val">${formatNumber(p.clubParte1Inv)}</div><div class="club-card-divider"></div><div class="club-row"><span class="club-row-label">Aporte por socio</span><span class="club-row-val">${mxn(p.clubAporte1,0)}</span></div>${p.tuGanancia>0 ? `<div class="club-row"><span class="club-row-label">Tu Ganancia</span><span class="club-row-val gain">+${mxn(p.tuGanancia,0)}</span></div>` : ''}${p.totalConGanancia>0 ? `<div class="club-row"><span class="club-row-label">Total con Ganancia</span><span class="club-row-val gold">${mxn(p.totalConGanancia,0)}</span></div>` : ''}${p.roiAnual>0 ? `<div class="club-row" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--gray2)"><span class="club-row-label">ROI Anual</span><span class="club-row-val" style="color:var(--teal);font-size:26px;font-weight:700">${pct(p.roiAnual)}</span></div>` : ''}</div>` : '<div class="club-card" style="display:flex;align-items:center;justify-content:center;color:#aaa;font-size:22px;">No disponible</div>'}${p.clubParte2Inv>0||p.clubAporte2>0 ? `<div class="club-card"><div class="club-card-num">Parte 2</div><div class="club-card-aporte-label">Número de socios</div><div class="club-card-aporte-val">${formatNumber(p.clubParte2Inv)}</div><div class="club-card-divider"></div><div class="club-row"><span class="club-row-label">Aporte por socio</span><span class="club-row-val">${mxn(p.clubAporte2,0)}</span></div>${p.tuGanancia>0 ? `<div class="club-row"><span class="club-row-label">Ganancia estimada</span><span class="club-row-val gain">+${mxn(p.tuGanancia*0.5,0)}</span></div>` : ''}${p.totalConGanancia>0 ? `<div class="club-row"><span class="club-row-label">Total con Ganancia</span><span class="club-row-val gold">${mxn(p.totalConGanancia*0.5+p.clubAporte2,0)}</span></div>` : ''}${p.roiAnual>0 ? `<div class="club-row" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--gray2)"><span class="club-row-label">ROI Anual</span><span class="club-row-val" style="color:var(--teal);font-size:26px;font-weight:700">${pct(p.roiAnual)}</span></div>` : ''}</div>` : '<div class="club-card" style="display:flex;align-items:center;justify-content:center;color:#aaa;font-size:12px;">No disponible</div>'}</div></div>` : '';
-    const finSectionHtml = clubHtml ? `<div class="fin-section"><div class="fin-dual-row"><div class="fin-dual-col">${inversionCardHtml}</div><div class="fin-dual-col">${clubHtml}</div></div></div>` : `<div class="fin-section">${inversionCardHtml}</div>`;
-
-    let timelineHtml = '';
-    if (p.timeline.length) {
-        const fechasValidas = p.timeline.filter(t => t.inicioDate && t.finDate);
-        let minFecha = null, maxFecha = null;
-        if (fechasValidas.length) { minFecha = new Date(Math.min(...fechasValidas.map(t => t.inicioDate))); maxFecha = new Date(Math.max(...fechasValidas.map(t => t.finDate))); }
-        const rangoTotal = (minFecha && maxFecha) ? (maxFecha - minFecha) : 0;
-        let headerMeses = '';
-        if (minFecha && maxFecha && rangoTotal > 0) {
-            const mesesNombres = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-            let cur = new Date(minFecha.getFullYear(), minFecha.getMonth(), 1);
-            const finMes = new Date(maxFecha.getFullYear(), maxFecha.getMonth(), 1);
-            const mesesArr = [];
-            while (cur <= finMes) {
-                const offsetPct = ((cur - minFecha) / rangoTotal) * 100;
-                mesesArr.push(`<span style="position:absolute;left:${offsetPct.toFixed(1)}%;font-size:8px;color:#888;white-space:nowrap;transform:translateX(-20%);">${mesesNombres[cur.getMonth()]} ${cur.getFullYear()}</span>`);
-                cur = new Date(cur.getFullYear(), cur.getMonth() + 1, 1);
-            }
-            headerMeses = `<div style="position:relative;height:20px;margin-bottom:8px;margin-left:142px;margin-right:132px;border-bottom:1px dashed #ccc;">${mesesArr.join('')}</div>`;
-        }
-        const filas = p.timeline.map(t => {
-            let leftPct = 0, widthPct = 85;
-            if (t.inicioDate && t.finDate && rangoTotal > 0) {
-                leftPct  = ((t.inicioDate - minFecha) / rangoTotal) * 100;
-                widthPct = ((t.finDate - t.inicioDate) / rangoTotal) * 100;
-                if (widthPct < 1) widthPct = 1;
-            }
-            const labelFechas = t.inicio && t.fin ? `${t.inicio} – ${t.fin}` : (t.inicio || t.fin || '');
-            return `<div class="tl-row"><div class="tl-label">${t.fase}</div><div class="tl-track"><div class="tl-bar" style="left:${leftPct.toFixed(1)}%;width:${widthPct.toFixed(1)}%;background:${t.color}"></div></div><div class="tl-weeks">${labelFechas}</div></div>`;
-        }).join('');
-        timelineHtml = `<div class="timeline-wrap"><div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#555;margin-bottom:14px;">📅 CRONOGRAMA DEL PROYECTO</div>${headerMeses}${filas}</div>`;
-    }
-
-    container.innerHTML = `
-    <div class="detail-wrap">
-      <div class="hero-split">
-        <div class="left-col">
-          <div class="image-card">${carouselHtml}${techOverlay}</div>
-          ${unifiedDocsDescHtml}
-        </div>
-        <div class="map-card">
-          <div class="map-header">UBICACIÓN ESTRATÉGICA</div>
-          ${mapHtml}
-          ${surroundingsHtml}
-          ${upsideCardHtml}
-        </div>
-      </div>
-      ${renderUnitsPivotCard(p)}
-      ${finSectionHtml}
-      ${renderBreakdownCard(p)}
-      ${timelineHtml}
-      <button onclick="showPortfolioTab()" style="padding:12px 32px;background:var(--teal);color:white;border:none;border-radius:8px;font-weight:700;cursor:pointer;margin-top:20px;">← Volver al Portafolio</button>
-    </div>`;
-    setTimeout(() => {
-        const iframe = container.querySelector('.map-frame'), placeholder = document.getElementById(`map-placeholder-${carouselId}`);
-        if (iframe && placeholder) {
-            iframe.addEventListener('error', () => { iframe.style.display = 'none'; placeholder.style.display = 'flex'; });
-            iframe.addEventListener('load', () => { try { if (iframe.contentDocument?.body.innerHTML === '') throw new Error(); placeholder.style.display = 'none'; } catch(e) {} });
-        }
-    }, 100);
-}
-
+/* ── TABS ───────────────────────────────────────────────── */
 function buildTabs() {
-    const nav = document.getElementById('tab-nav'); if (!nav) return;
+    const nav = document.getElementById('tab-nav');
+    if (!nav) return;
     let html = `<button class="tab-btn active" data-id="portfolio" onclick="showPortfolioTab()">PORTAFOLIO</button>`;
     projects.forEach(p => html += `<button class="tab-btn" data-id="${p.id}" onclick="showProjectDetail('${p.id}')">${p.num} · ${p.nombre}</button>`);
     nav.innerHTML = html;
 }
-
+function setActiveTab(id) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.getAttribute('data-id') === id));
+}
 function showPortfolioTab() {
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
     document.getElementById('tab-portafolio').classList.add('active');
     renderPortfolioView();
     setActiveTab('portfolio');
 }
-
 function showProjectDetail(id) {
-    const p = projects.find(proj => proj.id === id);
+    const p = projects.find(pr => pr.id === id);
     if (!p) return;
     document.querySelectorAll('.tab-panel').forEach(el => el.classList.remove('active'));
     document.getElementById('tab-detail-container').classList.add('active');
@@ -1127,8 +1444,512 @@ function showProjectDetail(id) {
     setActiveTab(id);
 }
 
+/* ── FORMAT HELPERS ─────────────────────────────────────── */
+const mxn = (n,dec=2) => {
+    if (!n || n === 0) return '—';
+    if (n >= 1e6) return `$${(n/1e6).toFixed(dec)}M`;
+    if (n >= 1e3) return `$${(n/1e3).toFixed(0)}K`;
+    return `$${Math.round(n).toLocaleString('es-MX')}`;
+};
+const pct = n => (n && !isNaN(n)) ? `${n.toFixed(1)}%` : '—';
+const fmt = n => (!n || n === 0) ? '—' : Math.round(n).toLocaleString('es-MX');
+
+/* ── PORTFOLIO VIEW ─────────────────────────────────────── */
+function renderPortfolioView() {
+    const M   = portfolioMetrics;
+    const con = document.getElementById('tab-portafolio');
+    if (!con) return;
+    con.innerHTML = `
+    <div class="section-header"><span class="section-title">KPIs DEL PORTAFOLIO</span><div class="section-line"></div></div>
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-label">Proyectos Activos</div>
+        <div class="kpi-value">${projects.length} <span class="kpi-unit">proyectos</span></div>
+        <div class="kpi-note">+ ${M.totalUnidades} unidades totales</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Venta Total Proyectada</div>
+        <div class="kpi-value">$${(M.totalVenta/1e6).toFixed(1)}<span class="kpi-unit">M MXN</span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Ganancia Neta Total</div>
+        <div class="kpi-value">$${(M.totalGanancia/1e6).toFixed(1)}<span class="kpi-unit">M MXN</span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">ROI Distressed Pool</div>
+        <div class="kpi-value">${M.totalGastos ? (M.totalGanancia/M.totalGastos*100).toFixed(1) : 0}<span class="kpi-unit">%</span></div>
+      </div>
+      <div class="kpi-card accent">
+        <div class="kpi-label">ROI Asociación en Part.</div>
+        <div class="kpi-value">${M.roiPortafolio.toFixed(1)}<span class="kpi-unit">%</span></div>
+        <div class="kpi-note">Ganancia / Capital invertido</div>
+      </div>
+    </div>
+    <div class="section-header"><span class="section-title">PROYECTOS</span><div class="section-line"></div></div>
+    <div class="projects-grid" id="portfolio-grid"></div>
+    <div class="section-header"><span class="section-title">COMPARATIVO FINANCIERO</span><div class="section-line"></div></div>
+    <div class="charts-row">
+      <div class="chart-wrap">
+        <div class="chart-header">
+          <span class="chart-title">PRECIO DE VENTA VS. GASTOS TOTALES</span>
+          <div class="chart-legend">
+            <span class="chart-legend-item"><span class="chart-legend-dot" style="background:#52BEC0;"></span>Precio de venta</span>
+            <span class="chart-legend-item"><span class="chart-legend-dot" style="background:#DFDFE1;border:1px solid #C8C8CB;"></span>Gastos totales</span>
+          </div>
+        </div>
+        <div class="chart-inner"><canvas id="chartComparativo"></canvas></div>
+      </div>
+      <div class="chart-wrap">
+        <div class="chart-header"><span class="chart-title">ROI POR PROYECTO — ASOCIACIÓN EN PARTICIPACIÓN (%)</span></div>
+        <div class="chart-inner"><canvas id="chartROI"></canvas></div>
+      </div>
+    </div>
+    <div class="pricing-note">
+      <div class="pricing-note-title">FUENTE DE DATOS</div>
+      <p>Indicadores calculados desde Google Sheets en tiempo real. Los valores se actualizan al recargar la página.</p>
+    </div>
+    <div class="dash-footer">
+      <div class="footer-brand">ALTALTIUM<span>.</span> REAL ESTATE SOLUTIONS</div>
+      <div class="footer-right">DATOS EN VIVO · ACTUALIZACIÓN AUTOMÁTICA</div>
+    </div>`;
+
+    const grid = document.getElementById('portfolio-grid');
+    if (grid) {
+        grid.innerHTML = projects.map(p => {
+            const bg = p.coverImage ? `background-image:url('${p.coverImage}');` : 'background-color:#2c2c2c;';
+            return `<div class="project-card" onclick="showProjectDetail('${p.id}')">
+              <div class="card-img" style="${bg}background-size:cover;background-position:center;">
+                <div class="proj-number">PROYECTO ${p.num}</div>
+                <div class="proj-name">${p.nombre}</div>
+                <div class="proj-addr">${p.direccionResumida||p.direccion}</div>
+              </div>
+              <div class="stats-grid">
+                <div class="stat-label">Unidades</div><div class="stat-value mint">${p.unidadesTexto}</div>
+                <div class="stat-label">Construcción</div><div class="stat-value">${p.construccion||0} m²</div>
+                <div class="stat-label">Terreno</div><div class="stat-value">${p.terreno||0} m²</div>
+                <div class="stat-label">Niveles</div><div class="stat-value">${p.niveles||0}</div>
+                <div class="stat-label">Edad</div><div class="stat-value">${p.antiguedad?p.antiguedad+' años':'—'}</div>
+                <div class="stat-label">Tipo Vivienda</div><div class="stat-value">${p.tipoVivienda}</div>
+                <div class="stat-label">Uso de Suelo</div><div class="stat-value">${p.usoDeSuelo}</div>
+              </div>
+              <div class="financial-row"><span class="fin-label">Precio de venta proy.</span><span class="fin-amount">${mxn(p.precioVenta)}</span></div>
+              <div class="financial-row"><span class="fin-label">Gastos totales</span><span class="fin-amount">${mxn(p.gastosTotales)}</span></div>
+              <div class="financial-row"><span class="fin-label">Ganancia neta</span><span class="fin-amount green">+${mxn(p.ganancia)}</span></div>
+              <div class="financial-row"><span class="fin-label">Margen</span><span class="fin-amount">${p.margen.toFixed(1)}%</span></div>
+              <div class="roi-section">
+                <div class="roi-title">RENDIMIENTO</div>
+                <div class="roi-numbers">
+                  <span class="roi-big">+${mxn(p.ganancia)}</span>
+                  <div style="display:flex;flex-direction:column;gap:3px;text-align:right;">
+                    <span class="roi-percent">ROI — ASOCIACIÓN &nbsp;${p.rendimiento.toFixed(1)}%</span>
+                    <span class="roi-percent">ROI — DISTRESSED &nbsp;${p.roiDistressed.toFixed(1)}%</span>
+                  </div>
+                </div>
+              </div>
+              <button class="detail-button">VER DETALLE →</button>
+            </div>`;
+        }).join('');
+    }
+
+    setTimeout(() => {
+        Chart.defaults.font.family = "'Barlow', sans-serif";
+        Chart.defaults.font.size   = 11;
+        const c1 = document.getElementById('chartComparativo')?.getContext('2d');
+        const c2 = document.getElementById('chartROI')?.getContext('2d');
+        if (c1 && projects.length) {
+            if (chartComparativo) chartComparativo.destroy();
+            chartComparativo = new Chart(c1, {
+                type: 'bar',
+                data: { labels: projects.map(p => p.nombre), datasets: [
+                    { label:'Precio Venta', data:projects.map(p=>p.precioVenta), backgroundColor:'#52BEC0', borderRadius:4 },
+                    { label:'Gastos Totales', data:projects.map(p=>p.gastosTotales), backgroundColor:'#DFDFE1', borderRadius:4 }
+                ]},
+                options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
+                    scales:{
+                        x:{ ticks:{ callback:(v,i)=>{ const l=projects[i]?.nombre||''; return l.length>12?l.slice(0,12)+'…':l; }, font:{size:11} } },
+                        y:{ ticks:{ callback:v=>v===0?'$0M':`$${(v/1e6).toFixed(1)}M`, font:{size:11} } }
+                    }
+                }
+            });
+        }
+        if (c2 && projects.length) {
+            if (chartROI) chartROI.destroy();
+            chartROI = new Chart(c2, {
+                type: 'bar',
+                data: { labels:projects.map(p=>p.nombre), datasets:[{ label:'ROI %', data:projects.map(p=>p.rendimiento), backgroundColor:'#52BEC0', borderRadius:4 }]},
+                options: { indexAxis:'y', responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
+                    scales:{ x:{ ticks:{ callback:v=>`${v}%`, font:{size:11} } } }
+                }
+            });
+        }
+    }, 100);
+}
+
+/* ── CAROUSEL ───────────────────────────────────────────── */
+function setupCarousel(cid, total) {
+    const prev = document.getElementById(`prev-${cid}`);
+    const next = document.getElementById(`next-${cid}`);
+    const dots = document.querySelectorAll(`[data-dot="${cid}"]`);
+    const update = (idx) => {
+        const img = document.getElementById(`carousel-img-${cid}`);
+        const imgs = window[`carouselImages_${cid}`];
+        if (img && imgs && imgs[idx]) img.src = imgs[idx];
+        dots.forEach(d => d.classList.toggle('active', +d.getAttribute('data-index') === idx));
+    };
+    if (prev) prev.onclick = () => { const i = ((window[`carouselIndex_${cid}`]||0)-1+total)%total; window[`carouselIndex_${cid}`]=i; update(i); };
+    if (next) next.onclick = () => { const i = ((window[`carouselIndex_${cid}`]||0)+1)%total; window[`carouselIndex_${cid}`]=i; update(i); };
+    dots.forEach(d => d.onclick = () => { const idx=+d.getAttribute('data-index'); window[`carouselIndex_${cid}`]=idx; update(idx); });
+}
+
+/* ── UNITS PIVOT ────────────────────────────────────────── */
+function renderUnitsPivotCard(p) {
+    const hasD = p.deptoBlocks?.length > 0;
+    const hasL = p.localBlocks?.length > 0;
+    if (!hasD && !hasL) return '';
+
+    const tdep = p.totalDeptos || (hasD ? p.deptoBlocks.reduce((a,b)=>a+b.cantidad,0) : 0);
+    const tloc = p.totalLocales || (hasL ? p.localBlocks.reduce((a,b)=>a+b.cantidad,0) : 0);
+    const cDep = p.totalCostoDeptos || (hasD ? p.deptoBlocks.reduce((a,b)=>a+b.costo,0) : 0);
+    const cLoc = p.totalCostoLocales || (hasL ? p.localBlocks.reduce((a,b)=>a+b.costo,0) : 0);
+    const cAll = (cDep||0) + (cLoc||0);
+
+    let pills = '';
+    if (tdep>0) pills += `<div class="units-pivot-pill"><span class="pill-count">${tdep}</span> Deptos</div>`;
+    if (tloc>0) pills += `<div class="units-pivot-pill" style="border-color:rgba(192,125,32,0.4);color:var(--amber);"><span class="pill-count">${tloc}</span> Locales</div>`;
+
+    let dRows = '';
+    if (hasD) {
+        dRows += `<tr><td colspan="5" style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--dark);padding:14px 24px 8px;background:#fafafc;border-bottom:1px solid var(--gray2);">🏢 Departamentos</td></tr>`;
+        dRows += `<tr><th>Tipo</th><th>Cantidad</th><th>m² / Unidad</th><th>Costo Unitario</th><th>Costo Total</th></tr>`;
+        for (const d of p.deptoBlocks) {
+            const ct = d.costo>0 ? d.costo*d.cantidad : 0;
+            dRows += `<tr><td><span class="unit-type-badge">DEPTO ${d.label.split(' ')[1]}</span></td><td>${d.cantidad||0}</td><td>${d.m2>0?d.m2+' m²':'—'}</td><td class="cost-cell">${d.costo>0?mxn(d.costo):'—'}</td><td class="cost-cell">${ct>0?mxn(ct):mxn(d.costo)}</td></tr>`;
+        }
+        if (tdep>0||cDep>0) dRows += `<tr class="subtotal-row"><td><strong>Total Departamentos</strong></td><td><strong>${tdep}</strong></td><td></td><td></td><td class="cost-cell"><strong>${mxn(cDep)}</strong></td></tr>`;
+    }
+    let lRows = '';
+    if (hasL) {
+        lRows += `<tr><td colspan="5" style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--dark);padding:14px 24px 8px;background:#fafafc;border-bottom:1px solid var(--gray2);">🏪 Locales Comerciales</td></tr>`;
+        lRows += `<tr><th>Tipo</th><th>Cantidad</th><th>m² / Unidad</th><th>Costo Unitario</th><th>Costo Total</th></tr>`;
+        for (const l of p.localBlocks) {
+            const ct = l.costo>0 ? l.costo*l.cantidad : 0;
+            lRows += `<tr><td><span class="unit-type-badge local">LOCAL ${l.label.split(' ')[1]}</span></td><td>${l.cantidad||0}</td><td>${l.m2>0?l.m2+' m²':'—'}</td><td class="cost-cell">${l.costo>0?mxn(l.costo):'—'}</td><td class="cost-cell">${ct>0?mxn(ct):mxn(l.costo)}</td></tr>`;
+        }
+        if (tloc>0||cLoc>0) lRows += `<tr class="subtotal-row"><td><strong>Total Locales</strong></td><td><strong>${tloc}</strong></td><td></td><td></td><td class="cost-cell"><strong>${mxn(cLoc)}</strong></td></tr>`;
+    }
+    const totalRow = (cAll>0||tdep+tloc>0) ? `<tr class="total-row"><td><strong>TOTAL UNIDADES</strong></td><td><strong>${tdep+tloc}</strong></td><td></td><td></td><td class="cost-cell total">${mxn(cAll)}</td></tr>` : '';
+    return `<div class="units-pivot-card">
+      <div class="units-pivot-header">
+        <div class="units-pivot-header-title">🏘️ Desglose de Unidades</div>
+        <div class="units-pivot-header-right">
+          ${pills}
+          ${cAll>0?`<div class="units-pivot-cost-total"><div class="units-pivot-cost-total-label">Costo Total</div><div class="units-pivot-cost-total-val">${mxn(cAll)}</div></div>`:''}
+        </div>
+      </div>
+      <div style="overflow-x:auto;"><table class="units-pivot-table">${dRows}${lRows}${totalRow}</table></div>
+    </div>`;
+}
+
+/* ── BREAKDOWN CARD ─────────────────────────────────────── */
+function renderBreakdownCard(p) {
+    const mainSegs = [];
+    if (p.costoEdificio > 0) mainSegs.push({ label:'Costo del edificio', value:p.costoEdificio, color:'#52BEC0' });
+
+    const renova = p.renovaBreakdown || {};
+    const totalRenovaSeg = renova.totalAjustado || p.totalRenova;
+    if (totalRenovaSeg > 0) mainSegs.push({ label:'Costos RENOVA', value:totalRenovaSeg, color:'#3A9EAD',
+        subItems:[
+            { label:'COSTO RENOVA X DEPTO', amount:renova.costoXDepto },
+            { label:'# Deptos a RENOVA', amount:renova.numDeptos, isNumber:true },
+            { label:'TOTAL RENOVA DEPTOS (Ref.)', amount:renova.totalRef },
+            { label:'% CALCULADORA RENOVA', amount:renova.pctCalculadora, isPercent:true }
+        ]
+    });
+
+    const SUB_GASTOS = [
+        {label:'Gastos Operativos Arquitectura',key:'gastosArquitectura',color:'#1F6D6E'},
+        {label:'Agua/Luz/Predial',key:'aguaLuz',color:'#278A8C'},
+        {label:'Hipoteca',key:'hipoteca',color:'#2FA8AA'},
+        {label:'Gastos Legales',key:'gastosLegales',color:'#52BEC0'},
+        {label:'MKT',key:'mkt',color:'#7ECFD0'},
+        {label:'Comisiones RENOVA',key:'comisionesRenova',color:'#A8E6E7'},
+        {label:'Comisiones Venta',key:'comisionesVenta',color:'#E67E22'},
+        {label:'Comisiones FIN O FONDEO',key:'comisionesFin',color:'#F39C12'},
+        {label:'Régimen Condominio',key:'regimenCond',color:'#F1C40F'},
+        {label:'Licencias',key:'licencias',color:'#9B59B6'},
+        {label:'Imprevistos',key:'imprevistos',color:'#E74C3C'},
+        {label:'Pago sin anticipo',key:'pagoSinAnticipo',color:'#C0392B'}
+    ];
+
+    let gastosOpTotal = SUB_GASTOS.reduce((a,g)=>a+(p.gastosDetalle[g.key]>0?p.gastosDetalle[g.key]:0),0);
+    if (gastosOpTotal > 0) mainSegs.push({ label:'Gastos operativos (con comisiones)', value:gastosOpTotal, color:'#E67E22' });
+    if (mainSegs.length === 0 && p.gastosTotales > 0) mainSegs.push({ label:'Gastos totales', value:p.gastosTotales, color:'#3B3B3B' });
+
+    const maxVal = Math.max(...mainSegs.map(s=>s.value),1);
+    const cid    = 'bd-' + p.id.replace(/-/g,'');
+
+    let filasHtml = '';
+    for (const seg of mainSegs) {
+        const bp = Math.round((seg.value/maxVal)*100);
+        filasHtml += `<div class="bd-wf-row"><div class="bd-wf-left"><span class="bd-wf-dot" style="background:${seg.color};"></span><span class="bd-wf-label">${seg.label}</span></div><div class="bd-wf-bar-wrap"><div class="bd-wf-bar" style="width:${bp}%;background:${seg.color};"></div></div><div class="bd-wf-amount">${mxn(seg.value)}</div></div>`;
+        if (seg.subItems) {
+            for (const sub of seg.subItems) {
+                const sv = sub.amount||0;
+                const disp = sub.isPercent ? `${sv.toFixed(1)}%` : sub.isNumber ? Math.round(sv).toLocaleString('es-MX') : sv>0?mxn(sv):'—';
+                const sbp = (sv>0&&maxVal>0)?Math.round((sv/maxVal)*100):0;
+                filasHtml += `<div class="bd-sub-row"><div class="bd-sub-left"><span class="bd-sub-dot" style="background:#3A9EAD;"></span><span class="bd-sub-label">${sub.label}</span></div><div class="bd-sub-bar-wrap"><div class="bd-sub-bar" style="width:${sbp}%;background:#3A9EAD;opacity:0.55;"></div></div><div class="bd-sub-amount">${disp}</div></div>`;
+            }
+        }
+        if (seg.label === 'Gastos operativos (con comisiones)' && gastosOpTotal > 0) {
+            for (const sub of SUB_GASTOS) {
+                const sv = p.gastosDetalle[sub.key];
+                if (sv > 0) {
+                    const sbp = Math.round((sv/maxVal)*100);
+                    filasHtml += `<div class="bd-sub-row"><div class="bd-sub-left"><span class="bd-sub-dot" style="background:${sub.color};"></span><span class="bd-sub-label">${sub.label}</span></div><div class="bd-sub-bar-wrap"><div class="bd-sub-bar" style="width:${sbp}%;background:${sub.color};"></div></div><div class="bd-sub-amount">${mxn(sv)}</div></div>`;
+                }
+            }
+        }
+    }
+
+    const margenFinal = p.margenGV || p.margen || 0;
+    const donutData   = [...mainSegs.map(s=>s.value), p.ganancia>0?p.ganancia:0];
+    const donutColors = [...mainSegs.map(s=>s.color), '#2E9E6B'];
+    const donutLabels = [...mainSegs.map(s=>s.label), 'Ganancia neta'];
+
+    const legendHtml = `
+      <div class="bd-legend-item" style="background:#f5f7f9;border-radius:var(--radius-sm);padding:6px 10px;margin-bottom:6px;">
+        <div class="bd-legend-left"><span class="bd-legend-dot" style="background:var(--black);"></span><strong>Precio de Venta Proyectado</strong></div>
+        <span class="bd-legend-pct">100% (${mxn(p.precioVenta)})</span>
+      </div>
+      ${mainSegs.map(s=>`<div class="bd-legend-item"><div class="bd-legend-left"><span class="bd-legend-dot" style="background:${s.color};"></span>${s.label}</div><span class="bd-legend-pct">−${((s.value/(p.precioVenta||1))*100).toFixed(1)}% (−${mxn(s.value)})</span></div>`).join('')}
+      ${p.ganancia>0?`<div class="bd-legend-item" style="border-top:1px solid var(--gray2);padding-top:8px;margin-top:4px;"><div class="bd-legend-left"><span class="bd-legend-dot" style="background:#2E9E6B;"></span><strong style="color:#2E9E6B;">Ganancia neta</strong></div><span class="bd-legend-pct" style="color:#2E9E6B;font-size:var(--fs-h4);">${pct(margenFinal)} (+${mxn(p.ganancia)})</span></div>`:''}`;
+
+    /* NOTE: We render the breakdown card HTML first, then init the donut chart via a deferred script tag */
+    return `<div class="breakdown-card">
+      <div class="bd-card-header">
+        <div class="bd-card-header-title">💰 Desglose de inversión &amp; ganancia</div>
+        <div class="bd-card-header-right">
+          <div class="bd-card-header-label">Precio de venta proyectado</div>
+          <div class="bd-card-header-val">${mxn(p.precioVenta)}</div>
+        </div>
+      </div>
+      <div class="bd-body">
+        <div class="bd-waterfall-scroll"><div class="bd-waterfall">${filasHtml}</div></div>
+        <div class="bd-subtotal-row"><div class="bd-subtotal-label">Total gastos</div><div></div><div class="bd-subtotal-amount">${mxn(p.gastosTotales||mainSegs.reduce((a,s)=>a+s.value,0))}</div></div>
+        <div class="bd-main-content">
+          <div class="bd-legend">${legendHtml}</div>
+          <div class="bd-donut-wrap"><canvas id="${cid}-donut"></canvas></div>
+        </div>
+      </div>
+    </div>
+    <script>
+    (function(){
+      var canvas = document.getElementById('${cid}-donut');
+      if (!canvas || !window.Chart) return;
+      new Chart(canvas.getContext('2d'),{
+        type:'doughnut',
+        data:{ labels:${JSON.stringify(donutLabels)}, datasets:[{ data:${JSON.stringify(donutData)}, backgroundColor:${JSON.stringify(donutColors)}, borderWidth:2, borderColor:'#0A0A0A' }] },
+        options:{ responsive:true, maintainAspectRatio:false, cutout:'66%', plugins:{ legend:{ display:false } } }
+      });
+    })();
+    <\/script>`;
+}
+
+/* ── PROJECT DETAIL ─────────────────────────────────────── */
+function renderProjectDetail(p) {
+    const con = document.getElementById('tab-detail-container');
+    const cid = p.id.replace(/-/g,'');
+
+    if (p.allImages?.length > 0) { window[`carouselImages_${cid}`] = p.allImages; window[`carouselIndex_${cid}`] = 0; }
+
+    const carouselHtml = p.allImages?.length > 0 ? `
+      <div id="carousel-${cid}" class="carousel-container">
+        <img id="carousel-img-${cid}" class="carousel-slide" src="${p.allImages[0]}" alt="Imagen del proyecto">
+        <button class="carousel-btn carousel-prev" id="prev-${cid}" aria-label="Imagen anterior">❮</button>
+        <button class="carousel-btn carousel-next" id="next-${cid}" aria-label="Imagen siguiente">❯</button>
+        <div class="carousel-dots">
+          ${p.allImages.map((_,idx)=>`<span class="dot ${idx===0?'active':''}" data-dot="${cid}" data-index="${idx}"></span>`).join('')}
+        </div>
+      </div>` :
+      `<div class="carousel-container" style="background:#2c2c2c;display:flex;align-items:center;justify-content:center;color:#888;font-size:var(--fs-base);">Sin imágenes disponibles</div>`;
+
+    const deptosLocalesText = [
+        p.totalDeptos>0 ? p.totalDeptos+(p.totalDeptos===1?' depto':' deptos') : '',
+        p.totalLocales>0 ? p.totalLocales+(p.totalLocales===1?' local':' locales') : ''
+    ].filter(Boolean).join(' + ') || '—';
+
+    const techOverlay = `<div class="image-overlay">
+      <div class="proj-title">${p.nombre}</div>
+      <div class="proj-address">${p.direccion}</div>
+      <div class="tech-grid">
+        ${[
+            ['Unidades',deptosLocalesText],['Tipo Vivienda',p.tipoVivienda],
+            ['Antigüedad',p.antiguedad?p.antiguedad+' años':'—'],['Terreno',p.terreno+' m²'],
+            ['Construcción',p.construccion+' m²'],['Sup. Vendible',(p.supVendible||'—')+' m²'],
+            ['Niveles',p.niveles],['Frentes',p.frentes||'—'],
+            ['Uso de suelo',p.usoDeSuelo],['Cuenta Catastral',p.cuentaCatastral||'—']
+        ].map(([l,v])=>`<div class="tech-item"><span class="tech-label">${l}</span><span class="tech-value">${v}</span></div>`).join('')}
+      </div>
+    </div>`;
+
+    const rawMapsLink = (p.docs.googleMaps||"").trim();
+    const mapEmbedUrl = buildMapEmbedUrl(rawMapsLink, p.direccion);
+    const directMapLink = rawMapsLink || (p.direccion ? `https://www.google.com/maps?q=${encodeURIComponent(p.direccion.replace(/\n/g,' ').trim())}` : "");
+
+    const mapHtml = mapEmbedUrl
+        ? `<iframe class="map-frame" src="${mapEmbedUrl}" allowfullscreen loading="lazy" title="Ubicación del proyecto"></iframe>
+           <div class="map-placeholder" id="map-placeholder-${cid}" style="display:none;"><span>📍 No se pudo cargar el mapa</span>${directMapLink?`<a href="${directMapLink}" target="_blank" class="map-link">Abrir en Google Maps →</a>`:''}</div>`
+        : `<div class="map-placeholder"><span>📍 Sin dirección</span>${directMapLink?`<a href="${directMapLink}" target="_blank" class="map-link">Abrir →</a>`:''}</div>`;
+
+    const surroundHtml = p.alrededores?.length
+        ? `<div class="surroundings-section"><div class="surroundings-title">Alrededores</div><div class="surroundings-list">${p.alrededores.map(x=>`<span class="surrounding-badge">${x}</span>`).join('')}</div></div>`
+        : `<div class="surroundings-section"><div class="surroundings-title">Alrededores</div><div class="empty-surroundings">No se han registrado puntos de interés cercanos</div></div>`;
+
+    const docsList = [
+        p.docs.cv&&{name:"📄 CV",url:p.docs.cv},
+        p.docs.manual&&{name:"📘 Manual",url:p.docs.manual},
+        p.docs.estudioMercado&&{name:"📊 Estudio",url:p.docs.estudioMercado},
+        p.docs.expediente&&{name:"📁 Expediente",url:p.docs.expediente},
+        p.docs.gantt&&{name:"📅 Gantt",url:p.docs.gantt},
+        directMapLink&&{name:"🗺️ Google Maps",url:directMapLink}
+    ].filter(Boolean);
+
+    const docsDescHtml = `<div class="docs-description-card">
+      ${p.descripcion?`<div class="section-title-card">📋 DESCRIPCIÓN DEL PROYECTO</div><div class="project-description-text">${p.descripcion.replace(/\n/g,'<br>')}</div>`:''}
+      <div class="section-title-card">📎 DOCUMENTACIÓN</div>
+      <div class="docs-links-flex">${docsList.map(d=>`<a href="${d.url}" target="_blank" rel="noopener" class="doc-link-dark">${d.name}</a>`).join('')}</div>
+    </div>`;
+
+    const margenFinal = p.margenGV || p.margen || 0;
+    const upsideHtml = `<div class="fin-card-group-gray">
+      <div class="fin-group-title-gray">📈 PRECIO DE VENTA &amp; RENTABILIDAD</div>
+      <div class="fin-grid-3cols-gray">
+        <div class="fin-item-gray"><div class="fin-item-label-gray">Precio de Venta Proyectado</div><div class="fin-item-value-gray">${mxn(p.precioVenta,1)}</div></div>
+        <div class="fin-item-gray"><div class="fin-item-label-gray">Gastos Totales</div><div class="fin-item-value-gray highlight-red">${mxn(p.gastosTotales,1)}</div></div>
+        <div class="fin-item-gray"><div class="fin-item-label-gray">Ganancia Neta</div><div class="fin-item-value-gray highlight-cyan">+${mxn(p.ganancia,1)}</div></div>
+      </div>
+      <div class="fin-grid-3cols-gray">
+        <div class="fin-item-gray"><div class="fin-item-label-gray">Margen Utilidad</div><div class="fin-item-value-gray highlight-teal">${pct(margenFinal)}</div><div class="fin-item-sub-gray">Ganancia / Ventas</div></div>
+        <div class="fin-item-gray"><div class="fin-item-label-gray">Precio / m² Promedio</div><div class="fin-item-value-gray">${p.precioM2Post>0?'$'+Math.round(p.precioM2Post).toLocaleString('es-MX'):'—'}</div><div class="fin-item-sub-gray">Post Renovación</div></div>
+        <div class="fin-item-gray"><div class="fin-item-label-gray">Ganancia / Unidad</div><div class="fin-item-value-gray">${p.gananciaXUnidad>0?mxn(p.gananciaXUnidad,0):'—'}</div></div>
+      </div>
+    </div>`;
+
+    const tieneOpc2 = p.inversionOpc2 > 0;
+    const invCardHtml = `<div class="fin-card-group-dark">
+      <div class="fin-group-title-dark">💰 INVERSIÓN Y RENTABILIDAD (ROI)</div>
+      <div class="scenario-badge">Escenario 1</div>
+      <div class="fin-grid-3cols-dark">
+        <div class="fin-item-dark"><div class="fin-item-label-dark">Inversión Inicial</div><div class="fin-item-value-dark fin-value-mint">${mxn(p.capitalAltaltium,1)}</div></div>
+        <div class="fin-item-dark"><div class="fin-item-label-dark">ROI Asociación 12 meses</div><div class="fin-item-value-dark fin-value-white">${pct(p.rendimiento)}</div></div>
+        <div class="fin-item-dark"><div class="fin-item-label-dark">ROI Adq Distressed</div><div class="fin-item-value-dark fin-value-green">${pct(p.roiDistressed)}</div></div>
+      </div>
+      <div class="fin-separator-dark"></div>
+      <div class="scenario-badge">Escenario 2</div>
+      <div class="fin-grid-3cols-dark-alt">
+        <div class="fin-item-dark"><div class="fin-item-label-dark">Inversión Inicial Opc #2</div><div class="fin-item-value-dark fin-value-mint">${tieneOpc2?mxn(p.inversionOpc2,1):'—'}</div></div>
+        <div class="fin-item-dark"><div class="fin-item-label-dark">Plazo (meses)</div><div class="fin-item-value-dark fin-value-white">${p.plazoMeses>0?p.plazoMeses+' meses':'—'}</div></div>
+        <div class="fin-item-dark"><div class="fin-item-label-dark">ROI Ajustado según plazo</div><div class="fin-item-value-dark fin-value-green">${tieneOpc2?pct(p.roiOpc2):'—'}</div></div>
+      </div>
+    </div>`;
+
+    const clubHtml = (p.clubParte1Inv>0||p.clubParte2Inv>0||p.clubAporte1>0) ? `<div class="club-section">
+      <div class="club-header">
+        <div>
+          <div class="club-badge">◆ PROGRAMA EXCLUSIVO</div>
+          <div class="club-main-title">Club de Socios</div>
+          <div class="club-desc">Participa en el crecimiento del portafolio</div>
+        </div>
+        ${p.totalInversionClub>0?`<div class="club-total-inv"><div class="club-total-inv-label">Inversión Total</div><div class="club-total-inv-val">${mxn(p.totalInversionClub,1)}</div></div>`:''}
+      </div>
+      <div class="club-cards-row">
+        ${p.clubParte1Inv>0||p.clubAporte1>0?`<div class="club-card">
+          <div class="club-card-num">Parte 1</div>
+          <div class="club-card-aporte-label">Número de socios</div>
+          <div class="club-card-aporte-val">${fmt(p.clubParte1Inv)}</div>
+          <div class="club-card-divider"></div>
+          <div class="club-row"><span class="club-row-label">Aporte por socio</span><span class="club-row-val">${mxn(p.clubAporte1,0)}</span></div>
+          ${p.tuGanancia>0?`<div class="club-row"><span class="club-row-label">Tu Ganancia</span><span class="club-row-val gain">+${mxn(p.tuGanancia,0)}</span></div>`:''}
+          ${p.totalConGanancia>0?`<div class="club-row"><span class="club-row-label">Total con Ganancia</span><span class="club-row-val gold">${mxn(p.totalConGanancia,0)}</span></div>`:''}
+          ${p.roiAnual>0?`<div class="club-row" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--gray2)"><span class="club-row-label">ROI Anual</span><span class="club-row-val" style="color:var(--teal);font-family:'Barlow Condensed',sans-serif;font-size:var(--fs-h3);font-weight:700;">${pct(p.roiAnual)}</span></div>`:''}
+        </div>`:'<div class="club-card" style="display:flex;align-items:center;justify-content:center;color:#aaa;font-size:var(--fs-base);">No disponible</div>'}
+        ${p.clubParte2Inv>0||p.clubAporte2>0?`<div class="club-card">
+          <div class="club-card-num">Parte 2</div>
+          <div class="club-card-aporte-label">Número de socios</div>
+          <div class="club-card-aporte-val">${fmt(p.clubParte2Inv)}</div>
+          <div class="club-card-divider"></div>
+          <div class="club-row"><span class="club-row-label">Aporte por socio</span><span class="club-row-val">${mxn(p.clubAporte2,0)}</span></div>
+          ${p.tuGanancia>0?`<div class="club-row"><span class="club-row-label">Ganancia estimada</span><span class="club-row-val gain">+${mxn(p.tuGanancia*0.5,0)}</span></div>`:''}
+          ${p.totalConGanancia>0?`<div class="club-row"><span class="club-row-label">Total con Ganancia</span><span class="club-row-val gold">${mxn(p.totalConGanancia*0.5+p.clubAporte2,0)}</span></div>`:''}
+          ${p.roiAnual>0?`<div class="club-row" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--gray2)"><span class="club-row-label">ROI Anual</span><span class="club-row-val" style="color:var(--teal);font-family:'Barlow Condensed',sans-serif;font-size:var(--fs-h3);font-weight:700;">${pct(p.roiAnual)}</span></div>`:''}
+        </div>`:'<div class="club-card" style="display:flex;align-items:center;justify-content:center;color:#aaa;font-size:var(--fs-base);">No disponible</div>'}
+      </div>
+    </div>` : '';
+
+    const finSectionHtml = clubHtml
+        ? `<div class="fin-section"><div class="fin-dual-row"><div class="fin-dual-col">${invCardHtml}</div><div class="fin-dual-col">${clubHtml}</div></div></div>`
+        : `<div class="fin-section">${invCardHtml}</div>`;
+
+    /* Timeline */
+    let timelineHtml = '';
+    if (p.timeline.length) {
+        const valid = p.timeline.filter(t => t.inicioDate && t.finDate);
+        let minF=null, maxF=null;
+        if (valid.length) { minF=new Date(Math.min(...valid.map(t=>t.inicioDate))); maxF=new Date(Math.max(...valid.map(t=>t.finDate))); }
+        const range = (minF&&maxF) ? maxF-minF : 0;
+        const MESES_N = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+        let headerMeses = '';
+        if (minF&&maxF&&range>0) {
+            let cur = new Date(minF.getFullYear(),minF.getMonth(),1);
+            const end = new Date(maxF.getFullYear(),maxF.getMonth(),1);
+            const labels = [];
+            while (cur<=end) { const off=((cur-minF)/range)*100; labels.push(`<span style="position:absolute;left:${off.toFixed(1)}%;font-size:var(--fs-xs);color:#888;white-space:nowrap;transform:translateX(-20%);">${MESES_N[cur.getMonth()]} ${cur.getFullYear()}</span>`); cur=new Date(cur.getFullYear(),cur.getMonth()+1,1); }
+            headerMeses = `<div style="position:relative;height:20px;margin-bottom:8px;margin-left:142px;margin-right:132px;border-bottom:1px dashed var(--gray3);">${labels.join('')}</div>`;
+        }
+        const filas = p.timeline.map(t => {
+            let lp=0, wp=85;
+            if (t.inicioDate&&t.finDate&&range>0) { lp=((t.inicioDate-minF)/range)*100; wp=((t.finDate-t.inicioDate)/range)*100; if(wp<1)wp=1; }
+            return `<div class="tl-row"><div class="tl-label">${t.fase}</div><div class="tl-track"><div class="tl-bar" style="left:${lp.toFixed(1)}%;width:${wp.toFixed(1)}%;background:${t.color};"></div></div><div class="tl-weeks">${t.inicio&&t.fin?t.inicio+' – '+t.fin:(t.inicio||t.fin||'')}</div></div>`;
+        }).join('');
+        timelineHtml = `<div class="timeline-wrap"><div style="font-family:'Barlow Condensed',sans-serif;font-size:var(--fs-sm);font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#666;margin-bottom:14px;">📅 CRONOGRAMA DEL PROYECTO</div>${headerMeses}${filas}</div>`;
+    }
+
+    con.innerHTML = `
+    <div class="detail-wrap">
+      <div class="hero-split">
+        <div class="left-col">
+          <div class="image-card">${carouselHtml}${techOverlay}</div>
+          ${docsDescHtml}
+        </div>
+        <div class="map-card">
+          <div class="map-header">UBICACIÓN ESTRATÉGICA</div>
+          ${mapHtml}
+          ${surroundHtml}
+          ${upsideHtml}
+        </div>
+      </div>
+      ${renderUnitsPivotCard(p)}
+      ${finSectionHtml}
+      ${renderBreakdownCard(p)}
+      ${timelineHtml}
+      <button onclick="showPortfolioTab()" style="display:inline-flex;align-items:center;gap:8px;padding:11px 28px;background:var(--teal);color:white;border:none;border-radius:40px;font-family:'Barlow Condensed',sans-serif;font-size:var(--fs-base);font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:opacity var(--transition);margin-top:16px;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">← Volver al Portafolio</button>
+    </div>`;
+
+    if (p.allImages?.length > 1) setupCarousel(cid, p.allImages.length);
+
+    /* Map error handling */
+    setTimeout(() => {
+        const iframe = con.querySelector('.map-frame');
+        const placeholder = document.getElementById(`map-placeholder-${cid}`);
+        if (iframe && placeholder) {
+            iframe.addEventListener('error', () => { iframe.style.display='none'; placeholder.style.display='flex'; });
+        }
+    }, 150);
+}
+
+/* ── INIT ───────────────────────────────────────────────── */
 async function init() {
-    const fechaElem = document.getElementById('header-fecha');
+    const fechaEl = document.getElementById('header-fecha');
     try {
         const res = await fetch(CSV_URL);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -1140,11 +1961,11 @@ async function init() {
         buildTabs();
         renderPortfolioView();
         setActiveTab('portfolio');
-        fechaElem.innerHTML = new Date().toLocaleDateString('es-MX', { year:'numeric', month:'long', day:'numeric' }) + '<br><span style="font-size:9px;">Actualizado</span>';
-        window.addEventListener('resize', () => { if (chartComparativoInstance) chartComparativoInstance.resize(); if (chartROIInstance) chartROIInstance.resize(); });
+        fechaEl.innerHTML = new Date().toLocaleDateString('es-MX',{year:'numeric',month:'long',day:'numeric'}) + '<br><span style="font-size:var(--fs-xs);">Actualizado</span>';
+        window.addEventListener('resize', () => { chartComparativo?.resize(); chartROI?.resize(); });
     } catch(e) {
         console.error(e);
-        fechaElem.innerHTML = '<strong style="color:var(--red)">Error al cargar</strong>';
+        fechaEl.innerHTML = '<strong style="color:#ff6b6b">Error al cargar</strong>';
         const c = document.getElementById('tab-portafolio');
         if (c) c.innerHTML = `<div class="error-message">⚠️ Error al cargar datos: ${e.message}<br><br>Revisa la consola para más detalles.</div>`;
     }
@@ -1152,16 +1973,6 @@ async function init() {
 
 window.showPortfolioTab = showPortfolioTab;
 window.showProjectDetail = showProjectDetail;
-window.changeImage = function(carouselId, delta, total) {
-    let current = (window[`carouselIndex_${carouselId}`] || 0);
-    current = (current + delta + total) % total;
-    window[`carouselIndex_${carouselId}`] = current;
-    const img = document.getElementById(`carousel-img-${carouselId}`);
-    const images = window[`carouselImages_${carouselId}`];
-    if (img && images && images[current]) img.src = images[current];
-    for (let i = 0; i < total; i++) { const dot = document.getElementById(`dot-${carouselId}-${i}`); if (dot) dot.classList.toggle('active', i === current); }
-};
-window.goToSlide = function(carouselId, targetIdx, total) { window.changeImage(carouselId, targetIdx - (window[`carouselIndex_${carouselId}`] || 0), total); };
 init();
 </script>
 </body>
