@@ -1,24 +1,82 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <!-- METAETIQUETAS PARA WHATSAPP -->
-    <meta property="og:title" content="Tu Título Atractivo" />
-    <meta property="og:description" content="Una breve descripción de lo que ofreces." />
-    <!-- URL PÚBLICA DE TU IMAGEN EN GITHUB -->
-    <meta property="og:image" content="https://raw.githubusercontent.com/tu-usuario/tu-repo/main/tu-imagen.jpg" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lorenzo ✨ | Lista de Regalos</title>
+
+    <!-- ============================================ -->
+    <!-- METAETIQUETAS PARA WHATSAPP Y REDES SOCIALES  -->
+    <!-- ============================================ -->
+    <!-- Título que se verá en la vista previa -->
+    <meta property="og:title" content="Invitación Lorenzo ✨" />
+    <!-- Descripción que aparecerá debajo del título -->
+    <meta property="og:description" content="Te esperamos para celebrar este día tan especial. ¡Mira los detalles y nuestra mesa de regalos!" />
+    <!-- URL de la imagen que quieres que se muestre en WhatsApp -->
+    <meta property="og:image" content="https://omaranayalucio.github.io/Dashboards/lorenzo.png" />
+    <!-- Dimensiones de la imagen (1200x630 es el tamaño ideal para vista previa) -->
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <!-- Tipo de contenido -->
     <meta property="og:type" content="website" />
-    <!-- La URL de tu página en GitHub Pages -->
-    <meta property="og:url" content="https://tu-usuario.github.io/tu-repo/" />
-    <!-- FIN METAETIQUETAS -->
+    <!-- URL de tu página (la que compartirás) -->
+    <meta property="og:url" content="https://omaranayalucio.github.io/Dashboards/lorenzo.html" />
+    <!-- ============================================ -->
 
-    <title>Tu Título</title>
+    <!-- Estilo para que la imagen se vea bien en todos los dispositivos -->
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f8f8f8;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        /* La imagen será un enlace clickeable y se adaptará a la pantalla */
+        .image-link {
+            display: block;
+            width: 100%;
+            cursor: pointer;
+        }
+        .image-link img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 8px; /* Opcional: un borde redondeado para la imagen */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Opcional: una sombra suave */
+        }
+        /* Mensaje de ayuda opcional, por si la imagen no se ve */
+        .texto-ayuda {
+            text-align: center;
+            margin-top: 20px;
+            color: #555;
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
-    <!-- Al hacer clic en la imagen, se irá a tu enlace de Amazon -->
-    <a href="https://www.amazon.es/tu-enlace" target="_blank">
-        <img src="https://raw.githubusercontent.com/tu-usuario/tu-repo/main/tu-imagen.jpg" alt="Descripción de la imagen" style="width:100%; max-width:1200px;">
-    </a>
+
+    <div class="container">
+        <!--
+            La imagen es un enlace a tu lista de regalos de Amazon.
+            Al hacer clic, se abre en una nueva pestaña (target="_blank").
+        -->
+        <a href="https://www.amazon.com.mx/registries/gl/guest-view/1SGPNLAL4T6J3" target="_blank" class="image-link">
+            <img src="https://omaranayalucio.github.io/Dashboards/lorenzo.png" alt="Invitación Lorenzo - Haz clic para ver la lista de regalos">
+        </a>
+
+        <!-- Este texto es opcional, pero ayuda si la imagen tarda en cargar -->
+        <p class="texto-ayuda">📸 Haz clic en la imagen para ver la lista de regalos en Amazon</p>
+    </div>
+
 </body>
 </html>
