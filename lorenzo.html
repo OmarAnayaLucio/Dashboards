@@ -8,74 +8,232 @@
     <!-- ============================================ -->
     <!-- METAETIQUETAS PARA WHATSAPP Y REDES SOCIALES  -->
     <!-- ============================================ -->
-    <!-- Título que se verá en la vista previa -->
     <meta property="og:title" content="Invitación Lorenzo ✨" />
-    <!-- Descripción que aparecerá debajo del título -->
-    <meta property="og:description" content="Te esperamos para celebrar este día tan especial. ¡Mira los detalles y nuestra mesa de regalos!" />
-    <!-- URL de la imagen que quieres que se muestre en WhatsApp -->
+    <meta property="og:description" content="Te esperamos el Jueves 16 de julio de 2026. ¡Mira los detalles y nuestra mesa de regalos!" />
     <meta property="og:image" content="https://omaranayalucio.github.io/Dashboards/lorenzo.png" />
-    <!-- Dimensiones de la imagen (1200x630 es el tamaño ideal para vista previa) -->
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <!-- Tipo de contenido -->
     <meta property="og:type" content="website" />
-    <!-- URL de tu página (la que compartirás) -->
     <meta property="og:url" content="https://omaranayalucio.github.io/Dashboards/lorenzo.html" />
     <!-- ============================================ -->
 
-    <!-- Estilo para que la imagen se vea bien en todos los dispositivos -->
     <style>
-        body {
+        /* ===== RESET ===== */
+        * {
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #f8f8f8;
-            font-family: Arial, sans-serif;
-        }
-        .container {
-            max-width: 1200px;
-            width: 100%;
-            padding: 20px;
             box-sizing: border-box;
         }
-        /* La imagen será un enlace clickeable y se adaptará a la pantalla */
+
+        /* ===== FONDO: OCUPA TODA LA PANTALLA ===== */
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            overflow: hidden; /* Evita scroll innecesario */
+            font-family: 'Georgia', 'Times New Roman', serif;
+        }
+
+        /* ===== CONTENEDOR DEL GIF DE FONDO ===== */
+        .background-full {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            object-fit: cover; /* El GIF cubre toda la pantalla sin deformarse */
+            pointer-events: none; /* Para que no interfiera con clics */
+        }
+
+        /* ===== CAPA OSCURA PARA MEJOR LECTURA (OPCIONAL) ===== */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            background: rgba(0, 0, 0, 0.25); /* Oscurece un poco el fondo para que resalte la imagen */
+            pointer-events: none;
+        }
+
+        /* ===== CONTENIDO CENTRADO ===== */
+        .content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            width: 100%;
+        }
+
+        /* ===== FECHA ESTÉTICA (sobresale del fondo) ===== */
+        .fecha-wrapper {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(8px);
+            padding: 14px 35px;
+            border-radius: 60px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            animation: pulse-glow 2.5s ease-in-out infinite;
+            text-align: center;
+        }
+
+        .fecha-wrapper .frase {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #8b6b4d;
+            font-weight: 600;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .fecha-wrapper .fecha {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c1810;
+            letter-spacing: 2px;
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #b8860b, #d4a017);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .fecha-wrapper .fecha span {
+            font-weight: 300;
+            color: #6b4c3b;
+            -webkit-text-fill-color: #6b4c3b;
+        }
+
+        /* ===== IMAGEN (INVITACIÓN) CENTRADA ===== */
         .image-link {
             display: block;
-            width: 100%;
+            max-width: 750px;
+            width: 90%;
             cursor: pointer;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 3px solid rgba(255, 215, 0, 0.2);
         }
+
+        .image-link:hover {
+            transform: scale(1.02);
+            box-shadow: 0 25px 70px rgba(255, 215, 0, 0.25);
+        }
+
         .image-link img {
             width: 100%;
             height: auto;
             display: block;
-            border-radius: 8px; /* Opcional: un borde redondeado para la imagen */
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Opcional: una sombra suave */
         }
-        /* Mensaje de ayuda opcional, por si la imagen no se ve */
+
+        /* ===== TEXTO AYUDANTE ===== */
         .texto-ayuda {
-            text-align: center;
-            margin-top: 20px;
-            color: #555;
-            font-size: 14px;
+            margin-top: 25px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            padding: 10px 24px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            font-family: 'Arial', sans-serif;
+        }
+
+        .texto-ayuda i {
+            font-style: normal;
+            display: inline-block;
+            animation: bounce-arrow 1.8s ease-in-out infinite;
+        }
+
+        /* ===== ANIMACIONES ===== */
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 0 8px 32px rgba(255, 215, 0, 0.2);
+                border-color: rgba(255, 215, 0, 0.4);
+            }
+            50% {
+                box-shadow: 0 8px 48px rgba(255, 215, 0, 0.5);
+                border-color: rgba(255, 215, 0, 0.9);
+            }
+        }
+
+        @keyframes bounce-arrow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            .fecha-wrapper {
+                padding: 10px 18px;
+                margin-bottom: 18px;
+            }
+            .fecha-wrapper .fecha {
+                font-size: 1.4rem;
+            }
+            .fecha-wrapper .frase {
+                font-size: 0.65rem;
+                letter-spacing: 2px;
+            }
+            .texto-ayuda {
+                font-size: 0.75rem;
+                padding: 6px 14px;
+            }
+            .image-link {
+                width: 95%;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!--
-            La imagen es un enlace a tu lista de regalos de Amazon.
-            Al hacer clic, se abre en una nueva pestaña (target="_blank").
-        -->
-        <a href="https://www.amazon.com.mx/registries/gl/guest-view/1SGPNLAL4T6J3" target="_blank" class="image-link">
-            <img src="https://omaranayalucio.github.io/Dashboards/lorenzo.png" alt="Invitación Lorenzo - Haz clic para ver la lista de regalos">
+    <!-- ===== GIF DE TOY STORY OCUPANDO TODA LA PANTALLA ===== -->
+    <img
+        class="background-full"
+        src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExMXlqbG01c2Q1M3E5eW94ZHJ4c2d3YzRpcW9naTk2dXoxbXZoYXUzeCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/d81n9rX8stxbRbqrbG/giphy.gif"
+        alt="Fondo Toy Story"
+        loading="lazy"
+    >
+
+    <!-- ===== CAPA OSCURA (OPCIONAL, PARA MEJOR CONTRASTE) ===== -->
+    <div class="overlay"></div>
+
+    <!-- ===== CONTENIDO CENTRADO ===== -->
+    <div class="content">
+        <!-- FECHA -->
+        <div class="fecha-wrapper">
+            <div class="frase">✨ Los esperamos el</div>
+            <div class="fecha">
+                Jueves 16 <span>de</span> julio <span>de</span> 2026
+            </div>
+        </div>
+
+        <!-- IMAGEN ENLAZADA A AMAZON -->
+        <a
+            href="https://www.amazon.com.mx/registries/gl/guest-view/1SGPNLAL4T6J3"
+            target="_blank"
+            class="image-link"
+        >
+            <img
+                src="https://omaranayalucio.github.io/Dashboards/lorenzo.png"
+                alt="Invitación Lorenzo - Haz clic para ver la lista de regalos"
+                loading="lazy"
+            >
         </a>
 
-        <!-- Este texto es opcional, pero ayuda si la imagen tarda en cargar -->
-        <p class="texto-ayuda">📸 Haz clic en la imagen para ver la lista de regalos en Amazon</p>
+        <!-- TEXTO AYUDANTE -->
+        <p class="texto-ayuda">
+            <i>👇</i> Haz clic en la imagen para ver la lista de regalos en Amazon <i>👇</i>
+        </p>
     </div>
 
 </body>
