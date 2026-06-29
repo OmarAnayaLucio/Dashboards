@@ -6,7 +6,7 @@
 <title>Altaltium · KPI Dashboard · Live</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-/* ===== ESTILOS (igual que antes) ===== */
+/* ===== ESTILOS COMPLETOS ===== */
 :root{
   --teal:#52BEC0;--tl:rgba(82,190,192,.1);--tm:rgba(82,190,192,.2);
   --black:#1C1E21;--white:#fff;
@@ -182,7 +182,7 @@ tr.sub td{background:var(--g50);font-weight:700;}
 </head>
 <body>
 
-<!-- ===== HTML (igual que antes) ===== -->
+<!-- ===== LOADING ===== -->
 <div id="ld">
   <div class="ld-logo"><svg viewBox="0 0 20 20" width="28" height="28"><polygon points="10,2 18,16 2,16" fill="none" stroke="#52BEC0" stroke-width="2"/><line x1="10" y1="2" x2="10" y2="16" stroke="#52BEC0" stroke-width="1.2" opacity=".5"/><line x1="6" y1="11" x2="14" y2="11" stroke="#52BEC0" stroke-width="1.2" opacity=".5"/></svg></div>
   <div class="ld-t">Altaltium Real Estate</div>
@@ -193,6 +193,7 @@ tr.sub td{background:var(--g50);font-weight:700;}
 
 <div id="ftt"></div>
 
+<!-- ===== HEADER ===== -->
 <div class="hdr">
   <div class="brand">
     <div class="bl"><svg viewBox="0 0 20 20" width="18" height="18"><polygon points="10,2 18,16 2,16" fill="none" stroke="#52BEC0" stroke-width="2"/><line x1="10" y1="2" x2="10" y2="16" stroke="#52BEC0" stroke-width="1.2" opacity=".5"/><line x1="6" y1="11" x2="14" y2="11" stroke="#52BEC0" stroke-width="1.2" opacity=".5"/></svg></div>
@@ -208,12 +209,14 @@ tr.sub td{background:var(--g50);font-weight:700;}
   </div>
 </div>
 
+<!-- ===== WEEK SELECTOR ===== -->
 <div class="wbar">
   <span class="wlbl">Semana</span>
   <div id="wpills"></div>
   <div class="live"><span class="dot"></span>EN VIVO</div>
 </div>
 
+<!-- ===== MAIN CONTENT ===== -->
 <div class="wrap">
 <div class="ng">
   <div class="nav">
@@ -255,6 +258,7 @@ tr.sub td{background:var(--g50);font-weight:700;}
   </div>
 </div>
 
+<!-- ===== VIEW: GENERAL ===== -->
 <div class="view on" id="view-gen">
   <div class="al al-amber" id="al-rot"><span class="al-ico">🔄</span><div id="al-rot-txt">Cargando…</div></div>
   <div class="smkt"><div class="smktb"></div><div class="smktl">KPIs Marketing — Interesados · Registro · Traspaso</div></div>
@@ -288,21 +292,25 @@ tr.sub td{background:var(--g50);font-weight:700;}
   </table></div></div>
 </div>
 
+<!-- ===== VIEW: BLOQUE 1 ===== -->
 <div class="view" id="view-b1">
-  <div class="sh" id="sh-b1" style="border-left:3px solid var(--v1);padding-left:8px;color:var(--v1)">Bloque 1 · V1 + V2</div>
+  <div class="sh" id="sh-b1" style="border-left:3px solid var(--v1);padding-left:8px;color:var(--v1)">Bloque 1 · V1 & V3</div>
   <div id="b1-cnt"></div>
 </div>
 
+<!-- ===== VIEW: BLOQUE 2 ===== -->
 <div class="view" id="view-b2">
-  <div class="sh" id="sh-b2" style="border-left:3px solid var(--v4);padding-left:8px;color:var(--v4)">Bloque 2 · V1 + V4</div>
+  <div class="sh" id="sh-b2" style="border-left:3px solid var(--v4);padding-left:8px;color:var(--v4)">Bloque 2 · V1 & V4</div>
   <div id="b2-cnt"></div>
 </div>
 
+<!-- ===== VIEW: VENTAS 3 ===== -->
 <div class="view" id="view-v3">
   <div class="sh" style="border-left:3px solid var(--v3);padding-left:8px;color:var(--v3)">Ventas 3 · Gerencia fija</div>
   <div id="v3-cnt"></div>
 </div>
 
+<!-- ===== VIEW: COMPARE ===== -->
 <div class="view" id="view-compare">
   <div class="sh">Comparativa — <span id="cmp-ttl"></span></div>
   <div id="cmp-kpis" class="kr" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));"></div>
@@ -312,38 +320,25 @@ tr.sub td{background:var(--g50);font-weight:700;}
   </div>
 </div>
 
+<!-- ===== VIEW: TENDENCIAS (ACTUALIZADO CON NUEVO ORDEN) ===== -->
 <div class="view" id="view-tend">
   <div style="background:#fff;border:1px solid var(--g200);border-radius:var(--r);padding:.875rem 1.1rem;margin-bottom:1rem;">
     <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
       <div><div class="nlbl">Ver por</div><div id="grain-tabs" class="npills"></div></div>
       <div><div class="nlbl">Portal</div><div id="tend-ger" class="npills"></div></div>
+      <div id="tend-ctx" style="margin-left:auto;font-size:9px;color:var(--g500);"></div>
     </div>
     <div id="tend-sel" style="margin-top:.75rem;padding:.75rem 1rem;background:var(--g50);border-radius:var(--rs);"></div>
   </div>
   <div id="tend-notice" style="display:none" class="al al-amber"><span class="al-ico">⚠️</span><div>Algunos períodos tienen datos incompletos (s/d).</div></div>
+  <!-- Gráficas en el orden correcto: 1-4 en cg2 (2 columnas), 5-7 en cg3 (3 columnas) -->
   <div id="tend-c1" class="cg2"></div>
   <div id="tend-c2" class="cg3"></div>
   <div class="sh">Tabla comparativa</div>
   <div class="tc"><div class="tsc" id="tend-tbl"></div></div>
 </div>
 
-<div class="view" id="view-rep">
-  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-bottom:1rem;gap:10px;">
-    <div>
-      <div class="smktl" style="font-size:13px;">📁 Rendimiento mensual por portal</div>
-      <div style="font-size:10px;color:var(--g500);margin-top:3px" id="rep-info">Cargando…</div>
-    </div>
-    <button class="rbtn" onclick="cargarRep()">🔄 Recargar</button>
-  </div>
-  <div id="rep-sum"></div>
-  <div id="rep-portals"></div>
-  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:.75rem;">
-    <div class="sh" style="margin-bottom:0">📊 Tabla detallada</div>
-    <input type="text" id="rep-filter" class="filter-input" placeholder="🔍 Filtrar…">
-  </div>
-  <div id="rep-tbl"></div>
-</div>
-
+<!-- ===== VIEW: DETALLE CITAS ===== -->
 <div class="view" id="view-citas">
   <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-bottom:1rem;gap:10px;">
     <div>
@@ -386,8 +381,27 @@ tr.sub td{background:var(--g50);font-weight:700;}
   </table></div></div>
 </div>
 
+<!-- ===== VIEW: REPORTES ===== -->
+<div class="view" id="view-rep">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-bottom:1rem;gap:10px;">
+    <div>
+      <div class="smktl" style="font-size:13px;">📁 Rendimiento mensual por portal</div>
+      <div style="font-size:10px;color:var(--g500);margin-top:3px" id="rep-info">Cargando…</div>
+    </div>
+    <button class="rbtn" onclick="cargarRep()">🔄 Recargar</button>
+  </div>
+  <div id="rep-sum"></div>
+  <div id="rep-portals"></div>
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:.75rem;">
+    <div class="sh" style="margin-bottom:0">📊 Tabla detallada</div>
+    <input type="text" id="rep-filter" class="filter-input" placeholder="🔍 Filtrar…">
+  </div>
+  <div id="rep-tbl"></div>
 </div>
 
+</div>
+
+<!-- ===== FOOTER ===== -->
 <div class="ftr">
   <span class="fb">ALTALTIUM REAL ESTATE SOLUTIONS · LA LLAVE DE TU FUTURO</span>
   <span class="fs" id="ftr-txt">Panel KPI Ejecutivo · Gerente de Marketing: Denisse Hansen</span>
@@ -395,29 +409,36 @@ tr.sub td{background:var(--g50);font-weight:700;}
 
 <script>
 // ════════════════════════════════════════════════════════════
-// CONFIG - GIDs CORRECTOS según las hojas
+// CONFIGURACIÓN - GIDs CORRECTOS
 // ════════════════════════════════════════════════════════════
 const BASE = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSu3ZxLVYU5I15BjGCKdACCNGAAmgH6Y6KeO7NBz7gL3eh_YHddMACMbR2FWesRIEejxLhmjU94YRWu/pub';
 
 const GID = {
-  interesados : '0',           // Hoja 1
-  rendimientos: '1840377315',  // Hoja 2
-  asesores    : '382191196',   // Hoja 3
-  rol         : '55493113',    // Hoja 4
-  citas       : '1314661128',  // Hoja 5
-  crm         : '509014674',   // Hoja 6
-  weekly      : '1096839993',  // Hoja 7 - Historial WEEKLY (tendencias)
-  reporte     : 'PENDIENTE'    // Hoja 8
+  interesados : '0',
+  rendimientos: '1840377315',
+  asesores    : '382191196',
+  rol         : '55493113',
+  citas       : '76854756',
+  crm         : '509014674',
+  weekly      : '1096839993',
+  reporte     : '1314661128'
 };
 
+// ════════════════════════════════════════════════════════════
+// MAPEO DE PORTALES
+// ════════════════════════════════════════════════════════════
 const PMAP = {
   'VENTAS 1':'V1','VENTAS 2':'V2','VENTAS 3':'V3','VENTAS 4':'V4',
   'V1':'V1','V2':'V2','V3':'V3','V4':'V4',
+  'VENTAS1':'V1','VENTAS2':'V2','VENTAS3':'V3','VENTAS4':'V4',
+  'OTRO':'V3',
+  'OUTLET':'V3',
+  'PREMIUM':'V1',
 };
 const PC = {V1:'#1A73E8',V2:'#1E8E3E',V3:'#7B2FBE',V4:'#D56E0C'};
 
 // ════════════════════════════════════════════════════════════
-// ESTADO
+// ESTADO GLOBAL
 // ════════════════════════════════════════════════════════════
 const S = {
   semana: 26,
@@ -428,17 +449,18 @@ const S = {
   crm: [],
   citas: [],
   daily: [],
+  reporte: [],
   portalData: {},
   curView: 'gen',
   selAs: [],
   sortG: {col:'reg', dir:'desc'},
   tGrain: 'week', tGer: 'all',
-  tSelW: [], tSelM: [], tSelQ: [],
-  _repFilt: '',
+  tSelW: [],
+  _repFilt: ''
 };
 
 // ════════════════════════════════════════════════════════════
-// CSV PARSER
+// UTILIDADES
 // ════════════════════════════════════════════════════════════
 function parseCSV(text) {
   const lines = text.replace(/\r\n/g,'\n').replace(/\r/g,'\n').trim().split('\n');
@@ -454,6 +476,7 @@ function parseCSV(text) {
   }
   return rows;
 }
+
 function splitLine(line) {
   const res = []; let cur = '', q = false;
   for (let i = 0; i < line.length; i++) {
@@ -464,6 +487,7 @@ function splitLine(line) {
   res.push(cur);
   return res;
 }
+
 async function fetchCSV(gid) {
   const url = `${BASE}?gid=${gid}&single=true&output=csv&t=${Date.now()}`;
   const r = await fetch(url);
@@ -471,27 +495,36 @@ async function fetchCSV(gid) {
   return parseCSV(await r.text());
 }
 
-// ════════════════════════════════════════════════════════════
-// UTILIDADES
-// ════════════════════════════════════════════════════════════
-function pmap(v) { return PMAP[(v||'').trim().toUpperCase()] || null; }
+function pmap(v) { 
+  if (!v) return null;
+  const val = (v||'').trim().toUpperCase();
+  if (PMAP[val]) return PMAP[val];
+  if (val === 'OTRO' || val === 'OUTLET' || val === 'OTROS') return 'V3';
+  if (val.includes('VENTAS 1') || val === 'VENTAS1' || val === 'V1') return 'V1';
+  if (val.includes('VENTAS 2') || val === 'VENTAS2' || val === 'V2') return 'V2';
+  if (val.includes('VENTAS 3') || val === 'VENTAS3' || val === 'V3') return 'V3';
+  if (val.includes('VENTAS 4') || val === 'VENTAS4' || val === 'V4') return 'V4';
+  return null;
+}
 
 function getWeekFromDate(dateStr) {
   if (!dateStr) return null;
   const s = String(dateStr).trim();
   let d = null;
-  // Intentar parsear YYYY/MM/DD o DD/MM/YYYY
   const parts1 = s.match(/^(\d{4})\/(\d{2})\/(\d{2})/);
   const parts2 = s.match(/^(\d{2})\/(\d{2})\/(\d{4})/);
+  const parts3 = s.match(/^(\d{2})\/(\d{2})\/(\d{2})/);
   if (parts1) {
     d = new Date(parseInt(parts1[1]), parseInt(parts1[2]) - 1, parseInt(parts1[3]));
   } else if (parts2) {
     d = new Date(parseInt(parts2[3]), parseInt(parts2[2]) - 1, parseInt(parts2[1]));
+  } else if (parts3) {
+    const year = parseInt(parts3[3]) + 2000;
+    d = new Date(year, parseInt(parts3[2]) - 1, parseInt(parts3[1]));
   } else {
     d = new Date(s);
   }
   if (!d || isNaN(d)) return null;
-  // Calcular semana ISO
   const tmp = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
   const day = tmp.getUTCDay() || 7;
   tmp.setUTCDate(tmp.getUTCDate() + 4 - day);
@@ -500,6 +533,7 @@ function getWeekFromDate(dateStr) {
 }
 
 function normName(n) { return (n||'').trim().toLowerCase().replace(/[áàä]/g,'a').replace(/[éèë]/g,'e').replace(/[íìï]/g,'i').replace(/[óòö]/g,'o').replace(/[úùü]/g,'u').replace(/ñ/g,'n'); }
+
 function nameMatch(a, b) {
   const na = normName(a), nb = normName(b);
   if (na === nb) return true;
@@ -507,56 +541,159 @@ function nameMatch(a, b) {
   return wa[0] === wb[0] && wa.some(w => wb.includes(w) && w.length > 2);
 }
 
-// ════════════════════════════════════════════════════════════
-// CARGA
-// ════════════════════════════════════════════════════════════
 function prog(pct, msg) {
   document.getElementById('ld-bar').style.width = pct + '%';
   document.getElementById('ld-msg').textContent = msg;
 }
 
+function mostrarError(msg) {
+  const d = document.createElement('div');
+  d.className = 'al al-red'; d.style.margin = '1rem 1.5rem';
+  d.innerHTML = `<span class="al-ico">⚠️</span><div><strong>Error:</strong> ${msg}<br>
+    <small>Verifica que el sheet esté publicado correctamente.</small></div>`;
+  document.querySelector('.wrap').prepend(d);
+}
+
+// ════════════════════════════════════════════════════════════
+// DETECCIÓN AUTOMÁTICA DE ÚLTIMA SEMANA
+// ════════════════════════════════════════════════════════════
+function detectarUltimaSemana() {
+  let ultimaSemana = 0;
+  let fuente = 'ninguna';
+  
+  if (S.citas && S.citas.length > 0) {
+    const colSemana = Object.keys(S.citas[0]).find(k => 
+      k.includes('Semana') || k.includes('semana') || k === 'Sem' || k === 'Week'
+    );
+    if (colSemana) {
+      S.citas.forEach(r => {
+        const sem = parseInt(r[colSemana] || 0);
+        if (sem > ultimaSemana) { ultimaSemana = sem; fuente = 'Citas'; }
+      });
+    }
+  }
+  
+  if (ultimaSemana === 0 && S.daily && S.daily.length > 0) {
+    const colSemana = Object.keys(S.daily[0]).find(k => 
+      k.includes('Semana') || k.includes('semana')
+    );
+    if (colSemana) {
+      S.daily.forEach(r => {
+        const sem = parseInt(r[colSemana] || 0);
+        if (sem > ultimaSemana) { ultimaSemana = sem; fuente = 'Weekly'; }
+      });
+    }
+  }
+  
+  if (ultimaSemana === 0 && S.crm && S.crm.length > 0) {
+    const colSemana = Object.keys(S.crm[0]).find(k => 
+      k.includes('Semana') || k.includes('semana')
+    );
+    if (colSemana) {
+      S.crm.forEach(r => {
+        const sem = parseInt(r[colSemana] || 0);
+        if (sem > ultimaSemana) { ultimaSemana = sem; fuente = 'CRM'; }
+      });
+    }
+  }
+  
+  if (ultimaSemana === 0 && S.interesados && S.interesados.length > 0) {
+    const colSemana = Object.keys(S.interesados[0]).find(k => 
+      k.includes('Semana') || k.includes('semana')
+    );
+    if (colSemana) {
+      S.interesados.forEach(r => {
+        const sem = parseInt(r[colSemana] || 0);
+        if (sem > ultimaSemana) { ultimaSemana = sem; fuente = 'Interesados'; }
+      });
+    }
+  }
+  
+  console.log(`📅 Última semana detectada: ${ultimaSemana} (fuente: ${fuente})`);
+  
+  if (ultimaSemana === 0) {
+    ultimaSemana = 26;
+    console.warn('⚠️ No se detectaron semanas, usando semana 26 por defecto');
+  }
+  
+  return ultimaSemana;
+}
+
+// ════════════════════════════════════════════════════════════
+// CARGA DE DATOS
+// ════════════════════════════════════════════════════════════
 async function cargar() {
   try {
     prog(5, 'Iniciando carga de datos…');
     
     prog(10, 'Cargando catálogo de asesores…');
     S.asesores = await fetchCSV(GID.asesores);
+    console.log('✅ Asesores cargados:', S.asesores.length);
     
-    prog(25, 'Cargando citas (agenda)…');
+    prog(20, 'Cargando citas (agenda)…');
     S.citas = await fetchCSV(GID.citas);
-    
-    prog(40, 'Cargando interesados…');
-    S.interesados = await fetchCSV(GID.interesados);
-    
-    prog(55, 'Cargando rendimientos…');
-    S.rendimientos = await fetchCSV(GID.rendimientos);
-    
-    prog(70, 'Cargando CRM…');
-    S.crm = await fetchCSV(GID.crm);
-    
-    prog(85, 'Cargando historial weekly (tendencias)…');
-    S.daily = await fetchCSV(GID.weekly);
-    console.log('Weekly cargadas:', S.daily.length, 'filas');
-    if (S.daily.length > 0) {
-      console.log('Columnas weekly:', Object.keys(S.daily[0]));
+    console.log('✅ Citas cargadas:', S.citas.length);
+    if (S.citas.length > 0) {
+      console.log('📋 Columnas Citas:', Object.keys(S.citas[0]));
     }
-
-    prog(95, 'Procesando datos…');
     
-    S.semana = 26;
+    prog(35, 'Cargando interesados…');
+    S.interesados = await fetchCSV(GID.interesados);
+    console.log('✅ Interesados cargados:', S.interesados.length);
+    
+    prog(50, 'Cargando rendimiento mensual…');
+    S.rendimientos = await fetchCSV(GID.rendimientos);
+    console.log('✅ Rendimiento Mensual cargado:', S.rendimientos.length);
+    
+    prog(60, 'Cargando CRM…');
+    S.crm = await fetchCSV(GID.crm);
+    console.log('✅ CRM cargados:', S.crm.length);
+    
+    prog(70, 'Cargando rendimiento semanal (weekly)…');
+    S.daily = await fetchCSV(GID.weekly);
+    console.log('✅ Rendimiento Semanal cargado:', S.daily.length, 'filas');
+    if (S.daily.length > 0) {
+      console.log('📋 Columnas Weekly:', Object.keys(S.daily[0]));
+    }
+    
+    prog(80, 'Cargando reporte mensual I24…');
+    try {
+      S.reporte = await fetchCSV(GID.reporte);
+      console.log('✅ Reporte I24 cargado:', S.reporte.length);
+    } catch(e) { 
+      console.warn('⚠️ No se pudo cargar Reporte I24:', e.message);
+      S.reporte = [];
+    }
+    
+    prog(90, 'Procesando datos…');
     
     try {
       const rolRaw = await fetchCSV(GID.rol);
       procesarRol(rolRaw);
-    } catch(e) { console.warn('Error cargando rol:', e); }
+      console.log('✅ Rol procesado:', S.semanas.length, 'semanas');
+    } catch(e) { 
+      console.warn('⚠️ Error cargando rol:', e);
+      S.semanas = [
+        { num: 25, inicio: '06-12', fin: 'Jun', b1: [], b2: [] },
+        { num: 26, inicio: '19-26', fin: 'Jun', b1: [], b2: [] }
+      ];
+    }
     
+    S.semana = detectarUltimaSemana();
+    console.log(`📊 Semana seleccionada: ${S.semana}`);
+    
+    // Construir datos de tendencias desde las 3 fuentes
+    construirTendenciasDesdeFuentes();
+    
+    prog(95, 'Renderizando dashboard…');
     renderTodo();
 
     prog(100, '¡Listo!');
     setTimeout(() => document.getElementById('ld').classList.add('hidden'), 600);
+    
   } catch(e) {
     document.getElementById('ld').classList.add('hidden');
-    console.error('Error en carga:', e);
+    console.error('❌ Error en carga:', e);
     mostrarError(e.message);
   }
 }
@@ -571,35 +708,68 @@ async function recargar() {
     S.rendimientos = await fetchCSV(GID.rendimientos);
     S.crm = await fetchCSV(GID.crm);
     S.daily = await fetchCSV(GID.weekly);
-    S.semana = 26;
+    S.reporte = await fetchCSV(GID.reporte);
+    const rolRaw = await fetchCSV(GID.rol);
+    procesarRol(rolRaw);
+    S.semana = detectarUltimaSemana();
+    construirTendenciasDesdeFuentes();
     renderTodo();
   } catch(e) { mostrarError(e.message); }
   finally { btn.classList.remove('spin'); btn.disabled = false; }
 }
 
-function mostrarError(msg) {
-  const d = document.createElement('div');
-  d.className = 'al al-red'; d.style.margin = '1rem 1.5rem';
-  d.innerHTML = `<span class="al-ico">⚠️</span><div><strong>Error:</strong> ${msg}<br>
-    <small>Verifica que el sheet esté publicado correctamente.</small></div>`;
-  document.querySelector('.wrap').prepend(d);
-}
-
 function procesarRol(rows) {
   const bySem = {};
+  
   rows.forEach(r => {
     const keys = Object.keys(r);
-    const b1n  = (r[keys[0]] || '').trim();
-    const b2n  = (r[keys[1]] || '').trim();
-    const sem  = parseInt(r[keys[2]] || 0);
-    const ini  = (r[keys[3]] || '').trim();
-    const fin  = (r[keys[4]] || '').trim();
+    let colB1, colB2, colSem, colIni, colFin;
+    
+    keys.forEach(k => {
+      const kk = k.trim().toLowerCase();
+      if (kk.includes('bloque 1') || kk.includes('portal 1 y 2') || kk.includes('b1')) colB1 = k;
+      else if (kk.includes('bloque 2') || kk.includes('portal 1 y 4') || kk.includes('b2')) colB2 = k;
+      else if (kk.includes('semana')) colSem = k;
+      else if (kk.includes('inicio')) colIni = k;
+      else if (kk.includes('fin') || kk.includes('final')) colFin = k;
+    });
+    
+    if (!colB1) colB1 = keys[0];
+    if (!colB2) colB2 = keys[1];
+    if (!colSem) colSem = keys[2];
+    if (!colIni) colIni = keys[3];
+    if (!colFin) colFin = keys[4];
+    
+    const b1n = (r[colB1] || '').trim();
+    const b2n = (r[colB2] || '').trim();
+    const sem  = parseInt(r[colSem] || 0);
+    const ini  = (r[colIni] || '').trim();
+    const fin  = (r[colFin] || '').trim();
+    
     if (!sem) return;
-    if (!bySem[sem]) bySem[sem] = { num: sem, inicio: ini, fin: fin, b1: [], b2: [] };
-    if (b1n && b1n !== '-' && b1n !== '') bySem[sem].b1.push(b1n);
-    if (b2n && b2n !== '-' && b2n !== '') bySem[sem].b2.push(b2n);
+    
+    if (!bySem[sem]) {
+      bySem[sem] = { num: sem, inicio: ini, fin: fin, b1: [], b2: [] };
+    }
+    
+    if (b1n && b1n !== '-' && b1n !== '') {
+      if (!bySem[sem].b1.includes(b1n)) {
+        bySem[sem].b1.push(b1n);
+      }
+    }
+    if (b2n && b2n !== '-' && b2n !== '') {
+      if (!bySem[sem].b2.includes(b2n)) {
+        bySem[sem].b2.push(b2n);
+      }
+    }
   });
+  
   S.semanas = Object.values(bySem).sort((a, b) => a.num - b.num);
+  
+  console.log('✅ Rol procesado:', S.semanas.length, 'semanas');
+  S.semanas.forEach(s => {
+    console.log(`   Semana ${s.num}: B1=[${s.b1.join(', ')}] B2=[${s.b2.join(', ')}]`);
+  });
 }
 
 function getRol() {
@@ -615,134 +785,403 @@ function getRol() {
 }
 
 // ════════════════════════════════════════════════════════════
-// FUNCIÓN GETCITAS
+// CONSTRUIR DATOS DE TENDENCIAS DESDE LAS 3 FUENTES
 // ════════════════════════════════════════════════════════════
-function getCitas() {
-  const rows = S.citas.filter(r => {
-    const sem = parseInt(r['Semana del año'] || 0);
-    return sem === S.semana;
+// ════════════════════════════════════════════════════════════
+// CONSTRUIR DATOS DE TENDENCIAS DESDE LAS 3 FUENTES - CORREGIDO
+// ════════════════════════════════════════════════════════════
+function construirTendenciasDesdeFuentes() {
+  console.log('📊 Construyendo tendencias desde fuentes...');
+  
+  const semanasMap = {};
+  
+  // 1. De Interesados (GID=0)
+  const colSemanaInt = S.interesados.length > 0
+    ? Object.keys(S.interesados[0]).find(k => k.includes('Semana') || k.includes('semana'))
+    : null;
+  
+  if (colSemanaInt) {
+    console.log('📌 Procesando Interesados, columna:', colSemanaInt);
+    S.interesados.forEach(r => {
+      const sem = parseInt(r[colSemanaInt] || 0);
+      // 🔥 IGNORAR SEMANAS INVÁLIDAS
+      if (sem <= 0 || sem > 53) {
+        if (sem !== 0) console.warn(`⚠️ Semana inválida ignorada (Interesados): ${sem}`);
+        return;
+      }
+      
+      if (!semanasMap[sem]) {
+        semanasMap[sem] = {
+          num: sem,
+          label: `Semana ${sem}`,
+          short: `S${sem}`,
+          global: { portal_int: 0, crm: 0, citas_ag: 0, citas_at: 0, exp: 0, vis: 0, contratos: 0 },
+          ger: { V1: { portal_int:0, crm:0, citas_ag:0, citas_at:0, exp:0, vis:0, contratos:0 },
+                 V2: { portal_int:0, crm:0, citas_ag:0, citas_at:0, exp:0, vis:0, contratos:0 },
+                 V3: { portal_int:0, crm:0, citas_ag:0, citas_at:0, exp:0, vis:0, contratos:0 },
+                 V4: { portal_int:0, crm:0, citas_ag:0, citas_at:0, exp:0, vis:0, contratos:0 } }
+        };
+      }
+      
+      const portal = pmap(r['Portal'] || '');
+      semanasMap[sem].global.portal_int++;
+      if (portal && semanasMap[sem].ger[portal]) {
+        semanasMap[sem].ger[portal].portal_int++;
+      }
+    });
+  }
+  
+  // 2. De CRM (GID=509014674)
+  const colSemanaCRM = S.crm.length > 0
+    ? Object.keys(S.crm[0]).find(k => k.includes('Semana') || k.includes('semana'))
+    : null;
+  
+  if (colSemanaCRM) {
+    console.log('📌 Procesando CRM, columna:', colSemanaCRM);
+    S.crm.forEach(r => {
+      const sem = parseInt(r[colSemanaCRM] || 0);
+      // 🔥 IGNORAR SEMANAS INVÁLIDAS
+      if (sem <= 0 || sem > 53) {
+        if (sem !== 0) console.warn(`⚠️ Semana inválida ignorada (CRM): ${sem}`);
+        return;
+      }
+      
+      if (!semanasMap[sem]) {
+        semanasMap[sem] = {
+          num: sem,
+          label: `Semana ${sem}`,
+          short: `S${sem}`,
+          global: { portal_int: 0, crm: 0, citas_ag: 0, citas_at: 0, exp: 0, vis: 0, contratos: 0 },
+          ger: { V1: { portal_int:0, crm:0, citas_ag:0, citas_at:0, exp:0, vis:0, contratos:0 },
+                 V2: { portal_int:0, crm:0, citas_ag:0, citas_at:0, exp:0, vis:0, contratos:0 },
+                 V3: { portal_int:0, crm:0, citas_ag:0, citas_at:0, exp:0, vis:0, contratos:0 },
+                 V4: { portal_int:0, crm:0, citas_ag:0, citas_at:0, exp:0, vis:0, contratos:0 } }
+        };
+      }
+      
+      const portal = pmap(r['Portal origen'] || '');
+      semanasMap[sem].global.crm++;
+      if (portal && semanasMap[sem].ger[portal]) {
+        semanasMap[sem].ger[portal].crm++;
+      }
+    });
+  }
+  
+  // 3. De Citas (GID=76854756)
+  const colSemanaCit = S.citas.length > 0
+    ? Object.keys(S.citas[0]).find(k => k.includes('Semana') || k.includes('semana'))
+    : null;
+  
+  if (colSemanaCit) {
+    console.log('📌 Procesando Citas, columna:', colSemanaCit);
+    const colAsistencia = S.citas.length > 0
+      ? Object.keys(S.citas[0]).find(k => k.includes('ASISTENCIA') || k.includes('Asistencia'))
+      : 'ASISTENCIA';
+    const colComentarios = S.citas.length > 0
+      ? Object.keys(S.citas[0]).find(k => k.includes('COMENTARIOS') || k.includes('Comentarios'))
+      : 'COMENTARIOS';
+    
+    S.citas.forEach(r => {
+      const sem = parseInt(r[colSemanaCit] || 0);
+      // 🔥 IGNORAR SEMANAS INVÁLIDAS
+      if (sem <= 0 || sem > 53) {
+        if (sem !== 0) console.warn(`⚠️ Semana inválida ignorada (Citas): ${sem}`);
+        return;
+      }
+      
+      if (!semanasMap[sem]) {
+        semanasMap[sem] = {
+          num: sem,
+          label: `Semana ${sem}`,
+          short: `S${sem}`,
+          global: { portal_int: 0, crm: 0, citas_ag: 0, citas_at: 0, exp: 0, vis: 0, contratos: 0 },
+          ger: { V1: { portal_int:0, crm:0, citas_ag:0, citas_at:0, exp:0, vis:0, contratos:0 },
+                 V2: { portal_int:0, crm:0, citas_ag:0, citas_at:0, exp:0, vis:0, contratos:0 },
+                 V3: { portal_int:0, crm:0, citas_ag:0, citas_at:0, exp:0, vis:0, contratos:0 },
+                 V4: { portal_int:0, crm:0, citas_ag:0, citas_at:0, exp:0, vis:0, contratos:0 } }
+        };
+      }
+      
+      const portal = pmap(r['Portal'] || '');
+      
+      semanasMap[sem].global.citas_ag++;
+      if (portal && semanasMap[sem].ger[portal]) {
+        semanasMap[sem].ger[portal].citas_ag++;
+      }
+      
+      const asist = (r[colAsistencia] || '').trim().toLowerCase();
+      if (asist === 'si' || asist === 'sí') {
+        semanasMap[sem].global.citas_at++;
+        if (portal && semanasMap[sem].ger[portal]) {
+          semanasMap[sem].ger[portal].citas_at++;
+        }
+      }
+      
+      const comentarios = (r[colComentarios] || '').trim().toLowerCase();
+      if (comentarios.includes('cierre de venta')) {
+        semanasMap[sem].global.contratos++;
+        if (portal && semanasMap[sem].ger[portal]) {
+          semanasMap[sem].ger[portal].contratos++;
+        }
+      }
+    });
+  }
+  
+  // 4. De Weekly (GID=1096839993)
+  const colSemanaW = S.daily.length > 0
+    ? Object.keys(S.daily[0]).find(k => k.includes('Semana') || k.includes('semana'))
+    : null;
+  
+  if (colSemanaW) {
+    console.log('📌 Procesando Weekly, columna:', colSemanaW);
+    S.daily.forEach(r => {
+      const sem = parseInt(r[colSemanaW] || 0);
+      // 🔥 IGNORAR SEMANAS INVÁLIDAS
+      if (sem <= 0 || sem > 53) {
+        if (sem !== 0) console.warn(`⚠️ Semana inválida ignorada (Weekly): ${sem}`);
+        return;
+      }
+      
+      if (!semanasMap[sem]) {
+        semanasMap[sem] = {
+          num: sem,
+          label: `Semana ${sem}`,
+          short: `S${sem}`,
+          global: { portal_int: 0, crm: 0, citas_ag: 0, citas_at: 0, exp: 0, vis: 0, contratos: 0 },
+          ger: { V1: { portal_int:0, crm:0, citas_ag:0, citas_at:0, exp:0, vis:0, contratos:0 },
+                 V2: { portal_int:0, crm:0, citas_ag:0, citas_at:0, exp:0, vis:0, contratos:0 },
+                 V3: { portal_int:0, crm:0, citas_ag:0, citas_at:0, exp:0, vis:0, contratos:0 },
+                 V4: { portal_int:0, crm:0, citas_ag:0, citas_at:0, exp:0, vis:0, contratos:0 } }
+        };
+      }
+      
+      const portal = pmap(r['Portal'] || '');
+      const exp = parseFloat(r['Exposición'] || 0) || 0;
+      const vis = parseFloat(r['Visualizaciones'] || 0) || 0;
+      
+      semanasMap[sem].global.exp += exp;
+      semanasMap[sem].global.vis += vis;
+      
+      if (portal && semanasMap[sem].ger[portal]) {
+        semanasMap[sem].ger[portal].exp += exp;
+        semanasMap[sem].ger[portal].vis += vis;
+      }
+    });
+  }
+  
+  // Convertir a array y ordenar
+  S.tendencias = Object.values(semanasMap).sort((a, b) => a.num - b.num);
+  
+  console.log('✅ Tendencias construidas:', S.tendencias.length, 'semanas');
+  S.tendencias.forEach(w => {
+    console.log(`   Semana ${w.num}: Int=${w.global.portal_int}, CRM=${w.global.crm}, CitasAg=${w.global.citas_ag}, CitasAt=${w.global.citas_at}, Exp=${w.global.exp}, Vis=${w.global.vis}, Contratos=${w.global.contratos}`);
   });
   
-  const porAsesor = {};
-  let ag = 0, at = 0;
-  
-  rows.forEach(r => {
-    const asesor = (r['ASESOR'] || '').trim();
-    const asist  = (r['ASISTENCIA'] || '').trim().toLowerCase();
-    if (!asesor) return;
-    if (!porAsesor[asesor]) porAsesor[asesor] = { ag:0, at:0 };
-    porAsesor[asesor].ag++; ag++;
-    if (asist === 'si' || asist === 'sí') { porAsesor[asesor].at++; at++; }
-  });
-  
-  return { rows, porAsesor, ag, at, cancel: ag - at };
+  // Seleccionar TODAS las semanas válidas
+  S.tSelW = S.tendencias.map(w => w.num);
+  console.log('📊 Semanas seleccionadas:', S.tSelW);
+}
+
+function getActivePeriods() {
+  return S.tendencias.filter(w => S.tSelW.includes(w.num));
 }
 
 // ════════════════════════════════════════════════════════════
-// FUNCIÓN GETINTERESADOS - CORREGIDA: filtra por fecha (columna "Día")
+// FUNCIÓN GETINTERESADOS
 // ════════════════════════════════════════════════════════════
 function getInteresados() {
   const tot = { V1: 0, V2: 0, V3: 0, V4: 0 };
   const porAsesor = {};
   let totalFiltrados = 0;
   
+  const colSemana = S.interesados.length > 0
+    ? Object.keys(S.interesados[0]).find(k => {
+        const kk = k.trim().toLowerCase();
+        return kk === 'semana' || kk.includes('semana');
+      })
+    : null;
+  
+  if (!colSemana) {
+    console.warn('⚠️ No se encontró columna "Semana" en Interesados');
+    return { tot, porAsesor, periodo: `Semana ${S.semana}`, total: 0 };
+  }
+  
   S.interesados.forEach(r => {
-    // Buscar la fecha en la columna "Día" o "Fecha"
-    const fechaStr = (r['Día'] || r['Fecha'] || '').trim();
+    const valorSemana = r[colSemana] || '';
+    const sem = parseInt(String(valorSemana).trim());
+    if (isNaN(sem) || sem !== S.semana) return;
     
-    // Calcular semana de la fecha
-    const weekNum = getWeekFromDate(fechaStr);
-    
-    // Solo contar si la fecha corresponde a la semana actual
-    if (weekNum !== S.semana) return;
-    
+    totalFiltrados++;
     const portal = pmap(r['Portal'] || '');
     const asesor = (r['Asesor'] || '').trim();
     
-    if (!portal || !tot.hasOwnProperty(portal)) return;
-    tot[portal]++;
-    totalFiltrados++;
-    
-    if (asesor) {
-      if (!porAsesor[asesor]) porAsesor[asesor] = { V1:0, V2:0, V3:0, V4:0 };
-      porAsesor[asesor][portal]++;
+    if (portal && tot.hasOwnProperty(portal)) {
+      tot[portal]++;
+      if (asesor) {
+        if (!porAsesor[asesor]) porAsesor[asesor] = { V1:0, V2:0, V3:0, V4:0 };
+        porAsesor[asesor][portal]++;
+      }
+    } else {
+      tot.V3++;
+      if (asesor) {
+        if (!porAsesor[asesor]) porAsesor[asesor] = { V1:0, V2:0, V3:0, V4:0 };
+        porAsesor[asesor].V3++;
+      }
     }
   });
-  
-  console.log(`✅ Interesados semana ${S.semana}: ${totalFiltrados} registros`);
-  console.log(`   V1=${tot.V1}, V2=${tot.V2}, V3=${tot.V3}, V4=${tot.V4}`);
   
   return { tot, porAsesor, periodo: `Semana ${S.semana}`, total: totalFiltrados };
 }
 
 // ════════════════════════════════════════════════════════════
-// FUNCIÓN GETRENDIMIENTOS - usa la columna "Semana"
+// FUNCIÓN GETCITAS
+// ════════════════════════════════════════════════════════════
+function getCitas() {
+  console.log('🔍 Buscando citas para semana:', S.semana);
+  
+  const colSemana = S.citas.length > 0 
+    ? Object.keys(S.citas[0]).find(k => 
+        k.includes('Semana') || k.includes('semana') || k === 'Sem' || k === 'Week'
+      ) 
+    : null;
+  
+  if (!colSemana) {
+    console.warn('⚠️ No se encontró columna de semana en Citas');
+    return { rows: [], porAsesor: {}, ag: 0, at: 0, cancel: 0 };
+  }
+  
+  const rows = S.citas.filter(r => {
+    const sem = parseInt(r[colSemana] || 0);
+    return sem === S.semana;
+  });
+  
+  const colAsesor = S.citas.length > 0
+    ? Object.keys(S.citas[0]).find(k => 
+        k.includes('ASESOR') || k.includes('Asesor')
+      ) || 'ASESOR'
+    : 'ASESOR';
+  
+  const colAsistencia = S.citas.length > 0
+    ? Object.keys(S.citas[0]).find(k => 
+        k.includes('ASISTENCIA') || k.includes('Asistencia')
+      ) || 'ASISTENCIA'
+    : 'ASISTENCIA';
+  
+  const porAsesor = {};
+  let ag = 0, at = 0;
+  
+  rows.forEach(r => {
+    const asesor = (r[colAsesor] || '').trim();
+    const asist  = (r[colAsistencia] || '').trim().toLowerCase();
+    if (!asesor) return;
+    if (!porAsesor[asesor]) porAsesor[asesor] = { ag:0, at:0 };
+    porAsesor[asesor].ag++; 
+    ag++;
+    if (asist === 'si' || asist === 'sí') { 
+      porAsesor[asesor].at++; 
+      at++; 
+    }
+  });
+  
+  return { rows, porAsesor, ag, at, cancel: ag - at };
+}
+
+// ════════════════════════════════════════════════════════════
+// FUNCIÓN GETRENDIMIENTOS
 // ════════════════════════════════════════════════════════════
 function getRendimientos() {
   const res = { V1:{exp:0,vis:0}, V2:{exp:0,vis:0}, V3:{exp:0,vis:0}, V4:{exp:0,vis:0} };
   
-  S.daily.forEach(r => {
-    const portal = (r['Portal'] || '').trim().toUpperCase();
-    const semana = parseInt(r['Semana'] || 0);
-    const exp = parseFloat(r['Exposición'] || 0) || 0;
-    const vis = parseFloat(r['Visualizaciones'] || 0) || 0;
+  if (S.daily && S.daily.length > 0) {
+    const colSemana = Object.keys(S.daily[0]).find(k => 
+      k.includes('Semana') || k.includes('semana')
+    );
     
-    if (semana !== S.semana) return;
-    
-    const p = PMAP[portal] || portal;
-    if (!p || !res[p]) return;
-    
-    res[p].exp += exp;
-    res[p].vis += vis;
-  });
+    if (colSemana) {
+      S.daily.forEach(r => {
+        const portal = (r['Portal'] || '').trim().toUpperCase();
+        const semana = parseInt(r[colSemana] || 0);
+        const exp = parseFloat(r['Exposición'] || 0) || 0;
+        const vis = parseFloat(r['Visualizaciones'] || 0) || 0;
+        
+        if (semana !== S.semana) return;
+        
+        const p = pmap(portal);
+        if (!p || !res[p]) return;
+        
+        res[p].exp += exp;
+        res[p].vis += vis;
+      });
+      
+      const totalExp = res.V1.exp + res.V2.exp + res.V3.exp + res.V4.exp;
+      if (totalExp > 0) {
+        return { res, periodo: `Semana ${S.semana}`, source: 'weekly' };
+      }
+    }
+  }
   
-  const totalExp = res.V1.exp + res.V2.exp + res.V3.exp + res.V4.exp;
-  const totalVis = res.V1.vis + res.V2.vis + res.V3.vis + res.V4.vis;
-  console.log(`✅ Rendimientos semana ${S.semana}: Exposición = ${totalExp}, Visualizaciones = ${totalVis}`);
-  console.log(`   V1: exp=${res.V1.exp}, vis=${res.V1.vis}`);
-  console.log(`   V2: exp=${res.V2.exp}, vis=${res.V2.vis}`);
-  console.log(`   V3: exp=${res.V3.exp}, vis=${res.V3.vis}`);
-  console.log(`   V4: exp=${res.V4.exp}, vis=${res.V4.vis}`);
-  
-  if (totalExp === 0) {
+  if (S.rendimientos && S.rendimientos.length > 0) {
     const periodos = [...new Set(S.rendimientos.map(r => (r['Período']||'').trim()).filter(Boolean))];
     const perActual = periodos[periodos.length - 1] || '';
+    
     S.rendimientos.forEach(r => {
-      const portal  = pmap(r['Portal'] || '');
+      const portal = pmap(r['Portal'] || '');
       const periodo = (r['Período'] || '').trim();
+      
       if (perActual && periodo !== perActual) return;
       if (!portal || !res[portal]) return;
+      
       res[portal].exp += parseFloat(r['Exposición'] || 0) || 0;
       res[portal].vis += parseFloat(r['Visualizaciones'] || 0) || 0;
     });
+    
     return { res, periodo: perActual, source: 'monthly' };
   }
   
-  return { res, periodo: `Semana ${S.semana}`, source: 'daily' };
+  return { res, periodo: 'Sin datos', source: 'none' };
 }
 
 // ════════════════════════════════════════════════════════════
-// FUNCIÓN GETCRM - filtra por semana
+// FUNCIÓN GETCRM
 // ════════════════════════════════════════════════════════════
 function getCRM() {
   const porAsesor = {};
   let totalReg = 0, totalTransf = 0, totalPipe = 0;
+  
+  const colSemana = S.crm.length > 0
+    ? Object.keys(S.crm[0]).find(k => 
+        k.includes('Semana') || k.includes('semana') || k === 'Sem'
+      )
+    : null;
+  
+  if (!colSemana) {
+    console.warn('⚠️ No se encontró columna de semana en CRM');
+    return { porAsesor, totalReg, totalTransf, totalPipe };
+  }
+  
   S.crm.forEach(r => {
-    const fechaReg = r['Fecha registro'] || '';
-    const weekNum = getWeekFromDate(fechaReg);
-    if (weekNum !== S.semana) return;
+    const sem = parseInt(r[colSemana] || 0);
+    if (sem !== S.semana) return;
     
     const asesor   = (r['Asesor que registró'] || '').trim();
     const traspasado = (r['¿Fue traspasado?'] || '').trim().toLowerCase();
     const estatus  = (r['Estatus final'] || '').trim().toLowerCase();
+    
     if (!asesor) return;
     if (!porAsesor[asesor]) porAsesor[asesor] = { reg:0, transf:0, pipe:0 };
     porAsesor[asesor].reg++;
     totalReg++;
-    if (traspasado === 'sí' || traspasado === 'si') { porAsesor[asesor].transf++; totalTransf++; }
-    if (estatus === 'open') { porAsesor[asesor].pipe++; totalPipe++; }
+    
+    if (traspasado === 'sí' || traspasado === 'si') { 
+      porAsesor[asesor].transf++; 
+      totalTransf++; 
+    }
+    if (estatus === 'open' || estatus === 'abierto') { 
+      porAsesor[asesor].pipe++; 
+      totalPipe++; 
+    }
   });
-  console.log(`✅ CRM semana ${S.semana}: ${totalReg} registros, ${totalTransf} transferidos`);
+  
   return { porAsesor, totalReg, totalTransf, totalPipe };
 }
 
@@ -807,7 +1246,7 @@ function buildAsesores() {
       cag:   citD.ag,
       cat:   citD.at,
     };
-  }).filter(a => a.reg > 0 || a.cag > 0 || a.int > 0 || a.bloque === 'B1' || a.bloque === 'B2');
+  }).filter(a => a.reg > 0 || a.cag > 0 || a.int > 0 || a.bloque === 'B1' || a.bloque === 'B2' || a.bloque === 'V3');
 }
 
 // ════════════════════════════════════════════════════════════
@@ -829,14 +1268,17 @@ function renderTodo() {
   const tasaT    = totalReg > 0 ? (totalTransf/totalReg*100).toFixed(1) : '—';
   const tasaA    = ag > 0       ? (at/ag*100).toFixed(1)               : '—';
 
+  const b1Nombres = rol.b1.slice(0,3).map(n => n.split(' ')[0]).join(', ');
+  const b2Nombres = rol.b2.slice(0,3).map(n => n.split(' ')[0]).join(', ');
+  
   document.getElementById('hchip').textContent    = `Sem ${rol.num} · ${rol.inicio}–${rol.fin} 2026`;
-  document.getElementById('rotchip').textContent  = `🔄 B1: ${rol.b1.slice(0,2).map(n=>n.split(' ')[0]).join(', ')||'—'} | B2: ${rol.b2.slice(0,2).map(n=>n.split(' ')[0]).join(', ')||'—'}`;
+  document.getElementById('rotchip').textContent  = `🔄 B1: V1&V3 (${b1Nombres || '—'}) | B2: V1&V4 (${b2Nombres || '—'})`;
   document.getElementById('ftr-txt').textContent  = `Panel KPI · Semana ${rol.num} (${rol.inicio}–${rol.fin}) · ${periodo} · Gerente: Denisse Hansen`;
-  document.getElementById('btnb1').textContent    = `Bloque 1 · V1+V2`;
-  document.getElementById('btnb2').textContent    = `Bloque 2 · V1+V4`;
+  document.getElementById('btnb1').textContent    = `Bloque 1 · V1 & V3 (${rol.b1.length} asesores)`;
+  document.getElementById('btnb2').textContent    = `Bloque 2 · V1 & V4 (${rol.b2.length} asesores)`;
 
   document.getElementById('al-rot-txt').innerHTML =
-    `<strong>Semana ${rol.num}:</strong> Bloque 1 → <b>${rol.b1.join(', ')||'—'}</b> (portales V1 + V2) &nbsp;|&nbsp; Bloque 2 → <b>${rol.b2.join(', ')||'—'}</b> (portales V1 + V4) &nbsp;|&nbsp; Ventas 3 → fijo`;
+    `<strong>Semana ${rol.num}:</strong> Bloque 1 → <b>${rol.b1.join(', ')||'—'}</b> (portales V1 + V3) &nbsp;|&nbsp; Bloque 2 → <b>${rol.b2.join(', ')||'—'}</b> (portales V1 + V4) &nbsp;|&nbsp; Ventas 3 → fijo`;
   document.getElementById('al-per-txt').innerHTML =
     `<strong>Período de rendimiento:</strong> ${periodo||'—'} &nbsp;·&nbsp; Interesados: ${intTotal} &nbsp;·&nbsp; Exposición: ${expTotal.toLocaleString()} &nbsp;·&nbsp; Visualizaciones: ${visTotal.toLocaleString()}`;
 
@@ -853,7 +1295,7 @@ function renderTodo() {
   document.getElementById('pas-grid').innerHTML = pasantes.length
     ? pasantes.map(p => {
         const bCol = p.bloque==='B1' ? '#1A73E8' : p.bloque==='B2' ? '#D56E0C' : 'var(--mkt)';
-        const portalesStr = p.bloque==='B1' ? 'V1+V2' : p.bloque==='B2' ? 'V1+V4' : 'V3';
+        const portalesStr = p.bloque==='B1' ? 'V1+V3' : p.bloque==='B2' ? 'V1+V4' : 'V3';
         const pct = p.reg > 0 ? Math.round(p.transf/p.reg*100) : 0;
         return `<div class="pcard" style="border-left-color:${bCol}">
           <div class="pname">${p.nombre}</div>
@@ -920,10 +1362,16 @@ function renderTodo() {
   renderBloques(asesorList, intTot, rend);
   renderChips(asesorList);
   renderWeekPills();
+  
+  // Renderizar tendencias si estamos en esa vista
+  if (S.curView === 'tend') {
+    buildTendSelectors();
+    renderTend();
+  }
 }
 
 // ════════════════════════════════════════════════════════════
-// FUNNEL
+// FUNCIONES DE RENDER
 // ════════════════════════════════════════════════════════════
 function renderFunnel(exp,vis,int_,crm_,pipe,cag,cat,firm,pag) {
   const steps = [
@@ -950,6 +1398,7 @@ function renderFunnel(exp,vis,int_,crm_,pipe,cag,cat,firm,pag) {
     </div>`;
   }).join('');
 }
+
 function showTip(e) { const t=document.getElementById('ftt'); t.textContent=e.dataset.tip; t.style.display='block'; }
 function hideTip() { document.getElementById('ftt').style.display='none'; }
 document.addEventListener('mousemove', e => {
@@ -957,9 +1406,6 @@ document.addEventListener('mousemove', e => {
   if (t.style.display==='block') { t.style.left=(e.clientX+12)+'px'; t.style.top=(e.clientY-28)+'px'; }
 });
 
-// ════════════════════════════════════════════════════════════
-// TABLA CITAS
-// ════════════════════════════════════════════════════════════
 function renderCitas(rows) {
   const tbody = document.querySelector('#t-citas tbody');
   if (!rows.length) {
@@ -972,7 +1418,7 @@ function renderCitas(rows) {
       ? '<span class="tag tg">SI</span>'
       : '<span class="tag tr2">NO</span>';
     return `<tr>
-      <td class="mn">${r['Nº']||r['No']||'—'}</td>
+      <td class="mn">${r['#'] || r['Nº'] || r['No'] || '—'}</td>
       <td>${r['FECHA DE SOLICITUD']||'—'}</td>
       <td>${r['FECHA DE CITA']||'—'}</td>
       <td class="tn">${r['CLIENTE']||'—'}</td>
@@ -987,9 +1433,6 @@ function renderCitas(rows) {
   }).join('');
 }
 
-// ════════════════════════════════════════════════════════════
-// TABLA GLOBAL
-// ════════════════════════════════════════════════════════════
 function renderTablaGlobal(list) {
   let sorted = [...list];
   const { col, dir } = S.sortG;
@@ -1025,6 +1468,7 @@ function renderTablaGlobal(list) {
     th.innerHTML = th.textContent.replace(/ [▲▼]$/,'') + ic;
   });
 }
+
 document.querySelectorAll('#t-global thead th').forEach(th => {
   th.addEventListener('click', () => {
     const c = th.getAttribute('data-col'); if (!c) return;
@@ -1034,17 +1478,17 @@ document.querySelectorAll('#t-global thead th').forEach(th => {
   });
 });
 
-// ════════════════════════════════════════════════════════════
-// VISTAS DE BLOQUE (resumido)
-// ════════════════════════════════════════════════════════════
 function renderBloques(list, intTot, rend) {
-  const b1 = list.filter(a=>a.bloque==='B1');
-  const b2 = list.filter(a=>a.bloque==='B2');
-  const v3 = list.filter(a=>a.bloque==='V3');
-  document.getElementById('b1-cnt').innerHTML = bloqueHTML('B1','V1+V2',b1, intTot.V1+intTot.V2, rend.V1.exp+rend.V2.exp, rend.V1.vis+rend.V2.vis);
-  document.getElementById('b2-cnt').innerHTML = bloqueHTML('B2','V1+V4',b2, intTot.V1+intTot.V4, rend.V1.exp+rend.V4.exp, rend.V1.vis+rend.V4.vis);
+  const rol = getRol();
+  const b1 = list.filter(a => rol.b1.some(n => nameMatch(n, a.nombre)));
+  const b2 = list.filter(a => rol.b2.some(n => nameMatch(n, a.nombre)));
+  const v3 = list.filter(a => a.bloque === 'V3');
+  
+  document.getElementById('b1-cnt').innerHTML = bloqueHTML('B1','V1 & V3',b1, intTot.V1+intTot.V3, rend.V1.exp+rend.V3.exp, rend.V1.vis+rend.V3.vis);
+  document.getElementById('b2-cnt').innerHTML = bloqueHTML('B2','V1 & V4',b2, intTot.V1+intTot.V4, rend.V1.exp+rend.V4.exp, rend.V1.vis+rend.V4.vis);
   document.getElementById('v3-cnt').innerHTML = bloqueHTML('V3','V3',v3, intTot.V3, rend.V3.exp, rend.V3.vis);
 }
+
 function bloqueHTML(bid, portal, asesores, intT, exp, vis) {
   const crm_  = asesores.reduce((s,a)=>s+a.reg,0);
   const transf = asesores.reduce((s,a)=>s+a.transf,0);
@@ -1063,7 +1507,7 @@ function bloqueHTML(bid, portal, asesores, intT, exp, vis) {
         <td class="nr mn">${a.pend>0?a.pend:'—'}</td>
         <td class="nr mn">${a.cag}</td>
         <td class="nr mn">${a.cat}</td>
-      </tr>`).join('') : '<tr><td colspan="7" style="text-align:center;padding:1rem;color:var(--g400)">Sin asesores</td></tr>'}
+      </tr>`).join('') : '<tr><td colspan="7" style="text-align:center;padding:1rem;color:var(--g400)">Sin asesores en este bloque</td></tr>'}
       ${asesores.length?`<tr class="sub"><td colspan="2">TOTAL ${bid}</td><td class="nr mn">${crm_}</td><td class="nr mn">${transf}</td><td class="nr mn">${pend}</td><td class="nr mn">${cag}</td><td class="nr mn">${cat}</td></tr>`:''}
     </tbody></table></div></div>`;
   return `<div class="kr k3">
@@ -1079,24 +1523,35 @@ function bloqueHTML(bid, portal, asesores, intT, exp, vis) {
   </div>${tabla}`;
 }
 
-// ════════════════════════════════════════════════════════════
-// CHIPS Y COMPARAR (resumido)
-// ════════════════════════════════════════════════════════════
 function renderChips(list) {
-  const grupos = [
-    {g:'B1',col:'#1A73E8',cls:'c1'},{g:'B2',col:'#D56E0C',cls:'c2'},{g:'V3',col:'#7B2FBE',cls:'c3'},
-  ];
-  document.getElementById('chips').innerHTML = grupos.map(g => {
-    const miembros = list.filter(a=>a.bloque===g.g);
-    if (!miembros.length) return '';
-    return `<div style="display:flex;align-items:center;gap:4px;margin-bottom:4px;">
-      <span style="font-size:8px;font-weight:700;color:${g.col};width:24px">${g.g}</span>
-      ${miembros.map(a=>`<button class="chip ${g.cls} ${S.selAs.includes(a.nombre)?'on':''}"
+  const grupos = {
+    'B1': { col: '#1A73E8', cls: 'c1', miembros: [] },
+    'B2': { col: '#D56E0C', cls: 'c2', miembros: [] },
+    'V3': { col: '#7B2FBE', cls: 'c3', miembros: [] }
+  };
+  
+  list.forEach(a => {
+    if (a.bloque === 'B1') grupos.B1.miembros.push(a);
+    else if (a.bloque === 'B2') grupos.B2.miembros.push(a);
+    else if (a.bloque === 'V3') grupos.V3.miembros.push(a);
+  });
+  
+  let html = '';
+  
+  ['B1', 'B2', 'V3'].forEach(key => {
+    const g = grupos[key];
+    if (!g.miembros.length) return;
+    html += `<div style="display:flex;align-items:center;gap:4px;margin-bottom:4px;">
+      <span style="font-size:8px;font-weight:700;color:${g.col};width:24px">${key}</span>
+      ${g.miembros.map(a => `<button class="chip ${g.cls} ${S.selAs.includes(a.nombre)?'on':''}"
         onclick="toggleAs('${a.nombre.replace(/'/g,"\\'")}')">${a.nombre.split(' ')[0]}</button>`).join('')}
     </div>`;
-  }).join('');
+  });
+  
+  document.getElementById('chips').innerHTML = html || '<div style="font-size:10px;color:var(--g400);padding:4px">No hay asesores disponibles</div>';
   document.getElementById('desel').style.display = S.selAs.length ? 'block' : 'none';
 }
+
 function toggleAs(n) {
   const i = S.selAs.indexOf(n);
   if (i>-1) S.selAs.splice(i,1); else S.selAs.push(n);
@@ -1111,7 +1566,9 @@ function toggleAs(n) {
     document.getElementById('view-'+S.curView).classList.add('on');
   }
 }
+
 function deselAll() { S.selAs=[]; renderChips(buildAsesores()); sv(S.curView,null); }
+
 function renderCompare(list) {
   const sel = list.filter(a=>S.selAs.includes(a.nombre));
   document.getElementById('cmp-ttl').textContent = sel.map(a=>a.nombre.split(' ')[0]).join(' vs ');
@@ -1123,13 +1580,10 @@ function renderCompare(list) {
   hbars(document.getElementById('cmp-cag'), sel.map(a=>({lbl:a.nombre.split(' ')[0],v:a.cag,col:a.bloque==='B1'?PC.V1:PC.V4})), null);
 }
 
-// ════════════════════════════════════════════════════════════
-// WEEK PILLS
-// ════════════════════════════════════════════════════════════
 function renderWeekPills() {
   const allWeeks = S.semanas.length ? S.semanas : [
-    { num: 25, inicio: '06-12', fin: 'Jun' },
-    { num: 26, inicio: '19-26', fin: 'Jun' }
+    { num: 25, inicio: '06-12', fin: 'Jun', b1: [], b2: [] },
+    { num: 26, inicio: '19-26', fin: 'Jun', b1: [], b2: [] }
   ];
   const pills = document.getElementById('wpills');
   pills.innerHTML = allWeeks.map(w =>
@@ -1137,6 +1591,7 @@ function renderWeekPills() {
       Sem ${w.num} (${w.inicio}–${w.fin})
     </button>`).join('');
 }
+
 function cambiarSemana(num, btn) {
   S.semana = num;
   document.querySelectorAll('.wpill').forEach(p=>p.classList.remove('on'));
@@ -1144,9 +1599,6 @@ function cambiarSemana(num, btn) {
   renderTodo();
 }
 
-// ════════════════════════════════════════════════════════════
-// CHART HELPERS
-// ════════════════════════════════════════════════════════════
 function hbars(el,items,maxV){
   if(!el)return;
   const mx=maxV||Math.max(...items.map(i=>i.v||0),1);
@@ -1154,14 +1606,12 @@ function hbars(el,items,maxV){
     return`<div class="hbr"><span class="hbl">${i.lbl}</span><div class="hbt"><div class="hbf" style="width:${p}%;background:${i.col||'#ccc'}">${show?`<span class="hbv">${i.v}</span>`:''}</div>${!show&&(i.v||0)>0?`<span class="hbvo">${i.v}</span>`:''}</div></div>`;
   }).join('');
 }
+
 function pbars(el,items){
   if(!el)return;
   el.innerHTML=items.map(i=>`<div class="pbr2"><div class="pbh"><span class="pbl2" style="color:${i.col}">${i.lbl}</span><span class="pbv2" style="color:${i.col}">${i.v.toFixed(1)}%</span></div><div class="pbt"><div class="pbf2" style="width:${Math.min(i.v,100)}%;background:${i.col}"></div></div><div style="font-size:8px;color:var(--g400);margin-top:2px">${i.sub||''}</div></div>`).join('');
 }
 
-// ════════════════════════════════════════════════════════════
-// NAVEGACIÓN
-// ════════════════════════════════════════════════════════════
 function sv(v,btn){
   document.querySelectorAll('.view').forEach(x=>x.classList.remove('on'));
   document.querySelectorAll('.np').forEach(x=>x.classList.remove('on'));
@@ -1171,6 +1621,263 @@ function sv(v,btn){
   if(buildAsesores) renderChips(buildAsesores());
   if(v==='rep') cargarRep();
   else if(v==='citas') renderDetalleCitas();
+  else if(v==='tend') {
+    buildTendSelectors();
+    renderTend();
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+// FUNCIONES DE TENDENCIAS - NUEVO ORDEN
+// ════════════════════════════════════════════════════════════
+function buildTendSelectors() {
+  let grainDiv = document.getElementById('grain-tabs');
+  if (grainDiv) {
+    grainDiv.innerHTML = [
+      {key:'week', label:'Semana'}
+    ].map(g => 
+      `<button class="gtab ${S.tGrain===g.key?'active':''}" onclick="setGrain('${g.key}',this)">${g.label}</button>`
+    ).join('');
+  }
+  
+  let portDiv = document.getElementById('tend-ger');
+  if (portDiv) {
+    portDiv.innerHTML = ['all','V1','V2','V3','V4'].map(p => {
+      const cls = p==='all'?'ng':p==='V1'?'n1':p==='V2'?'n2':p==='V3'?'n3':'n4';
+      return `<button class="np ${cls} ${S.tGer===p?'on':''}" onclick="tendGerSet('${p}',this)">${p==='all'?'Todos':p}</button>`;
+    }).join('');
+  }
+  
+  let selDiv = document.getElementById('tend-sel');
+  if (!selDiv) return;
+  
+  if (S.tendencias && S.tendencias.length > 0) {
+    selDiv.innerHTML = `<div class="npills">${S.tendencias.map(w => 
+      `<label style="display:flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;border:1px solid ${S.tSelW.includes(w.num)?'var(--teal)':'var(--g300)'};background:${S.tSelW.includes(w.num)?'var(--tl)':'white'};cursor:pointer">
+        <input type="checkbox" style="display:none" ${S.tSelW.includes(w.num)?'checked':''} onchange="tendToggleWeek(${w.num},this.checked)">
+        <span style="font-size:11px;font-weight:${S.tSelW.includes(w.num)?'700':'500'}">Sem ${w.num}</span>
+      </label>`
+    ).join('')}</div>`;
+  } else {
+    selDiv.innerHTML = '<span style="font-size:10px;color:var(--g400)">No hay datos de tendencias disponibles</span>';
+  }
+  
+  let ctx = document.getElementById('tend-ctx');
+  if (ctx) {
+    const total = S.tendencias.reduce((s,w) => s + w.global.exp, 0);
+    ctx.textContent = `${S.tendencias.length} semanas · ${total.toLocaleString()} exposiciones totales`;
+  }
+}
+
+function setGrain(g,btn) {
+  S.tGrain = g;
+  document.querySelectorAll('#grain-tabs .gtab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTend();
+}
+
+function tendGerSet(g,btn) {
+  S.tGer = g;
+  document.querySelectorAll('#tend-ger .np').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  renderTend();
+}
+
+function tendToggleWeek(num, checked) {
+  if (checked && !S.tSelW.includes(num)) S.tSelW.push(num);
+  else if (!checked) S.tSelW = S.tSelW.filter(n => n !== num);
+  if (S.tSelW.length === 0) {
+    S.tSelW = S.tendencias.map(w => w.num);
+  }
+  buildTendSelectors();
+  renderTend();
+}
+
+function getActivePeriods() {
+  return S.tendencias.filter(w => S.tSelW.includes(w.num));
+}
+
+function deltaBadge(curr, prev) {
+  if (curr === null || prev === null || curr === undefined || prev === undefined) {
+    return '<span style="font-size:9px;color:#BDC1C6">—</span>';
+  }
+  if (prev === 0 && curr === 0) {
+    return '<span style="background:#F1F3F4;color:#80868B;padding:1px 5px;border-radius:8px;font-size:9px">igual</span>';
+  }
+  if (prev === 0) {
+    return '<span style="background:#E6F4EA;color:#137333;padding:1px 6px;border-radius:8px;font-size:9px;font-weight:700">nuevo</span>';
+  }
+  let p = ((curr - prev) / prev * 100);
+  let up = p >= 0;
+  return `<span style="background:${up?'#E6F4EA':'#FCE8E6'};color:${up?'#137333':'#D93025'};padding:2px 7px;border-radius:8px;font-size:9px;font-weight:700;display:inline-block">${up?'▲':'▼'} ${Math.abs(p).toFixed(1)}%</span>`;
+}
+
+function comboChart(periods, key, col, title) {
+  const getV = p => {
+    if (S.tGer === 'all') return p.global[key] ?? null;
+    return p.ger[S.tGer]?.[key] ?? null;
+  };
+  
+  const data = periods.map(p => ({
+    v: getV(p),
+    lbl: `S${p.num}`,
+    note: ''
+  }));
+  
+  const valid = data.map(d => d.v).filter(v => v !== null && v !== undefined && typeof v === 'number');
+  
+  if (!valid.length) {
+    return `<div class="cc"><div class="ct">${title}</div><div style="height:80px;display:flex;align-items:center;justify-content:center;color:var(--g400);font-size:10px">Sin datos</div></div>`;
+  }
+  
+  const W = 340, H = 130, pL = 36, pR = 10, pT = 18, pB = 28;
+  const cW = W - pL - pR, cH = H - pT - pB;
+  const n = data.length;
+  const maxV = Math.max(...valid, 1);
+  const nM = maxV >= 1000 ? Math.ceil(maxV / 1000) * 1000 : Math.ceil(maxV / 10) * 10 || 1;
+  const sW = cW / n;
+  const bW = Math.min(Math.max(sW * 0.5, 8), 50);
+  
+  let sv = '';
+  
+  [0, Math.round(nM / 2), nM].forEach(v => {
+    let y = pT + cH - (v / nM * cH);
+    sv += `<line x1="${pL}" y1="${y.toFixed(1)}" x2="${W-pR}" y2="${y.toFixed(1)}" stroke="#E8EAED" stroke-width="1"/>`;
+    sv += `<text x="${pL-3}" y="${(y+3).toFixed(1)}" text-anchor="end" font-size="8" fill="#BDC1C6" font-family="DM Mono,monospace">${v>=1000?(v/1000).toFixed(0)+'k':v}</text>`;
+  });
+  
+  let prevX = null, prevY = null;
+  data.forEach((d, i) => {
+    let cx = pL + i * sW + sW / 2;
+    sv += `<text x="${cx.toFixed(1)}" y="${H-6}" text-anchor="middle" font-size="8" fill="#80868B" font-family="DM Mono,monospace">${d.lbl}</text>`;
+    
+    if (d.v !== null && d.v !== undefined && typeof d.v === 'number') {
+      let bh = Math.max((d.v / nM) * cH, 2);
+      let by = pT + cH - bh;
+      let bx = cx - bW / 2;
+      sv += `<rect x="${bx.toFixed(1)}" y="${by.toFixed(1)}" width="${bW}" height="${bh.toFixed(1)}" rx="3" fill="${col}BB"/>`;
+      sv += `<text x="${cx.toFixed(1)}" y="${(by-4).toFixed(1)}" text-anchor="middle" font-size="9" font-weight="700" fill="${col}" font-family="DM Mono,monospace">${d.v>=1000?(d.v/1000).toFixed(1)+'k':d.v}</text>`;
+      
+      let cy = pT + cH - (d.v / nM * cH);
+      if (prevX !== null && prevY !== null) {
+        sv += `<line x1="${prevX.toFixed(1)}" y1="${prevY.toFixed(1)}" x2="${cx.toFixed(1)}" y2="${cy.toFixed(1)}" stroke="${col}" stroke-width="2" opacity=".7"/>`;
+      }
+      prevX = cx;
+      prevY = cy;
+      sv += `<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="4" fill="white" stroke="${col}" stroke-width="2.5"/>`;
+    } else {
+      sv += `<rect x="${(cx-bW/2).toFixed(1)}" y="${pT+2}" width="${bW}" height="${cH-2}" rx="3" fill="none" stroke="#DADCE0" stroke-dasharray="3,2"/>`;
+      sv += `<text x="${cx.toFixed(1)}" y="${(pT+cH/2+4).toFixed(1)}" text-anchor="middle" font-size="9" fill="#BDC1C6">s/d</text>`;
+      prevX = null;
+      prevY = null;
+    }
+  });
+  
+  const last = valid.slice(-2);
+  const badge = last.length === 2 ? deltaBadge(last[1], last[0]) : '';
+  
+  return `<div class="cc" style="padding:.875rem 1rem">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;flex-wrap:wrap;gap:4px">
+      <div class="ct" style="margin-bottom:0">${title}</div>
+      ${badge}
+    </div>
+    <svg width="100%" viewBox="0 0 ${W} ${H}" style="overflow:visible;display:block">${sv}</svg>
+  </div>`;
+}
+
+function renderTend() {
+  let periods = getActivePeriods();
+  let charts1 = document.getElementById('tend-c1');
+  let charts2 = document.getElementById('tend-c2');
+  let noticeEl = document.getElementById('tend-notice');
+  let tableEl = document.getElementById('tend-tbl');
+  
+  if (!periods.length) {
+    if (charts1) charts1.innerHTML = '<div style="padding:2rem;text-align:center;color:var(--g400);grid-column:1/-1">Selecciona al menos una semana</div>';
+    if (charts2) charts2.innerHTML = '';
+    if (tableEl) tableEl.innerHTML = '';
+    return;
+  }
+  
+  if (noticeEl) {
+    let hasGaps = periods.some(p => p.global.exp === 0 && p.global.vis === 0);
+    if (hasGaps) {
+      noticeEl.style.display = 'flex';
+      noticeEl.innerHTML = '<span class="al-ico">⚠️</span><div><strong>Datos incompletos en algunos períodos.</strong> Las celdas "s/d" indican métricas no disponibles para ese período.</div>';
+    } else {
+      noticeEl.style.display = 'none';
+    }
+  }
+  
+  // ORDEN CORRECTO: 1-4 en cg2 (2 columnas), 5-7 en cg3 (3 columnas)
+  if (charts1) {
+    charts1.innerHTML = [
+      {title: '1. Interesados portal', key: 'portal_int', col: '#0097A7'},
+      {title: '2. Leads CRM', key: 'crm', col: '#5E35B1'},
+      {title: '3. Citas agendadas', key: 'citas_ag', col: '#1E8E3E'},
+      {title: '4. Citas atendidas', key: 'citas_at', col: '#34A853'}
+    ].map(m => comboChart(periods, m.key, m.col, m.title)).join('');
+  }
+  
+  if (charts2) {
+    charts2.innerHTML = [
+      {title: '5. Exposición', key: 'exp', col: '#00ACC1'},
+      {title: '6. Visualizaciones', key: 'vis', col: '#7B2FBE'},
+      {title: '7. Contratos pagados', key: 'contratos', col: '#F29900'}
+    ].map(m => comboChart(periods, m.key, m.col, m.title)).join('');
+  }
+  
+  // Tabla
+  const getV = (p, key) => {
+    if (!key) return null;
+    if (S.tGer === 'all') return p.global[key] ?? null;
+    return p.ger[S.tGer]?.[key] ?? null;
+  };
+  
+  let thead = `<thead><tr><th style="min-width:120px">Métrica</th>`;
+  periods.forEach(p => {
+    thead += `<th class="nr" style="min-width:90px">Sem ${p.num}</th>`;
+  });
+  if (periods.length >= 2) thead += `<th class="nr" style="color:var(--teal)">Δ último</th>`;
+  thead += `</tr></thead>`;
+  
+  let tbody = '<tbody>';
+  const metrics = [
+    {lbl: 'MARKETING', isHeader: true},
+    {lbl: 'Interesados portal', key: 'portal_int'},
+    {lbl: 'Leads CRM', key: 'crm'},
+    {lbl: 'CITAS', isHeader: true},
+    {lbl: 'Citas agendadas', key: 'citas_ag'},
+    {lbl: 'Citas atendidas', key: 'citas_at'},
+    {lbl: 'RENDIMIENTO', isHeader: true},
+    {lbl: 'Exposición', key: 'exp'},
+    {lbl: 'Visualizaciones', key: 'vis'},
+    {lbl: 'CONTRATOS', isHeader: true},
+    {lbl: 'Contratos pagados', key: 'contratos'}
+  ];
+  
+  metrics.forEach(m => {
+    if (m.isHeader) {
+      tbody += `<tr style="background:var(--g50)"><td colspan="${periods.length+(periods.length>=2?2:1)}" style="font-size:8px;font-weight:700;text-transform:uppercase;color:var(--g500);padding:5px 10px">${m.lbl}</td></tr>`;
+      return;
+    }
+    let vals = periods.map(p => getV(p, m.key));
+    let numeros = vals.filter(v => v !== null && v !== undefined && typeof v === 'number');
+    let deltaHtml = '—';
+    if (numeros.length >= 2) deltaHtml = deltaBadge(numeros[numeros.length-1], numeros[numeros.length-2]);
+    tbody += `<tr><td class="tn">${m.lbl}</td>`;
+    vals.forEach(v => {
+      let display = (v === null || v === undefined) ? 's/d' : (typeof v === 'number' ? v.toLocaleString() : v);
+      tbody += `<td class="nr mn" style="color:${v===null?'var(--g300)':'var(--g700)'}">${display}</td>`;
+    });
+    if (periods.length >= 2) tbody += `<td class="nr">${deltaHtml}</td>`;
+    tbody += `</tr>`;
+  });
+  tbody += '</tbody>';
+  
+  if (tableEl) {
+    tableEl.innerHTML = `<table>${thead}${tbody}</table>`;
+  }
 }
 
 // ════════════════════════════════════════════════════════════
@@ -1180,6 +1887,14 @@ function renderDetalleCitas() {
   document.getElementById('dc-sem').textContent = S.semana;
 
   const { rows: citRows, ag, at, cancel } = getCitas();
+  
+  const totalFilas = citRows.length;
+  const totalAsistentes = citRows.filter(r => {
+    const asist = (r['ASISTENCIA']||'').trim().toLowerCase();
+    return asist === 'si' || asist === 'sí';
+  }).length;
+  const totalNoAsistentes = totalFilas - totalAsistentes;
+  
   const porAsesorH5 = {};
   citRows.forEach(r => {
     const a = (r['ASESOR']||'').trim();
@@ -1193,34 +1908,59 @@ function renderDetalleCitas() {
 
   const porAsesorCRM = {};
   let totRegCRM=0, totCitReg=0, totCitAg=0, totCitAt=0, totCitReag=0, totCitCanc=0;
-  S.crm.forEach(r => {
-    const fechaReg = r['Fecha registro'] || '';
-    const weekNum = getWeekFromDate(fechaReg);
-    if (weekNum !== S.semana) return;
-    
-    const asesor = (r['Asesor que registró']||'').trim();
-    if (!asesor) return;
-    if (!porAsesorCRM[asesor]) porAsesorCRM[asesor] = {reg:0,citReg:0,citAg:0,citAt:0,citReag:0,citCanc:0};
-    const d = porAsesorCRM[asesor];
-    d.reg++; totRegCRM++;
-    const cr = parseInt(r['# Citas registradas']||0)||0;
-    const ca = parseInt(r['# Citas agendadas']||0)||0;
-    const cat= parseInt(r['# Citas atendidas']||0)||0;
-    const crg= parseInt(r['# Citas reagendadas']||0)||0;
-    const cc = parseInt(r['# Citas canceladas']||0)||0;
-    d.citReg +=cr; d.citAg +=ca; d.citAt +=cat; d.citReag+=crg; d.citCanc+=cc;
-    totCitReg+=cr; totCitAg+=ca; totCitAt+=cat; totCitReag+=crg; totCitCanc+=cc;
-  });
+  
+  const colSemanaCRM = S.crm.length > 0
+    ? Object.keys(S.crm[0]).find(k => 
+        k.includes('Semana') || k.includes('semana')
+      )
+    : null;
+  
+  if (colSemanaCRM) {
+    S.crm.forEach(r => {
+      const sem = parseInt(r[colSemanaCRM] || 0);
+      if (sem !== S.semana) return;
+      
+      const asesor = (r['Asesor que registró']||'').trim();
+      if (!asesor) return;
+      if (!porAsesorCRM[asesor]) porAsesorCRM[asesor] = {reg:0,citReg:0,citAg:0,citAt:0,citReag:0,citCanc:0};
+      const d = porAsesorCRM[asesor];
+      d.reg++; totRegCRM++;
+      const cr = parseInt(r['# Citas registradas']||0)||0;
+      const ca = parseInt(r['# Citas agendadas']||0)||0;
+      const cat= parseInt(r['# Citas atendidas']||0)||0;
+      const crg= parseInt(r['# Citas reagendadas']||0)||0;
+      const cc = parseInt(r['# Citas canceladas']||0)||0;
+      d.citReg +=cr; d.citAg +=ca; d.citAt +=cat; d.citReag+=crg; d.citCanc+=cc;
+      totCitReg+=cr; totCitAg+=ca; totCitAt+=cat; totCitReag+=crg; totCitCanc+=cc;
+    });
+  }
 
-  const tasaAt5 = ag>0?(at/ag*100).toFixed(1):'—';
+  const tasaAt5 = totalFilas>0?(totalAsistentes/totalFilas*100).toFixed(1):'—';
   const tasaAtCRM = totCitAg>0?(totCitAt/totCitAg*100).toFixed(1):'—';
+  
   document.getElementById('dc-kpis').innerHTML = `
-    <div class="kc kmkt"><div class="kl">Agendadas (Agenda)</div><div class="kv" style="color:var(--mkt)">${ag}</div><div class="ks">Semana ${S.semana}</div></div>
-    <div class="kc kgreen"><div class="kl">Atendidas (Agenda)</div><div class="kv" style="color:var(--green)">${at}</div><div class="ks">Tasa ${tasaAt5}%</div></div>
-    <div class="kc kamber"><div class="kl">No asistieron</div><div class="kv" style="color:var(--amber)">${cancel}</div></div>
-    <div class="kc kvta"><div class="kl">Citas agendadas CRM</div><div class="kv" style="color:var(--vta)">${totCitAg}</div><div class="ks">Tasa at. ${tasaAtCRM}%</div></div>
-    <div class="kc kamber"><div class="kl">Reagendadas CRM</div><div class="kv" style="color:var(--amber)">${totCitReag}</div></div>
-    <div class="kc" style="border-top:3px solid var(--red)"><div class="kl">Canceladas CRM</div><div class="kv" style="color:var(--red)">${totCitCanc}</div></div>
+    <div class="kc kmkt"><div class="kl">Total Citas (Agenda)</div>
+      <div class="kv" style="color:var(--mkt)">${totalFilas}</div>
+      <div class="ks">Filas semana ${S.semana}</div>
+    </div>
+    <div class="kc kgreen"><div class="kl">Asistieron (SI)</div>
+      <div class="kv" style="color:var(--green)">${totalAsistentes}</div>
+      <div class="ks">Tasa ${tasaAt5}%</div>
+    </div>
+    <div class="kc kamber"><div class="kl">No asistieron (NO)</div>
+      <div class="kv" style="color:var(--amber)">${totalNoAsistentes}</div>
+      <div class="ks">${totalNoAsistentes} citas</div>
+    </div>
+    <div class="kc kvta"><div class="kl">Citas agendadas CRM</div>
+      <div class="kv" style="color:var(--vta)">${totCitAg}</div>
+      <div class="ks">Tasa at. ${tasaAtCRM}%</div>
+    </div>
+    <div class="kc kamber"><div class="kl">Reagendadas CRM</div>
+      <div class="kv" style="color:var(--amber)">${totCitReag}</div>
+    </div>
+    <div class="kc" style="border-top:3px solid var(--red)"><div class="kl">Canceladas CRM</div>
+      <div class="kv" style="color:var(--red)">${totCitCanc}</div>
+    </div>
   `;
 
   const filt = (document.getElementById('dc-filter')?.value||'').toLowerCase();
@@ -1253,8 +1993,9 @@ function renderDetalleCitas() {
       </tr>`;
     });
 
-  const tAt5=citRows.filter(r=>{const a=(r['ASISTENCIA']||'').trim().toLowerCase();return a==='si'||a==='sí';}).length;
-  const tNo5=ag-tAt5;
+  const tAt5 = totalAsistentes;
+  const tNo5 = totalNoAsistentes;
+  
   rows.push(`<tr class="sub">
     <td>TOTAL</td>
     <td class="nr mn">${totRegCRM}</td>
@@ -1263,7 +2004,7 @@ function renderDetalleCitas() {
     <td class="nr mn">${totCitAt}</td>
     <td class="nr mn">${totCitReag}</td>
     <td class="nr mn">${totCitCanc}</td>
-    <td class="nr mn" style="border-left:2px solid var(--g200)">${ag}</td>
+    <td class="nr mn" style="border-left:2px solid var(--g200)">${totalFilas}</td>
     <td class="nr mn">${tAt5}</td>
     <td class="nr mn">${tNo5}</td>
     <td></td>
@@ -1276,24 +2017,23 @@ function renderDetalleCitas() {
     (r['ASESOR']||'').toLowerCase().includes(detFilt) ||
     (r['CLIENTE']||'').toLowerCase().includes(detFilt)
   );
+  
   document.getElementById('dc-det-body').innerHTML = detRows.length
     ? detRows.map(r => {
         const asist = (r['ASISTENCIA']||'').trim().toLowerCase();
         const tag = asist==='si'||asist==='sí'
           ? '<span class="tag tg">SI</span>'
           : '<span class="tag tr2">NO</span>';
-        const noCita = r['Nº'] || r['No'] || '—';
-        const noCitas = r['Nº CITAS'] || r['No CITAS'] || '—';
         return `<tr>
-          <td class="mn">${r['Semana del año']||'—'}</td>
-          <td class="mn">${noCita}</td>
+          <td class="mn">${r['Semana']||'—'}</td>
+          <td class="mn">${r['#'] || r['Nº'] || '—'}</td>
           <td>${r['FECHA DE SOLICITUD']||'—'}</td>
           <td>${r['FECHA DE CITA']||'—'}</td>
           <td class="tn">${r['CLIENTE']||'—'}</td>
           <td class="tn">${r['ASESOR']||'—'}</td>
           <td class="tn">${r['GERENTE']||'—'}</td>
           <td>${tag}</td>
-          <td>${noCitas}</td>
+          <td>${r['Nº CITAS']||'—'}</td>
           <td>${r['PRODUCTO']||'—'}</td>
           <td>${r['TIPO DE CITA']||'—'}</td>
           <td style="font-size:9px;color:var(--g500)">${r['COMENTARIOS']||''}</td>
@@ -1314,22 +2054,42 @@ function renderDetalleCitas() {
 async function cargarRep() {
   document.getElementById('rep-info').textContent = 'Cargando datos de rendimiento...';
   S.portalData = {V1:[],V2:[],V3:[],V4:[]};
+  
+  if (S.rendimientos && S.rendimientos.length > 0) {
+    S.rendimientos.forEach(r => {
+      const p = pmap(r['Portal']||'');
+      if (!p || !S.portalData[p]) return;
+      S.portalData[p].push({
+        zona: (r['Período']||'—'),
+        vistasSeg: parseFloat(r['Visualizaciones']||0) || 0,
+        vistasProp: 0,
+        ratio: parseFloat((r['CTR ExpVSVis']||'0').replace('%','')) || 0,
+        avisos: parseInt(r['Consultas recibidas']||0) || 0,
+        exp: parseFloat(r['Exposición']||0) || 0,
+        vis: parseFloat(r['Visualizaciones']||0) || 0,
+      });
+    });
+  }
+  
+  if (S.daily && S.daily.length > 0) {
+    S.daily.forEach(r => {
+      const p = pmap(r['Portal']||'');
+      if (!p || !S.portalData[p]) return;
+      S.portalData[p].push({
+        zona: (r['Período']||'Sem ' + (r['Semana']||'')),
+        vistasSeg: parseFloat(r['Visualizaciones']||0) || 0,
+        vistasProp: 0,
+        ratio: parseFloat((r['CTR ExpVSVis']||'0').replace('%','')) || 0,
+        avisos: parseInt(r['Consultas recibidas']||0) || 0,
+        exp: parseFloat(r['Exposición']||0) || 0,
+        vis: parseFloat(r['Visualizaciones']||0) || 0,
+      });
+    });
+  }
+  
   const periodos = [...new Set(S.rendimientos.map(r=>(r['Período']||'').trim()).filter(Boolean))];
   document.getElementById('rep-info').textContent = `Vista de rendimientos · ${periodos.join(', ') || 'Sin datos'}`;
   
-  S.rendimientos.forEach(r => {
-    const p = pmap(r['Portal']||'');
-    if (!p || !S.portalData[p]) return;
-    S.portalData[p].push({
-      zona: (r['Período']||'—'),
-      vistasSeg: parseFloat(r['Visualizaciones']||0) || 0,
-      vistasProp: 0,
-      ratio: parseFloat((r['CTR ExpVSVis']||'0').replace('%','')) || 0,
-      avisos: parseInt(r['Consultas recibidas']||0) || 0,
-      exp: parseFloat(r['Exposición']||0) || 0,
-      vis: parseFloat(r['Visualizaciones']||0) || 0,
-    });
-  });
   renderRep();
 }
 
@@ -1337,10 +2097,11 @@ function renderRep() {
   document.getElementById('rep-sum').innerHTML = `<div class="rep-sg">${['V1','V2','V3','V4'].map(p=>{
     const rows=S.portalData[p]||[];
     const tot=rows.reduce((s,r)=>s+(r.avisos||0),0);
+    const expTotal=rows.reduce((s,r)=>s+(r.exp||0),0);
     return`<div class="rep-sc" style="border-top:3px solid ${PC[p]}">
       <div class="rep-scl" style="color:${PC[p]}">${p}</div>
       <div class="rep-scv" style="color:${PC[p]}">${rows.length}</div>
-      <div style="font-size:9px;color:var(--g500)">registros${tot?` · ${tot} consultas`:''}</div>
+      <div style="font-size:9px;color:var(--g500)">registros${tot?` · ${tot} consultas`:''}${expTotal?` · Exp ${expTotal.toFixed(0)}`:''}</div>
     </div>`;
   }).join('')}</div>`;
 
@@ -1363,9 +2124,16 @@ function renderRep() {
 
   let all=[];
   ['V1','V2','V3','V4'].forEach(p=>(S.portalData[p]||[]).forEach(r=>all.push({...r,portal:p})));
+  
+  const filt = document.getElementById('rep-filter')?.value?.toLowerCase() || '';
+  const filtered = filt ? all.filter(r => 
+    r.portal.toLowerCase().includes(filt) || 
+    r.zona.toLowerCase().includes(filt)
+  ) : all;
+  
   document.getElementById('rep-tbl').innerHTML = `<div class="tc"><div class="tsc"><table style="font-size:9px">
     <thead><tr><th>Portal</th><th>Período</th><th class="nr">Exposición</th><th class="nr">Visualizaciones</th><th class="nr">Consultas</th><th class="nr">CTR %</th></tr></thead>
-    <tbody>${all.length?all.map(r=>`<tr>
+    <tbody>${filtered.length?filtered.map(r=>`<tr>
       <td><span class="bdg" style="background:${PC[r.portal]}22;color:${PC[r.portal]}">${r.portal}</span></td>
       <td class="tn">${r.zona}</td>
       <td class="nr mn" style="font-weight:700;color:${PC[r.portal]}">${(r.exp||0).toFixed(0)}</td>
@@ -1374,6 +2142,12 @@ function renderRep() {
       <td class="nr mn">${r.ratio?r.ratio.toFixed(1)+'%':'—'}</td>
     </tr>`).join(''):'<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--g400)">Sin datos</td></tr>'}</tbody>
   </table></div></div>`;
+  
+  const fi = document.getElementById('rep-filter');
+  if (fi && !fi._bound) {
+    fi._bound = true;
+    fi.addEventListener('input', () => renderRep());
+  }
 }
 
 // ════════════════════════════════════════════════════════════
