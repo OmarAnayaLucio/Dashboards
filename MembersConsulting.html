@@ -1,0 +1,1501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MEMBER's CONSULTING · VIDANTA · CRM</title>
+  <style>
+    :root {
+      --black: #000000;
+      --arena: #F7F3EE;
+      --arena-dark: #E8DDD0;
+      --azul-profundo: #0E3B5C;
+      --azul-vibrante: #1F6E8C;
+      --azul-medio: #2E86C1;
+      --azul-claro: #85C1E9;
+      --azul-suave: #D6EAF8;
+      --blanco: #FFFFFF;
+      --texto: #1C1C1C;
+      --verde: #27ae60;
+      --naranja: #e67e22;
+      --rojo: #c0392b;
+      --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font); background: var(--arena); color: var(--texto); min-height: 100vh; }
+
+    .navbar {
+      background: var(--blanco);
+      padding: 0.5rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 200;
+      border-bottom: 3px solid var(--azul-vibrante);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      flex-wrap: wrap;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand img { height: 40px; width: auto; display: block; }
+    .brand-text { display: flex; flex-direction: column; }
+    .navbar h1 {
+      font-size: 18px; font-weight: 700; color: var(--azul-profundo);
+      letter-spacing: 0.5px; margin: 0; line-height: 1.2;
+    }
+    .navbar .subtitle { font-size: 12px; color: #6b7a8a; font-weight: 400; }
+    .sync-info {
+      font-size: 11px; color: #555; display: flex; align-items: center; gap: 6px;
+    }
+    .sync-dot {
+      width: 7px; height: 7px; background: var(--azul-claro);
+      border-radius: 50%; animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .btn-refresh {
+      background: var(--azul-vibrante); color: white; border: none;
+      border-radius: 6px; padding: 6px 14px; font-size: 12px; font-weight: 600;
+      cursor: pointer; transition: background 0.15s; margin-left: 12px;
+    }
+    .btn-refresh:hover { background: var(--azul-medio); }
+
+    .btn-admin {
+      background: var(--naranja); color: white; border: none;
+      border-radius: 6px; padding: 6px 14px; font-size: 12px; font-weight: 600;
+      cursor: pointer; transition: background 0.15s; margin-left: 8px;
+    }
+    .btn-admin:hover { background: #d35400; }
+    .btn-admin.locked { opacity: 0.7; }
+    .btn-admin.unlocked { background: var(--verde); }
+
+    .tabs-wrapper { background: var(--azul-profundo); border-bottom: 2px solid var(--azul-vibrante); overflow-x: auto; scrollbar-width: none; }
+    .tabs-wrapper::-webkit-scrollbar { display: none; }
+    .tabs { display: flex; padding: 0 1.5rem; gap: 0; min-width: max-content; }
+    .tab-btn {
+      padding: 11px 18px; font-size: 13px; font-weight: 500;
+      border: none; background: transparent; color: rgba(255,255,255,0.55);
+      cursor: pointer; border-bottom: 3px solid transparent;
+      transition: all 0.15s; white-space: nowrap;
+      display: flex; align-items: center; gap: 7px;
+    }
+    .tab-btn:hover { color: var(--azul-claro); }
+    .tab-btn.active { color: var(--blanco); border-bottom-color: var(--azul-claro); }
+    .tab-btn.locked { opacity: 0.7; }
+    .tab-btn.locked::after { content: '🔒'; font-size: 11px; margin-left: 4px; }
+    .tab-btn.unlocked::after { content: '🔓'; font-size: 11px; margin-left: 4px; }
+    .tab-count {
+      background: rgba(133,193,233,0.2); color: var(--azul-claro);
+      border-radius: 20px; padding: 1px 8px; font-size: 11px; font-weight: 700;
+    }
+    .tab-btn.active .tab-count { background: var(--azul-vibrante); color: white; }
+
+    .main { padding: 1.25rem 1.5rem; max-width: 1400px; margin: 0 auto; }
+
+    /* Tips Section */
+    .tips-section {
+      background: var(--blanco);
+      border-radius: 12px;
+      border-left: 5px solid var(--azul-vibrante);
+      padding: 1rem 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 12px rgba(14,59,92,0.10);
+    }
+    .tips-section h4 {
+      color: var(--azul-profundo);
+      font-size: 14px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .tips-section ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 24px;
+    }
+    .tips-section ul li {
+      font-size: 13px;
+      color: var(--texto);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .tips-section ul li .tip-icon {
+      font-size: 16px;
+    }
+    .tips-section ul li .tip-highlight {
+      font-weight: 600;
+      color: var(--azul-profundo);
+    }
+    .tips-section ul li .tip-highlight.green { color: var(--verde); }
+    .tips-section ul li .tip-highlight.orange { color: var(--naranja); }
+
+    .summary-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      margin-bottom: 1.5rem;
+    }
+    .sum-card {
+      background: var(--blanco); border-radius: 12px; padding: 0.85rem 1rem;
+      box-shadow: 0 4px 12px rgba(14,59,92,0.10); border-left: 4px solid var(--azul-vibrante);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .sum-card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(14,59,92,0.18); }
+    .sc-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--azul-profundo); font-weight: 600; }
+    .sc-val { font-size: 22px; font-weight: 700; color: var(--azul-profundo); }
+    .sc-sub { font-size: 10px; color: #888; margin-top: 2px; }
+    .sum-card.c-verde .sc-val { color: var(--verde); }
+    .sum-card.c-naranja .sc-val { color: var(--naranja); }
+    .sum-card.c-rojo .sc-val { color: var(--rojo); }
+    .sum-card.c-azul .sc-val { color: var(--azul-vibrante); }
+    .sum-card.c-dorado .sc-val { color: #b7950b; }
+
+    .panel { background: var(--blanco); border-radius: 12px; border: 1px solid var(--azul-claro); box-shadow: 0 4px 16px rgba(14,59,92,0.08); overflow: hidden; }
+    .panel-header {
+      padding: 0.85rem 1.1rem; display: flex; align-items: center; gap: 10px;
+      border-bottom: 2px solid var(--azul-medio); background: var(--azul-profundo); flex-wrap: wrap;
+    }
+    .panel-header h2 { font-size: 15px; font-weight: 600; color: var(--blanco); margin-right: auto; }
+    .filter-group { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+    .filter-group.hidden { display: none; }
+    .filter-group input, .filter-group select {
+      padding: 0.3rem 0.6rem; border-radius: 6px; border: 1px solid var(--azul-medio);
+      background: #1A3A4F; color: #eee; font-size: 12px; outline: none;
+    }
+    .filter-group input::placeholder { color: #aaa; }
+    .filter-group button {
+      padding: 0.3rem 0.8rem; border-radius: 6px; border: none;
+      background: var(--azul-medio); color: var(--blanco); font-weight: 600;
+      font-size: 12px; cursor: pointer; transition: background 0.15s;
+    }
+    .filter-group button:hover { background: var(--azul-vibrante); }
+
+    /* Password Modal */
+    .modal-overlay {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5); z-index: 999; justify-content: center; align-items: center;
+    }
+    .modal-overlay.show { display: flex; }
+    .modal {
+      background: var(--blanco); border-radius: 16px; padding: 2rem; max-width: 420px; width: 90%;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+    }
+    .modal h3 { font-size: 18px; color: var(--azul-profundo); margin-bottom: 12px; }
+    .modal p { font-size: 13px; color: #666; margin-bottom: 16px; }
+    .modal input[type="password"] {
+      width: 100%; padding: 10px 14px; border: 2px solid var(--arena-dark);
+      border-radius: 8px; font-size: 14px; outline: none; transition: border-color 0.15s;
+    }
+    .modal input[type="password"]:focus { border-color: var(--azul-medio); }
+    .modal .modal-actions { display: flex; gap: 10px; margin-top: 16px; justify-content: flex-end; }
+    .modal .modal-actions button {
+      padding: 8px 20px; border-radius: 8px; border: none; font-weight: 600;
+      cursor: pointer; transition: background 0.15s;
+    }
+    .modal .modal-actions .btn-cancel { background: #eee; color: #555; }
+    .modal .modal-actions .btn-cancel:hover { background: #ddd; }
+    .modal .modal-actions .btn-confirm { background: var(--azul-profundo); color: white; }
+    .modal .modal-actions .btn-confirm:hover { background: var(--azul-vibrante); }
+    .modal .error-msg { color: var(--rojo); font-size: 13px; margin-top: 8px; display: none; }
+    .modal .error-msg.show { display: block; }
+
+    /* Admin Panel */
+    .admin-panel {
+      display: none; background: var(--blanco); border-radius: 12px;
+      border: 2px solid var(--naranja); padding: 1.5rem; margin-bottom: 1.5rem;
+    }
+    .admin-panel.show { display: block; }
+    .admin-panel h3 { color: var(--azul-profundo); margin-bottom: 8px; }
+    .admin-panel .admin-subtitle { color: #666; font-size: 13px; margin-bottom: 16px; }
+    
+    .admin-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    
+    .admin-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--arena);
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--arena-dark);
+      transition: border-color 0.15s;
+      flex-wrap: nowrap;
+      min-width: 0;
+    }
+    .admin-item:hover { border-color: var(--azul-medio); }
+    
+    .admin-item .admin-name {
+      font-weight: 600;
+      font-size: 13px;
+      min-width: 60px;
+      color: var(--azul-profundo);
+      flex-shrink: 0;
+    }
+    
+    .admin-item .admin-status {
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 12px;
+      background: #f0f0f0;
+      color: #888;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .admin-item .admin-status.has-password {
+      background: #d5f5e3;
+      color: #1e8449;
+    }
+    
+    .admin-item input[type="password"] {
+      flex: 1;
+      padding: 6px 10px;
+      border: 1px solid var(--arena-dark);
+      border-radius: 6px;
+      font-size: 12px;
+      outline: none;
+      min-width: 60px;
+      max-width: 120px;
+      transition: border-color 0.15s;
+    }
+    .admin-item input[type="password"]:focus {
+      border-color: var(--azul-medio);
+      box-shadow: 0 0 0 2px rgba(46,134,193,0.15);
+    }
+    
+    .admin-item .admin-actions {
+      display: flex;
+      gap: 4px;
+      flex-wrap: nowrap;
+      flex-shrink: 0;
+    }
+    
+    .admin-item .admin-actions button {
+      padding: 4px 10px;
+      border: none;
+      border-radius: 6px;
+      font-size: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+      min-width: 30px;
+    }
+    
+    .admin-item .btn-save {
+      background: var(--azul-medio);
+      color: white;
+      min-width: 50px;
+    }
+    .admin-item .btn-save:hover { background: var(--azul-vibrante); }
+    
+    .admin-item .btn-remove {
+      background: var(--rojo);
+      color: white;
+      min-width: 30px;
+    }
+    .admin-item .btn-remove:hover { background: #a93226; }
+    
+    .admin-item .btn-clear {
+      background: #95a5a6;
+      color: white;
+      min-width: 30px;
+    }
+    .admin-item .btn-clear:hover { background: #7f8c8d; }
+    
+    .admin-actions-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding-top: 12px;
+      border-top: 1px solid var(--arena-dark);
+    }
+    
+    .admin-actions-bar button {
+      padding: 6px 16px;
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    
+    .admin-actions-bar .btn-export {
+      background: var(--azul-medio);
+      color: white;
+    }
+    .admin-actions-bar .btn-export:hover { background: var(--azul-vibrante); }
+    
+    .admin-actions-bar .btn-import {
+      background: var(--naranja);
+      color: white;
+    }
+    .admin-actions-bar .btn-import:hover { background: #d35400; }
+    
+    .admin-actions-bar .btn-close-admin {
+      background: var(--rojo);
+      color: white;
+    }
+    .admin-actions-bar .btn-close-admin:hover { background: #a93226; }
+
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th {
+      background: var(--azul-profundo); color: var(--blanco); font-weight: 600;
+      text-align: left; padding: 0.7rem 0.5rem; border-bottom: 2px solid var(--azul-vibrante);
+      cursor: default; user-select: none; white-space: nowrap;
+    }
+    th.sortable { cursor: pointer; }
+    th.sortable:hover { background: var(--azul-vibrante); }
+    th .arrow { margin-left: 4px; font-size: 10px; opacity: 0.7; color: var(--azul-claro); }
+    td { padding: 0.5rem 0.5rem; border-bottom: 1px solid var(--arena-dark); vertical-align: middle; }
+    tr:hover td { background: var(--azul-suave); }
+    .cliente-nombre { font-weight: 500; }
+    .cliente-id { color: #999; font-size: 12px; }
+    .saldo { font-weight: 600; color: var(--azul-profundo); }
+
+    .btn-llamar {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: var(--azul-medio); color: white; border: none;
+      padding: 0.25rem 0.65rem; border-radius: 20px; font-size: 11px;
+      font-weight: 600; text-decoration: none; cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-llamar:hover { background: var(--azul-vibrante); color: white; }
+
+    .badge {
+      display: inline-block; font-size: 10px; font-weight: 700;
+      padding: 2px 8px; border-radius: 20px; white-space: nowrap;
+    }
+    .badge-none      { background: #f0f0f0; color: #888; }
+    .badge-interested{ background: #d5f5e3; color: #1e8449; }
+    .badge-undecided { background: #fef9e7; color: #9a7d0a; }
+    .badge-noanswer  { background: #f2f3f4; color: #566573; }
+    .badge-notint    { background: #fdedec; color: #922b21; }
+    .badge-voicemail { background: #eaf2ff; color: #1a5276; }
+
+    .comment-row td { padding: 0; border-bottom: none; }
+    .comment-panel {
+      display: none; padding: 12px 14px 14px;
+      background: #f8fbff; border-top: 1px dashed var(--azul-claro);
+      border-bottom: 1px solid var(--arena-dark);
+    }
+    .comment-panel.open { display: block; }
+    .presets { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+    .preset-chip {
+      font-size: 11px; padding: 4px 11px; border-radius: 20px;
+      border: 1px solid var(--arena-dark); background: white;
+      color: var(--texto); cursor: pointer; transition: all 0.12s;
+    }
+    .preset-chip:hover { border-color: var(--azul-medio); color: var(--azul-profundo); background: var(--azul-suave); }
+    .preset-chip.sel { background: var(--azul-medio); color: white; border-color: var(--azul-medio); }
+    .comment-textarea {
+      width: 100%; border: 1px solid var(--arena-dark); border-radius: 8px;
+      padding: 8px 12px; font-size: 12px; font-family: var(--font);
+      resize: vertical; min-height: 60px; outline: none; background: white;
+    }
+    .comment-textarea:focus { border-color: var(--azul-medio); box-shadow: 0 0 0 3px rgba(46,134,193,0.2); }
+    .comment-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; gap: 10px; flex-wrap: wrap; }
+    .comment-saved { font-size: 11px; color: #999; font-style: italic; }
+    .comment-saved b { color: var(--verde); font-style: normal; }
+    .btn-save-comment {
+      background: var(--azul-profundo); color: white; border: none;
+      border-radius: 7px; padding: 6px 16px; font-size: 12px;
+      font-weight: 600; cursor: pointer; transition: background 0.15s;
+    }
+    .btn-save-comment:hover { background: var(--azul-vibrante); }
+    .btn-comment-toggle {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: transparent; border: 1px solid var(--arena-dark);
+      border-radius: 20px; padding: 0.2rem 0.6rem;
+      font-size: 11px; color: #666; cursor: pointer; transition: all 0.12s;
+    }
+    .btn-comment-toggle:hover, .btn-comment-toggle.has-data {
+      border-color: var(--azul-medio); color: var(--azul-profundo); background: var(--azul-suave);
+    }
+
+    .pagination {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 0.5rem; padding: 0.8rem 1.1rem;
+      border-top: 1px solid var(--azul-claro); font-size: 13px;
+    }
+    .pagination.hidden { display: none; }
+    .pagination .info { color: var(--azul-profundo); }
+    .pagination .controls { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
+    .pagination .controls button {
+      background: var(--arena); border: 1px solid var(--arena-dark); border-radius: 4px;
+      padding: 0.2rem 0.6rem; cursor: pointer; font-size: 12px; transition: all 0.1s; color: var(--texto);
+    }
+    .pagination .controls button:hover:not(:disabled) { background: var(--azul-profundo); color: white; border-color: var(--azul-profundo); }
+    .pagination .controls button:disabled { opacity: 0.4; cursor: default; }
+    .pagination .controls .active-page { background: var(--azul-profundo); color: white; border-color: var(--azul-profundo); font-weight: 600; }
+
+    .toast {
+      position: fixed; bottom: 24px; right: 24px; z-index: 999;
+      background: var(--azul-profundo); color: white; border-radius: 10px;
+      padding: 12px 20px; font-size: 13px; font-weight: 600;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.25); opacity: 0;
+      transform: translateY(10px); transition: all 0.25s; pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    .loading { text-align: center; padding: 3rem; color: #999; }
+    .spinner { width: 36px; height: 36px; border: 3px solid var(--azul-suave); border-top-color: var(--azul-medio); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 12px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .footer { text-align: center; padding: 1rem; font-size: 11px; color: #888; border-top: 2px solid var(--azul-claro); margin-top: 1.5rem; background: var(--blanco); }
+    .footer strong { color: var(--azul-profundo); }
+
+    .resumen-asesor td:first-child { font-weight: 600; }
+    .barra-progreso {
+      background: var(--arena-dark); border-radius: 10px; height: 8px; width: 100%; max-width: 120px;
+      display: inline-block; vertical-align: middle;
+    }
+    .barra-progreso > span {
+      display: block; height: 100%; border-radius: 10px;
+      background: var(--azul-medio); transition: width 0.3s;
+    }
+
+    .balance-input {
+      width: 80px;
+      padding: 2px 4px;
+      border: 1px solid var(--arena-dark);
+      border-radius: 4px;
+      font-size: 12px;
+      background: white;
+      transition: border-color 0.15s;
+    }
+    .balance-input:focus {
+      border-color: var(--azul-medio);
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(46,134,193,0.2);
+    }
+    .calc-cell {
+      font-weight: 500;
+      color: var(--azul-profundo);
+      white-space: nowrap;
+    }
+
+    @media (max-width: 700px) {
+      .navbar { flex-wrap: wrap; gap: 6px; padding: 0.5rem 1rem; }
+      .main { padding: 0.8rem; }
+      .summary-bar { grid-template-columns: 1fr 1fr; }
+      .panel-header { flex-direction: column; align-items: stretch; }
+      .balance-input { width: 60px; }
+      .admin-grid { grid-template-columns: 1fr; }
+      .admin-item { flex-wrap: wrap; }
+      .admin-item input[type="password"] { max-width: none; }
+      .tips-section ul { flex-direction: column; gap: 8px; }
+    }
+    @media (max-width: 480px) {
+      .summary-bar { grid-template-columns: 1fr; }
+      .btn-llamar span { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="brand">
+    <img src="https://omaranayalucio.github.io/Dashboards/logovidanta.png" alt="VIDANTA" />
+    <div class="brand-text">
+      <h1>MEMBER´s CONSULTING</h1>
+      <div class="subtitle">VIDANTA · Client CRM</div>
+    </div>
+  </div>
+  <div class="sync-info">
+    <div class="sync-dot"></div>
+    <span id="last-update">Loading...</span>
+    <button class="btn-refresh" onclick="loadData()">↻ Refresh</button>
+    <button class="btn-admin locked" id="adminBtn" onclick="toggleAdminPanel()">🔒 Admin</button>
+  </div>
+</nav>
+
+<!-- Password Modal -->
+<div class="modal-overlay" id="passwordModal">
+  <div class="modal">
+    <h3 id="modalTitle">🔒 Access Restricted</h3>
+    <p id="modalMessage">Enter the password to access <strong id="modalAdvisorName"></strong></p>
+    <input type="password" id="modalPassword" placeholder="Password..." onkeydown="if(event.key==='Enter') checkPassword()" />
+    <div class="error-msg" id="modalError">❌ Incorrect password. Please try again.</div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closePasswordModal()">Cancel</button>
+      <button class="btn-confirm" onclick="checkPassword()">Access</button>
+    </div>
+  </div>
+</div>
+
+<div class="tabs-wrapper">
+  <div class="tabs" id="tabs"></div>
+</div>
+
+<div class="main">
+
+  <!-- Tips Section -->
+  <div class="tips-section">
+    <h4>💡 Key Tips for Success</h4>
+    <ul>
+      <li>
+        <span class="tip-icon">⏰</span>
+        Call <span class="tip-highlight">after 10 AM</span> and <span class="tip-highlight">before 9 PM</span>
+      </li>
+      <li>
+        <span class="tip-icon">📅</span>
+        <span class="tip-highlight orange">Saturday afternoons</span> have higher contact rates
+      </li>
+      <li>
+        <span class="tip-icon">🤝</span>
+        <span class="tip-highlight green">We don't cancel</span> — we negotiate a significant reduction while they continue enjoying their Vidanta vacations
+      </li>
+    </ul>
+  </div>
+
+  <div class="summary-bar">
+    <div class="sum-card">
+      <div class="sc-label">👥 Total Clients</div>
+      <div class="sc-val" id="s-total">—</div>
+      <div class="sc-sub">in this view</div>
+    </div>
+    <div class="sum-card c-verde">
+      <div class="sc-label">✅ Interested</div>
+      <div class="sc-val" id="s-interested">—</div>
+      <div class="sc-sub">ready for closing</div>
+    </div>
+    <div class="sum-card c-naranja">
+      <div class="sc-label">🤔 Undecided</div>
+      <div class="sc-val" id="s-undecided">—</div>
+      <div class="sc-sub">reschedule call</div>
+    </div>
+    <div class="sum-card c-rojo">
+      <div class="sc-label">🚫 Not interested</div>
+      <div class="sc-val" id="s-notint">—</div>
+      <div class="sc-sub">no follow-up</div>
+    </div>
+    <div class="sum-card">
+      <div class="sc-label">📵 No contact</div>
+      <div class="sc-val" id="s-noanswer">—</div>
+      <div class="sc-sub">no answer / voicemail</div>
+    </div>
+    <div class="sum-card c-azul">
+      <div class="sc-label">⏳ Unmanaged</div>
+      <div class="sc-val" id="s-pending">—</div>
+      <div class="sc-sub">pending</div>
+    </div>
+    <div class="sum-card c-dorado">
+      <div class="sc-label">💰 Total Monthly Balance</div>
+      <div class="sc-val" id="s-total-balance">—</div>
+      <div class="sc-sub">sum of monthly balances (USD)</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header">
+      <h2 id="panel-title">📊 General Report</h2>
+      <div class="filter-group" id="filterGroup">
+        <input type="text" id="searchInput" placeholder="🔍 Search name, phone, address..." />
+        <select id="statusFilter">
+          <option value="">All statuses</option>
+          <option value="interested">✅ Interested</option>
+          <option value="undecided">🤔 Undecided</option>
+          <option value="noanswer">📵 No contact</option>
+          <option value="notint">🚫 Not interested</option>
+          <option value="voicemail">📦 Voicemail</option>
+          <option value="none">⏳ Unmanaged</option>
+        </select>
+        <button id="resetBtn">⟲ Reset</button>
+      </div>
+    </div>
+
+    <div class="table-wrap" id="tableWrap">
+      <table>
+        <thead id="tableHead">
+          <tr id="headerRow">
+            <!-- filled dynamically based on view -->
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <tr><td colspan="12"><div class="loading"><div class="spinner"></div>Loading data...</div></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pagination" id="pagination">
+      <span class="info" id="paginationInfo">—</span>
+      <div class="controls">
+        <button id="prevPage" disabled>‹ Prev</button>
+        <span id="pageNumbers"></span>
+        <button id="nextPage" disabled>Next ›</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <strong>MEMBER´s CONSULTING · VIDANTA</strong> &nbsp;·&nbsp; Client CRM &nbsp;·&nbsp; Real-time data from Google Sheets
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── CONFIG ──────────────────────────────────────────────────────────────────
+const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQHy-EAzt6KPNuOHWbfvvN-eddTQSdsV568wcoDmLRCSYmoDj_FOooVi2-_8HMlv3Ircrp8z4M9dnRS/pub?output=csv';
+const APPS_SCRIPT_URL = '';   // leave empty until you configure the script
+const STORE_KEY = 'crm_vidanta_v4';
+const PASSWORD_KEY = 'crm_vidanta_passwords';
+const ADMIN_PASSWORD = 'Omar7777';
+const PAGE_SIZE = 15;
+
+const PRESETS = [
+  { label: '📵 Phone not connecting',         status: 'noanswer'  },
+  { label: '🤔 Undecided / Reschedule',        status: 'undecided' },
+  { label: '🚫 Does not wish to be contacted', status: 'notint'    },
+  { label: '✅ Interested / Close with Fer',   status: 'interested'},
+  { label: '📦 Voicemail / 3rd party',         status: 'voicemail' },
+];
+
+const STATUS_INFO = {
+  interested: { label: 'Interested',       cls: 'badge-interested' },
+  undecided:  { label: 'Undecided',        cls: 'badge-undecided'  },
+  noanswer:   { label: 'No contact',       cls: 'badge-noanswer'   },
+  notint:     { label: 'Not interested',   cls: 'badge-notint'     },
+  voicemail:  { label: 'Voicemail / 3rd',  cls: 'badge-voicemail'  },
+  none:       { label: 'Unmanaged',        cls: 'badge-none'       },
+};
+
+// ── STATE ────────────────────────────────────────────────────────────────────
+let allRows    = [];
+let advisors   = [];
+let activeTab  = 'all';
+let store      = {};
+let currentPage = 1;
+let sortField  = 'id';
+let sortAsc    = true;
+let filteredData = [];
+
+// Password state
+let passwords = {};
+let pendingTab = null;
+let isAdminMode = false;
+let adminUnlocked = false;
+
+// ── STORAGE ──────────────────────────────────────────────────────────────────
+function loadStore() { try { store = JSON.parse(localStorage.getItem(STORE_KEY) || '{}'); } catch(e) { store = {}; } }
+function saveStore() { try { localStorage.setItem(STORE_KEY, JSON.stringify(store)); } catch(e) {} }
+
+function loadPasswords() {
+  try {
+    const data = JSON.parse(localStorage.getItem(PASSWORD_KEY) || '{}');
+    passwords = data;
+  } catch(e) { passwords = {}; }
+}
+function savePasswords() {
+  try { localStorage.setItem(PASSWORD_KEY, JSON.stringify(passwords)); } catch(e) {}
+}
+
+function rowKey(r) { return r.id + '||' + r.nombre + '||' + r.telefono; }
+
+// Simple hash function
+function hashPassword(pwd) {
+  let hash = 0;
+  for (let i = 0; i < pwd.length; i++) {
+    const char = pwd.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash;
+  }
+  return 'hash_' + hash.toString(36);
+}
+
+function verifyPassword(advisor, pwd) {
+  if (advisor === 'admin') {
+    return pwd === ADMIN_PASSWORD;
+  }
+  if (!passwords[advisor]) return false;
+  return passwords[advisor] === hashPassword(pwd);
+}
+
+function setPassword(advisor, pwd) {
+  if (pwd && pwd.trim()) {
+    passwords[advisor] = hashPassword(pwd.trim());
+  } else {
+    delete passwords[advisor];
+  }
+  savePasswords();
+  renderTabs();
+  renderAdminPanel();
+}
+
+function isTabLocked(advisor) {
+  if (advisor === 'all') return false;
+  return !!passwords[advisor];
+}
+
+// ── CSV PARSER ────────────────────────────────────────────────────────────────
+function parseCSV(raw) {
+  const text = raw.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  const lines = text.split('\n').filter(l => l.trim());
+  if (!lines.length) return [];
+
+  const sep = lines[0].includes('\t') ? '\t' : ',';
+
+  function splitLine(line) {
+    if (sep === '\t') return line.split('\t').map(s => s.trim());
+    const res = []; let cur = '', inQ = false;
+    for (let i = 0; i < line.length; i++) {
+      const c = line[i];
+      if (c === '"') { if (inQ && line[i+1]==='"') { cur+='"'; i++; } else { inQ=!inQ; } }
+      else if (c===',' && !inQ) { res.push(cur.trim()); cur=''; }
+      else { cur+=c; }
+    }
+    res.push(cur.trim());
+    return res;
+  }
+
+  const headers = splitLine(lines[0]).map(h => h.replace(/^"|"$/g,'').trim().toLowerCase());
+
+  function col(keywords) {
+    return headers.findIndex(h => keywords.some(k => h.includes(k)));
+  }
+  const iId   = col(['#','id','num','no.']);
+  const iNom  = col(['nombre']);
+  const iTel  = col(['tel']);
+  const iSal  = col(['saldo','balance']);
+  const iDom  = col(['domicilio','direcc','address']);
+  const iAdv  = col(['asesor','advisor']);
+  const iFec  = col(['fecha','date']);
+  const iCom  = col(['coment','note','observ']);
+
+  const out = [];
+  for (let i = 1; i < lines.length; i++) {
+    const c = splitLine(lines[i]).map(s => s.replace(/^"|"$/g,'').trim());
+    const nombre = iNom >= 0 ? c[iNom] || '' : '';
+    if (!nombre) continue;
+
+    let saldo = 0;
+    if (iSal >= 0 && c[iSal]) {
+      saldo = parseFloat(c[iSal].replace(/[$,\s]/g,'')) || 0;
+    }
+
+    out.push({
+      id:          iId  >= 0 ? (parseInt(c[iId]) || (i)) : i,
+      nombre:      nombre,
+      telefono:    iTel >= 0 ? c[iTel] || '' : '',
+      saldo:       saldo,
+      domicilio:   iDom >= 0 ? c[iDom] || '' : '',
+      asesor:      iAdv >= 0 ? c[iAdv] || '' : '',
+      fecha:       iFec >= 0 ? c[iFec] || '' : '',
+      comentarios: iCom >= 0 ? c[iCom] || '' : '',
+    });
+  }
+  return out;
+}
+
+// ── LOAD ─────────────────────────────────────────────────────────────────────
+async function loadData() {
+  document.getElementById('tableBody').innerHTML =
+    '<tr><td colspan="12"><div class="loading"><div class="spinner"></div>Updating data...</div></td></tr>';
+  try {
+    const res = await fetch(CSV_URL + '&cb=' + Date.now());
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const text = await res.text();
+    allRows = parseCSV(text);
+    loadStore();
+    loadPasswords();
+
+    const seen = new Set();
+    advisors = [];
+    allRows.forEach(r => { 
+      if (r.asesor && r.asesor.trim() && !seen.has(r.asesor.trim())) { 
+        seen.add(r.asesor.trim()); 
+        advisors.push(r.asesor.trim()); 
+      } 
+    });
+
+    document.getElementById('last-update').textContent =
+      'Updated ' + new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+
+    renderTabs();
+    renderAdminPanel();
+    applyFiltersAndRender();
+    updateAdminButton();
+  } catch(e) {
+    document.getElementById('tableBody').innerHTML =
+      '<tr><td colspan="12" style="text-align:center;padding:2rem;color:var(--rojo);">⚠️ Error: ' + e.message + '</td></tr>';
+    showToast('Error loading data', false);
+  }
+}
+
+// ── STATUS ────────────────────────────────────────────────────────────────────
+function getStatus(r) {
+  const k = rowKey(r);
+  if (store[k] && store[k].status) return store[k].status;
+  return inferStatus(r.comentarios);
+}
+function inferStatus(c) {
+  if (!c) return 'none';
+  const t = c.toLowerCase();
+  if (t.includes('interesado') && !t.includes('no está interesad') && !t.includes('no interesad')) return 'interested';
+  if (t.includes('indeciso') || t.includes('reagend')) return 'undecided';
+  if (t.includes('no desea') || t.includes('no está interesad') || t.includes('no interesad')) return 'notint';
+  if (t.includes('no enlaza') || t.includes('teléfono no')) return 'noanswer';
+  if (t.includes('buzón') || t.includes('3era') || t.includes('buzon')) return 'voicemail';
+  if (c.trim()) return 'none';
+  return 'none';
+}
+
+// ── TABS ─────────────────────────────────────────────────────────────────────
+function renderTabs() {
+  const allCnt = allRows.length;
+  let html = '<button class="tab-btn ' + (activeTab==='all'?'active':'') +
+    '" onclick="switchTab(\'all\')">📊 General Report <span class="tab-count">' + allCnt + '</span></button>';
+
+  advisors.forEach((adv) => {
+    const cnt = allRows.filter(r => r.asesor === adv).length;
+    const isActive = activeTab === adv ? 'active' : '';
+    const isLocked = isTabLocked(adv);
+    let lockClass = '';
+    if (!isLocked) lockClass = 'unlocked';
+    else lockClass = 'locked';
+    const safeAdv = adv.replace(/'/g,"\\'");
+    html += '<button class="tab-btn ' + isActive + ' ' + lockClass + '" onclick="switchTab(\'' + safeAdv + '\')">' +
+      adv + ' <span class="tab-count">' + cnt + '</span></button>';
+  });
+
+  document.getElementById('tabs').innerHTML = html;
+}
+
+function switchTab(tab) {
+  if (tab === 'all') {
+    activeTab = 'all';
+    currentPage = 1;
+    renderTabs();
+    applyFiltersAndRender();
+    return;
+  }
+
+  // Always ask for password if one is assigned
+  if (isTabLocked(tab)) {
+    pendingTab = tab;
+    document.getElementById('modalTitle').textContent = '🔒 Access Restricted';
+    document.getElementById('modalAdvisorName').textContent = tab;
+    document.getElementById('modalPassword').value = '';
+    document.getElementById('modalError').classList.remove('show');
+    document.getElementById('passwordModal').classList.add('show');
+    document.getElementById('modalPassword').focus();
+    return;
+  }
+
+  // If no password, free access
+  activeTab = tab;
+  currentPage = 1;
+  renderTabs();
+  applyFiltersAndRender();
+}
+
+// ── ADMIN PANEL ────────────────────────────────────────────────────
+function toggleAdminPanel() {
+  if (adminUnlocked) {
+    closeAdminPanel();
+    return;
+  }
+  
+  pendingTab = 'admin';
+  document.getElementById('modalTitle').textContent = '🔐 Admin Panel Access';
+  document.getElementById('modalAdvisorName').textContent = 'Administrator';
+  document.getElementById('modalPassword').value = '';
+  document.getElementById('modalError').classList.remove('show');
+  document.getElementById('passwordModal').classList.add('show');
+  document.getElementById('modalPassword').focus();
+}
+
+function closeAdminPanel() {
+  isAdminMode = false;
+  adminUnlocked = false;
+  document.getElementById('adminPanel').classList.remove('show');
+  updateAdminButton();
+}
+
+function updateAdminButton() {
+  const btn = document.getElementById('adminBtn');
+  if (adminUnlocked) {
+    btn.textContent = '🔓 Admin';
+    btn.className = 'btn-admin unlocked';
+  } else {
+    btn.textContent = '🔒 Admin';
+    btn.className = 'btn-admin locked';
+  }
+}
+
+function renderAdminPanel() {
+  if (!adminUnlocked) return;
+  const grid = document.getElementById('adminGrid');
+  
+  if (!advisors.length) {
+    grid.innerHTML = '<p style="color:#999;grid-column:1/-1;text-align:center;padding:20px;">No advisors registered. Make sure your CSV has data in the "asesor" column.</p>';
+    return;
+  }
+  
+  let html = '';
+  advisors.forEach(adv => {
+    const hasPwd = !!passwords[adv];
+    const statusText = hasPwd ? '🔒 Has password' : '🔓 No password';
+    const statusClass = hasPwd ? 'has-password' : '';
+    
+    html += `
+      <div class="admin-item">
+        <span class="admin-name">${esc(adv)}</span>
+        <span class="admin-status ${statusClass}">${statusText}</span>
+        <input type="password" id="pwd_${escJ(adv)}" placeholder="New..." />
+        <div class="admin-actions">
+          <button class="btn-save" onclick="saveAdminPassword('${escJ(adv)}')">${hasPwd ? '🔄' : '🔒'}</button>
+          ${hasPwd ? `<button class="btn-remove" onclick="removeAdminPassword('${escJ(adv)}')">🗑️</button>` : ''}
+          <button class="btn-clear" onclick="clearPasswordField('${escJ(adv)}')">✕</button>
+        </div>
+      </div>
+    `;
+  });
+  grid.innerHTML = html;
+}
+
+function clearPasswordField(advisor) {
+  const input = document.getElementById('pwd_' + advisor);
+  if (input) input.value = '';
+}
+
+function saveAdminPassword(advisor) {
+  const input = document.getElementById('pwd_' + advisor);
+  if (!input) return;
+  const pwd = input.value.trim();
+  if (!pwd) {
+    showToast('⚠️ Please enter a valid password', false);
+    return;
+  }
+  setPassword(advisor, pwd);
+  renderAdminPanel();
+  renderTabs();
+  showToast('🔒 Password saved for ' + advisor);
+}
+
+function removeAdminPassword(advisor) {
+  if (!confirm('Remove password for ' + advisor + '?')) return;
+  delete passwords[advisor];
+  savePasswords();
+  renderAdminPanel();
+  renderTabs();
+  if (activeTab === advisor) {
+    activeTab = 'all';
+    applyFiltersAndRender();
+  }
+  showToast('🗑️ Password removed for ' + advisor);
+}
+
+function exportPasswords() {
+  const data = JSON.stringify(passwords, null, 2);
+  const blob = new Blob([data], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'crm_passwords_' + new Date().toISOString().slice(0,10) + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('📤 Passwords exported');
+}
+
+function importPasswords(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (typeof data === 'object') {
+        passwords = data;
+        savePasswords();
+        renderAdminPanel();
+        renderTabs();
+        showToast('📥 Passwords imported successfully');
+      } else {
+        throw new Error('Invalid format');
+      }
+    } catch(err) {
+      showToast('⚠️ Error importing: invalid file', false);
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+// ── PASSWORD MODAL ──────────────────────────────────────────────────────────
+function closePasswordModal() {
+  document.getElementById('passwordModal').classList.remove('show');
+  document.getElementById('modalError').classList.remove('show');
+}
+
+function checkPassword() {
+  if (!pendingTab) return;
+  const pwd = document.getElementById('modalPassword').value;
+  const targetTab = pendingTab;
+  
+  if (targetTab === 'admin') {
+    if (verifyPassword('admin', pwd)) {
+      adminUnlocked = true;
+      isAdminMode = true;
+      closePasswordModal();
+      document.getElementById('adminPanel').classList.add('show');
+      renderAdminPanel();
+      updateAdminButton();
+      showToast('🔓 Admin panel access granted');
+      pendingTab = null;
+    } else {
+      document.getElementById('modalError').classList.add('show');
+      document.getElementById('modalPassword').value = '';
+      document.getElementById('modalPassword').focus();
+    }
+    return;
+  }
+  
+  if (verifyPassword(targetTab, pwd)) {
+    closePasswordModal();
+    activeTab = targetTab;
+    currentPage = 1;
+    renderTabs();
+    applyFiltersAndRender();
+    showToast('🔓 Access granted to ' + targetTab);
+    pendingTab = null;
+  } else {
+    document.getElementById('modalError').classList.add('show');
+    document.getElementById('modalPassword').value = '';
+    document.getElementById('modalPassword').focus();
+  }
+}
+
+document.getElementById('passwordModal').addEventListener('click', function(e) {
+  if (e.target === this) closePasswordModal();
+});
+
+// ── GET CLIENT BALANCE ──────────────────────────────────────────────────────
+function getClientBalance(r) {
+  const k = rowKey(r);
+  if (store[k] && store[k].balance !== undefined && !isNaN(store[k].balance)) {
+    return store[k].balance;
+  }
+  return r.saldo || 0;
+}
+
+// ── UPDATE BALANCE ──────────────────────────────────────────────────────────
+function updateBalance(key, newVal) {
+  const num = parseFloat(newVal);
+  if (isNaN(num)) {
+    showToast('Please enter a valid number', false);
+    return;
+  }
+  if (!store[key]) store[key] = {};
+  store[key].balance = num;
+  saveStore();
+
+  if (activeTab !== 'all') {
+    const data = allRows.filter(r => r.asesor === activeTab);
+    updateSummary(data);
+    renderTable();
+  } else {
+    updateSummary(allRows);
+    renderResumen();
+  }
+  showToast('Balance updated ✓');
+}
+
+// ── FILTERS + RENDER ─────────────────────────────────────────────────────────
+function applyFiltersAndRender() {
+  if (activeTab === 'all') {
+    document.getElementById('filterGroup').classList.add('hidden');
+    document.getElementById('panel-title').textContent = '📊 General Report';
+    renderResumen();
+    return;
+  } else {
+    document.getElementById('filterGroup').classList.remove('hidden');
+    document.getElementById('panel-title').textContent = '📋 ' + activeTab;
+  }
+
+  let data = allRows.filter(r => r.asesor === activeTab);
+
+  const q  = (document.getElementById('searchInput') || {}).value || '';
+  const sf = (document.getElementById('statusFilter') || {}).value || '';
+
+  if (q.trim()) {
+    const ql = q.toLowerCase();
+    data = data.filter(r =>
+      r.nombre.toLowerCase().includes(ql) ||
+      r.telefono.includes(q) ||
+      r.domicilio.toLowerCase().includes(ql)
+    );
+  }
+  if (sf) data = data.filter(r => getStatus(r) === sf);
+
+  data.sort((a, b) => {
+    let va = a[sortField === 'asesor' ? 'asesor' : sortField];
+    let vb = b[sortField === 'asesor' ? 'asesor' : sortField];
+    if (sortField === 'id' || sortField === 'saldo') { va = Number(va); vb = Number(vb); }
+    else { va = String(va||'').toLowerCase(); vb = String(vb||'').toLowerCase(); }
+    if (va < vb) return sortAsc ? -1 : 1;
+    if (va > vb) return sortAsc ? 1 : -1;
+    return 0;
+  });
+
+  filteredData = data;
+  updateSummary(data);
+  renderTable();
+}
+
+// ── GENERAL REPORT (tab 'all') ──────────────────────────────────────────────
+function renderResumen() {
+  const map = new Map();
+  allRows.forEach(r => {
+    const adv = r.asesor || 'No Advisor';
+    if (!map.has(adv)) {
+      map.set(adv, { asesor: adv, total: 0, comentadosSemana: 0, clientes: [], sumaBalances: 0 });
+    }
+    const entry = map.get(adv);
+    entry.total++;
+    entry.clientes.push(r);
+    entry.sumaBalances += getClientBalance(r);
+  });
+
+  const hoy = new Date();
+  const semanaAtras = new Date(hoy);
+  semanaAtras.setDate(hoy.getDate() - 7);
+
+  map.forEach(entry => {
+    let cont = 0;
+    entry.clientes.forEach(r => {
+      const k = rowKey(r);
+      const data = store[k];
+      if (data && data.date) {
+        const partes = data.date.split('/');
+        if (partes.length === 3) {
+          const d = new Date(parseInt(partes[2]), parseInt(partes[1])-1, parseInt(partes[0]));
+          if (d >= semanaAtras && d <= hoy) cont++;
+        }
+      }
+    });
+    entry.comentadosSemana = cont;
+    delete entry.clientes;
+  });
+
+  const resumen = Array.from(map.values()).sort((a,b) => b.total - a.total);
+
+  const thead = document.getElementById('tableHead');
+  thead.innerHTML = `<tr>
+    <th style="cursor:default;">Advisor</th>
+    <th style="cursor:default;text-align:center;">Total Clients</th>
+    <th style="cursor:default;text-align:center;">Worked (7 days)</th>
+    <th style="cursor:default;text-align:center;">Progress</th>
+    <th style="cursor:default;text-align:center;">Total Monthly Balance (USD)</th>
+    <th style="cursor:default;text-align:center;">Advisor Commission (USD)</th>
+  </tr>`;
+
+  const tbody = document.getElementById('tableBody');
+  if (!resumen.length) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:2rem;color:#999;">No advisors with clients</td></tr>';
+  } else {
+    tbody.innerHTML = resumen.map(item => {
+      const pct = item.total ? Math.round((item.comentadosSemana / item.total) * 100) : 0;
+      const comisionAsesor = item.sumaBalances * 3;
+      return `<tr class="resumen-asesor">
+        <td><strong>${esc(item.asesor)}</strong></td>
+        <td style="text-align:center;font-weight:600;">${item.total}</td>
+        <td style="text-align:center;font-weight:600;color:var(--azul-profundo);">${item.comentadosSemana}</td>
+        <td style="text-align:center;">
+          <div style="display:flex;align-items:center;gap:8px;justify-content:center;">
+            <span style="font-size:12px;font-weight:600;">${pct}%</span>
+            <div class="barra-progreso"><span style="width:${pct}%;"></span></div>
+          </div>
+        </td>
+        <td style="text-align:center;font-weight:600;">${fmtCur(item.sumaBalances)}</td>
+        <td style="text-align:center;font-weight:600;color:var(--verde);">${fmtCur(comisionAsesor)}</td>
+      </tr>`;
+    }).join('');
+  }
+
+  document.getElementById('pagination').classList.add('hidden');
+  updateSummary(allRows);
+}
+
+// ── CLIENT TABLE (advisor tabs) ─────────────────────────────────────────────
+function renderTable() {
+  document.getElementById('pagination').classList.remove('hidden');
+
+  const fields = [
+    { field: 'id', label: '#' },
+    { field: 'nombre', label: 'Name' },
+    { field: 'telefono', label: 'Phone' },
+    { field: null, label: 'Monthly Balance (USD)' },
+    { field: null, label: 'Total Balance (120m)' },
+    { field: null, label: 'Team Commission (25%)' },
+    { field: null, label: 'Advisor Commission (10%)' },
+    { field: 'domicilio', label: 'Address' },
+    { field: 'asesor', label: 'Advisor' },
+    { field: null, label: 'Status' },
+    { field: null, label: 'Action' }
+  ];
+
+  let headerHtml = '<tr>';
+  fields.forEach(f => {
+    if (f.field) {
+      const arrow = (sortField === f.field) ? (sortAsc ? '↑' : '↓') : '↕';
+      headerHtml += `<th class="sortable" data-field="${f.field}">${f.label} <span class="arrow">${arrow}</span></th>`;
+    } else {
+      headerHtml += `<th style="cursor:default;background:var(--azul-vibrante);">${f.label}</th>`;
+    }
+  });
+  headerHtml += '</tr>';
+  document.getElementById('tableHead').innerHTML = headerHtml;
+
+  document.querySelectorAll('#tableHead th.sortable').forEach(th => {
+    th.addEventListener('click', function() {
+      const field = this.dataset.field;
+      if (sortField === field) { sortAsc = !sortAsc; }
+      else { sortField = field; sortAsc = true; }
+      currentPage = 1;
+      applyFiltersAndRender();
+    });
+  });
+
+  const total = filteredData.length;
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  if (currentPage > totalPages) currentPage = totalPages;
+
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const end   = Math.min(start + PAGE_SIZE, total);
+  const pageItems = filteredData.slice(start, end);
+
+  const tbody = document.getElementById('tableBody');
+  if (!pageItems.length) {
+    tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;padding:2rem;color:#999;">No clients found</td></tr>';
+  } else {
+    tbody.innerHTML = pageItems.map(r => {
+      const key = rowKey(r);
+      const lc  = store[key];
+      const status = getStatus(r);
+      const st = STATUS_INFO[status] || STATUS_INFO.none;
+      const hasData = !!(lc || r.comentarios);
+      const savedAt = lc ? lc.date : '';
+      const comment = lc ? lc.comment : (r.comentarios || '');
+      const safeKey = key.replace(/[^a-z0-9]/gi,'_');
+
+      let balance = getClientBalance(r);
+      const balanceTotal = balance * 120;
+      const comisionEquipo = balanceTotal * 0.25;
+      const comisionAsesor = comisionEquipo * 0.10;
+
+      const presetsHtml = PRESETS.map(p => {
+        const sel = (lc && lc.status === p.status) ? 'sel' : '';
+        return '<button class="preset-chip ' + sel + '" onclick="pickPreset(event,\'' +
+          escJ(key) + '\',\'' + p.status + '\',`' + p.label + '`)">' + p.label + '</button>';
+      }).join('');
+
+      const dataRow = '<tr>' +
+        `<td><span class="cliente-id">#${r.id}</span></td>` +
+        `<td><span class="cliente-nombre">${esc(r.nombre)}</span></td>` +
+        `<td>${esc(r.telefono)}</td>` +
+        `<td><input class="balance-input" type="number" step="any" value="${balance}" onchange="updateBalance('${escJ(key)}', this.value)" /></td>` +
+        `<td class="calc-cell">${fmtCur(balanceTotal)}</td>` +
+        `<td class="calc-cell">${fmtCur(comisionEquipo)}</td>` +
+        `<td class="calc-cell">${fmtCur(comisionAsesor)}</td>` +
+        `<td>${esc(r.domicilio)}</td>` +
+        `<td>${esc(r.asesor)}</td>` +
+        `<td><span class="badge ${st.cls}">${st.label}</span>` +
+          (savedAt ? `<br><span style="font-size:10px;color:#aaa">${savedAt}</span>` : '') +
+        `</td>` +
+        `<td style="white-space:nowrap">` +
+          `<a href="tel:${esc(r.telefono)}" class="btn-llamar" title="Call">📞 <span>Call</span></a> ` +
+          `<button class="btn-comment-toggle ${hasData?'has-data':''}" onclick="toggleComment('${safeKey}')">` +
+            (hasData ? '✏️ Edit' : '+ Comment') +
+          `</button>` +
+        `</td>` +
+      '</tr>';
+
+      const commentRow = '<tr class="comment-row"><td colspan="11">' +
+        '<div class="comment-panel ' + (hasData?'open':'') + '" id="cp_' + safeKey + '">' +
+          '<div class="presets">' + presetsHtml + '</div>' +
+          '<textarea class="comment-textarea" id="ta_' + safeKey + '" placeholder="Describe the interaction with the client...">' + esc(comment) + '</textarea>' +
+          '<div class="comment-footer">' +
+            '<div class="comment-saved" id="msg_' + safeKey + '">' +
+              (lc ? '<b>Saved</b> · ' + savedAt : 'Not saved') +
+            '</div>' +
+            '<button class="btn-save-comment" onclick="saveComment(\'' + escJ(key) + '\',\'' + escJ(r.nombre) + '\',\'' + escJ(r.asesor) + '\')">💾 Save</button>' +
+          '</div>' +
+        '</div>' +
+      '</td></tr>';
+
+      return dataRow + commentRow;
+    }).join('');
+  }
+
+  document.getElementById('paginationInfo').textContent =
+    total === 0 ? 'No results' : 'Showing ' + (start+1) + '–' + end + ' of ' + total + ' clients';
+
+  document.getElementById('prevPage').disabled = currentPage <= 1;
+  document.getElementById('nextPage').disabled = currentPage >= totalPages;
+
+  let pgHtml = '';
+  const maxV = 5;
+  let sp = Math.max(1, currentPage - Math.floor(maxV/2));
+  let ep = Math.min(totalPages, sp + maxV - 1);
+  if (ep - sp < maxV - 1) sp = Math.max(1, ep - maxV + 1);
+  if (sp > 1) { pgHtml += '<button onclick="goPage(1)">1</button>'; if (sp > 2) pgHtml += '<span style="padding:0 4px;color:#aaa">…</span>'; }
+  for (let p = sp; p <= ep; p++) {
+    pgHtml += '<button onclick="goPage(' + p + ')" class="' + (p===currentPage?'active-page':'') + '">' + p + '</button>';
+  }
+  if (ep < totalPages) {
+    if (ep < totalPages-1) pgHtml += '<span style="padding:0 4px;color:#aaa">…</span>';
+    pgHtml += '<button onclick="goPage(' + totalPages + ')">' + totalPages + '</button>';
+  }
+  document.getElementById('pageNumbers').innerHTML = pgHtml;
+}
+
+function goPage(p) { currentPage = p; renderTable(); }
+
+// ── UPDATE SUMMARY ──────────────────────────────────────────────────────────
+function updateSummary(data) {
+  let interested=0, undecided=0, notint=0, noanswer=0, pending=0;
+  let sumBalance = 0;
+  data.forEach(r => {
+    const s = getStatus(r);
+    if (s==='interested') interested++;
+    else if (s==='undecided') undecided++;
+    else if (s==='notint') notint++;
+    else if (s==='noanswer'||s==='voicemail') noanswer++;
+    else pending++;
+    sumBalance += getClientBalance(r);
+  });
+  document.getElementById('s-total').textContent      = data.length;
+  document.getElementById('s-interested').textContent = interested;
+  document.getElementById('s-undecided').textContent  = undecided;
+  document.getElementById('s-notint').textContent     = notint;
+  document.getElementById('s-noanswer').textContent   = noanswer;
+  document.getElementById('s-pending').textContent    = pending;
+  document.getElementById('s-total-balance').textContent = fmtCur(sumBalance);
+}
+
+// ── COMMENT LOGIC ─────────────────────────────────────────────────────────────
+function toggleComment(safeKey) {
+  const el = document.getElementById('cp_' + safeKey);
+  if (el) el.classList.toggle('open');
+}
+
+function pickPreset(e, key, status, label) {
+  const safeKey = key.replace(/[^a-z0-9]/gi,'_');
+  const ta = document.getElementById('ta_' + safeKey);
+  if (ta) ta.value = label;
+  const panel = document.getElementById('cp_' + safeKey);
+  if (panel) panel.querySelectorAll('.preset-chip').forEach(b => b.classList.remove('sel'));
+  e.target.classList.add('sel');
+  if (!store[key]) store[key] = {};
+  store[key].status = status;
+}
+
+async function saveComment(key, nombre, asesor) {
+  const safeKey = key.replace(/[^a-z0-9]/gi,'_');
+  const ta = document.getElementById('ta_' + safeKey);
+  if (!ta || !ta.value.trim()) { showToast('Please write a comment first', false); return; }
+
+  const comment  = ta.value.trim();
+  const status   = (store[key] && store[key].status) || inferStatus(comment);
+  const now      = new Date();
+  const dateStr  = now.toLocaleDateString('en-US',{day:'2-digit',month:'2-digit',year:'numeric'});
+  const timeStr  = now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+  const datetime = dateStr + ' ' + timeStr;
+
+  const rowData  = allRows.find(r => (r.id + '||' + r.nombre + '||' + r.telefono) === key) || {};
+
+  const statusLabels = {
+    interested:'Interested', undecided:'Undecided', noanswer:'No contact',
+    notint:'Not interested', voicemail:'Voicemail / 3rd', none:'Unmanaged'
+  };
+
+  store[key] = { comment, status, date: dateStr, nombre, asesor };
+  saveStore();
+
+  if (activeTab !== 'all') {
+    const data = allRows.filter(r => r.asesor === activeTab);
+    updateSummary(data);
+    renderTable();
+  } else {
+    updateSummary(allRows);
+    renderResumen();
+  }
+
+  const msgEl = document.getElementById('msg_' + safeKey);
+  if (msgEl) msgEl.innerHTML = '<b>Saved locally</b> · ' + dateStr;
+
+  if (APPS_SCRIPT_URL) {
+    try {
+      const payload = {
+        fechaInteraccion: datetime,
+        asesor:           asesor,
+        idCliente:        String(rowData.id || ''),
+        nombreCliente:    nombre,
+        telefono:         rowData.telefono || '',
+        domicilio:        rowData.domicilio || '',
+        estado:           statusLabels[status] || status,
+        comentario:       comment,
+      };
+      const res = await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(payload),
+      });
+      const json = await res.json();
+      if (json.ok) {
+        if (msgEl) msgEl.innerHTML = '<b>✓ Saved to Sheets</b> · ' + datetime;
+        showToast('✓ Registered in Google Sheets');
+      } else {
+        throw new Error(json.error || 'Unknown error');
+      }
+    } catch (err) {
+      if (msgEl) msgEl.innerHTML = '<b>Saved locally</b> · ' + dateStr + ' <span style="color:var(--naranja)">(offline)</span>';
+      showToast('⚠️ Saved locally. Check Apps Script.', false);
+      console.warn('Apps Script error:', err);
+    }
+  } else {
+    showToast('✓ Saved locally');
+  }
+}
+
+// ── FILTERS EVENTS ────────────────────────────────────────────────────────────
+document.getElementById('searchInput').addEventListener('input', () => { if (activeTab !== 'all') { currentPage = 1; applyFiltersAndRender(); } });
+document.getElementById('statusFilter').addEventListener('change', () => { if (activeTab !== 'all') { currentPage = 1; applyFiltersAndRender(); } });
+document.getElementById('resetBtn').addEventListener('click', () => {
+  document.getElementById('searchInput').value = '';
+  document.getElementById('statusFilter').value = '';
+  sortField = 'id'; sortAsc = true; currentPage = 1;
+  if (activeTab !== 'all') applyFiltersAndRender();
+});
+document.getElementById('prevPage').addEventListener('click', () => { if (currentPage > 1) { currentPage--; renderTable(); } });
+document.getElementById('nextPage').addEventListener('click', () => {
+  if (currentPage < Math.ceil(filteredData.length / PAGE_SIZE)) { currentPage++; renderTable(); }
+});
+
+// ── HELPERS ────────────────────────────────────────────────────────────────────
+function fmtCur(n) { return n ? '$' + Number(n).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}) : '$0.00'; }
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function escJ(s) { return String(s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
+
+function showToast(msg, ok=true) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = ok ? 'var(--azul-profundo)' : 'var(--rojo)';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+loadData();
+</script>
+</body>
+</html>
