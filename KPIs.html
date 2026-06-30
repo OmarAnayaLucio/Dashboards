@@ -320,7 +320,7 @@ tr.sub td{background:var(--g50);font-weight:700;}
   </div>
 </div>
 
-<!-- ===== VIEW: TENDENCIAS (ACTUALIZADO CON NUEVO ORDEN) ===== -->
+<!-- ===== VIEW: TENDENCIAS ===== -->
 <div class="view" id="view-tend">
   <div style="background:#fff;border:1px solid var(--g200);border-radius:var(--r);padding:.875rem 1.1rem;margin-bottom:1rem;">
     <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
@@ -331,7 +331,6 @@ tr.sub td{background:var(--g50);font-weight:700;}
     <div id="tend-sel" style="margin-top:.75rem;padding:.75rem 1rem;background:var(--g50);border-radius:var(--rs);"></div>
   </div>
   <div id="tend-notice" style="display:none" class="al al-amber"><span class="al-ico">⚠️</span><div>Algunos períodos tienen datos incompletos (s/d).</div></div>
-  <!-- Gráficas en el orden correcto: 1-4 en cg2 (2 columnas), 5-7 en cg3 (3 columnas) -->
   <div id="tend-c1" class="cg2"></div>
   <div id="tend-c2" class="cg3"></div>
   <div class="sh">Tabla comparativa</div>
@@ -385,7 +384,7 @@ tr.sub td{background:var(--g50);font-weight:700;}
 <div class="view" id="view-rep">
   <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-bottom:1rem;gap:10px;">
     <div>
-      <div class="smktl" style="font-size:13px;">📁 Rendimiento mensual por portal</div>
+      <div class="smktl" style="font-size:13px;">📁 Reportes Mensuales · Mayo 2026</div>
       <div style="font-size:10px;color:var(--g500);margin-top:3px" id="rep-info">Cargando…</div>
     </div>
     <button class="rbtn" onclick="cargarRep()">🔄 Recargar</button>
@@ -394,7 +393,7 @@ tr.sub td{background:var(--g50);font-weight:700;}
   <div id="rep-portals"></div>
   <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:.75rem;">
     <div class="sh" style="margin-bottom:0">📊 Tabla detallada</div>
-    <input type="text" id="rep-filter" class="filter-input" placeholder="🔍 Filtrar…">
+    <input type="text" id="rep-filter" class="filter-input" placeholder="🔍 Filtrar por zona, portal, operación…">
   </div>
   <div id="rep-tbl"></div>
 </div>
@@ -450,12 +449,14 @@ const S = {
   citas: [],
   daily: [],
   reporte: [],
+  reporteData: {},
   portalData: {},
   curView: 'gen',
   selAs: [],
   sortG: {col:'reg', dir:'desc'},
   tGrain: 'week', tGer: 'all',
   tSelW: [],
+  tendencias: [],
   _repFilt: ''
 };
 
@@ -682,7 +683,7 @@ async function cargar() {
     S.semana = detectarUltimaSemana();
     console.log(`📊 Semana seleccionada: ${S.semana}`);
     
-    // Construir datos de tendencias desde las 3 fuentes
+    // Construir datos de tendencias desde las fuentes
     construirTendenciasDesdeFuentes();
     
     prog(95, 'Renderizando dashboard…');
@@ -785,10 +786,7 @@ function getRol() {
 }
 
 // ════════════════════════════════════════════════════════════
-// CONSTRUIR DATOS DE TENDENCIAS DESDE LAS 3 FUENTES
-// ════════════════════════════════════════════════════════════
-// ════════════════════════════════════════════════════════════
-// CONSTRUIR DATOS DE TENDENCIAS DESDE LAS 3 FUENTES - CORREGIDO
+// CONSTRUIR DATOS DE TENDENCIAS DESDE LAS FUENTES
 // ════════════════════════════════════════════════════════════
 function construirTendenciasDesdeFuentes() {
   console.log('📊 Construyendo tendencias desde fuentes...');
@@ -804,7 +802,6 @@ function construirTendenciasDesdeFuentes() {
     console.log('📌 Procesando Interesados, columna:', colSemanaInt);
     S.interesados.forEach(r => {
       const sem = parseInt(r[colSemanaInt] || 0);
-      // 🔥 IGNORAR SEMANAS INVÁLIDAS
       if (sem <= 0 || sem > 53) {
         if (sem !== 0) console.warn(`⚠️ Semana inválida ignorada (Interesados): ${sem}`);
         return;
@@ -840,7 +837,6 @@ function construirTendenciasDesdeFuentes() {
     console.log('📌 Procesando CRM, columna:', colSemanaCRM);
     S.crm.forEach(r => {
       const sem = parseInt(r[colSemanaCRM] || 0);
-      // 🔥 IGNORAR SEMANAS INVÁLIDAS
       if (sem <= 0 || sem > 53) {
         if (sem !== 0) console.warn(`⚠️ Semana inválida ignorada (CRM): ${sem}`);
         return;
@@ -883,7 +879,6 @@ function construirTendenciasDesdeFuentes() {
     
     S.citas.forEach(r => {
       const sem = parseInt(r[colSemanaCit] || 0);
-      // 🔥 IGNORAR SEMANAS INVÁLIDAS
       if (sem <= 0 || sem > 53) {
         if (sem !== 0) console.warn(`⚠️ Semana inválida ignorada (Citas): ${sem}`);
         return;
@@ -936,7 +931,6 @@ function construirTendenciasDesdeFuentes() {
     console.log('📌 Procesando Weekly, columna:', colSemanaW);
     S.daily.forEach(r => {
       const sem = parseInt(r[colSemanaW] || 0);
-      // 🔥 IGNORAR SEMANAS INVÁLIDAS
       if (sem <= 0 || sem > 53) {
         if (sem !== 0) console.warn(`⚠️ Semana inválida ignorada (Weekly): ${sem}`);
         return;
@@ -980,10 +974,6 @@ function construirTendenciasDesdeFuentes() {
   // Seleccionar TODAS las semanas válidas
   S.tSelW = S.tendencias.map(w => w.num);
   console.log('📊 Semanas seleccionadas:', S.tSelW);
-}
-
-function getActivePeriods() {
-  return S.tendencias.filter(w => S.tSelW.includes(w.num));
 }
 
 // ════════════════════════════════════════════════════════════
@@ -1628,7 +1618,7 @@ function sv(v,btn){
 }
 
 // ════════════════════════════════════════════════════════════
-// FUNCIONES DE TENDENCIAS - NUEVO ORDEN
+// FUNCIONES DE TENDENCIAS
 // ════════════════════════════════════════════════════════════
 function buildTendSelectors() {
   let grainDiv = document.getElementById('grain-tabs');
@@ -1809,7 +1799,7 @@ function renderTend() {
     }
   }
   
-  // ORDEN CORRECTO: 1-4 en cg2 (2 columnas), 5-7 en cg3 (3 columnas)
+  // Gráficas 1-4 en cg2, 5-7 en cg3
   if (charts1) {
     charts1.innerHTML = [
       {title: '1. Interesados portal', key: 'portal_int', col: '#0097A7'},
@@ -1878,6 +1868,358 @@ function renderTend() {
   if (tableEl) {
     tableEl.innerHTML = `<table>${thead}${tbody}</table>`;
   }
+}
+
+// ════════════════════════════════════════════════════════════
+// FUNCIONES DE REPORTES
+// ════════════════════════════════════════════════════════════
+async function cargarRep() {
+  document.getElementById('rep-info').textContent = 'Cargando datos de reportes mensuales...';
+  
+  try {
+    const reporteData = await fetchCSV(GID.reporte);
+    console.log('📊 Reporte Mensual I24 cargado:', reporteData.length, 'filas');
+    
+    if (reporteData.length === 0) {
+      document.getElementById('rep-info').textContent = '⚠️ No se encontraron datos en la hoja ReporteMensualI24';
+      return;
+    }
+    
+    S.reporteData = {};
+    const portales = ['Ventas 1', 'Ventas 2', 'Ventas 3', 'Ventas 4'];
+    const colMapping = {
+      portal: 'Portal',
+      mes: 'Mes',
+      avisos: 'Cantidad Avisos',
+      avisosProp: 'Cantidad Avisos Propiedades',
+      superDestacados: 'Cantidad Avisos SuperDestacados',
+      destacados: 'Cantidad Avisos Destacados',
+      simples: 'Cantidad Avisos Simples',
+      zona: 'Zona',
+      operacion: 'Operacion',
+      tipoProp: 'Tipo de Propiedad',
+      ambientes: 'Ambientes',
+      vistasSeg: 'Vistas Promedio Segmento',
+      vistasProp: 'Vistas Promedio Propias',
+      ratio: 'Ratio'
+    };
+    
+    portales.forEach(p => { S.reporteData[p] = []; });
+    
+    reporteData.forEach(row => {
+      const portal = (row[colMapping.portal] || '').trim();
+      if (!portales.includes(portal)) return;
+      
+      const mes = parseInt(row[colMapping.mes] || 0);
+      if (mes !== 5) return;
+      
+      const registro = {
+        portal: portal,
+        mes: mes,
+        avisos: parseInt(row[colMapping.avisos] || 0) || 0,
+        avisosProp: parseInt(row[colMapping.avisosProp] || 0) || 0,
+        superDestacados: parseInt(row[colMapping.superDestacados] || 0) || 0,
+        destacados: parseInt(row[colMapping.destacados] || 0) || 0,
+        simples: parseInt(row[colMapping.simples] || 0) || 0,
+        zona: (row[colMapping.zona] || '').trim(),
+        operacion: (row[colMapping.operacion] || '').trim(),
+        tipoProp: (row[colMapping.tipoProp] || '').trim(),
+        ambientes: (row[colMapping.ambientes] || '').trim(),
+        vistasSeg: parseFloat((row[colMapping.vistasSeg] || '0').replace(',', '.')) || 0,
+        vistasProp: parseFloat((row[colMapping.vistasProp] || '0').replace(',', '.')) || 0,
+        ratio: parseFloat((row[colMapping.ratio] || '0').replace('%', '').replace(',', '.')) || 0
+      };
+      
+      if (registro.zona) {
+        S.reporteData[portal].push(registro);
+      }
+    });
+    
+    console.log('✅ Reportes procesados:');
+    portales.forEach(p => {
+      console.log(`   ${p}: ${S.reporteData[p].length} registros`);
+    });
+    
+    renderRep();
+    
+  } catch(e) {
+    console.error('❌ Error cargando reportes:', e);
+    document.getElementById('rep-info').textContent = '⚠️ Error al cargar datos: ' + e.message;
+  }
+}
+
+function renderRep() {
+  const portales = ['Ventas 1', 'Ventas 2', 'Ventas 3', 'Ventas 4'];
+  const portalColors = {
+    'Ventas 1': '#1A73E8',
+    'Ventas 2': '#1E8E3E',
+    'Ventas 3': '#7B2FBE',
+    'Ventas 4': '#D56E0C'
+  };
+  const portalShort = {
+    'Ventas 1': 'V1',
+    'Ventas 2': 'V2',
+    'Ventas 3': 'V3',
+    'Ventas 4': 'V4'
+  };
+  
+  let allRows = [];
+  portales.forEach(p => {
+    (S.reporteData[p] || []).forEach(r => {
+      allRows.push({
+        ...r,
+        short: portalShort[p],
+        color: portalColors[p]
+      });
+    });
+  });
+  
+  if (allRows.length === 0) {
+    document.getElementById('rep-sum').innerHTML = '<div style="padding:2rem;text-align:center;color:var(--g400);">No hay datos disponibles</div>';
+    document.getElementById('rep-portals').innerHTML = '';
+    document.getElementById('rep-tbl').innerHTML = '';
+    document.getElementById('rep-info').textContent = '⚠️ No se encontraron datos para mayo 2026';
+    return;
+  }
+  
+  // 1. RESUMEN GLOBAL
+  let summaryHTML = `<div class="rep-sg">`;
+  portales.forEach(p => {
+    const rows = S.reporteData[p] || [];
+    const totalAvisos = rows.reduce((s, r) => s + r.avisos, 0);
+    const totalSeg = rows.reduce((s, r) => s + r.vistasSeg, 0);
+    const promSeg = rows.length > 0 ? (totalSeg / rows.length).toFixed(0) : 0;
+    const maxSeg = rows.length > 0 ? Math.max(...rows.map(r => r.vistasSeg)) : 0;
+    
+    summaryHTML += `
+      <div class="rep-sc" style="border-top:3px solid ${portalColors[p]}">
+        <div class="rep-scl" style="color:${portalColors[p]}">${portalShort[p]} · ${p}</div>
+        <div class="rep-scv" style="color:${portalColors[p]}">${rows.length}</div>
+        <div style="font-size:9px;color:var(--g500)">segmentos · ${totalAvisos.toLocaleString()} avisos</div>
+        <div style="display:flex;gap:12px;margin-top:6px">
+          <div>
+            <div style="font-size:8px;color:var(--g500);font-weight:700;">PROM. SEG.</div>
+            <div style="font-size:11px;font-weight:700;font-family:DM Mono,monospace;color:${portalColors[p]}">${promSeg}</div>
+          </div>
+          <div>
+            <div style="font-size:8px;color:var(--g500);font-weight:700;">MÁX. SEG.</div>
+            <div style="font-size:11px;font-weight:700;font-family:DM Mono,monospace;color:${portalColors[p]}">${maxSeg.toFixed(0)}</div>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+  summaryHTML += `</div>`;
+  document.getElementById('rep-sum').innerHTML = summaryHTML;
+  
+  // 2. TOP 20 RATIO
+  allRows.sort((a, b) => b.ratio - a.ratio);
+  const top20 = allRows.slice(0, 20);
+  const maxRatio = top20.length > 0 ? top20[0].ratio : 1;
+  
+  let top20HTML = `
+    <div class="rep-pb" style="margin-bottom:1.25rem;">
+      <div class="rep-pbh">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="background:var(--teal);width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;font-family:DM Mono,monospace;color:#fff;">🏆</div>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--g900)">Top 20 · Mayor Ratio de Vistas</div>
+            <div style="font-size:10px;color:var(--g500);margin-top:2px">Vistas Propias ÷ Vistas Segmento × 100 — mayo 2026</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          ${portales.map(p => `
+            <div style="display:flex;align-items:center;gap:4px;">
+              <div style="width:8px;height:8px;border-radius:50%;background:${portalColors[p]}"></div>
+              <span style="font-size:8px;color:#80868B;font-weight:600">${portalShort[p]}</span>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+  `;
+  
+  top20.forEach((item, i) => {
+    const pct = Math.max((item.ratio / maxRatio) * 100, 3);
+    const showInside = pct > 28;
+    const col = item.color;
+    const metaStr = [item.operacion, item.tipoProp, item.ambientes ? item.ambientes + ' amb.' : ''].filter(Boolean).join(' · ');
+    
+    top20HTML += `
+      <div class="rep-br">
+        <span style="width:22px;font-size:10px;font-weight:700;font-family:DM Mono,monospace;color:var(--teal);text-align:right;flex-shrink:0;">${i+1}</span>
+        <div style="width:220px;flex-shrink:0;">
+          <div style="display:flex;align-items:center;gap:5px;">
+            <div style="width:8px;height:8px;border-radius:50%;background:${col};flex-shrink:0;"></div>
+            <span style="font-size:9px;font-weight:700;color:var(--g900);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${item.zona}</span>
+          </div>
+          <div style="font-size:7.5px;color:var(--g500);margin-top:1px;letter-spacing:.2px;">${item.short} · ${metaStr}</div>
+        </div>
+        <div style="flex:1;background:var(--g100);border-radius:3px;height:18px;position:relative;overflow:hidden;">
+          <div style="height:100%;border-radius:3px;background:linear-gradient(90deg,#52BEC0,#00E5FF);width:${pct.toFixed(1)}%;display:flex;align-items:center;padding-left:7px;transition:width .4s;">
+            ${showInside ? `<span style="font-size:8px;font-family:DM Mono,monospace;font-weight:700;color:rgba(0,0,0,.8);">${item.ratio.toFixed(1)}%</span>` : ''}
+          </div>
+          ${!showInside ? `<span style="position:absolute;right:6px;top:50%;transform:translateY(-50%);font-size:8px;font-family:DM Mono,monospace;color:var(--teal);">${item.ratio.toFixed(1)}%</span>` : ''}
+        </div>
+        <span style="width:52px;font-size:9px;font-family:DM Mono,monospace;font-weight:700;color:${col};text-align:right;flex-shrink:0;">${item.ratio.toFixed(0)}%</span>
+      </div>
+    `;
+  });
+  top20HTML += `</div>`;
+  
+  // 3. GRÁFICAS POR PORTAL - TOP 10 y BOTTOM 10
+  let portalChartsHTML = '';
+  portales.forEach(p => {
+    const rows = S.reporteData[p] || [];
+    if (rows.length === 0) return;
+    
+    // Ordenar por vistasSeg descendente (TOP) y ascendente (BOTTOM)
+    const sortedDesc = [...rows].sort((a, b) => b.vistasSeg - a.vistasSeg);
+    const sortedAsc = [...rows].sort((a, b) => a.vistasSeg - b.vistasSeg);
+    const top10 = sortedDesc.slice(0, 10);
+    const bottom10 = sortedAsc.slice(0, 10);
+    
+    const maxTop = top10.length > 0 ? Math.max(...top10.map(r => r.vistasSeg)) : 1;
+    const maxBottom = bottom10.length > 0 ? Math.max(...bottom10.map(r => r.vistasSeg)) : 1;
+    
+    const col = portalColors[p];
+    const short = portalShort[p];
+    const totalAvisos = rows.reduce((s, r) => s + r.avisos, 0);
+    const totalSeg = rows.reduce((s, r) => s + r.vistasSeg, 0);
+    const promSeg = rows.length > 0 ? (totalSeg / rows.length).toFixed(1) : 0;
+    
+    // Función para construir barras
+    function buildBars(items, maxVal, color, isTop) {
+      return items.map((item, idx) => {
+        const pct = Math.max((item.vistasSeg / maxVal) * 100, 3);
+        const showInside = pct > 32;
+        const metaStr = [item.operacion, item.tipoProp, item.ambientes ? item.ambientes + ' amb.' : ''].filter(Boolean).join(' · ');
+        const label = item.zona.length > 18 ? item.zona.substring(0, 16) + '…' : item.zona;
+        
+        // Colores para top (verde-azul) y bottom (rojo-amarillo)
+        const t = idx / Math.max(items.length - 1, 1);
+        const barColor = isTop 
+          ? `rgb(${Math.round(130 + t * 40)}, ${Math.round(200 - t * 50)}, ${Math.round(130 + t * 20)})`
+          : `rgb(${Math.round(230 - t * 30)}, ${Math.round(140 + t * 50)}, ${Math.round(130 + t * 50)})`;
+        
+        return `
+          <div class="rep-br">
+            <span class="rep-bar-rank" style="width:18px;font-size:8px;font-family:DM Mono,monospace;color:var(--g400);text-align:right;flex-shrink:0;">${idx+1}</span>
+            <div class="rep-bz" style="width:140px;flex-shrink:0;">
+              <div style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:9px;color:var(--g700);font-weight:500;" title="${item.zona}">${label}</div>
+              <div class="rep-bar-meta" style="font-size:7px;color:var(--g400);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${metaStr}</div>
+            </div>
+            <div class="rep-bt" style="flex:1;background:var(--g200);border-radius:3px;height:16px;position:relative;overflow:hidden;">
+              <div class="rep-bf" style="height:100%;border-radius:3px;background:${barColor};width:${pct.toFixed(1)}%;display:flex;align-items:center;padding-left:6px;transition:width .3s;">
+                ${showInside ? `<span class="rep-bv" style="font-size:8px;font-family:DM Mono,monospace;font-weight:700;color:rgba(0,0,0,0.7);">${item.vistasSeg.toFixed(0)}</span>` : ''}
+              </div>
+              ${!showInside ? `<span class="rep-bvo" style="position:absolute;right:5px;top:50%;transform:translateY(-50%);font-size:8px;font-family:DM Mono,monospace;color:var(--g600);">${item.vistasSeg.toFixed(0)}</span>` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+    
+    portalChartsHTML += `
+      <div class="rep-pb" style="margin-bottom:1.25rem;">
+        <div class="rep-pbh">
+          <div class="rep-badge" style="background:${col}">${short}</div>
+          <div>
+            <div class="rep-portal-title" style="font-size:13px;font-weight:700;color:var(--g900)">${p}</div>
+            <div class="rep-portal-sub" style="font-size:10px;color:var(--g500);margin-top:2px;">${rows.length} segmentos totales · ${totalAvisos.toLocaleString()} avisos · Vistas Seg. promedio: ${promSeg} · Máx: ${maxTop.toFixed(0)}</div>
+          </div>
+        </div>
+        <div class="rep-charts-row" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div class="rep-chart-box" style="background:var(--g50);border:1px solid var(--g200);border-radius:var(--rs);padding:.875rem 1rem;">
+            <div class="rep-chart-title" style="font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.6rem;display:flex;align-items:center;gap:6px;color:${col};">
+              <span class="ico">🏆</span> TOP 10 — Mayor Vistas Promedio Segmento
+            </div>
+            ${top10.length > 0 ? buildBars(top10, maxTop, col, true) : '<div style="padding:1rem;text-align:center;color:var(--g400);font-size:10px;">Sin datos</div>'}
+          </div>
+          <div class="rep-chart-box" style="background:var(--g50);border:1px solid var(--g200);border-radius:var(--rs);padding:.875rem 1rem;">
+            <div class="rep-chart-title" style="font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.6rem;display:flex;align-items:center;gap:6px;color:#D93025;">
+              <span class="ico">⚠️</span> BOTTOM 10 — Menor Vistas Promedio Segmento
+            </div>
+            ${bottom10.length > 0 ? buildBars(bottom10, maxBottom, col, false) : '<div style="padding:1rem;text-align:center;color:var(--g400);font-size:10px;">Sin datos</div>'}
+          </div>
+        </div>
+      </div>
+    `;
+  });
+  
+  // Combinar Top20 + Gráficas por portal
+  document.getElementById('rep-portals').innerHTML = top20HTML + portalChartsHTML;
+  
+  // 4. TABLA DETALLADA
+  const filt = (document.getElementById('rep-filter')?.value || '').toLowerCase();
+  const filtered = filt ? allRows.filter(r => 
+    r.zona.toLowerCase().includes(filt) || 
+    r.portal.toLowerCase().includes(filt) ||
+    r.operacion.toLowerCase().includes(filt) ||
+    r.tipoProp.toLowerCase().includes(filt)
+  ) : allRows;
+  
+  filtered.sort((a, b) => {
+    if (a.portal !== b.portal) return a.portal.localeCompare(b.portal);
+    return b.vistasSeg - a.vistasSeg;
+  });
+  
+  let tableHTML = `
+    <div class="tc">
+      <div class="tsc">
+        <table style="font-size:9px;">
+          <thead>
+            <tr>
+              <th>Portal</th>
+              <th>Zona</th>
+              <th>Operación</th>
+              <th>Tipo Propiedad</th>
+              <th>Amb.</th>
+              <th class="nr">Vistas Prom. Segmento</th>
+              <th class="nr">Vistas Prom. Propias</th>
+              <th class="nr">Ratio %</th>
+              <th class="nr">Avisos</th>
+            </tr>
+          </thead>
+          <tbody>
+  `;
+  
+  if (filtered.length === 0) {
+    tableHTML += `<tr><td colspan="9" style="text-align:center;padding:2rem;color:var(--g400);">No hay datos que coincidan con el filtro</td></tr>`;
+  } else {
+    filtered.forEach(r => {
+      tableHTML += `
+        <tr>
+          <td><span class="bdg" style="background:${r.color}22;color:${r.color}">${r.short}</span></td>
+          <td class="tn">${r.zona}</td>
+          <td style="color:var(--g600);font-size:9px;">${r.operacion || '—'}</td>
+          <td style="color:var(--g600);font-size:9px;">${r.tipoProp || '—'}</td>
+          <td class="nr mn" style="color:var(--g500);">${r.ambientes || '—'}</td>
+          <td class="nr mn" style="font-weight:700;color:${r.color}">${r.vistasSeg.toFixed(0)}</td>
+          <td class="nr mn">${r.vistasProp.toFixed(0)}</td>
+          <td class="nr mn">${r.ratio.toFixed(1)}%</td>
+          <td class="nr mn">${r.avisos}</td>
+        </tr>
+      `;
+    });
+  }
+  
+  tableHTML += `
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+  
+  document.getElementById('rep-tbl').innerHTML = tableHTML;
+  
+  // Conectar filtro
+  const fi = document.getElementById('rep-filter');
+  if (fi && !fi._bound) {
+    fi._bound = true;
+    fi.addEventListener('input', () => renderRep());
+  }
+  
+  document.getElementById('rep-info').textContent = `Mayo 2026 · ${allRows.length} segmentos totales · ${portales.map(p => `${portalShort[p]}: ${(S.reporteData[p] || []).length}`).join(' | ')}`;
 }
 
 // ════════════════════════════════════════════════════════════
@@ -2045,108 +2387,6 @@ function renderDetalleCitas() {
   if (fi && !fi._bound) {
     fi._bound = true;
     fi.addEventListener('input', () => renderDetalleCitas());
-  }
-}
-
-// ════════════════════════════════════════════════════════════
-// REPORTES
-// ════════════════════════════════════════════════════════════
-async function cargarRep() {
-  document.getElementById('rep-info').textContent = 'Cargando datos de rendimiento...';
-  S.portalData = {V1:[],V2:[],V3:[],V4:[]};
-  
-  if (S.rendimientos && S.rendimientos.length > 0) {
-    S.rendimientos.forEach(r => {
-      const p = pmap(r['Portal']||'');
-      if (!p || !S.portalData[p]) return;
-      S.portalData[p].push({
-        zona: (r['Período']||'—'),
-        vistasSeg: parseFloat(r['Visualizaciones']||0) || 0,
-        vistasProp: 0,
-        ratio: parseFloat((r['CTR ExpVSVis']||'0').replace('%','')) || 0,
-        avisos: parseInt(r['Consultas recibidas']||0) || 0,
-        exp: parseFloat(r['Exposición']||0) || 0,
-        vis: parseFloat(r['Visualizaciones']||0) || 0,
-      });
-    });
-  }
-  
-  if (S.daily && S.daily.length > 0) {
-    S.daily.forEach(r => {
-      const p = pmap(r['Portal']||'');
-      if (!p || !S.portalData[p]) return;
-      S.portalData[p].push({
-        zona: (r['Período']||'Sem ' + (r['Semana']||'')),
-        vistasSeg: parseFloat(r['Visualizaciones']||0) || 0,
-        vistasProp: 0,
-        ratio: parseFloat((r['CTR ExpVSVis']||'0').replace('%','')) || 0,
-        avisos: parseInt(r['Consultas recibidas']||0) || 0,
-        exp: parseFloat(r['Exposición']||0) || 0,
-        vis: parseFloat(r['Visualizaciones']||0) || 0,
-      });
-    });
-  }
-  
-  const periodos = [...new Set(S.rendimientos.map(r=>(r['Período']||'').trim()).filter(Boolean))];
-  document.getElementById('rep-info').textContent = `Vista de rendimientos · ${periodos.join(', ') || 'Sin datos'}`;
-  
-  renderRep();
-}
-
-function renderRep() {
-  document.getElementById('rep-sum').innerHTML = `<div class="rep-sg">${['V1','V2','V3','V4'].map(p=>{
-    const rows=S.portalData[p]||[];
-    const tot=rows.reduce((s,r)=>s+(r.avisos||0),0);
-    const expTotal=rows.reduce((s,r)=>s+(r.exp||0),0);
-    return`<div class="rep-sc" style="border-top:3px solid ${PC[p]}">
-      <div class="rep-scl" style="color:${PC[p]}">${p}</div>
-      <div class="rep-scv" style="color:${PC[p]}">${rows.length}</div>
-      <div style="font-size:9px;color:var(--g500)">registros${tot?` · ${tot} consultas`:''}${expTotal?` · Exp ${expTotal.toFixed(0)}`:''}</div>
-    </div>`;
-  }).join('')}</div>`;
-
-  document.getElementById('rep-portals').innerHTML = ['V1','V2','V3','V4'].map(p=>{
-    const rows=S.portalData[p]||[];
-    if(!rows.length)return'';
-    const sorted=[...rows].sort((a,b)=>(b.exp||0)-(a.exp||0));
-    const top=sorted.slice(0,10);
-    const mx=top[0]?(top[0].exp||1):1;
-    const bars=top.map((r,i)=>{
-      const v=r.exp||0,pct=Math.round(v/mx*100),si=pct>30;
-      const col=`hsl(${150+i*12},60%,${43+i*3}%)`;
-      return`<div class="rep-br">
-        <div class="rep-bz">${r.zona}</div>
-        <div class="rep-bt"><div class="rep-bf" style="width:${pct}%;background:${col}">${si?`<span class="rep-bv">${v.toFixed(0)}</span>`:''}</div>${!si&&v?`<span class="rep-bvo">${v.toFixed(0)}</span>`:''}</div>
-      </div>`;
-    }).join('');
-    return`<div class="rep-pb"><div class="rep-pbh"><div class="rep-badge" style="background:${PC[p]}">${p}</div><div><strong style="font-size:12px">${p}</strong><div style="font-size:10px;color:var(--g500)">${rows.length} registros</div></div></div>${bars}</div>`;
-  }).join('');
-
-  let all=[];
-  ['V1','V2','V3','V4'].forEach(p=>(S.portalData[p]||[]).forEach(r=>all.push({...r,portal:p})));
-  
-  const filt = document.getElementById('rep-filter')?.value?.toLowerCase() || '';
-  const filtered = filt ? all.filter(r => 
-    r.portal.toLowerCase().includes(filt) || 
-    r.zona.toLowerCase().includes(filt)
-  ) : all;
-  
-  document.getElementById('rep-tbl').innerHTML = `<div class="tc"><div class="tsc"><table style="font-size:9px">
-    <thead><tr><th>Portal</th><th>Período</th><th class="nr">Exposición</th><th class="nr">Visualizaciones</th><th class="nr">Consultas</th><th class="nr">CTR %</th></tr></thead>
-    <tbody>${filtered.length?filtered.map(r=>`<tr>
-      <td><span class="bdg" style="background:${PC[r.portal]}22;color:${PC[r.portal]}">${r.portal}</span></td>
-      <td class="tn">${r.zona}</td>
-      <td class="nr mn" style="font-weight:700;color:${PC[r.portal]}">${(r.exp||0).toFixed(0)}</td>
-      <td class="nr mn">${(r.vis||0).toFixed(0)}</td>
-      <td class="nr mn">${r.avisos||'—'}</td>
-      <td class="nr mn">${r.ratio?r.ratio.toFixed(1)+'%':'—'}</td>
-    </tr>`).join(''):'<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--g400)">Sin datos</td></tr>'}</tbody>
-  </table></div></div>`;
-  
-  const fi = document.getElementById('rep-filter');
-  if (fi && !fi._bound) {
-    fi._bound = true;
-    fi.addEventListener('input', () => renderRep());
   }
 }
 
