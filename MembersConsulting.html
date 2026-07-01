@@ -124,6 +124,217 @@
     .tips-section ul li .tip-highlight.green { color: var(--verde); }
     .tips-section ul li .tip-highlight.orange { color: var(--naranja); }
 
+    /* ── CALL SCRIPT PANEL ─────────────────────────────────────────── */
+    .script-panel {
+      background: var(--blanco);
+      border-radius: 12px;
+      border: 1px solid var(--azul-claro);
+      box-shadow: 0 4px 16px rgba(14,59,92,0.08);
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+    .script-header {
+      padding: 0.9rem 1.2rem;
+      background: linear-gradient(135deg, var(--azul-profundo), var(--azul-vibrante));
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+    }
+    .script-header h2 {
+      font-size: 14.5px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .script-header .script-toggle-icon {
+      font-size: 13px;
+      transition: transform 0.2s;
+      opacity: 0.85;
+    }
+    .script-header.collapsed .script-toggle-icon { transform: rotate(-90deg); }
+    .script-body {
+      padding: 1.1rem 1.4rem 1.3rem;
+      max-height: 2000px;
+      overflow: hidden;
+      transition: max-height 0.25s ease, padding 0.25s ease;
+    }
+    .script-body.collapsed {
+      max-height: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+    .script-step {
+      display: flex;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--arena-dark);
+    }
+    .script-step:last-child { border-bottom: none; padding-bottom: 0; }
+    .script-step:first-child { padding-top: 0; }
+    .script-step-num {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--azul-suave);
+      color: var(--azul-profundo);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 13px;
+    }
+    .script-step-content { flex: 1; min-width: 0; }
+    .script-step-title {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--azul-profundo);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .script-step-text {
+      font-size: 13.5px;
+      line-height: 1.55;
+      color: var(--texto);
+    }
+    .script-step-text em {
+      color: var(--azul-vibrante);
+      font-style: normal;
+      font-weight: 600;
+    }
+    .script-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 8px;
+      border-radius: 20px;
+      background: #d5f5e3;
+      color: #1e8449;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+    .script-copy-btn {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.35);
+      color: white;
+      border-radius: 6px;
+      padding: 4px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .script-copy-btn:hover { background: rgba(255,255,255,0.3); }
+    .script-footer-note {
+      margin-top: 14px;
+      padding: 10px 14px;
+      background: var(--arena);
+      border-left: 3px solid var(--azul-medio);
+      border-radius: 6px;
+      font-size: 12px;
+      color: #555;
+      line-height: 1.5;
+    }
+    /* ───────────────────────────────────────────────────────────────── */
+
+    /* ── CALL SCRIPT MODAL (opens on "Call" click) ────────────────── */
+    .script-modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(14,59,92,0.45);
+      backdrop-filter: blur(2px);
+      z-index: 998;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 4vh 16px;
+      overflow-y: auto;
+    }
+    .script-modal-overlay.show { display: flex; }
+    .script-modal {
+      background: var(--blanco);
+      border-radius: 16px;
+      max-width: 720px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+      overflow: hidden;
+      animation: scriptModalIn 0.22s ease;
+    }
+    @keyframes scriptModalIn {
+      from { opacity: 0; transform: translateY(-14px) scale(0.98); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .script-modal-header {
+      padding: 1.1rem 1.4rem;
+      background: linear-gradient(135deg, var(--azul-profundo), var(--azul-vibrante));
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .script-modal-header-text h2 {
+      font-size: 15.5px;
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+    .script-modal-header-text .script-modal-client {
+      font-size: 12.5px;
+      color: rgba(255,255,255,0.85);
+      font-weight: 500;
+    }
+    .script-modal-close {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.35);
+      color: white;
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 15px;
+      line-height: 1;
+      flex-shrink: 0;
+      transition: background 0.15s;
+    }
+    .script-modal-close:hover { background: rgba(255,255,255,0.3); }
+    .script-modal-body {
+      padding: 1.2rem 1.4rem 1.4rem;
+      max-height: 66vh;
+      overflow-y: auto;
+    }
+    .script-modal-footer {
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.9rem 1.4rem;
+      border-top: 1px solid var(--arena-dark);
+      background: var(--arena);
+      flex-wrap: wrap;
+    }
+    .script-modal-footer .btn-call-now {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--verde); color: white; border: none;
+      padding: 8px 18px; border-radius: 20px; font-size: 13px;
+      font-weight: 700; text-decoration: none; cursor: pointer;
+      transition: background 0.15s;
+    }
+    .script-modal-footer .btn-call-now:hover { background: #1e8449; }
+    .script-modal-footer .btn-copy-now {
+      background: var(--azul-medio); color: white; border: none;
+      border-radius: 20px; padding: 8px 16px; font-size: 12.5px;
+      font-weight: 600; cursor: pointer; transition: background 0.15s;
+    }
+    .script-modal-footer .btn-copy-now:hover { background: var(--azul-vibrante); }
+    /* ───────────────────────────────────────────────────────────────── */
+
     .summary-bar {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -484,6 +695,7 @@
       .admin-item { flex-wrap: wrap; }
       .admin-item input[type="password"] { max-width: none; }
       .tips-section ul { flex-direction: column; gap: 8px; }
+      .script-step { gap: 10px; }
     }
     @media (max-width: 480px) {
       .summary-bar { grid-template-columns: 1fr; }
@@ -534,7 +746,7 @@
     <ul>
       <li><span class="tip-icon">⏰</span> Call <span class="tip-highlight">after 10 AM</span> and <span class="tip-highlight">before 9 PM</span></li>
       <li><span class="tip-icon">📅</span> <span class="tip-highlight orange">Saturday afternoons</span> have higher contact rates</li>
-      <li><span class="tip-icon">🤝</span> <span class="tip-highlight green">We don't cancel</span> — we negotiate a significant reduction while they continue enjoying their Vidanta vacations</li>
+      <li><span class="tip-icon">🤝</span> <span class="tip-highlight green">We help members get full value</span> from the benefits already included in their contract</li>
     </ul>
   </div>
 
@@ -636,6 +848,24 @@
   <strong>MEMBER´s CONSULTING · VIDANTA</strong> &nbsp;·&nbsp; Client CRM &nbsp;·&nbsp; Real-time data from Google Sheets
 </div>
 
+<!-- Call Script Modal -->
+<div class="script-modal-overlay" id="scriptModalOverlay">
+  <div class="script-modal">
+    <div class="script-modal-header">
+      <div class="script-modal-header-text">
+        <h2>📞 Call Script — Members Consulting</h2>
+        <div class="script-modal-client" id="scriptModalClientName"></div>
+      </div>
+      <button class="script-modal-close" onclick="closeScriptModal()">✕</button>
+    </div>
+    <div class="script-modal-body" id="scriptModalBody"></div>
+    <div class="script-modal-footer">
+      <button class="btn-copy-now" onclick="copyScriptText()">📋 Copy script</button>
+      <a href="#" class="btn-call-now" id="scriptModalCallBtn" target="_self">📞 Call now</a>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -676,6 +906,112 @@ const STATUS_INFO = {
   voicemail:  { label: 'Voicemail / 3rd',  cls: 'badge-voicemail'  },
   none:       { label: 'Unmanaged',        cls: 'badge-none'       },
 };
+
+// ── 📞 CALL SCRIPT FROM PDF ──────────────────────────────────────────────────
+const CALL_SCRIPT = [
+  {
+    title: '1. Opening & Introduction',
+    tag: null,
+    html: `Thank you for taking my call. My name is <em>[Your Name]</em>, and I am calling on behalf of <em>Sara Aldman</em>, representing <em>Members Consulting</em>. We specialize in the balance elimination of your Vidanta membership.
+
+Let me ask you something, <em>[Client Name]</em>: If I were to offer you the opportunity to eliminate your monthly payments with Vidanta today, while still enjoying the same vacation benefits—100 percent verifiable—would you take it?`
+  },
+  {
+    title: '2. Understanding Their Situation',
+    tag: null,
+    html: `The majority of the members we work with truly enjoy their vacations on property, but they often feel dissatisfied with the amount of money invested in these memberships.
+
+Obviously, the qualifying factor for you is that you must have a balance or a monthly payment with Vidanta. Do you have a monthly payment?`
+  },
+  {
+    title: '3. Addressing Initial Concerns',
+    tag: 'Objection Handling',
+    html: `I understand your concerns <em>[Client Name]</em>. You may be thinking that you don't know me and that this seems too good to be true, or perhaps just another scam. For us, gaining your trust is crucial for a successful negotiation. Allow me to explain why you can trust us.`
+  },
+  {
+    title: '4. Trust Factor #1 - Referrals',
+    tag: 'Credibility',
+    html: `<strong>Referrals</strong> — Sarah has been in business for over four years, and we kindly ask our members to assist us as referrals if possible. We have hundreds of members who can attest to our services and share their results, demonstrating how they continue to travel successfully.`
+  },
+  {
+    title: '5. Trust Factor #2 - Zoom',
+    tag: 'Credibility',
+    html: `<strong>Zoom</strong> — To our knowledge, we are the only ones in this industry offering face-to-face calls where we address all of your questions and concerns based on the terms and conditions of your contract.`
+  },
+  {
+    title: '6. Trust Factor #3 - Not a Cancellation',
+    tag: 'Credibility',
+    html: `<strong>This is not a cancellation</strong> — We value growth and are delighted that you can continue to vacation, provided it is at a fair price—especially one that does not destabilize your family's finances.`
+  },
+  {
+    title: '7. Deep Knowledge & Expertise',
+    tag: 'Advantage',
+    html: `<strong>Knowledge</strong> — As I mentioned earlier, we have helped hundreds of members thanks to Sara's expertise. She worked for over four years at Vidanta, which made her an expert in the terms and conditions that, unfortunately, are not explained properly to you, the members, allowing the hotel to manipulate your contract to their advantage. For example:
+
+When you signed your contract, you were taken to an office where you were informed that you were being recorded and that you were acquiring this contract for vacation purposes, not for resale or investment. Do you remember?
+
+This negates any credibility of resale and investment plans, as you do not actually own any property; you merely hold a very expensive membership.`
+  },
+  {
+    title: '8. Effectiveness & Guaranteed Results',
+    tag: 'Process',
+    html: `<strong>Effectiveness</strong> — We have contacts within the organization who ensure that your file remains in the correct line of communication and is not sidetracked.
+
+<strong>Guaranteed & Done in a Timely Manner</strong> — We guarantee contract elimination within 35 to 45 business days, all without cancellation.`
+  },
+  {
+    title: '9. Call to Action',
+    tag: 'Next Step',
+    html: `Do you have any questions?
+
+Perfect!
+
+Our next step is to schedule an appointment with Mrs. Aldman. It is important for this appointment that you have a full understanding that this process is based on your terms and conditions. Therefore, it is essential that you have the covers of your contracts and any notes or questions you may have regarding your purchase process on hand for the appointment.`
+  }
+];
+
+function renderScriptStepsHtml() {
+  return CALL_SCRIPT.map((s, i) => `
+    <div class="script-step">
+      <div class="script-step-num">${i+1}</div>
+      <div class="script-step-content">
+        <div class="script-step-title">${s.title.replace(/^\d+\.\s*/,'')}${s.tag ? '<span class="script-tag">'+s.tag+'</span>' : ''}</div>
+        <div class="script-step-text">${s.html}</div>
+      </div>
+    </div>
+  `).join('') + `
+    <div class="script-footer-note">
+      💬 Tip: Adapt the bracketed placeholders to each client. Keep the tone conversational and natural.
+    </div>
+  `;
+}
+
+function openScriptModal(clientName, clientPhone) {
+  document.getElementById('scriptModalBody').innerHTML = renderScriptStepsHtml();
+  document.getElementById('scriptModalClientName').textContent = clientName ? ('Client: ' + clientName) : '';
+  const callBtn = document.getElementById('scriptModalCallBtn');
+  callBtn.href = clientPhone ? ('tel:' + clientPhone) : '#';
+  document.getElementById('scriptModalOverlay').classList.add('show');
+}
+
+function closeScriptModal() {
+  document.getElementById('scriptModalOverlay').classList.remove('show');
+}
+
+document.getElementById('scriptModalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeScriptModal();
+});
+
+function copyScriptText() {
+  const text = CALL_SCRIPT.map((s, i) =>
+    (i+1) + '. ' + s.title.replace(/^\d+\.\s*/,'') + '\n' + s.html.replace(/<\/?em>/g,'').replace(/<br\s*\/?>/g,'\n').replace(/<strong>/g,'').replace(/<\/strong>/g,'') + '\n'
+  ).join('\n');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => showToast('📋 Script copied to clipboard'));
+  } else {
+    showToast('⚠️ Clipboard not available', false);
+  }
+}
 
 // ── STATE ────────────────────────────────────────────────────────────────────
 let allRows    = [];
@@ -1328,7 +1664,7 @@ function renderTable() {
           (savedAt ? `<br><span style="font-size:10px;color:#aaa">${savedAt}</span>` : '') +
         `</td>` +
         `<td style="white-space:nowrap">` +
-          `<a href="tel:${esc(r.telefono)}" class="btn-llamar" title="Call">📞 <span>Call</span></a> ` +
+          `<button class="btn-llamar" title="Call" onclick="openScriptModal('${escJ(r.nombre)}','${escJ(r.telefono)}')">📞 <span>Call</span></button> ` +
           `<button class="btn-comment-toggle ${hasData?'has-data':''}" onclick="toggleComment('${safeKey}')">` +
             (hasData ? '✏️ Edit' : '+ Comment') +
           `</button>` +
