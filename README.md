@@ -10,4 +10,6 @@ https://omaranayalucio.github.io/Dashboards/index.html
 
 https://omaranayalucio.github.io/Dashboards/MembersConsulting.html
 
+https://omaranayalucio.github.io/Dashboards/master.html
+
 https://omaranayalucio.github.io/Dashboards/RedesSociales.html
