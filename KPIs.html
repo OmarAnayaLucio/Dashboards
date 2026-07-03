@@ -6,7 +6,7 @@
 <title>Altaltium · KPI Dashboard · Live</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-/* ===== ESTILOS COMPLETOS ===== */
+/* ===== ESTILOS COMPLETOS (sin cambios) ===== */
 :root{
   --teal:#52BEC0;--tl:rgba(82,190,192,.1);--tm:rgba(82,190,192,.2);
   --black:#1C1E21;--white:#fff;
@@ -66,6 +66,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--g50);color:var(--g900)
 .chip.c1.on{background:var(--v1l);border-color:var(--v1);color:var(--v1);font-weight:700;}
 .chip.c2.on{background:var(--v4l);border-color:var(--v4);color:var(--v4);font-weight:700;}
 .chip.c3.on{background:var(--v3l);border-color:var(--v3);color:var(--v3);font-weight:700;}
+.chip.c4.on{background:var(--v2l);border-color:var(--v2);color:var(--v2);font-weight:700;}
 .fnp{background:#fff;border:1px solid var(--g200);border-radius:var(--r);padding:.875rem 1.1rem;box-shadow:var(--sh-sm);min-width:420px;}
 .fnh{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:.6rem;}
 .fnt{font-size:9px;font-weight:700;color:var(--g500);letter-spacing:1.5px;text-transform:uppercase;}
@@ -94,7 +95,8 @@ body{font-family:'Montserrat',sans-serif;background:var(--g50);color:var(--g900)
 .kc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
 .kmkt::before{background:var(--mkt);}.kvta::before{background:var(--vta);}
 .kamber::before{background:var(--amber);}.kgreen::before{background:var(--green);}
-.kgray::before{background:var(--g300);}
+.kgray::before{background:var(--g300);}.kblue::before{background:var(--v1);}
+.korange::before{background:var(--v4);}.kpurple::before{background:var(--v3);}
 .kl{font-size:8px;font-weight:700;color:var(--g500);letter-spacing:.8px;text-transform:uppercase;margin-bottom:3px;margin-top:4px;}
 .kv{font-size:24px;font-weight:700;font-family:'DM Mono',monospace;line-height:1;margin-bottom:2px;}
 .ks{font-size:9px;color:var(--g500);}
@@ -268,13 +270,18 @@ tr.sub td{background:var(--g50);font-weight:700;}
   <div class="svta"><div class="svtab"></div><div class="svtal">KPIs Ventas — CRM · Citas · Cierre</div></div>
   <div class="kr k4" id="kpis-vta1"></div>
   <div class="kr k4" id="kpis-vta2"></div>
+  <!-- NUEVA SECCIÓN: Transferidos por pasante -->
   <div class="cg2">
+    <div class="cc"><div class="ct">Transferidos por pasante</div><div id="ch-trasp"></div></div>
     <div class="cc"><div class="ct">Interesados por portal</div><div id="ch-int"></div></div>
-    <div class="cc"><div class="ct">Leads registrados CRM — top asesores</div><div id="ch-crm"></div></div>
   </div>
   <div class="cg2">
+    <div class="cc"><div class="ct">Leads registrados CRM — top asesores</div><div id="ch-crm"></div></div>
     <div class="cc"><div class="ct">Exposición por portal (%)</div><div id="ch-exp"></div></div>
+  </div>
+  <div class="cg2">
     <div class="cc"><div class="ct">Visualizaciones por portal (%)</div><div id="ch-vis"></div></div>
+    <div class="cc"><div class="ct">Citas agendadas por asesor</div><div id="ch-citas"></div></div>
   </div>
   <div class="sh">📅 Citas — semana seleccionada</div>
   <div class="tc"><div class="tsc"><table id="t-citas">
@@ -424,17 +431,16 @@ const GID = {
 };
 
 // ════════════════════════════════════════════════════════════
-// MAPEO DE PORTALES
+// MAPEO DE PORTALES (CORREGIDO)
 // ════════════════════════════════════════════════════════════
 const PMAP = {
   'VENTAS 1':'V1','VENTAS 2':'V2','VENTAS 3':'V3','VENTAS 4':'V4',
   'V1':'V1','V2':'V2','V3':'V3','V4':'V4',
   'VENTAS1':'V1','VENTAS2':'V2','VENTAS3':'V3','VENTAS4':'V4',
-  'OTRO':'V3',
-  'OUTLET':'V3',
-  'PREMIUM':'V1',
+  'OTRO':'V3','OUTLET':'V3','PREMIUM':'V1',
 };
 const PC = {V1:'#1A73E8',V2:'#1E8E3E',V3:'#7B2FBE',V4:'#D56E0C'};
+const GBD = {B1:'bv1',B2:'bv4',V3:'bv3'};
 
 // ════════════════════════════════════════════════════════════
 // ESTADO GLOBAL
@@ -496,16 +502,18 @@ async function fetchCSV(gid) {
   return parseCSV(await r.text());
 }
 
+// ---- CORRECCIÓN 1: pmap() asigna V3 por defecto ----
 function pmap(v) { 
-  if (!v) return null;
+  if (!v) return 'V3';
   const val = (v||'').trim().toUpperCase();
   if (PMAP[val]) return PMAP[val];
-  if (val === 'OTRO' || val === 'OUTLET' || val === 'OTROS') return 'V3';
+  // Coincidencias parciales (por si hay variaciones)
   if (val.includes('VENTAS 1') || val === 'VENTAS1' || val === 'V1') return 'V1';
   if (val.includes('VENTAS 2') || val === 'VENTAS2' || val === 'V2') return 'V2';
   if (val.includes('VENTAS 3') || val === 'VENTAS3' || val === 'V3') return 'V3';
   if (val.includes('VENTAS 4') || val === 'VENTAS4' || val === 'V4') return 'V4';
-  return null;
+  // Cualquier otro (OTRO, OUTLET, etc.) va a V3
+  return 'V3';
 }
 
 function getWeekFromDate(dateStr) {
@@ -535,11 +543,16 @@ function getWeekFromDate(dateStr) {
 
 function normName(n) { return (n||'').trim().toLowerCase().replace(/[áàä]/g,'a').replace(/[éèë]/g,'e').replace(/[íìï]/g,'i').replace(/[óòö]/g,'o').replace(/[úùü]/g,'u').replace(/ñ/g,'n'); }
 
+// ---- CORRECCIÓN 2: nameMatch mejorada ----
 function nameMatch(a, b) {
+  if (!a || !b) return false;
   const na = normName(a), nb = normName(b);
   if (na === nb) return true;
-  const wa = na.split(' '), wb = nb.split(' ');
-  return wa[0] === wb[0] && wa.some(w => wb.includes(w) && w.length > 2);
+  const wa = na.split(' ').filter(w => w.length > 2);
+  const wb = nb.split(' ').filter(w => w.length > 2);
+  if (wa.length === 0 || wb.length === 0) return false;
+  // Comparar primer nombre y primer apellido
+  return wa[0] === wb[0] && wa[wa.length-1] === wb[wb.length-1];
 }
 
 function prog(pct, msg) {
@@ -556,12 +569,13 @@ function mostrarError(msg) {
 }
 
 // ════════════════════════════════════════════════════════════
-// DETECCIÓN AUTOMÁTICA DE ÚLTIMA SEMANA
+// DETECCIÓN AUTOMÁTICA DE ÚLTIMA SEMANA (prioriza Citas)
 // ════════════════════════════════════════════════════════════
 function detectarUltimaSemana() {
   let ultimaSemana = 0;
   let fuente = 'ninguna';
   
+  // Prioridad 1: Hoja Citas (GID=76854756)
   if (S.citas && S.citas.length > 0) {
     const colSemana = Object.keys(S.citas[0]).find(k => 
       k.includes('Semana') || k.includes('semana') || k === 'Sem' || k === 'Week'
@@ -574,6 +588,7 @@ function detectarUltimaSemana() {
     }
   }
   
+  // Prioridad 2: Weekly
   if (ultimaSemana === 0 && S.daily && S.daily.length > 0) {
     const colSemana = Object.keys(S.daily[0]).find(k => 
       k.includes('Semana') || k.includes('semana')
@@ -586,6 +601,7 @@ function detectarUltimaSemana() {
     }
   }
   
+  // Prioridad 3: CRM
   if (ultimaSemana === 0 && S.crm && S.crm.length > 0) {
     const colSemana = Object.keys(S.crm[0]).find(k => 
       k.includes('Semana') || k.includes('semana')
@@ -598,6 +614,7 @@ function detectarUltimaSemana() {
     }
   }
   
+  // Prioridad 4: Interesados
   if (ultimaSemana === 0 && S.interesados && S.interesados.length > 0) {
     const colSemana = Object.keys(S.interesados[0]).find(k => 
       k.includes('Semana') || k.includes('semana')
@@ -613,8 +630,8 @@ function detectarUltimaSemana() {
   console.log(`📅 Última semana detectada: ${ultimaSemana} (fuente: ${fuente})`);
   
   if (ultimaSemana === 0) {
-    ultimaSemana = 26;
-    console.warn('⚠️ No se detectaron semanas, usando semana 26 por defecto');
+    ultimaSemana = 27;  // por si no detecta, usar 27
+    console.warn('⚠️ No se detectaron semanas, usando semana 27 por defecto');
   }
   
   return ultimaSemana;
@@ -676,7 +693,8 @@ async function cargar() {
       console.warn('⚠️ Error cargando rol:', e);
       S.semanas = [
         { num: 25, inicio: '06-12', fin: 'Jun', b1: [], b2: [] },
-        { num: 26, inicio: '19-26', fin: 'Jun', b1: [], b2: [] }
+        { num: 26, inicio: '19-26', fin: 'Jun', b1: [], b2: [] },
+        { num: 27, inicio: '27-03', fin: 'Jul', b1: [], b2: [] }
       ];
     }
     
@@ -782,7 +800,7 @@ function getRol() {
     }
     if (!found) found = sorted[sorted.length - 1];
   }
-  return found || { num: S.semana, inicio: '19-26', fin: 'Jun', b1: [], b2: [] };
+  return found || { num: S.semana, inicio: '27-03', fin: 'Jul', b1: [], b2: [] };
 }
 
 // ════════════════════════════════════════════════════════════
@@ -971,13 +989,12 @@ function construirTendenciasDesdeFuentes() {
     console.log(`   Semana ${w.num}: Int=${w.global.portal_int}, CRM=${w.global.crm}, CitasAg=${w.global.citas_ag}, CitasAt=${w.global.citas_at}, Exp=${w.global.exp}, Vis=${w.global.vis}, Contratos=${w.global.contratos}`);
   });
   
-  // Seleccionar TODAS las semanas válidas
   S.tSelW = S.tendencias.map(w => w.num);
   console.log('📊 Semanas seleccionadas:', S.tSelW);
 }
 
 // ════════════════════════════════════════════════════════════
-// FUNCIÓN GETINTERESADOS
+// FUNCIÓN GETINTERESADOS (usa pmap corregida)
 // ════════════════════════════════════════════════════════════
 function getInteresados() {
   const tot = { V1: 0, V2: 0, V3: 0, V4: 0 };
@@ -1002,6 +1019,7 @@ function getInteresados() {
     if (isNaN(sem) || sem !== S.semana) return;
     
     totalFiltrados++;
+    // Usamos pmap corregida
     const portal = pmap(r['Portal'] || '');
     const asesor = (r['Asesor'] || '').trim();
     
@@ -1012,6 +1030,7 @@ function getInteresados() {
         porAsesor[asesor][portal]++;
       }
     } else {
+      // fallback (ya no debería ocurrir)
       tot.V3++;
       if (asesor) {
         if (!porAsesor[asesor]) porAsesor[asesor] = { V1:0, V2:0, V3:0, V4:0 };
@@ -1024,14 +1043,15 @@ function getInteresados() {
 }
 
 // ════════════════════════════════════════════════════════════
-// FUNCIÓN GETCITAS
+// FUNCIÓN GETCITAS (corregida: detección de columna ASESOR insensible)
 // ════════════════════════════════════════════════════════════
 function getCitas() {
   console.log('🔍 Buscando citas para semana:', S.semana);
   
+  // Buscar columna de semana (insensible)
   const colSemana = S.citas.length > 0 
     ? Object.keys(S.citas[0]).find(k => 
-        k.includes('Semana') || k.includes('semana') || k === 'Sem' || k === 'Week'
+        k.toUpperCase().includes('SEMANA') || k.toUpperCase().includes('WEEK')
       ) 
     : null;
   
@@ -1044,24 +1064,23 @@ function getCitas() {
     const sem = parseInt(r[colSemana] || 0);
     return sem === S.semana;
   });
+  console.log(`   Citas encontradas para semana ${S.semana}: ${rows.length}`);
   
+  // Buscar columna ASESOR (insensible)
   const colAsesor = S.citas.length > 0
-    ? Object.keys(S.citas[0]).find(k => 
-        k.includes('ASESOR') || k.includes('Asesor')
-      ) || 'ASESOR'
-    : 'ASESOR';
+    ? Object.keys(S.citas[0]).find(k => k.toUpperCase().includes('ASESOR')) 
+    : null;
+  const colAsesorFinal = colAsesor || 'ASESOR';
   
   const colAsistencia = S.citas.length > 0
-    ? Object.keys(S.citas[0]).find(k => 
-        k.includes('ASISTENCIA') || k.includes('Asistencia')
-      ) || 'ASISTENCIA'
+    ? Object.keys(S.citas[0]).find(k => k.toUpperCase().includes('ASISTENCIA')) 
     : 'ASISTENCIA';
   
   const porAsesor = {};
   let ag = 0, at = 0;
   
   rows.forEach(r => {
-    const asesor = (r[colAsesor] || '').trim();
+    const asesor = (r[colAsesorFinal] || '').trim();
     const asist  = (r[colAsistencia] || '').trim().toLowerCase();
     if (!asesor) return;
     if (!porAsesor[asesor]) porAsesor[asesor] = { ag:0, at:0 };
@@ -1073,11 +1092,12 @@ function getCitas() {
     }
   });
   
+  console.log('   Asesores con citas:', Object.keys(porAsesor));
   return { rows, porAsesor, ag, at, cancel: ag - at };
 }
 
 // ════════════════════════════════════════════════════════════
-// FUNCIÓN GETRENDIMIENTOS
+// FUNCIÓN GETRENDIMIENTOS (sin cambios)
 // ════════════════════════════════════════════════════════════
 function getRendimientos() {
   const res = { V1:{exp:0,vis:0}, V2:{exp:0,vis:0}, V3:{exp:0,vis:0}, V4:{exp:0,vis:0} };
@@ -1132,7 +1152,7 @@ function getRendimientos() {
 }
 
 // ════════════════════════════════════════════════════════════
-// FUNCIÓN GETCRM
+// FUNCIÓN GETCRM (sin cambios)
 // ════════════════════════════════════════════════════════════
 function getCRM() {
   const porAsesor = {};
@@ -1176,7 +1196,7 @@ function getCRM() {
 }
 
 // ════════════════════════════════════════════════════════════
-// CONSTRUIR LISTA DE ASESORES
+// CONSTRUIR LISTA DE ASESORES (con nameMatch mejorada)
 // ════════════════════════════════════════════════════════════
 function buildAsesores() {
   const rol = getRol();
@@ -1206,7 +1226,7 @@ function buildAsesores() {
     return { ag:0, at:0 };
   };
 
-  return activos.map(a => {
+  const result = activos.map(a => {
     const nombre  = (a['Asesor'] || '').trim();
     const codigo  = (a['ID de asesor'] || '').trim();
     const fn      = (a['Función'] || '').trim();
@@ -1237,10 +1257,13 @@ function buildAsesores() {
       cat:   citD.at,
     };
   }).filter(a => a.reg > 0 || a.cag > 0 || a.int > 0 || a.bloque === 'B1' || a.bloque === 'B2' || a.bloque === 'V3');
+  
+  console.log('   Asesores construidos:', result.length);
+  return result;
 }
 
 // ════════════════════════════════════════════════════════════
-// RENDER PRINCIPAL
+// RENDER PRINCIPAL (con el detalle estético añadido)
 // ════════════════════════════════════════════════════════════
 function renderTodo() {
   const rol               = getRol();
@@ -1284,7 +1307,7 @@ function renderTodo() {
   // Pasantes
   document.getElementById('pas-grid').innerHTML = pasantes.length
     ? pasantes.map(p => {
-        const bCol = p.bloque==='B1' ? '#1A73E8' : p.bloque==='B2' ? '#D56E0C' : 'var(--mkt)';
+        const bCol = p.bloque==='B1' ? PC.V1 : p.bloque==='B2' ? PC.V4 : PC.V3;
         const portalesStr = p.bloque==='B1' ? 'V1+V3' : p.bloque==='B2' ? 'V1+V4' : 'V3';
         const pct = p.reg > 0 ? Math.round(p.transf/p.reg*100) : 0;
         return `<div class="pcard" style="border-left-color:${bCol}">
@@ -1313,6 +1336,24 @@ function renderTodo() {
     <div class="kc kgreen"><div class="kl">Tasa de asistencia</div><div class="kv" style="color:var(--green)">${tasaA}%</div><div class="ks">${at} / ${ag}</div></div>`;
 
   // Gráficas
+  // Transferidos por pasante
+  const pasantesConTransf = pasantes.filter(p => p.transf > 0 || p.int > 0);
+  if (pasantesConTransf.length) {
+    const maxTransf = Math.max(...pasantesConTransf.map(p => p.transf), 1);
+    const colorMap = {B1:PC.V1, B2:PC.V4, V3:PC.V3};
+    hbars(document.getElementById('ch-trasp'), 
+      pasantesConTransf.map(p => ({
+        lbl: (p.codigo || p.nombre.split(' ').slice(0,2).join(' ')),
+        v: p.transf,
+        col: colorMap[p.bloque] || PC.V3
+      })), 
+      maxTransf
+    );
+  } else {
+    document.getElementById('ch-trasp').innerHTML = '<div style="font-size:10px;color:var(--g400);padding:1rem">Sin datos de transferencias</div>';
+  }
+
+  // Interesados por portal (ahora V3 ya tiene datos)
   hbars(document.getElementById('ch-int'), [
     {lbl:'V1',v:intTot.V1,col:PC.V1},{lbl:'V2',v:intTot.V2,col:PC.V2},
     {lbl:'V4',v:intTot.V4,col:PC.V4},{lbl:'V3',v:intTot.V3,col:PC.V3},
@@ -1324,6 +1365,33 @@ function renderTodo() {
     v: a.reg,
     col: a.bloque==='B1'?PC.V1:a.bloque==='B2'?PC.V4:PC.V3
   })), Math.max(...topCRM.map(a=>a.reg),1));
+
+  // === Citas por asesor (con el detalle estético) ===
+  const topCitas = asesorList.filter(a => a.cag > 0).sort((a, b) => b.cag - a.cag).slice(0, 8);
+  const citasContainer = document.getElementById('ch-citas');
+  const helperMsg = `
+    <div style="font-size:8px;color:var(--g400);text-align:center;margin-top:6px;border-top:1px solid var(--g200);padding-top:6px;">
+      ℹ️ En caso de haber asesores nuevos, deben ingresarse en el archivo en la hoja "Base de asesores" para que aparezca en la gráfica.
+    </div>
+  `;
+
+  if (topCitas.length) {
+    hbars(
+      citasContainer,
+      topCitas.map(a => ({
+        lbl: a.nombre.split(' ').slice(0, 2).join(' '),
+        v: a.cag,
+        col: a.bloque === 'B1' ? PC.V1 : a.bloque === 'B2' ? PC.V4 : PC.V3
+      })),
+      Math.max(...topCitas.map(a => a.cag), 1)
+    );
+    citasContainer.innerHTML += helperMsg;
+  } else {
+    citasContainer.innerHTML = `
+      <div style="font-size:10px;color:var(--g400);padding:1rem;">Sin citas agendadas</div>
+      ${helperMsg}
+    `;
+  }
 
   if (expTotal > 0) {
     pbars(document.getElementById('ch-exp'), [
@@ -1361,7 +1429,7 @@ function renderTodo() {
 }
 
 // ════════════════════════════════════════════════════════════
-// FUNCIONES DE RENDER
+// FUNCIONES DE RENDER (sin cambios relevantes)
 // ════════════════════════════════════════════════════════════
 function renderFunnel(exp,vis,int_,crm_,pipe,cag,cat,firm,pag) {
   const steps = [
@@ -1515,9 +1583,9 @@ function bloqueHTML(bid, portal, asesores, intT, exp, vis) {
 
 function renderChips(list) {
   const grupos = {
-    'B1': { col: '#1A73E8', cls: 'c1', miembros: [] },
-    'B2': { col: '#D56E0C', cls: 'c2', miembros: [] },
-    'V3': { col: '#7B2FBE', cls: 'c3', miembros: [] }
+    'B1': { col: PC.V1, cls: 'c1', miembros: [] },
+    'B2': { col: PC.V4, cls: 'c2', miembros: [] },
+    'V3': { col: PC.V3, cls: 'c3', miembros: [] }
   };
   
   list.forEach(a => {
@@ -1573,7 +1641,8 @@ function renderCompare(list) {
 function renderWeekPills() {
   const allWeeks = S.semanas.length ? S.semanas : [
     { num: 25, inicio: '06-12', fin: 'Jun', b1: [], b2: [] },
-    { num: 26, inicio: '19-26', fin: 'Jun', b1: [], b2: [] }
+    { num: 26, inicio: '19-26', fin: 'Jun', b1: [], b2: [] },
+    { num: 27, inicio: '27-03', fin: 'Jul', b1: [], b2: [] }
   ];
   const pills = document.getElementById('wpills');
   pills.innerHTML = allWeeks.map(w =>
@@ -1618,7 +1687,7 @@ function sv(v,btn){
 }
 
 // ════════════════════════════════════════════════════════════
-// FUNCIONES DE TENDENCIAS
+// FUNCIONES DE TENDENCIAS (sin cambios)
 // ════════════════════════════════════════════════════════════
 function buildTendSelectors() {
   let grainDiv = document.getElementById('grain-tabs');
@@ -1871,7 +1940,7 @@ function renderTend() {
 }
 
 // ════════════════════════════════════════════════════════════
-// FUNCIONES DE REPORTES
+// FUNCIONES DE REPORTES (sin cambios)
 // ════════════════════════════════════════════════════════════
 async function cargarRep() {
   document.getElementById('rep-info').textContent = 'Cargando datos de reportes mensuales...';
@@ -2223,7 +2292,7 @@ function renderRep() {
 }
 
 // ════════════════════════════════════════════════════════════
-// DETALLE DE CITAS
+// DETALLE DE CITAS (sin cambios)
 // ════════════════════════════════════════════════════════════
 function renderDetalleCitas() {
   document.getElementById('dc-sem').textContent = S.semana;
