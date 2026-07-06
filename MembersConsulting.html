@@ -720,6 +720,7 @@
       white-space: nowrap;
     }
 
+    /* ── TIMEZONE / LADA REFERENCE ── */
     .timezone-ref {
       margin-top: 1.5rem;
       background: var(--blanco);
@@ -737,6 +738,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      flex-wrap: wrap;
     }
     .timezone-ref .ref-header .live-clock {
       margin-left: auto;
@@ -777,7 +779,171 @@
     .timezone-ref .diff-neg { color: var(--rojo); font-weight: 600; }
     .timezone-ref .diff-zero { color: var(--naranja); font-weight: 600; }
 
-    /* ── NEW: HANDLING OBJECTIONS STYLES ── */
+    /* ── USA MAP ── */
+    .usa-map-container {
+      padding: 1rem 1.2rem 1.5rem;
+      background: #fafbfc;
+    }
+    .usa-map-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--azul-profundo);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .usa-map-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 768px) {
+      .usa-map-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 480px) {
+      .usa-map-grid { grid-template-columns: 1fr; }
+    }
+    .usa-zone {
+      background: var(--blanco);
+      border-radius: 10px;
+      border: 1px solid var(--arena-dark);
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .usa-zone:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(14,59,92,0.12);
+    }
+    .zone-header {
+      padding: 8px 12px;
+      font-weight: 700;
+      font-size: 13px;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .zone-header .zone-offset {
+      font-weight: 400;
+      font-size: 11px;
+      background: rgba(255,255,255,0.2);
+      padding: 1px 10px;
+      border-radius: 20px;
+    }
+    .zone-body {
+      padding: 10px 12px;
+    }
+    .zone-state {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      padding: 3px 0;
+      border-bottom: 1px solid var(--arena);
+    }
+    .zone-state:last-child { border-bottom: none; }
+    .zone-state .state-name {
+      font-weight: 500;
+      color: var(--texto);
+    }
+    .zone-state .state-code {
+      font-weight: 600;
+      color: var(--azul-medio);
+      font-size: 11px;
+    }
+    .zone-pacific .zone-header { background: #2E86C1; }
+    .zone-mountain .zone-header { background: #1A7A5A; }
+    .zone-central .zone-header { background: #D4A017; }
+    .zone-eastern .zone-header { background: #A04040; }
+
+    /* ── LADA LOOKUP TOOL ── */
+    .lada-lookup {
+      padding: 1rem 1.2rem 1.5rem;
+      background: #f8faff;
+      border-top: 2px solid var(--azul-claro);
+    }
+    .lada-lookup-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--azul-profundo);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .lada-lookup-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .lada-lookup-row input {
+      flex: 1;
+      min-width: 140px;
+      padding: 8px 14px;
+      border: 2px solid var(--arena-dark);
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      outline: none;
+      transition: border-color 0.15s;
+      background: white;
+    }
+    .lada-lookup-row input:focus {
+      border-color: var(--azul-medio);
+      box-shadow: 0 0 0 3px rgba(46,134,193,0.15);
+    }
+    .lada-lookup-row input::placeholder {
+      font-weight: 400;
+      color: #aaa;
+    }
+    .lada-lookup-row button {
+      background: var(--azul-profundo);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 20px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+      white-space: nowrap;
+    }
+    .lada-lookup-row button:hover { background: var(--azul-vibrante); }
+    .lada-lookup-row .lookup-suggestions {
+      font-size: 12px;
+      color: #888;
+      flex-basis: 100%;
+    }
+    .lookup-result {
+      margin-top: 14px;
+      padding: 14px 18px;
+      border-radius: 10px;
+      background: var(--blanco);
+      border: 2px solid var(--azul-claro);
+      display: none;
+    }
+    .lookup-result.show { display: block; }
+    .lookup-result .result-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 0;
+      font-size: 13px;
+      border-bottom: 1px solid var(--arena);
+    }
+    .lookup-result .result-row:last-child { border-bottom: none; }
+    .lookup-result .result-label { font-weight: 600; color: var(--azul-profundo); }
+    .lookup-result .result-value { font-weight: 500; }
+    .lookup-result .result-value .highlight { color: var(--azul-medio); font-weight: 700; }
+    .lookup-result .result-value .live-time { font-weight: 700; color: var(--verde); }
+    .lookup-result .not-found {
+      color: var(--rojo);
+      font-weight: 500;
+      padding: 8px 0;
+    }
+
+    /* ── HANDLING OBJECTIONS ── */
     #handlingContainer {
       background: var(--blanco);
       border-radius: 12px;
@@ -849,11 +1015,6 @@
       font-style: normal;
       font-weight: 500;
     }
-    @media (max-width: 600px) {
-      #handlingContainer { padding: 1rem; }
-      .objection-card .obj-response { padding-left: 28px; }
-    }
-    /* ── END NEW ── */
 
     @media (max-width: 700px) {
       .navbar { flex-wrap: wrap; gap: 6px; padding: 0.5rem 1rem; }
@@ -868,10 +1029,13 @@
       .script-step { gap: 10px; }
       .timezone-ref .ref-header { flex-wrap: wrap; }
       .timezone-ref .ref-header .live-clock { margin-left: 0; width: 100%; }
+      .lada-lookup-row input { min-width: 100px; }
+      .usa-map-grid { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 480px) {
       .summary-bar { grid-template-columns: 1fr; }
       .btn-llamar span { display: none; }
+      .usa-map-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -913,7 +1077,6 @@
 
 <div class="main">
 
-  <!-- Key Tips Section (visible siempre, pero podemos ocultarlo en handling si queremos) -->
   <div id="defaultContent">
     <div class="tips-section">
       <h4>💡 Key Tips for Success</h4>
@@ -1022,11 +1185,30 @@
       </div>
     </div>
 
+    <!-- TIMEZONE & LADA REFERENCE -->
     <div id="timezoneRefContainer" style="display:none;" class="timezone-ref">
       <div class="ref-header">
         <span>🕒 Time Zone &amp; LADA Reference</span>
         <span class="live-clock" id="liveClock">⏱️ CDMX: --:--:--</span>
       </div>
+
+      <!-- USA MAP -->
+      <div class="usa-map-container" id="usaMapContainer"></div>
+
+      <!-- LADA LOOKUP TOOL -->
+      <div class="lada-lookup">
+        <div class="lada-lookup-title">🔍 Buscar LADA (área code)</div>
+        <div class="lada-lookup-row">
+          <input type="text" id="ladaInput" placeholder="Ej: 212, 305, 312..." oninput="onLadaInput()" onkeydown="if(event.key==='Enter') lookupLada()" />
+          <button onclick="lookupLada()">🔍 Revisar</button>
+          <div class="lookup-suggestions" id="ladaSuggestions"></div>
+        </div>
+        <div class="lookup-result" id="lookupResult">
+          <div id="lookupContent"></div>
+        </div>
+      </div>
+
+      <!-- TABLE -->
       <table>
         <thead>
           <tr><th>State / Area</th><th>LADA (Area Code)</th><th>Time vs CDMX</th><th>Current Time</th></tr>
@@ -1036,7 +1218,7 @@
     </div>
   </div><!-- /defaultContent -->
 
-  <!-- NEW: Handling Objections Container -->
+  <!-- HANDLING OBJECTIONS -->
   <div id="handlingContainer" style="display:none;">
     <h2>🗣️ Handling Objections</h2>
     <div class="handling-subtitle">Respuestas a las objeciones más comunes durante las llamadas</div>
@@ -1089,86 +1271,231 @@ const DEFAULT_USERS = {
   'User #7': 'user7',
   'User #8': 'user8'
 };
-// ────────────────────────────────────────────────────────────────────────────
 
-// ── LADA / TIMEZONE DATA ──────────────────────────────────────────────────
-const LADA_DATA = [
-  { area: 'Mexico City', lada: '55 / 56', offset: 0 },
-  { area: 'Guadalajara', lada: '33', offset: 0 },
-  { area: 'Monterrey', lada: '81', offset: 0 },
-  { area: 'New York (East)', lada: '212 / 646', offset: 1 },
-  { area: 'Chicago (Central)', lada: '312 / 773', offset: 0 },
-  { area: 'Denver (Mountain)', lada: '303 / 720', offset: -1 },
-  { area: 'Los Angeles (Pacific)', lada: '213 / 310', offset: -2 },
-  { area: 'Miami (East)', lada: '305 / 786', offset: 1 },
-  { area: 'Texas (Central)', lada: '214 / 817', offset: 0 },
-];
-// ────────────────────────────────────────────────────────────────────────────
+// ── LADA / TIMEZONE DATA (USA only) ──────────────────────────────────────
+// Full mapping of area codes -> state, region, offset from CDMX (UTC-6)
+const LADA_MAP = {
+  // Pacific (-2h from CDMX)
+  '213': { state: 'California', region: 'Pacífico', offset: -2, display: '213 / 310 / 408' },
+  '310': { state: 'California', region: 'Pacífico', offset: -2, display: '213 / 310 / 408' },
+  '408': { state: 'California', region: 'Pacífico', offset: -2, display: '213 / 310 / 408' },
+  '415': { state: 'California', region: 'Pacífico', offset: -2, display: '415 / 510 / 619' },
+  '510': { state: 'California', region: 'Pacífico', offset: -2, display: '415 / 510 / 619' },
+  '619': { state: 'California', region: 'Pacífico', offset: -2, display: '415 / 510 / 619' },
+  '650': { state: 'California', region: 'Pacífico', offset: -2, display: '650 / 707 / 714' },
+  '707': { state: 'California', region: 'Pacífico', offset: -2, display: '650 / 707 / 714' },
+  '714': { state: 'California', region: 'Pacífico', offset: -2, display: '650 / 707 / 714' },
+  '760': { state: 'California', region: 'Pacífico', offset: -2, display: '760 / 805 / 818' },
+  '805': { state: 'California', region: 'Pacífico', offset: -2, display: '760 / 805 / 818' },
+  '818': { state: 'California', region: 'Pacífico', offset: -2, display: '760 / 805 / 818' },
+  '831': { state: 'California', region: 'Pacífico', offset: -2, display: '831 / 858 / 909' },
+  '858': { state: 'California', region: 'Pacífico', offset: -2, display: '831 / 858 / 909' },
+  '909': { state: 'California', region: 'Pacífico', offset: -2, display: '831 / 858 / 909' },
+  '916': { state: 'California', region: 'Pacífico', offset: -2, display: '916 / 925 / 949' },
+  '925': { state: 'California', region: 'Pacífico', offset: -2, display: '916 / 925 / 949' },
+  '949': { state: 'California', region: 'Pacífico', offset: -2, display: '916 / 925 / 949' },
+  '503': { state: 'Oregon', region: 'Pacífico', offset: -2, display: '503 / 541 / 971' },
+  '541': { state: 'Oregon', region: 'Pacífico', offset: -2, display: '503 / 541 / 971' },
+  '971': { state: 'Oregon', region: 'Pacífico', offset: -2, display: '503 / 541 / 971' },
+  '206': { state: 'Washington', region: 'Pacífico', offset: -2, display: '206 / 253 / 360' },
+  '253': { state: 'Washington', region: 'Pacífico', offset: -2, display: '206 / 253 / 360' },
+  '360': { state: 'Washington', region: 'Pacífico', offset: -2, display: '206 / 253 / 360' },
+  '425': { state: 'Washington', region: 'Pacífico', offset: -2, display: '425 / 509 / 564' },
+  '509': { state: 'Washington', region: 'Pacífico', offset: -2, display: '425 / 509 / 564' },
+  '564': { state: 'Washington', region: 'Pacífico', offset: -2, display: '425 / 509 / 564' },
+  '702': { state: 'Nevada', region: 'Pacífico', offset: -2, display: '702 / 775' },
+  '775': { state: 'Nevada', region: 'Pacífico', offset: -2, display: '702 / 775' },
 
-// ── 📞 CALL SCRIPT FROM PDF ──────────────────────────────────────────────────
-const CALL_SCRIPT = [
+  // Mountain (-1h from CDMX)
+  '303': { state: 'Colorado', region: 'Montaña', offset: -1, display: '303 / 719 / 720' },
+  '719': { state: 'Colorado', region: 'Montaña', offset: -1, display: '303 / 719 / 720' },
+  '720': { state: 'Colorado', region: 'Montaña', offset: -1, display: '303 / 719 / 720' },
+  '970': { state: 'Colorado', region: 'Montaña', offset: -1, display: '970' },
+  '480': { state: 'Arizona', region: 'Montaña', offset: -1, display: '480 / 520 / 602' },
+  '520': { state: 'Arizona', region: 'Montaña', offset: -1, display: '480 / 520 / 602' },
+  '602': { state: 'Arizona', region: 'Montaña', offset: -1, display: '480 / 520 / 602' },
+  '623': { state: 'Arizona', region: 'Montaña', offset: -1, display: '623 / 928' },
+  '928': { state: 'Arizona', region: 'Montaña', offset: -1, display: '623 / 928' },
+  '385': { state: 'Utah', region: 'Montaña', offset: -1, display: '385 / 435 / 801' },
+  '435': { state: 'Utah', region: 'Montaña', offset: -1, display: '385 / 435 / 801' },
+  '801': { state: 'Utah', region: 'Montaña', offset: -1, display: '385 / 435 / 801' },
+  '505': { state: 'New Mexico', region: 'Montaña', offset: -1, display: '505 / 575' },
+  '575': { state: 'New Mexico', region: 'Montaña', offset: -1, display: '505 / 575' },
+
+  // Central (same as CDMX)
+  '210': { state: 'Texas', region: 'Central', offset: 0, display: '210 / 214 / 254' },
+  '214': { state: 'Texas', region: 'Central', offset: 0, display: '210 / 214 / 254' },
+  '254': { state: 'Texas', region: 'Central', offset: 0, display: '210 / 214 / 254' },
+  '281': { state: 'Texas', region: 'Central', offset: 0, display: '281 / 325 / 361' },
+  '325': { state: 'Texas', region: 'Central', offset: 0, display: '281 / 325 / 361' },
+  '361': { state: 'Texas', region: 'Central', offset: 0, display: '281 / 325 / 361' },
+  '409': { state: 'Texas', region: 'Central', offset: 0, display: '409 / 430 / 432' },
+  '430': { state: 'Texas', region: 'Central', offset: 0, display: '409 / 430 / 432' },
+  '432': { state: 'Texas', region: 'Central', offset: 0, display: '409 / 430 / 432' },
+  '469': { state: 'Texas', region: 'Central', offset: 0, display: '469 / 512 / 713' },
+  '512': { state: 'Texas', region: 'Central', offset: 0, display: '469 / 512 / 713' },
+  '713': { state: 'Texas', region: 'Central', offset: 0, display: '469 / 512 / 713' },
+  '737': { state: 'Texas', region: 'Central', offset: 0, display: '737 / 806 / 817' },
+  '806': { state: 'Texas', region: 'Central', offset: 0, display: '737 / 806 / 817' },
+  '817': { state: 'Texas', region: 'Central', offset: 0, display: '737 / 806 / 817' },
+  '830': { state: 'Texas', region: 'Central', offset: 0, display: '830 / 832 / 903' },
+  '832': { state: 'Texas', region: 'Central', offset: 0, display: '830 / 832 / 903' },
+  '903': { state: 'Texas', region: 'Central', offset: 0, display: '830 / 832 / 903' },
+  '915': { state: 'Texas', region: 'Central', offset: 0, display: '915 / 936 / 940' },
+  '936': { state: 'Texas', region: 'Central', offset: 0, display: '915 / 936 / 940' },
+  '940': { state: 'Texas', region: 'Central', offset: 0, display: '915 / 936 / 940' },
+  '956': { state: 'Texas', region: 'Central', offset: 0, display: '956 / 972 / 979' },
+  '972': { state: 'Texas', region: 'Central', offset: 0, display: '956 / 972 / 979' },
+  '979': { state: 'Texas', region: 'Central', offset: 0, display: '956 / 972 / 979' },
+  '217': { state: 'Illinois', region: 'Central', offset: 0, display: '217 / 309 / 312' },
+  '309': { state: 'Illinois', region: 'Central', offset: 0, display: '217 / 309 / 312' },
+  '312': { state: 'Illinois', region: 'Central', offset: 0, display: '217 / 309 / 312' },
+  '331': { state: 'Illinois', region: 'Central', offset: 0, display: '331 / 618 / 630' },
+  '618': { state: 'Illinois', region: 'Central', offset: 0, display: '331 / 618 / 630' },
+  '630': { state: 'Illinois', region: 'Central', offset: 0, display: '331 / 618 / 630' },
+  '708': { state: 'Illinois', region: 'Central', offset: 0, display: '708 / 773 / 779' },
+  '773': { state: 'Illinois', region: 'Central', offset: 0, display: '708 / 773 / 779' },
+  '779': { state: 'Illinois', region: 'Central', offset: 0, display: '708 / 773 / 779' },
+  '815': { state: 'Illinois', region: 'Central', offset: 0, display: '815 / 847 / 872' },
+  '847': { state: 'Illinois', region: 'Central', offset: 0, display: '815 / 847 / 872' },
+  '872': { state: 'Illinois', region: 'Central', offset: 0, display: '815 / 847 / 872' },
+  '218': { state: 'Minnesota', region: 'Central', offset: 0, display: '218 / 320 / 507' },
+  '320': { state: 'Minnesota', region: 'Central', offset: 0, display: '218 / 320 / 507' },
+  '507': { state: 'Minnesota', region: 'Central', offset: 0, display: '218 / 320 / 507' },
+  '612': { state: 'Minnesota', region: 'Central', offset: 0, display: '612 / 651 / 763' },
+  '651': { state: 'Minnesota', region: 'Central', offset: 0, display: '612 / 651 / 763' },
+  '763': { state: 'Minnesota', region: 'Central', offset: 0, display: '612 / 651 / 763' },
+  '952': { state: 'Minnesota', region: 'Central', offset: 0, display: '952' },
+  '314': { state: 'Missouri', region: 'Central', offset: 0, display: '314 / 417 / 573' },
+  '417': { state: 'Missouri', region: 'Central', offset: 0, display: '314 / 417 / 573' },
+  '573': { state: 'Missouri', region: 'Central', offset: 0, display: '314 / 417 / 573' },
+  '636': { state: 'Missouri', region: 'Central', offset: 0, display: '636 / 660 / 816' },
+  '660': { state: 'Missouri', region: 'Central', offset: 0, display: '636 / 660 / 816' },
+  '816': { state: 'Missouri', region: 'Central', offset: 0, display: '636 / 660 / 816' },
+
+  // Eastern (+1h from CDMX)
+  '212': { state: 'New York', region: 'Este', offset: 1, display: '212 / 315 / 347' },
+  '315': { state: 'New York', region: 'Este', offset: 1, display: '212 / 315 / 347' },
+  '347': { state: 'New York', region: 'Este', offset: 1, display: '212 / 315 / 347' },
+  '516': { state: 'New York', region: 'Este', offset: 1, display: '516 / 518 / 585' },
+  '518': { state: 'New York', region: 'Este', offset: 1, display: '516 / 518 / 585' },
+  '585': { state: 'New York', region: 'Este', offset: 1, display: '516 / 518 / 585' },
+  '607': { state: 'New York', region: 'Este', offset: 1, display: '607 / 631 / 646' },
+  '631': { state: 'New York', region: 'Este', offset: 1, display: '607 / 631 / 646' },
+  '646': { state: 'New York', region: 'Este', offset: 1, display: '607 / 631 / 646' },
+  '716': { state: 'New York', region: 'Este', offset: 1, display: '716 / 718 / 845' },
+  '718': { state: 'New York', region: 'Este', offset: 1, display: '716 / 718 / 845' },
+  '845': { state: 'New York', region: 'Este', offset: 1, display: '716 / 718 / 845' },
+  '914': { state: 'New York', region: 'Este', offset: 1, display: '914 / 917 / 929' },
+  '917': { state: 'New York', region: 'Este', offset: 1, display: '914 / 917 / 929' },
+  '929': { state: 'New York', region: 'Este', offset: 1, display: '914 / 917 / 929' },
+  '305': { state: 'Florida', region: 'Este', offset: 1, display: '305 / 321 / 352' },
+  '321': { state: 'Florida', region: 'Este', offset: 1, display: '305 / 321 / 352' },
+  '352': { state: 'Florida', region: 'Este', offset: 1, display: '305 / 321 / 352' },
+  '386': { state: 'Florida', region: 'Este', offset: 1, display: '386 / 407 / 561' },
+  '407': { state: 'Florida', region: 'Este', offset: 1, display: '386 / 407 / 561' },
+  '561': { state: 'Florida', region: 'Este', offset: 1, display: '386 / 407 / 561' },
+  '727': { state: 'Florida', region: 'Este', offset: 1, display: '727 / 754 / 772' },
+  '754': { state: 'Florida', region: 'Este', offset: 1, display: '727 / 754 / 772' },
+  '772': { state: 'Florida', region: 'Este', offset: 1, display: '727 / 754 / 772' },
+  '786': { state: 'Florida', region: 'Este', offset: 1, display: '786 / 813 / 850' },
+  '813': { state: 'Florida', region: 'Este', offset: 1, display: '786 / 813 / 850' },
+  '850': { state: 'Florida', region: 'Este', offset: 1, display: '786 / 813 / 850' },
+  '863': { state: 'Florida', region: 'Este', offset: 1, display: '863 / 904 / 941' },
+  '904': { state: 'Florida', region: 'Este', offset: 1, display: '863 / 904 / 941' },
+  '941': { state: 'Florida', region: 'Este', offset: 1, display: '863 / 904 / 941' },
+  '954': { state: 'Florida', region: 'Este', offset: 1, display: '954' },
+  '229': { state: 'Georgia', region: 'Este', offset: 1, display: '229 / 404 / 470' },
+  '404': { state: 'Georgia', region: 'Este', offset: 1, display: '229 / 404 / 470' },
+  '470': { state: 'Georgia', region: 'Este', offset: 1, display: '229 / 404 / 470' },
+  '478': { state: 'Georgia', region: 'Este', offset: 1, display: '478 / 678 / 706' },
+  '678': { state: 'Georgia', region: 'Este', offset: 1, display: '478 / 678 / 706' },
+  '706': { state: 'Georgia', region: 'Este', offset: 1, display: '478 / 678 / 706' },
+  '762': { state: 'Georgia', region: 'Este', offset: 1, display: '762 / 770 / 912' },
+  '770': { state: 'Georgia', region: 'Este', offset: 1, display: '762 / 770 / 912' },
+  '912': { state: 'Georgia', region: 'Este', offset: 1, display: '762 / 770 / 912' },
+  '339': { state: 'Massachusetts', region: 'Este', offset: 1, display: '339 / 351 / 413' },
+  '351': { state: 'Massachusetts', region: 'Este', offset: 1, display: '339 / 351 / 413' },
+  '413': { state: 'Massachusetts', region: 'Este', offset: 1, display: '339 / 351 / 413' },
+  '508': { state: 'Massachusetts', region: 'Este', offset: 1, display: '508 / 617 / 774' },
+  '617': { state: 'Massachusetts', region: 'Este', offset: 1, display: '508 / 617 / 774' },
+  '774': { state: 'Massachusetts', region: 'Este', offset: 1, display: '508 / 617 / 774' },
+  '781': { state: 'Massachusetts', region: 'Este', offset: 1, display: '781 / 857 / 978' },
+  '857': { state: 'Massachusetts', region: 'Este', offset: 1, display: '781 / 857 / 978' },
+  '978': { state: 'Massachusetts', region: 'Este', offset: 1, display: '781 / 857 / 978' },
+};
+
+// USA Map Data (regions for visual map)
+const USA_REGIONS = [
   {
-    title: '1. Opening & Introduction',
-    tag: null,
-    html: `Thank you for taking my call. My name is <em>[Your Name]</em>, and I am calling on behalf of <em>Sara Aldman</em>, representing <em>Members Consulting</em>. We specialize in the balance elimination of your Vidanta membership.
-
-Let me ask you something, <em>[Client Name]</em>: If I were to offer you the opportunity to eliminate your monthly payments with Vidanta today, while still enjoying the same vacation benefits—100 percent verifiable—would you take it?`
+    id: 'pacific',
+    label: '🌊 Pacífico',
+    offset: -2,
+    offsetLabel: '-2h vs CDMX',
+    color: '#2E86C1',
+    states: [
+      { name: 'California', codes: '213 / 310 / 408 / 415 / 510 / 619 / 650 / 707 / 714 / 760 / 805 / 818 / 831 / 858 / 909 / 916 / 925 / 949' },
+      { name: 'Oregon', codes: '503 / 541 / 971' },
+      { name: 'Washington', codes: '206 / 253 / 360 / 425 / 509 / 564' },
+      { name: 'Nevada', codes: '702 / 775' }
+    ]
   },
   {
-    title: '2. Understanding Their Situation',
-    tag: null,
-    html: `The majority of the members we work with truly enjoy their vacations on property, but they often feel dissatisfied with the amount of money invested in these memberships.
-
-Obviously, the qualifying factor for you is that you must have a balance or a monthly payment with Vidanta. Do you have a monthly payment?`
+    id: 'mountain',
+    label: '⛰️ Montaña',
+    offset: -1,
+    offsetLabel: '-1h vs CDMX',
+    color: '#1A7A5A',
+    states: [
+      { name: 'Colorado', codes: '303 / 719 / 720 / 970' },
+      { name: 'Arizona', codes: '480 / 520 / 602 / 623 / 928' },
+      { name: 'Utah', codes: '385 / 435 / 801' },
+      { name: 'New Mexico', codes: '505 / 575' }
+    ]
   },
   {
-    title: '3. Addressing Initial Concerns',
-    tag: 'Objection Handling',
-    html: `I understand your concerns <em>[Client Name]</em>. You may be thinking that you don't know me and that this seems too good to be true, or perhaps just another scam. For us, gaining your trust is crucial for a successful negotiation. Allow me to explain why you can trust us.`
+    id: 'central',
+    label: '🌽 Central',
+    offset: 0,
+    offsetLabel: 'Misma hora que CDMX',
+    color: '#D4A017',
+    states: [
+      { name: 'Texas', codes: '210 / 214 / 254 / 281 / 325 / 361 / 409 / 430 / 432 / 469 / 512 / 713 / 737 / 806 / 817 / 830 / 832 / 903 / 915 / 936 / 940 / 956 / 972 / 979' },
+      { name: 'Illinois', codes: '217 / 309 / 312 / 331 / 618 / 630 / 708 / 773 / 779 / 815 / 847 / 872' },
+      { name: 'Minnesota', codes: '218 / 320 / 507 / 612 / 651 / 763 / 952' },
+      { name: 'Missouri', codes: '314 / 417 / 573 / 636 / 660 / 816' }
+    ]
   },
   {
-    title: '4. Trust Factor #1 - Referrals',
-    tag: 'Credibility',
-    html: `<strong>Referrals</strong> — Sarah has been in business for over four years, and we kindly ask our members to assist us as referrals if possible. We have hundreds of members who can attest to our services and share their results, demonstrating how they continue to travel successfully.`
-  },
-  {
-    title: '5. Trust Factor #2 - Zoom',
-    tag: 'Credibility',
-    html: `<strong>Zoom</strong> — To our knowledge, we are the only ones in this industry offering face-to-face calls where we address all of your questions and concerns based on the terms and conditions of your contract.`
-  },
-  {
-    title: '6. Trust Factor #3 - Not a Cancellation',
-    tag: 'Credibility',
-    html: `<strong>This is not a cancellation</strong> — We value growth and are delighted that you can continue to vacation, provided it is at a fair price—especially one that does not destabilize your family's finances.`
-  },
-  {
-    title: '7. Deep Knowledge & Expertise',
-    tag: 'Advantage',
-    html: `<strong>Knowledge</strong> — As I mentioned earlier, we have helped hundreds of members thanks to Sara's expertise. She worked for over four years at Vidanta, which made her an expert in the terms and conditions that, unfortunately, are not explained properly to you, the members, allowing the hotel to manipulate your contract to their advantage. For example:
-
-When you signed your contract, you were taken to an office where you were informed that you were being recorded and that you were acquiring this contract for vacation purposes, not for resale or investment. Do you remember?
-
-This negates any credibility of resale and investment plans, as you do not actually own any property; you merely hold a very expensive membership.`
-  },
-  {
-    title: '8. Effectiveness & Guaranteed Results',
-    tag: 'Process',
-    html: `<strong>Effectiveness</strong> — We have contacts within the organization who ensure that your file remains in the correct line of communication and is not sidetracked.
-
-<strong>Guaranteed & Done in a Timely Manner</strong> — We guarantee contract elimination within 35 to 45 business days, all without cancellation.`
-  },
-  {
-    title: '9. Call to Action',
-    tag: 'Next Step',
-    html: `Do you have any questions?
-
-Perfect!
-
-Our next step is to schedule an appointment with Mrs. Aldman. It is important for this appointment that you have a full understanding that this process is based on your terms and conditions. Therefore, it is essential that you have the covers of your contracts and any notes or questions you may have regarding your purchase process on hand for the appointment.`
+    id: 'eastern',
+    label: '🗽 Este',
+    offset: 1,
+    offsetLabel: '+1h vs CDMX',
+    color: '#A04040',
+    states: [
+      { name: 'New York', codes: '212 / 315 / 347 / 516 / 518 / 585 / 607 / 631 / 646 / 716 / 718 / 845 / 914 / 917 / 929' },
+      { name: 'Florida', codes: '305 / 321 / 352 / 386 / 407 / 561 / 727 / 754 / 772 / 786 / 813 / 850 / 863 / 904 / 941 / 954' },
+      { name: 'Georgia', codes: '229 / 404 / 470 / 478 / 678 / 706 / 762 / 770 / 912' },
+      { name: 'Massachusetts', codes: '339 / 351 / 413 / 508 / 617 / 774 / 781 / 857 / 978' }
+    ]
   }
 ];
 
-// ── 🆕 OBJECTIONS DATA ────────────────────────────────────────────────────
+// Table data (for the reference table)
+const LADA_TABLE = [
+  { area: 'New York (Este)', lada: '212 / 646 / 718', offset: 1 },
+  { area: 'Chicago (Central)', lada: '312 / 773 / 847', offset: 0 },
+  { area: 'Denver (Montaña)', lada: '303 / 720 / 719', offset: -1 },
+  { area: 'Los Ángeles (Pacífico)', lada: '213 / 310 / 818', offset: -2 },
+  { area: 'Miami (Este)', lada: '305 / 786 / 954', offset: 1 },
+  { area: 'Texas (Central)', lada: '214 / 817 / 512', offset: 0 },
+  { area: 'Arizona (Montaña)', lada: '480 / 602 / 623', offset: -1 },
+  { area: 'San Francisco (Pacífico)', lada: '415 / 510 / 408', offset: -2 },
+  { area: 'Atlanta (Este)', lada: '404 / 678 / 770', offset: 1 },
+  { area: 'Minneapolis (Central)', lada: '612 / 651 / 763', offset: 0 },
+];
+
+// ── OBJECTIONS DATA ────────────────────────────────────────────────────────
 const OBJECTIONS = [
   {
     objection: "I don't have time, I'm really busy.",
@@ -1231,7 +1558,69 @@ Follow- up: 'Perfect. I'd love to speak with both of you to ensure everyone is c
     response: `We don't accept cases we can't win. However, success depends on you following our instructions 100%. To help ease your mind, let's do a Zoom call so you can meet me face- to- face. Does that sound good?`
   }
 ];
-// ────────────────────────────────────────────────────────────────────────────
+
+// ── CALL SCRIPT ──────────────────────────────────────────────────────────────
+const CALL_SCRIPT = [
+  {
+    title: '1. Opening & Introduction',
+    tag: null,
+    html: `Thank you for taking my call. My name is <em>[Your Name]</em>, and I am calling on behalf of <em>Sara Aldman</em>, representing <em>Members Consulting</em>. We specialize in the balance elimination of your Vidanta membership.
+
+Let me ask you something, <em>[Client Name]</em>: If I were to offer you the opportunity to eliminate your monthly payments with Vidanta today, while still enjoying the same vacation benefits—100 percent verifiable—would you take it?`
+  },
+  {
+    title: '2. Understanding Their Situation',
+    tag: null,
+    html: `The majority of the members we work with truly enjoy their vacations on property, but they often feel dissatisfied with the amount of money invested in these memberships.
+
+Obviously, the qualifying factor for you is that you must have a balance or a monthly payment with Vidanta. Do you have a monthly payment?`
+  },
+  {
+    title: '3. Addressing Initial Concerns',
+    tag: 'Objection Handling',
+    html: `I understand your concerns <em>[Client Name]</em>. You may be thinking that you don't know me and that this seems too good to be true, or perhaps just another scam. For us, gaining your trust is crucial for a successful negotiation. Allow me to explain why you can trust us.`
+  },
+  {
+    title: '4. Trust Factor #1 - Referrals',
+    tag: 'Credibility',
+    html: `<strong>Referrals</strong> — Sarah has been in business for over four years, and we kindly ask our members to assist us as referrals if possible. We have hundreds of members who can attest to our services and share their results, demonstrating how they continue to travel successfully.`
+  },
+  {
+    title: '5. Trust Factor #2 - Zoom',
+    tag: 'Credibility',
+    html: `<strong>Zoom</strong> — To our knowledge, we are the only ones in this industry offering face-to-face calls where we address all of your questions and concerns based on the terms and conditions of your contract.`
+  },
+  {
+    title: '6. Trust Factor #3 - Not a Cancellation',
+    tag: 'Credibility',
+    html: `<strong>This is not a cancellation</strong> — We value growth and are delighted that you can continue to vacation, provided it is at a fair price—especially one that does not destabilize your family's finances.`
+  },
+  {
+    title: '7. Deep Knowledge & Expertise',
+    tag: 'Advantage',
+    html: `<strong>Knowledge</strong> — As I mentioned earlier, we have helped hundreds of members thanks to Sara's expertise. She worked for over four years at Vidanta, which made her an expert in the terms and conditions that, unfortunately, are not explained properly to you, the members, allowing the hotel to manipulate your contract to their advantage. For example:
+
+When you signed your contract, you were taken to an office where you were informed that you were being recorded and that you were acquiring this contract for vacation purposes, not for resale or investment. Do you remember?
+
+This negates any credibility of resale and investment plans, as you do not actually own any property; you merely hold a very expensive membership.`
+  },
+  {
+    title: '8. Effectiveness & Guaranteed Results',
+    tag: 'Process',
+    html: `<strong>Effectiveness</strong> — We have contacts within the organization who ensure that your file remains in the correct line of communication and is not sidetracked.
+
+<strong>Guaranteed & Done in a Timely Manner</strong> — We guarantee contract elimination within 35 to 45 business days, all without cancellation.`
+  },
+  {
+    title: '9. Call to Action',
+    tag: 'Next Step',
+    html: `Do you have any questions?
+
+Perfect!
+
+Our next step is to schedule an appointment with Mrs. Aldman. It is important for this appointment that you have a full understanding that this process is based on your terms and conditions. Therefore, it is essential that you have the covers of your contracts and any notes or questions you may have regarding your purchase process on hand for the appointment.`
+  }
+];
 
 const PRESETS = [
   { label: '📵 Phone not connecting',         status: 'noanswer'  },
@@ -1249,49 +1638,6 @@ const STATUS_INFO = {
   voicemail:  { label: 'Voicemail / 3rd',  cls: 'badge-voicemail'  },
   none:       { label: 'Unmanaged',        cls: 'badge-none'       },
 };
-
-function renderScriptStepsHtml() {
-  return CALL_SCRIPT.map((s, i) => `
-    <div class="script-step">
-      <div class="script-step-num">${i+1}</div>
-      <div class="script-step-content">
-        <div class="script-step-title">${s.title.replace(/^\d+\.\s*/,'')}${s.tag ? '<span class="script-tag">'+s.tag+'</span>' : ''}</div>
-        <div class="script-step-text">${s.html}</div>
-      </div>
-    </div>
-  `).join('') + `
-    <div class="script-footer-note">
-      💬 Tip: Adapt the bracketed placeholders to each client. Keep the tone conversational and natural.
-    </div>
-  `;
-}
-
-function openScriptModal(clientName, clientPhone) {
-  document.getElementById('scriptModalBody').innerHTML = renderScriptStepsHtml();
-  document.getElementById('scriptModalClientName').textContent = clientName ? ('Client: ' + clientName) : '';
-  const callBtn = document.getElementById('scriptModalCallBtn');
-  callBtn.href = clientPhone ? ('tel:' + clientPhone) : '#';
-  document.getElementById('scriptModalOverlay').classList.add('show');
-}
-
-function closeScriptModal() {
-  document.getElementById('scriptModalOverlay').classList.remove('show');
-}
-
-document.getElementById('scriptModalOverlay').addEventListener('click', function(e) {
-  if (e.target === this) closeScriptModal();
-});
-
-function copyScriptText() {
-  const text = CALL_SCRIPT.map((s, i) =>
-    (i+1) + '. ' + s.title.replace(/^\d+\.\s*/,'') + '\n' + s.html.replace(/<\/?em>/g,'').replace(/<br\s*\/?>/g,'\n').replace(/<strong>/g,'').replace(/<\/strong>/g,'') + '\n'
-  ).join('\n');
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text).then(() => showToast('📋 Script copied to clipboard'));
-  } else {
-    showToast('⚠️ Clipboard not available', false);
-  }
-}
 
 // ── STATE ────────────────────────────────────────────────────────────────────
 let allRows    = [];
@@ -1316,7 +1662,6 @@ function loadPasswords() {
     const data = JSON.parse(localStorage.getItem(PASSWORD_KEY) || '{}');
     passwords = data;
   } catch(e) { passwords = {}; }
-  
   let hasChanges = false;
   for (const [user, pwd] of Object.entries(DEFAULT_USERS)) {
     if (!passwords[user]) {
@@ -1324,11 +1669,8 @@ function loadPasswords() {
       hasChanges = true;
     }
   }
-  if (hasChanges) {
-    savePasswords();
-  }
+  if (hasChanges) savePasswords();
 }
-
 function savePasswords() {
   try { localStorage.setItem(PASSWORD_KEY, JSON.stringify(passwords)); } catch(e) {}
 }
@@ -1346,9 +1688,7 @@ function hashPassword(pwd) {
 }
 
 function verifyPassword(advisor, pwd) {
-  if (advisor === 'admin') {
-    return pwd === ADMIN_PASSWORD;
-  }
+  if (advisor === 'admin') return pwd === ADMIN_PASSWORD;
   if (!passwords[advisor]) return false;
   return passwords[advisor] === hashPassword(pwd);
 }
@@ -1374,9 +1714,7 @@ function parseCSV(raw) {
   const text = raw.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
   const lines = text.split('\n').filter(l => l.trim());
   if (!lines.length) return [];
-
   const sep = lines[0].includes('\t') ? '\t' : ',';
-
   function splitLine(line) {
     if (sep === '\t') return line.split('\t').map(s => s.trim());
     const res = []; let cur = '', inQ = false;
@@ -1389,9 +1727,7 @@ function parseCSV(raw) {
     res.push(cur.trim());
     return res;
   }
-
   const headers = splitLine(lines[0]).map(h => h.replace(/^"|"$/g,'').trim().toLowerCase());
-
   function col(keywords) {
     return headers.findIndex(h => keywords.some(k => h.includes(k)));
   }
@@ -1403,18 +1739,15 @@ function parseCSV(raw) {
   const iAdv  = col(['asesor','advisor']);
   const iFec  = col(['fecha','date']);
   const iCom  = col(['coment','note','observ']);
-
   const out = [];
   for (let i = 1; i < lines.length; i++) {
     const c = splitLine(lines[i]).map(s => s.replace(/^"|"$/g,'').trim());
     const nombre = iNom >= 0 ? c[iNom] || '' : '';
     if (!nombre) continue;
-
     let saldo = 0;
     if (iSal >= 0 && c[iSal]) {
       saldo = parseFloat(c[iSal].replace(/[$,\s]/g,'')) || 0;
     }
-
     out.push({
       id:          iId  >= 0 ? (parseInt(c[iId]) || (i)) : i,
       nombre:      nombre,
@@ -1440,25 +1773,24 @@ async function loadData() {
     allRows = parseCSV(text);
     loadStore();
     loadPasswords();
-
     const seen = new Set();
     advisors = [];
-    allRows.forEach(r => { 
-      if (r.asesor && r.asesor.trim() && !seen.has(r.asesor.trim())) { 
-        seen.add(r.asesor.trim()); 
-        advisors.push(r.asesor.trim()); 
-      } 
+    allRows.forEach(r => {
+      if (r.asesor && r.asesor.trim() && !seen.has(r.asesor.trim())) {
+        seen.add(r.asesor.trim());
+        advisors.push(r.asesor.trim());
+      }
     });
-
     document.getElementById('last-update').textContent =
       'Updated ' + new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
-
     renderTabs();
     if (adminUnlocked) renderAdminPanel();
     applyFiltersAndRender();
     updateAdminButton();
+    renderUSAMap();
     updateTimezoneTable();
     startLiveClock();
+    updateLookupClock();
   } catch(e) {
     document.getElementById('tableBody').innerHTML =
       '<tr><td colspan="12" style="text-align:center;padding:2rem;color:var(--rojo);">⚠️ Error: ' + e.message + '</td></tr>';
@@ -1489,11 +1821,8 @@ function renderTabs() {
   const allCnt = allRows.length;
   let html = '<button class="tab-btn ' + (activeTab==='all'?'active':'') +
     '" onclick="switchTab(\'all\')">📊 General Report <span class="tab-count">' + allCnt + '</span></button>';
-
-  // 🆕 New tab: Handling Objections
   html += '<button class="tab-btn ' + (activeTab==='handling'?'active':'') +
     '" onclick="switchTab(\'handling\')">🗣️ Handling Objections</button>';
-
   advisors.forEach((adv) => {
     const cnt = allRows.filter(r => r.asesor === adv).length;
     const isActive = activeTab === adv ? 'active' : '';
@@ -1505,7 +1834,6 @@ function renderTabs() {
     html += '<button class="tab-btn ' + isActive + ' ' + lockClass + '" onclick="switchTab(\'' + safeAdv + '\')">' +
       adv + ' <span class="tab-count">' + cnt + '</span></button>';
   });
-
   document.getElementById('tabs').innerHTML = html;
   updateTimezoneVisibility();
 }
@@ -1521,8 +1849,6 @@ function switchTab(tab) {
     showHandlingContent(false);
     return;
   }
-
-  // 🆕 Handling Objections
   if (tab === 'handling') {
     activeTab = 'handling';
     renderTabs();
@@ -1531,8 +1857,6 @@ function switchTab(tab) {
     renderHandling();
     return;
   }
-
-  // Advisor tab
   if (isTabLocked(tab)) {
     pendingTab = tab;
     document.getElementById('modalTitle').textContent = '🔒 Access Restricted';
@@ -1543,7 +1867,6 @@ function switchTab(tab) {
     document.getElementById('modalPassword').focus();
     return;
   }
-
   activeTab = tab;
   currentPage = 1;
   renderTabs();
@@ -1553,7 +1876,6 @@ function switchTab(tab) {
   showHandlingContent(false);
 }
 
-// ── SHOW/HIDE CONTENT ──────────────────────────────────────────────────────
 function showDefaultContent(show) {
   document.getElementById('defaultContent').style.display = show ? 'block' : 'none';
 }
@@ -1561,7 +1883,6 @@ function showHandlingContent(show) {
   document.getElementById('handlingContainer').style.display = show ? 'block' : 'none';
 }
 
-// ── RENDER HANDLING OBJECTIONS ──────────────────────────────────────────────
 function renderHandling() {
   const grid = document.getElementById('objectionGrid');
   if (!grid) return;
@@ -1570,7 +1891,7 @@ function renderHandling() {
     return;
   }
   let html = '';
-  OBJECTIONS.forEach((obj, idx) => {
+  OBJECTIONS.forEach((obj) => {
     html += `
       <div class="objection-card">
         <div class="obj-quote">${esc(obj.objection)}</div>
@@ -1581,13 +1902,9 @@ function renderHandling() {
   grid.innerHTML = html;
 }
 
-// ── ADMIN PANEL ────────────────────────────────────────────────────
+// ── ADMIN PANEL ──────────────────────────────────────────────────────────────
 function toggleAdminPanel() {
-  if (adminUnlocked) {
-    closeAdminPanel();
-    return;
-  }
-  
+  if (adminUnlocked) { closeAdminPanel(); return; }
   pendingTab = 'admin';
   document.getElementById('modalTitle').textContent = '🔐 Admin Panel Access';
   document.getElementById('modalAdvisorName').textContent = 'Administrator';
@@ -1596,13 +1913,11 @@ function toggleAdminPanel() {
   document.getElementById('passwordModal').classList.add('show');
   document.getElementById('modalPassword').focus();
 }
-
 function closeAdminPanel() {
   adminUnlocked = false;
   document.getElementById('adminPanel').classList.remove('show');
   updateAdminButton();
 }
-
 function updateAdminButton() {
   const btn = document.getElementById('adminBtn');
   if (adminUnlocked) {
@@ -1613,18 +1928,14 @@ function updateAdminButton() {
     btn.className = 'btn-admin locked';
   }
 }
-
 function renderAdminPanel() {
   if (!adminUnlocked) return;
   const grid = document.getElementById('adminGrid');
-  
   const allAdvisors = [...new Set([...advisors, ...Object.keys(DEFAULT_USERS)])];
-  
   if (!allAdvisors.length) {
     grid.innerHTML = '<p style="color:#999;grid-column:1/-1;text-align:center;padding:20px;">No advisors registered.</p>';
     return;
   }
-  
   let html = '';
   allAdvisors.forEach(adv => {
     const hasPwd = !!passwords[adv];
@@ -1632,7 +1943,6 @@ function renderAdminPanel() {
     const statusText = hasPwd ? '🔒 Has password' : '🔓 No password';
     const statusClass = hasPwd ? 'has-password' : '';
     const defaultLabel = isDefault ? ' (default)' : '';
-    
     html += `
       <div class="admin-item">
         <span class="admin-name">${esc(adv)}${defaultLabel}</span>
@@ -1648,39 +1958,29 @@ function renderAdminPanel() {
   });
   grid.innerHTML = html;
 }
-
 function clearPasswordField(advisor) {
   const input = document.getElementById('pwd_' + advisor);
   if (input) input.value = '';
 }
-
 function saveAdminPassword(advisor) {
   const input = document.getElementById('pwd_' + advisor);
   if (!input) return;
   const pwd = input.value.trim();
-  if (!pwd) {
-    showToast('⚠️ Please enter a valid password', false);
-    return;
-  }
+  if (!pwd) { showToast('⚠️ Please enter a valid password', false); return; }
   setPassword(advisor, pwd);
   renderAdminPanel();
   renderTabs();
   showToast('🔒 Password saved for ' + advisor);
 }
-
 function removeAdminPassword(advisor) {
   if (!confirm('Remove password for ' + advisor + '?')) return;
   delete passwords[advisor];
   savePasswords();
   renderAdminPanel();
   renderTabs();
-  if (activeTab === advisor) {
-    activeTab = 'all';
-    applyFiltersAndRender();
-  }
+  if (activeTab === advisor) { activeTab = 'all'; applyFiltersAndRender(); }
   showToast('🗑️ Password removed for ' + advisor);
 }
-
 function exportPasswords() {
   const data = JSON.stringify(passwords, null, 2);
   const blob = new Blob([data], {type: 'application/json'});
@@ -1692,7 +1992,6 @@ function exportPasswords() {
   URL.revokeObjectURL(url);
   showToast('📤 Passwords exported');
 }
-
 function importPasswords(event) {
   const file = event.target.files[0];
   if (!file) return;
@@ -1706,9 +2005,7 @@ function importPasswords(event) {
         if (adminUnlocked) renderAdminPanel();
         renderTabs();
         showToast('📥 Passwords imported successfully');
-      } else {
-        throw new Error('Invalid format');
-      }
+      } else throw new Error('Invalid format');
     } catch(err) {
       showToast('⚠️ Error importing: invalid file', false);
     }
@@ -1717,17 +2014,14 @@ function importPasswords(event) {
   event.target.value = '';
 }
 
-// ── PASSWORD MODAL ──────────────────────────────────────────────────────────
 function closePasswordModal() {
   document.getElementById('passwordModal').classList.remove('show');
   document.getElementById('modalError').classList.remove('show');
 }
-
 function checkPassword() {
   if (!pendingTab) return;
   const pwd = document.getElementById('modalPassword').value;
   const targetTab = pendingTab;
-  
   if (targetTab === 'admin') {
     if (verifyPassword('admin', pwd)) {
       adminUnlocked = true;
@@ -1744,7 +2038,6 @@ function checkPassword() {
     }
     return;
   }
-  
   if (verifyPassword(targetTab, pwd)) {
     closePasswordModal();
     activeTab = targetTab;
@@ -1762,12 +2055,10 @@ function checkPassword() {
     document.getElementById('modalPassword').focus();
   }
 }
-
 document.getElementById('passwordModal').addEventListener('click', function(e) {
   if (e.target === this) closePasswordModal();
 });
 
-// ── GET CLIENT BALANCE ──────────────────────────────────────────────────────
 function getClientBalance(r) {
   const k = rowKey(r);
   if (store[k] && store[k].balance !== undefined && !isNaN(store[k].balance)) {
@@ -1778,14 +2069,10 @@ function getClientBalance(r) {
 
 function updateBalance(key, newVal) {
   const num = parseFloat(newVal);
-  if (isNaN(num)) {
-    showToast('Please enter a valid number', false);
-    return;
-  }
+  if (isNaN(num)) { showToast('Please enter a valid number', false); return; }
   if (!store[key]) store[key] = {};
   store[key].balance = num;
   saveStore();
-
   if (activeTab !== 'all') {
     const data = allRows.filter(r => r.asesor === activeTab);
     updateSummary(data);
@@ -1797,12 +2084,8 @@ function updateBalance(key, newVal) {
   showToast('Balance updated ✓');
 }
 
-// ── FILTERS + RENDER ─────────────────────────────────────────────────────────
 function applyFiltersAndRender() {
-  if (activeTab === 'handling') {
-    // handled by switchTab
-    return;
-  }
+  if (activeTab === 'handling') return;
   if (activeTab === 'all') {
     document.getElementById('filterGroup').classList.add('hidden');
     document.getElementById('panel-title').textContent = '📊 General Report';
@@ -1813,12 +2096,9 @@ function applyFiltersAndRender() {
     document.getElementById('filterGroup').classList.remove('hidden');
     document.getElementById('panel-title').textContent = '📋 ' + activeTab;
   }
-
   let data = allRows.filter(r => r.asesor === activeTab);
-
   const q  = (document.getElementById('searchInput') || {}).value || '';
   const sf = (document.getElementById('statusFilter') || {}).value || '';
-
   if (q.trim()) {
     const ql = q.toLowerCase();
     data = data.filter(r =>
@@ -1828,7 +2108,6 @@ function applyFiltersAndRender() {
     );
   }
   if (sf) data = data.filter(r => getStatus(r) === sf);
-
   data.sort((a, b) => {
     let va = a[sortField === 'asesor' ? 'asesor' : sortField];
     let vb = b[sortField === 'asesor' ? 'asesor' : sortField];
@@ -1838,13 +2117,11 @@ function applyFiltersAndRender() {
     if (va > vb) return sortAsc ? 1 : -1;
     return 0;
   });
-
   filteredData = data;
   updateSummary(data);
   renderTable();
 }
 
-// ── GENERAL REPORT ──────────────────────────────────────────────────────────
 function renderResumen() {
   const map = new Map();
   allRows.forEach(r => {
@@ -1857,11 +2134,9 @@ function renderResumen() {
     entry.clientes.push(r);
     entry.sumaBalances += getClientBalance(r);
   });
-
   const hoy = new Date();
   const semanaAtras = new Date(hoy);
   semanaAtras.setDate(hoy.getDate() - 7);
-
   map.forEach(entry => {
     let cont = 0;
     entry.clientes.forEach(r => {
@@ -1878,9 +2153,7 @@ function renderResumen() {
     entry.comentadosSemana = cont;
     delete entry.clientes;
   });
-
   const resumen = Array.from(map.values()).sort((a,b) => b.total - a.total);
-
   const thead = document.getElementById('tableHead');
   thead.innerHTML = `<tr>
     <th style="cursor:default;">Advisor</th>
@@ -1890,7 +2163,6 @@ function renderResumen() {
     <th style="cursor:default;text-align:center;">Total Monthly Balance (USD)</th>
     <th style="cursor:default;text-align:center;">Advisor Commission (USD)</th>
   </tr>`;
-
   const tbody = document.getElementById('tableBody');
   if (!resumen.length) {
     tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:2rem;color:#999;">No advisors with clients</td></tr>';
@@ -1913,16 +2185,13 @@ function renderResumen() {
       </tr>`;
     }).join('');
   }
-
   document.getElementById('pagination').classList.add('hidden');
   updateSummary(allRows);
   updateTimezoneVisibility();
 }
 
-// ── CLIENT TABLE ─────────────────────────────────────────────────────────────
 function renderTable() {
   document.getElementById('pagination').classList.remove('hidden');
-
   const fields = [
     { field: 'id', label: '#' },
     { field: 'nombre', label: 'Name' },
@@ -1936,7 +2205,6 @@ function renderTable() {
     { field: null, label: 'Status' },
     { field: null, label: 'Action' }
   ];
-
   let headerHtml = '<tr>';
   fields.forEach(f => {
     if (f.field) {
@@ -1948,7 +2216,6 @@ function renderTable() {
   });
   headerHtml += '</tr>';
   document.getElementById('tableHead').innerHTML = headerHtml;
-
   document.querySelectorAll('#tableHead th.sortable').forEach(th => {
     th.addEventListener('click', function() {
       const field = this.dataset.field;
@@ -1958,15 +2225,12 @@ function renderTable() {
       applyFiltersAndRender();
     });
   });
-
   const total = filteredData.length;
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
   if (currentPage > totalPages) currentPage = totalPages;
-
   const start = (currentPage - 1) * PAGE_SIZE;
   const end   = Math.min(start + PAGE_SIZE, total);
   const pageItems = filteredData.slice(start, end);
-
   const tbody = document.getElementById('tableBody');
   if (!pageItems.length) {
     tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;padding:2rem;color:#999;">No clients found</td></tr>';
@@ -1980,18 +2244,15 @@ function renderTable() {
       const savedAt = lc ? lc.date : '';
       const comment = lc ? lc.comment : (r.comentarios || '');
       const safeKey = key.replace(/[^a-z0-9]/gi,'_');
-
       let balance = getClientBalance(r);
       const balanceTotal = balance * 120;
       const comisionEquipo = balanceTotal * 0.25;
       const comisionAsesor = comisionEquipo * 0.10;
-
       const presetsHtml = PRESETS.map(p => {
         const sel = (lc && lc.status === p.status) ? 'sel' : '';
         return '<button class="preset-chip ' + sel + '" onclick="pickPreset(event,\'' +
           escJ(key) + '\',\'' + p.status + '\',`' + p.label + '`)">' + p.label + '</button>';
       }).join('');
-
       const dataRow = '<tr>' +
         `<td><span class="cliente-id">#${r.id}</span></td>` +
         `<td><span class="cliente-nombre">${esc(r.nombre)}</span></td>` +
@@ -2012,7 +2273,6 @@ function renderTable() {
           `</button>` +
         `</td>` +
       '</tr>';
-
       const commentRow = '<tr class="comment-row"><td colspan="11">' +
         '<div class="comment-panel ' + (hasData?'open':'') + '" id="cp_' + safeKey + '">' +
           '<div class="presets">' + presetsHtml + '</div>' +
@@ -2025,17 +2285,13 @@ function renderTable() {
           '</div>' +
         '</div>' +
       '</td></tr>';
-
       return dataRow + commentRow;
     }).join('');
   }
-
   document.getElementById('paginationInfo').textContent =
     total === 0 ? 'No results' : 'Showing ' + (start+1) + '–' + end + ' of ' + total + ' clients';
-
   document.getElementById('prevPage').disabled = currentPage <= 1;
   document.getElementById('nextPage').disabled = currentPage >= totalPages;
-
   let pgHtml = '';
   const maxV = 5;
   let sp = Math.max(1, currentPage - Math.floor(maxV/2));
@@ -2055,7 +2311,6 @@ function renderTable() {
 
 function goPage(p) { currentPage = p; renderTable(); }
 
-// ── UPDATE SUMMARY ──────────────────────────────────────────────────────────
 function updateSummary(data) {
   let interested=0, undecided=0, notint=0, noanswer=0, pending=0;
   let sumBalance = 0;
@@ -2077,7 +2332,6 @@ function updateSummary(data) {
   document.getElementById('s-total-balance').textContent = fmtCur(sumBalance);
 }
 
-// ── COMMENT LOGIC ─────────────────────────────────────────────────────────────
 function toggleComment(safeKey) {
   const el = document.getElementById('cp_' + safeKey);
   if (el) el.classList.toggle('open');
@@ -2098,24 +2352,19 @@ async function saveComment(key, nombre, asesor) {
   const safeKey = key.replace(/[^a-z0-9]/gi,'_');
   const ta = document.getElementById('ta_' + safeKey);
   if (!ta || !ta.value.trim()) { showToast('Please write a comment first', false); return; }
-
   const comment  = ta.value.trim();
   const status   = (store[key] && store[key].status) || inferStatus(comment);
   const now      = new Date();
   const dateStr  = now.toLocaleDateString('en-US',{day:'2-digit',month:'2-digit',year:'numeric'});
   const timeStr  = now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
   const datetime = dateStr + ' ' + timeStr;
-
   const rowData  = allRows.find(r => (r.id + '||' + r.nombre + '||' + r.telefono) === key) || {};
-
   const statusLabels = {
     interested:'Interested', undecided:'Undecided', noanswer:'No contact',
     notint:'Not interested', voicemail:'Voicemail / 3rd', none:'Unmanaged'
   };
-
   store[key] = { comment, status, date: dateStr, nombre, asesor };
   saveStore();
-
   if (activeTab !== 'all') {
     const data = allRows.filter(r => r.asesor === activeTab);
     updateSummary(data);
@@ -2124,10 +2373,8 @@ async function saveComment(key, nombre, asesor) {
     updateSummary(allRows);
     renderResumen();
   }
-
   const msgEl = document.getElementById('msg_' + safeKey);
   if (msgEl) msgEl.innerHTML = '<b>Saved locally</b> · ' + dateStr;
-
   if (APPS_SCRIPT_URL) {
     try {
       const payload = {
@@ -2149,9 +2396,7 @@ async function saveComment(key, nombre, asesor) {
       if (json.ok) {
         if (msgEl) msgEl.innerHTML = '<b>✓ Saved to Sheets</b> · ' + datetime;
         showToast('✓ Registered in Google Sheets');
-      } else {
-        throw new Error(json.error || 'Unknown error');
-      }
+      } else throw new Error(json.error || 'Unknown error');
     } catch (err) {
       if (msgEl) msgEl.innerHTML = '<b>Saved locally</b> · ' + dateStr + ' <span style="color:var(--naranja)">(offline)</span>';
       showToast('⚠️ Saved locally. Check Apps Script.', false);
@@ -2162,7 +2407,6 @@ async function saveComment(key, nombre, asesor) {
   }
 }
 
-// ── FILTERS EVENTS ────────────────────────────────────────────────────────────
 document.getElementById('searchInput').addEventListener('input', () => { if (activeTab !== 'all') { currentPage = 1; applyFiltersAndRender(); } });
 document.getElementById('statusFilter').addEventListener('change', () => { if (activeTab !== 'all') { currentPage = 1; applyFiltersAndRender(); } });
 document.getElementById('resetBtn').addEventListener('click', () => {
@@ -2176,20 +2420,20 @@ document.getElementById('nextPage').addEventListener('click', () => {
   if (currentPage < Math.ceil(filteredData.length / PAGE_SIZE)) { currentPage++; renderTable(); }
 });
 
-// ── TIMEZONE / LADA REFERENCE ────────────────────────────────────────────
+// ── TIMEZONE / LADA REFERENCE ──────────────────────────────────────────────
 function updateTimezoneVisibility() {
   const container = document.getElementById('timezoneRefContainer');
   if (activeTab !== 'all' && activeTab !== 'handling') {
     container.style.display = 'block';
     updateTimezoneTable();
+    renderUSAMap();
   } else {
     container.style.display = 'none';
   }
 }
 
 function getCDMXTime() {
-  const now = new Date();
-  return now;
+  return new Date();
 }
 
 function formatTime(d) {
@@ -2199,10 +2443,8 @@ function formatTime(d) {
 function updateTimezoneTable() {
   const tbody = document.getElementById('timezoneTableBody');
   const now = getCDMXTime();
-  const cdmxHour = now.getHours() + now.getMinutes()/60;
-  
   let html = '';
-  LADA_DATA.forEach(item => {
+  LADA_TABLE.forEach(item => {
     const offset = item.offset;
     const localTime = new Date(now.getTime() + offset * 3600000);
     const hourDiff = offset;
@@ -2211,7 +2453,6 @@ function updateTimezoneTable() {
     if (hourDiff > 0) { diffClass = 'diff-pos'; diffLabel = `+${hourDiff}h`; }
     else if (hourDiff < 0) { diffClass = 'diff-neg'; diffLabel = `${hourDiff}h`; }
     else { diffLabel = 'Same time'; }
-    
     html += `<tr>
       <td><strong>${esc(item.area)}</strong></td>
       <td><span class="lada-badge">${esc(item.lada)}</span></td>
@@ -2222,6 +2463,100 @@ function updateTimezoneTable() {
   tbody.innerHTML = html;
 }
 
+// ── USA MAP ──────────────────────────────────────────────────────────────────
+function renderUSAMap() {
+  const container = document.getElementById('usaMapContainer');
+  if (!container) return;
+  let html = `
+    <div class="usa-map-title">🗺️ Mapa de Estados Unidos · LADAs por región</div>
+    <div class="usa-map-grid">
+  `;
+  USA_REGIONS.forEach(region => {
+    const zoneClass = 'zone-' + region.id;
+    html += `<div class="usa-zone ${zoneClass}">
+      <div class="zone-header" style="background:${region.color};">
+        <span>${region.label}</span>
+        <span class="zone-offset">${region.offsetLabel}</span>
+      </div>
+      <div class="zone-body">
+    `;
+    region.states.forEach(state => {
+      html += `<div class="zone-state">
+        <span class="state-name">${esc(state.name)}</span>
+        <span class="state-code">${esc(state.codes)}</span>
+      </div>`;
+    });
+    html += `</div></div>`;
+  });
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+// ── LADA LOOKUP TOOL ───────────────────────────────────────────────────────
+function onLadaInput() {
+  const input = document.getElementById('ladaInput');
+  const val = input.value.trim();
+  const suggestions = document.getElementById('ladaSuggestions');
+  if (!val) {
+    suggestions.textContent = '';
+    document.getElementById('lookupResult').classList.remove('show');
+    return;
+  }
+  const matches = Object.keys(LADA_MAP).filter(code => code.startsWith(val));
+  if (matches.length > 0 && matches.length <= 5) {
+    suggestions.textContent = '💡 Sugerencias: ' + matches.join(', ');
+  } else if (matches.length > 5) {
+    suggestions.textContent = '💡 ' + matches.length + ' coincidencias. Escribe más dígitos.';
+  } else {
+    suggestions.textContent = '';
+  }
+}
+
+function lookupLada() {
+  const input = document.getElementById('ladaInput');
+  const val = input.value.trim();
+  const resultDiv = document.getElementById('lookupResult');
+  const content = document.getElementById('lookupContent');
+  if (!val) {
+    resultDiv.classList.remove('show');
+    return;
+  }
+  const info = LADA_MAP[val];
+  const now = getCDMXTime();
+  const cdmxTime = formatTime(now);
+  if (info) {
+    const localTime = new Date(now.getTime() + info.offset * 3600000);
+    const localTimeStr = formatTime(localTime);
+    const diff = info.offset;
+    let diffLabel = 'Misma hora';
+    if (diff > 0) diffLabel = `+${diff}h`;
+    else if (diff < 0) diffLabel = `${diff}h`;
+    content.innerHTML = `
+      <div class="result-row"><span class="result-label">📍 Estado</span><span class="result-value"><span class="highlight">${esc(info.state)}</span></span></div>
+      <div class="result-row"><span class="result-label">🗺️ Región</span><span class="result-value">${esc(info.region)}</span></div>
+      <div class="result-row"><span class="result-label">📞 LADA</span><span class="result-value"><span class="highlight">${esc(info.display)}</span></span></div>
+      <div class="result-row"><span class="result-label">🕒 Hora CDMX</span><span class="result-value"><span class="live-time">${cdmxTime}</span></span></div>
+      <div class="result-row"><span class="result-label">🕒 Hora en ${esc(info.state)}</span><span class="result-value"><span class="live-time">${localTimeStr}</span> (${diffLabel})</span></div>
+    `;
+    resultDiv.classList.add('show');
+  } else {
+    content.innerHTML = `<div class="not-found">❌ No se encontró ninguna LADA "${esc(val)}". Verifica el código de área.</div>`;
+    resultDiv.classList.add('show');
+  }
+}
+
+function updateLookupClock() {
+  // Update the lookup result live if it's open
+  const resultDiv = document.getElementById('lookupResult');
+  if (resultDiv.classList.contains('show')) {
+    // Re-run lookup to refresh times
+    const input = document.getElementById('ladaInput');
+    if (input.value.trim()) {
+      lookupLada();
+    }
+  }
+}
+
 function startLiveClock() {
   if (timezoneInterval) clearInterval(timezoneInterval);
   timezoneInterval = setInterval(() => {
@@ -2229,8 +2564,52 @@ function startLiveClock() {
     document.getElementById('liveClock').textContent = '⏱️ CDMX: ' + formatTime(now);
     if (document.getElementById('timezoneRefContainer').style.display !== 'none') {
       updateTimezoneTable();
+      updateLookupClock();
     }
   }, 1000);
+}
+
+// ── CALL SCRIPT MODAL ──────────────────────────────────────────────────────
+function renderScriptStepsHtml() {
+  return CALL_SCRIPT.map((s, i) => `
+    <div class="script-step">
+      <div class="script-step-num">${i+1}</div>
+      <div class="script-step-content">
+        <div class="script-step-title">${s.title.replace(/^\d+\.\s*/,'')}${s.tag ? '<span class="script-tag">'+s.tag+'</span>' : ''}</div>
+        <div class="script-step-text">${s.html}</div>
+      </div>
+    </div>
+  `).join('') + `
+    <div class="script-footer-note">
+      💬 Tip: Adapt the bracketed placeholders to each client. Keep the tone conversational and natural.
+    </div>
+  `;
+}
+
+function openScriptModal(clientName, clientPhone) {
+  document.getElementById('scriptModalBody').innerHTML = renderScriptStepsHtml();
+  document.getElementById('scriptModalClientName').textContent = clientName ? ('Client: ' + clientName) : '';
+  const callBtn = document.getElementById('scriptModalCallBtn');
+  callBtn.href = clientPhone ? ('tel:' + clientPhone) : '#';
+  document.getElementById('scriptModalOverlay').classList.add('show');
+}
+
+function closeScriptModal() {
+  document.getElementById('scriptModalOverlay').classList.remove('show');
+}
+document.getElementById('scriptModalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeScriptModal();
+});
+
+function copyScriptText() {
+  const text = CALL_SCRIPT.map((s, i) =>
+    (i+1) + '. ' + s.title.replace(/^\d+\.\s*/,'') + '\n' + s.html.replace(/<\/?em>/g,'').replace(/<br\s*\/?>/g,'\n').replace(/<strong>/g,'').replace(/<\/strong>/g,'') + '\n'
+  ).join('\n');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => showToast('📋 Script copied to clipboard'));
+  } else {
+    showToast('⚠️ Clipboard not available', false);
+  }
 }
 
 // ── HELPERS ────────────────────────────────────────────────────────────────────
