@@ -45,7 +45,6 @@
 
   .main { padding: 1.25rem 1.5rem; }
 
-  /* ── Tarjetas superiores ── */
   .summary-bar { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 1.25rem; }
   .sum-card {
     background: var(--teal);
@@ -61,19 +60,140 @@
   .sum-card .sc-val { font-size: 26px; font-weight: 700; color: #ffffff; letter-spacing: 0.5px; }
   .sum-card .sc-sub { font-size: 10px; color: rgba(255,255,255,0.8); margin-top: 4px; font-weight: 400; }
 
-  .cols { display:grid; grid-template-columns:repeat(3,1fr); gap:1.25rem; align-items:start; margin-bottom:1.5rem; }
-  .panel { background:var(--white); border-radius:12px; overflow:hidden; border:1px solid var(--border); }
-  .panel-header {
-    padding:.85rem 1.1rem;
-    display:flex;
-    align-items:center;
-    gap:10px;
-    border-bottom:1px solid var(--bg2);
-    background:var(--black);
-    flex-wrap:wrap;
+  /* ==============================================
+     CONTENEDOR DE COLUMNAS - IMPORTANTE PARA STICKY
+     ============================================== */
+  .cols {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    align-items: start;
   }
-  .panel-header .header-left { display:flex; align-items:center; gap:10px; flex:1; }
-  .panel-header .header-stats { display:flex; align-items:center; flex-wrap:wrap; gap:0.25rem 0.75rem; margin-left:auto; color:var(--white); font-size:13px; }
+
+  .panel {
+    background: var(--white);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    /* IMPORTANTE: Para que sticky funcione correctamente */
+    overflow: visible;
+    align-self: start;
+    position: relative;
+  }
+
+  /* ==============================================
+     HEADER FIJO (STICKY) - SE MANTIENE AL HACER SCROLL
+     ============================================== */
+  .panel-header {
+    padding: .85rem 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--bg2);
+    background: var(--black);
+    flex-wrap: wrap;
+    /* STICKY: se fija al hacer scroll de la PÁGINA */
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    flex-shrink: 0;
+    border-radius: 12px 12px 0 0;
+    transition: border-radius 0.2s, box-shadow 0.2s;
+  }
+  .panel-header.sticky-fixed {
+    border-radius: 0 !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  }
+
+  .panel-body {
+    padding: 1rem 1.1rem;
+    flex: 1;
+  }
+
+  .date-filter-bar {
+    width: 100%;
+    display: none;
+    align-items: center;
+    gap: 8px;
+    padding: 0.55rem 0 0.1rem 0;
+    flex-wrap: wrap;
+  }
+  .date-filter-bar.visible { display: flex; }
+  .date-filter-bar label { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
+  .date-filter-bar input[type="date"] {
+    background: #1a1a1a;
+    border: 1px solid #444;
+    border-radius: 6px;
+    color: #eee;
+    font-size: 11px;
+    padding: 3px 7px;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.15s;
+    font-family: inherit;
+  }
+  .date-filter-bar input[type="date"]:focus { border-color: var(--teal); }
+  .date-filter-bar .date-sep { font-size: 10px; color: #555; }
+  .date-filter-bar .df-apply {
+    background: var(--teal);
+    color: var(--black);
+    border: none;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 10px;
+    cursor: pointer;
+    letter-spacing: 0.3px;
+    transition: opacity 0.15s;
+  }
+  .date-filter-bar .df-apply:hover { opacity: 0.85; }
+  .date-filter-bar .df-clear {
+    background: transparent;
+    color: #666;
+    border: 1px solid #333;
+    border-radius: 6px;
+    font-size: 10px;
+    padding: 3px 8px;
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .date-filter-bar .df-clear:hover { color: var(--teal); border-color: var(--teal); }
+
+  .date-filter-btn {
+    background: transparent;
+    border: 1px solid #333;
+    border-radius: 7px;
+    color: #888;
+    font-size: 11px;
+    padding: 4px 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .date-filter-btn:hover,
+  .date-filter-btn.active {
+    color: var(--teal);
+    border-color: var(--teal);
+    background: rgba(82,190,192,0.07);
+  }
+  .date-filter-btn svg {
+    width: 12px;
+    height: 12px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+
+  .panel-header .header-left { display:flex; align-items:center; gap:10px; flex:1; min-width:0; }
+  .panel-header .header-stats { display:flex; align-items:center; flex-wrap:wrap; gap:0.25rem 0.75rem; color:var(--white); font-size:13px; }
   .panel-header .header-stats .stat-item { display:flex; align-items:center; gap:4px; line-height:1.3; white-space:nowrap; }
   .panel-header .header-stats .stat-label { font-size:10px; text-transform:uppercase; color:#888; letter-spacing:.4px; font-weight:400; }
   .panel-header .header-stats .stat-number { font-weight:700; color:var(--teal); font-size:16px; }
@@ -85,31 +205,26 @@
   .platform-icon.ig { background:var(--ig-grad); }
   .platform-icon.tt { background:var(--tt); border:1px solid #444; }
   .platform-icon svg { width:18px; height:18px; fill:white; }
-  .panel-header h2 { font-size:15px; font-weight:600; color:var(--white); margin:0; }
+  .panel-header h2 { font-size:15px; font-weight:600; color:var(--white); margin:0; white-space:nowrap; }
   .panel-header .ph-sub { font-size:11px; color:#888; margin-top:1px; font-weight:400; }
 
-  .panel-body { padding:1rem 1.1rem; }
-
-  /* ── Separador estético entre bloques ── */
   .block-spacer {
     display: flex;
     align-items: center;
     gap: 10px;
     margin: 1.4rem 0 1.1rem 0;
   }
-  .block-spacer-line {
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(to right, transparent, var(--teal), transparent);
-    opacity: 0.4;
+  .block-spacer-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, var(--teal), transparent); opacity: 0.4; }
+  .block-spacer-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--teal); opacity: 0.5; flex-shrink: 0; }
+
+  /* ==============================================
+     BLOQUE CONTAINER - PARA SINCRONIZAR ALTURAS
+     ============================================== */
+  .block-container {
+    margin-bottom: 0.5rem;
   }
-  .block-spacer-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--teal);
-    opacity: 0.5;
-    flex-shrink: 0;
+  .block-container .kpi-block-title {
+    margin-bottom: 0.5rem;
   }
 
   .kpi-block-title {
@@ -129,27 +244,21 @@
   .kpi-block-title .kpi-block-icon.tt { background:var(--tt); border:1px solid #444; }
   .kpi-block-title .kpi-block-icon svg { width:14px; height:14px; fill:white; }
 
-  /* Tarjetas KPI — todas gris clarito, sin negritas */
   .kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:0.6rem; }
   .kpi-grid-2 { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-bottom:0.6rem; }
   .kpi-grid-small { display:grid; grid-template-columns:repeat(auto-fill, minmax(80px,1fr)); gap:6px; margin-bottom:0.6rem; }
 
   .kpi { background: var(--card-bg); border-radius:8px; padding:.6rem .75rem; border:1px solid var(--card-border); }
-  .kpi-crema { background: var(--card-bg); border-color: var(--card-border); }
-  .kpi-gris  { background: var(--card-bg); border-color: var(--card-border); }
   .kpi .k-label { font-size:10px; color:#888; text-transform:uppercase; letter-spacing:.5px; margin-bottom:3px; font-weight:400; }
   .kpi .k-val { font-size:18px; font-weight:600; color:var(--dark); }
   .kpi .k-sub { font-size:10px; color:#999; margin-top:1px; font-weight:400; }
-
   .kpi-small { padding:.3rem .5rem; }
   .kpi-small .k-label { font-size:8px; letter-spacing:.3px; font-weight:400; }
   .kpi-small .k-val { font-size:14px; font-weight:600; }
   .kpi-small .k-sub { font-size:8px; font-weight:400; }
-
   .kpi-publicaciones { background: var(--card-bg) !important; border-color: var(--card-border) !important; }
   .kpi-publicaciones .k-val { color:var(--dark) !important; font-size:22px !important; font-weight:600 !important; }
 
-  /* ── Reporte Semanal ── */
   .weekly-report {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -165,7 +274,6 @@
   .weekly-report .wr-value { font-size:16px; font-weight:600; color:var(--teal); }
   .weekly-report .wr-sub { font-size:9px; color:#999; font-weight:400; }
 
-  /* ── Tabla promedio últimas 5 publicaciones ── */
   .avg-recent-block {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
@@ -185,11 +293,7 @@
     gap: 6px;
   }
   .avg-recent-block .avg-title::after { content:''; flex:1; height:1px; background: var(--card-border); }
-  .avg-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-    gap: 6px;
-  }
+  .avg-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 6px; }
   .avg-item {
     background: var(--white);
     border: 1px solid var(--card-border);
@@ -278,12 +382,40 @@
   .all-posts-body .er.medium { color:#f1c40f; }
   .all-posts-body .er.low { color:#e74c3c; }
 
+  .date-filter-notice {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    background: rgba(82,190,192,0.1);
+    border: 1px solid rgba(82,190,192,0.3);
+    border-radius: 7px;
+    padding: 5px 10px;
+    font-size: 10px;
+    color: var(--teal);
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+  .date-filter-notice.visible { display: flex; }
+  .date-filter-notice span { flex: 1; }
+  .date-filter-notice button {
+    background: none;
+    border: none;
+    color: var(--teal);
+    cursor: pointer;
+    font-size: 13px;
+    line-height: 1;
+    opacity: 0.7;
+    padding: 0;
+    transition: opacity 0.15s;
+  }
+  .date-filter-notice button:hover { opacity: 1; }
+
   .footer { text-align:center; padding:1rem; font-size:11px; color:#aaa; border-top:1px solid var(--bg2); margin-top:1.5rem; background:var(--white); font-weight:400; }
   .ico { width:13px; height:13px; display:inline-block; vertical-align:middle; fill:currentColor; }
 
   @media (max-width:1100px) { .summary-bar { grid-template-columns:repeat(2,1fr); } }
   @media (max-width:900px) { .cols { grid-template-columns:1fr 1fr; } .summary-bar { grid-template-columns:1fr 1fr; } .kpi-grid { grid-template-columns:repeat(2,1fr); } .kpi-grid-2 { grid-template-columns:1fr 1fr; } .weekly-report { grid-template-columns:repeat(2,1fr); } }
-  @media (max-width:600px) { .cols,.summary-bar { grid-template-columns:1fr; } .panel-header { flex-direction:column; align-items:stretch; } .panel-header .header-stats { margin-left:0; justify-content:space-around; } .kpi-grid { grid-template-columns:1fr 1fr; } .kpi-grid-2 { grid-template-columns:1fr; } .kpi-grid-small { grid-template-columns:repeat(3,1fr); } .weekly-report { grid-template-columns:1fr 1fr; } .avg-grid { grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:600px) { .cols { grid-template-columns:1fr; } .summary-bar { grid-template-columns:1fr; } .panel-header { flex-direction:column; align-items:stretch; } .panel-header .header-stats { margin-left:0; justify-content:space-around; } .kpi-grid { grid-template-columns:1fr 1fr; } .kpi-grid-2 { grid-template-columns:1fr; } .kpi-grid-small { grid-template-columns:repeat(3,1fr); } .weekly-report { grid-template-columns:1fr 1fr; } .avg-grid { grid-template-columns:repeat(2,1fr); } }
 </style>
 </head>
 <body>
@@ -307,7 +439,7 @@
   <div class="cols">
     <!-- FACEBOOK -->
     <div class="panel">
-      <div class="panel-header">
+      <div class="panel-header" id="fb-panel-header">
         <div class="header-left">
           <div class="platform-icon fb"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></div>
           <div><h2>Facebook</h2><div class="ph-sub" id="fb-count">Cargando...</div></div>
@@ -319,13 +451,26 @@
             <span class="stat-change" id="fb-followers-change">Cargando...</span>
           </div>
         </div>
+        <button class="date-filter-btn" id="fb-date-btn" onclick="toggleDateFilter('fb')" title="Filtrar por fecha">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Filtrar fechas
+        </button>
+        <div class="date-filter-bar" id="fb-date-bar">
+          <label>Desde</label>
+          <input type="date" id="fb-date-from">
+          <span class="date-sep">→</span>
+          <label>Hasta</label>
+          <input type="date" id="fb-date-to">
+          <button class="df-apply" onclick="applyDateFilter('fb')">Aplicar</button>
+          <button class="df-clear" onclick="clearDateFilter('fb')">✕ Quitar</button>
+        </div>
       </div>
       <div class="panel-body" id="fb-body"><div class="loading"><div class="spinner"></div><br>Cargando datos de Facebook...</div></div>
     </div>
 
     <!-- INSTAGRAM -->
     <div class="panel">
-      <div class="panel-header">
+      <div class="panel-header" id="ig-panel-header">
         <div class="header-left">
           <div class="platform-icon ig"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></div>
           <div><h2>Instagram</h2><div class="ph-sub" id="ig-count">Cargando...</div></div>
@@ -337,13 +482,26 @@
             <span class="stat-change" id="ig-followers-change">Cargando...</span>
           </div>
         </div>
+        <button class="date-filter-btn" id="ig-date-btn" onclick="toggleDateFilter('ig')" title="Filtrar por fecha">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Filtrar fechas
+        </button>
+        <div class="date-filter-bar" id="ig-date-bar">
+          <label>Desde</label>
+          <input type="date" id="ig-date-from">
+          <span class="date-sep">→</span>
+          <label>Hasta</label>
+          <input type="date" id="ig-date-to">
+          <button class="df-apply" onclick="applyDateFilter('ig')">Aplicar</button>
+          <button class="df-clear" onclick="clearDateFilter('ig')">✕ Quitar</button>
+        </div>
       </div>
       <div class="panel-body" id="ig-body"><div class="loading"><div class="spinner"></div><br>Cargando datos de Instagram...</div></div>
     </div>
 
     <!-- TIKTOK -->
     <div class="panel">
-      <div class="panel-header">
+      <div class="panel-header" id="tt-panel-header">
         <div class="header-left">
           <div class="platform-icon tt"><svg viewBox="0 0 24 24"><path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-5.201 1.743l-.002-.001.002.001a2.895 2.895 0 0 1 3.183-4.51v-3.5a6.329 6.329 0 0 0-5.394 10.692 6.33 6.33 0 0 0 10.857-4.424V8.687a8.182 8.182 0 0 0 4.773 1.526V6.79a4.831 4.831 0 0 1-1.003-.104z"/></svg></div>
           <div><h2>TikTok</h2><div class="ph-sub" id="tt-count">Cargando...</div></div>
@@ -354,6 +512,19 @@
             <span class="stat-number" id="tt-followers">—</span>
             <span class="stat-change" id="tt-followers-change">Cargando...</span>
           </div>
+        </div>
+        <button class="date-filter-btn" id="tt-date-btn" onclick="toggleDateFilter('tt')" title="Filtrar por fecha">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Filtrar fechas
+        </button>
+        <div class="date-filter-bar" id="tt-date-bar">
+          <label>Desde</label>
+          <input type="date" id="tt-date-from">
+          <span class="date-sep">→</span>
+          <label>Hasta</label>
+          <input type="date" id="tt-date-to">
+          <button class="df-apply" onclick="applyDateFilter('tt')">Aplicar</button>
+          <button class="df-clear" onclick="clearDateFilter('tt')">✕ Quitar</button>
         </div>
       </div>
       <div class="panel-body" id="tt-body"><div class="loading"><div class="spinner"></div><br>Cargando datos de TikTok...</div></div>
@@ -377,10 +548,101 @@
 <div class="footer">Altaltium Real Estate Solutions &nbsp;·&nbsp; Dashboard de métricas sociales &nbsp;·&nbsp; Datos en tiempo real desde Google Sheets</div>
 
 <script>
+// ════════════════════════════════════════════════════════
+// URLs de los datos
+// ════════════════════════════════════════════════════════
 const FB_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSfGLVor1Yn0VXdP30E_vaq7NHKV-5jroqnXx4GGX0gxsZGRM9fpCsotoNuZoJNDgbOKJdc19mYGDRN/pub?gid=0&single=true&output=csv';
 const IG_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSfGLVor1Yn0VXdP30E_vaq7NHKV-5jroqnXx4GGX0gxsZGRM9fpCsotoNuZoJNDgbOKJdc19mYGDRN/pub?gid=1054016789&single=true&output=csv';
 const TT_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSfGLVor1Yn0VXdP30E_vaq7NHKV-5jroqnXx4GGX0gxsZGRM9fpCsotoNuZoJNDgbOKJdc19mYGDRN/pub?gid=754148400&single=true&output=csv';
 const FOLLOWERS_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSfGLVor1Yn0VXdP30E_vaq7NHKV-5jroqnXx4GGX0gxsZGRM9fpCsotoNuZoJNDgbOKJdc19mYGDRN/pub?gid=464775252&single=true&output=csv';
+
+// ════════════════════════════════════════════════════════
+// FUNCIÓN PARA DETECTAR HEADER FIJO
+// ════════════════════════════════════════════════════════
+function setupStickyHeaders() {
+  const headers = document.querySelectorAll('.panel-header');
+  
+  headers.forEach(header => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.boundingClientRect.top <= 0) {
+          header.classList.add('sticky-fixed');
+        } else {
+          header.classList.remove('sticky-fixed');
+        }
+      });
+    }, {
+      threshold: [0],
+      rootMargin: '0px 0px 0px 0px'
+    });
+    
+    observer.observe(header);
+  });
+}
+
+// ════════════════════════════════════════════════════════
+// FUNCIÓN PARA SINCRONIZAR ALTURA DE BLOQUES
+// ════════════════════════════════════════════════════════
+function syncBlockHeights() {
+  const panels = document.querySelectorAll('.panel');
+  if (panels.length !== 3) return;
+  
+  // Buscar todos los bloques por su título
+  const blockTitles = document.querySelectorAll('.panel .kpi-block-title');
+  const blocksByIndex = {};
+  
+  blockTitles.forEach((title) => {
+    const panel = title.closest('.panel');
+    const panelIndex = Array.from(panels).indexOf(panel);
+    if (panelIndex === -1) return;
+    
+    const panelBody = title.closest('.panel-body');
+    if (!panelBody) return;
+    
+    const allTitles = panelBody.querySelectorAll('.kpi-block-title');
+    const blockIndex = Array.from(allTitles).indexOf(title);
+    if (blockIndex === -1) return;
+    
+    // Encontrar el contenedor del bloque
+    let blockContainer = title.closest('.block-container');
+    if (!blockContainer) {
+      // Si no hay block-container, usar el título como referencia
+      blockContainer = title.parentElement;
+    }
+    
+    if (!blockContainer) return;
+    
+    const key = `${blockIndex}`;
+    if (!blocksByIndex[key]) blocksByIndex[key] = [];
+    blocksByIndex[key].push({ panelIndex, element: blockContainer, title: title });
+  });
+  
+  // Para cada grupo de bloques del mismo índice, sincronizar altura
+  Object.values(blocksByIndex).forEach(group => {
+    if (group.length < 2) return;
+    
+    let maxHeight = 0;
+    group.forEach(({ element }) => {
+      element.style.minHeight = '';
+      const h = element.scrollHeight;
+      if (h > maxHeight) maxHeight = h;
+    });
+    
+    // Aplicar la altura máxima a todos los elementos del grupo
+    group.forEach(({ element }) => {
+      element.style.minHeight = maxHeight + 'px';
+    });
+  });
+}
+
+function syncAllBlocks() {
+  setTimeout(() => { syncBlockHeights(); }, 300);
+  
+  const observer = new MutationObserver(() => { syncBlockHeights(); });
+  document.querySelectorAll('.panel-body').forEach(body => {
+    observer.observe(body, { childList: true, subtree: true });
+  });
+}
 
 /* ── Utilidades ── */
 function findKey(obj, patterns) {
@@ -596,9 +858,9 @@ async function loadFollowers() {
   } catch(e) { console.warn('Error seguidores:', e); return null; }
 }
 
-/* ══════════════════════════════════════════════
+/* ══════════════════════════════════════════════════════════
    MOTOR DE GRÁFICAS
-   ══════════════════════════════════════════════ */
+   ══════════════════════════════════════════════════════════ */
 const PERIODS = {
   dia:       { fn:getDayKey,    label:getDayLabel,    name:'Día',       window:30 },
   semana:    { fn:getWeekKey,   label:getWeekLabel,   name:'Semana',    window:15 },
@@ -743,12 +1005,10 @@ function chartControlsHTML(id, legendItems) {
     </div>`;
 }
 
-/* ── Separador estético entre bloques ── */
 function blockSpacer() {
   return `<div class="block-spacer"><div class="block-spacer-line"></div><div class="block-spacer-dot"></div><div class="block-spacer-line"></div></div>`;
 }
 
-/* ── Pie chart ── */
 function renderPieChart(canvasId, labels, data, colors) {
   const canvas = document.getElementById(canvasId);
   if (!canvas) return;
@@ -794,19 +1054,28 @@ function renderPieChart(canvasId, labels, data, colors) {
   canvas._chart=chart;
 }
 
-/* ── Promedio de las últimas 5 publicaciones ── */
 function avgRecentHTML(posts, platform) {
-  const recent5 = [...posts].filter(p=>p.date).sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5);
+  const recent5 = [...posts]
+    .filter(p => p.date)
+    .sort((a, b) => b.date.localeCompare(a.date))
+    .slice(0, 5);
+
   if (!recent5.length) return '';
 
   const count = recent5.length;
   const avg = key => recent5.reduce((s,p)=>s+(p[key]||0),0)/count;
 
-  // Tipo predominante
   const typeCount = {};
   recent5.forEach(p=>{ const t=getTypeFromString(p.type||''); typeCount[t]=(typeCount[t]||0)+1; });
   const dominantType = Object.entries(typeCount).sort((a,b)=>b[1]-a[1])[0]?.[0]||'—';
   const typeLabel = {reel:'Reel',video:'Video',foto:'Foto/Carrusel',historia:'Historia/Story',otro:'Otro'}[dominantType]||'—';
+
+  const newestDate = recent5[0]?.date || '';
+  const oldestDate = recent5[recent5.length-1]?.date || '';
+  const fmtD = d => { if(!d) return ''; const p=d.split('-'); return p.length===3?`${p[2]}/${p[1]}/${p[0].slice(2)}`:d; };
+  const rangeLabel = oldestDate !== newestDate
+    ? ` <span style="font-size:9px;font-weight:400;color:#aaa;margin-left:4px;">${fmtD(oldestDate)} – ${fmtD(newestDate)}</span>`
+    : '';
 
   const avgViews = avg('views');
   const avgReach = avg('reach');
@@ -816,7 +1085,6 @@ function avgRecentHTML(posts, platform) {
   const avgShar  = avg('shar');
   const avgClicks= avg('clicks');
 
-  // ER promedio
   const erList = recent5.map(p=>{
     const base = p.reach>0 ? p.reach : (p.views>0 ? p.views : 0);
     if (!base) return 0;
@@ -824,59 +1092,37 @@ function avgRecentHTML(posts, platform) {
   });
   const avgER = erList.reduce((s,v)=>s+v,0)/count;
 
-  // Retención solo aplica para reels y TikTok (si hay campo)
   const hasRetention = (platform==='ig'||platform==='tt') && recent5.some(p=>p.retention>0);
   const avgRetention = hasRetention ? avg('retention') : null;
 
   const items = [];
-
-  // Tipo siempre
   items.push(`<div class="avg-item"><div class="ai-label">Tipo predominante</div><div class="ai-val" style="font-size:12px;">${typeLabel}</div><div class="ai-sub">${count} posts</div></div>`);
-
-  // Impresiones/vistas siempre
   items.push(`<div class="avg-item"><div class="ai-label">${ICO.eye} Impresiones</div><div class="ai-val">${fmt(avgViews)}</div><div class="ai-sub">prom. / pub.</div></div>`);
-
-  // Alcance si aplica (no TikTok)
   if (platform !== 'tt' && avgReach > 0) {
     items.push(`<div class="avg-item"><div class="ai-label">${ICO.users} Alcance</div><div class="ai-val">${fmt(avgReach)}</div><div class="ai-sub">prom. / pub.</div></div>`);
   }
-
-  // Likes siempre
   items.push(`<div class="avg-item"><div class="ai-label">${ICO.heart} Likes</div><div class="ai-val">${fmt(avgReact)}</div><div class="ai-sub">prom. / pub.</div></div>`);
-
-  // Comentarios siempre
   items.push(`<div class="avg-item"><div class="ai-label">${ICO.msg} Comentarios</div><div class="ai-val">${fmt(avgComm)}</div><div class="ai-sub">prom. / pub.</div></div>`);
-
-  // Guardados si aplica (no Facebook, no TikTok base)
   if (platform === 'ig' && avgSaved > 0) {
     items.push(`<div class="avg-item"><div class="ai-label">${ICO.save} Guardados</div><div class="ai-val">${fmt(avgSaved)}</div><div class="ai-sub">prom. / pub.</div></div>`);
   }
-
-  // Compartidos si aplica (no TikTok)
   if (platform !== 'tt' && avgShar > 0) {
     items.push(`<div class="avg-item"><div class="ai-label">${ICO.share} Compartidos</div><div class="ai-val">${fmt(avgShar)}</div><div class="ai-sub">prom. / pub.</div></div>`);
   }
-
-  // Clics si aplica (solo Facebook)
   if (platform === 'fb' && avgClicks > 0) {
     items.push(`<div class="avg-item"><div class="ai-label">${ICO.click} Clics enlace</div><div class="ai-val">${fmt(avgClicks)}</div><div class="ai-sub">prom. / pub.</div></div>`);
   }
-
-  // Retención si aplica
   if (avgRetention !== null) {
     items.push(`<div class="avg-item"><div class="ai-label">⏱ Retención</div><div class="ai-val">${avgRetention.toFixed(1)}%</div><div class="ai-sub">prom. video</div></div>`);
   }
-
-  // Tasa de engagement
   items.push(`<div class="avg-item"><div class="ai-label">${ICO.chart} Tasa ER</div><div class="ai-val">${avgER.toFixed(2)}%</div><div class="ai-sub">prom. / pub.</div></div>`);
 
   return `<div class="avg-recent-block">
-    <div class="avg-title">📈 Promedio — últimas ${count} publicaciones</div>
+    <div class="avg-title">📈 Promedio — últimas ${count} publicaciones${rangeLabel}</div>
     <div class="avg-grid">${items.join('')}</div>
   </div>`;
 }
 
-/* ── Post cards ── */
 function renderPostCards(containerId, posts, title, color, borderColor, block=false) {
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -884,7 +1130,6 @@ function renderPostCards(containerId, posts, title, color, borderColor, block=fa
     container.innerHTML='<div style="padding:0.5rem;color:#999;font-size:12px;">No hay publicaciones</div>'; return;
   }
   let html='';
-  // Si block es true, ya no pintamos el título aquí porque se pinta por separado
   html+='<div class="post-list">';
   posts.forEach((p,i)=>{
     const txt=p.title||'(Sin título)', link=p.link||'', tipo=p.type||'', date=p.date||'';
@@ -908,28 +1153,212 @@ function renderPostCards(containerId, posts, title, color, borderColor, block=fa
   container.innerHTML=html;
 }
 
-function getLastWeekTotals(rows, dateField, reachField, viewsField, clickField, followField) {
-  const dates = rows.map(r=>parseDateFlexible(getField(r,dateField))).filter(d=>d!==null);
-  if (!dates.length) return {weekKey:null,totals:{reach:0,views:0,clicks:0,follow:0}};
-  const weekKeys = dates.map(d=>getWeekKey(d)).filter(w=>w!==null);
-  const uniqueWeeks = [...new Set(weekKeys)].sort();
-  if (!uniqueWeeks.length) return {weekKey:null,totals:{reach:0,views:0,clicks:0,follow:0}};
-  const lastWeek = uniqueWeeks[uniqueWeeks.length-1];
-  const weekRows = rows.filter(r=>{ const dt=parseDateFlexible(getField(r,dateField)); return dt&&getWeekKey(dt)===lastWeek; });
-  const totals = weekRows.reduce((acc,r)=>({
-    reach: acc.reach+(reachField?n(getField(r,reachField)):0),
-    views: acc.views+(viewsField?n(getField(r,viewsField)):0),
-    clicks: acc.clicks+(clickField?n(getField(r,clickField)):0),
-    follow: acc.follow+(followField?n(getField(r,followField)):0)
-  }),{reach:0,views:0,clicks:0,follow:0});
-  return {weekKey:lastWeek,totals};
+function renderRecentCombinedChart(canvasId, recentPostsDesc, platform, color1, color2) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  if (canvas._chart) canvas._chart.destroy();
+
+  if (!recentPostsDesc.length) return;
+
+  const sorted = [...recentPostsDesc].reverse();
+  const labels = sorted.map((p, i) => `#${recentPostsDesc.length - i}`);
+
+  const viewsData = sorted.map(p => p.views || 0);
+  const reachData = sorted.map(p => p.reach || 0);
+  const engData = sorted.map(p => (p.react||0) + (p.comm||0) + (p.shar||0) + (p.saved||0));
+
+  const extraData = platform === 'tt' ? engData : reachData;
+  const extraLabel = platform === 'tt' ? 'Engagement' : 'Alcance';
+  const extraColor = platform === 'tt' ? '#FF004F' : color2;
+
+  const allVals = [...viewsData, ...extraData];
+  const yMax = p95Max(allVals);
+  const y1Max = p95Max([1]);
+
+  const chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Publicaciones',
+          data: sorted.map(() => 1),
+          type: 'bar',
+          backgroundColor: 'rgba(160,160,160,0.35)',
+          borderColor: 'rgba(120,120,120,0.6)',
+          borderWidth: 1,
+          borderRadius: 3,
+          yAxisID: 'y1',
+          order: 2
+        },
+        {
+          label: 'Visualizaciones',
+          data: viewsData,
+          type: 'line',
+          borderColor: color1,
+          backgroundColor: color1 + '1A',
+          borderWidth: 2,
+          pointBackgroundColor: color1,
+          pointRadius: 3,
+          tension: 0.25,
+          fill: true,
+          yAxisID: 'y',
+          order: 0
+        },
+        {
+          label: extraLabel,
+          data: extraData,
+          type: 'line',
+          borderColor: extraColor,
+          borderDash: [4, 3],
+          backgroundColor: 'rgba(26,188,156,0.04)',
+          borderWidth: 2,
+          pointBackgroundColor: extraColor,
+          pointRadius: 3,
+          tension: 0.25,
+          fill: false,
+          yAxisID: 'y',
+          order: 1
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      animation: { duration: 250 },
+      plugins: {
+        legend: {
+          display: true,
+          position: 'top',
+          labels: { font: { size: 10 }, boxWidth: 12, usePointStyle: true }
+        },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              const v = context.raw;
+              if (context.dataset.label === 'Publicaciones') return `Publicaciones: ${Math.round(v)}`;
+              return `${context.dataset.label}: ${fmt(v)}`;
+            },
+            title: function(items) {
+              if (!items.length) return '';
+              const idx = items[0].dataIndex;
+              const post = sorted[idx];
+              const label = labels[idx];
+              return post?.date ? `${label} · ${post.date}` : label;
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { font: { size: 9 }, color: '#888' },
+          grid: { display: false }
+        },
+        y: {
+          type: 'linear',
+          position: 'left',
+          max: yMax,
+          beginAtZero: true,
+          ticks: { font: { size: 9 }, color: '#888', callback: v => fmt(v) },
+          grid: { color: 'rgba(0,0,0,0.05)' }
+        },
+        y1: {
+          type: 'linear',
+          position: 'right',
+          max: y1Max,
+          beginAtZero: true,
+          ticks: { font: { size: 9 }, color: '#888', callback: v => Math.round(v) },
+          grid: { drawOnChartArea: false }
+        }
+      }
+    }
+  });
+  canvas._chart = chart;
+}
+
+function getPostsForWeek(posts, weekKey) {
+  if (!weekKey) return [];
+  return posts.filter(p => {
+    if (!p.date) return false;
+    const wk = getWeekKey(p.date);
+    return wk === weekKey;
+  });
+}
+
+/* ══════════════════════════════════════════════════════════
+   FILTRO DE FECHAS POR PANEL
+   ══════════════════════════════════════════════════════════ */
+const _platformPostsCache = { fb: null, ig: null, tt: null };
+const _platformDateFilter = { fb: null, ig: null, tt: null };
+const _platformBuildFn    = { fb: null, ig: null, tt: null };
+
+function toggleDateFilter(platform) {
+  const bar = document.getElementById(`${platform}-date-bar`);
+  const btn = document.getElementById(`${platform}-date-btn`);
+  const isVisible = bar.classList.contains('visible');
+  bar.classList.toggle('visible', !isVisible);
+  btn.classList.toggle('active', !isVisible);
+}
+
+function applyDateFilter(platform) {
+  const from = document.getElementById(`${platform}-date-from`).value;
+  const to   = document.getElementById(`${platform}-date-to`).value;
+  if (!from && !to) { clearDateFilter(platform); return; }
+
+  _platformDateFilter[platform] = { from: from || null, to: to || null };
+
+  const noticeId = `${platform}-date-notice`;
+  const notice = document.getElementById(noticeId);
+  if (notice) {
+    const label = [from && `Desde ${from}`, to && `Hasta ${to}`].filter(Boolean).join(' · ');
+    notice.querySelector('span').textContent = `📅 Filtro activo: ${label}`;
+    notice.classList.add('visible');
+  }
+
+  const btn = document.getElementById(`${platform}-date-btn`);
+  if (btn) {
+    btn.classList.add('active');
+  }
+
+  rerenderWithDateFilter(platform);
+}
+
+function clearDateFilter(platform) {
+  _platformDateFilter[platform] = null;
+  document.getElementById(`${platform}-date-from`).value = '';
+  document.getElementById(`${platform}-date-to`).value = '';
+  document.getElementById(`${platform}-date-btn`).classList.remove('active');
+  const bar = document.getElementById(`${platform}-date-bar`);
+  bar.classList.remove('visible');
+  const notice = document.getElementById(`${platform}-date-notice`);
+  if (notice) notice.classList.remove('visible');
+  rerenderWithDateFilter(platform);
+}
+
+function rerenderWithDateFilter(platform) {
+  if (!_platformBuildFn[platform]) return;
+  _platformBuildFn[platform]();
+  setTimeout(syncBlockHeights, 100);
+}
+
+function filterPostsByDate(posts, platform) {
+  const f = _platformDateFilter[platform];
+  if (!f) return posts;
+  return posts.filter(p => {
+    if (!p.date) return false;
+    if (f.from && p.date < f.from) return false;
+    if (f.to   && p.date > f.to)   return false;
+    return true;
+  });
 }
 
 /* ══ FACEBOOK ══ */
 function buildFB(data, followersWeekChange) {
   const idP    = ['identificador','id','post id','publicación id','publicacion id','id publicación','id publicacion'];
   const dateP  = ['hora de publicación','fecha de publicación','fecha','date','publicación','publicacion','creación','created'];
-  const viewsP = ['visualizaciones','vistas','impresiones','views','impressions','reach','alcance'];
+  const viewsP = ['visualizaciones','vistas','impresiones','views','impressions'];
   const reachP = ['alcance','reach','personas','unique'];
   const reactP = ['reacciones','likes','me gusta','megusta','reactions'];
   const commP  = ['comentarios','comments','respuestas'];
@@ -945,112 +1374,149 @@ function buildFB(data, followersWeekChange) {
 
   if (!rows.length) return null;
 
-  const tot = rows.reduce((a,r)=>({
-    views:a.views+n(getField(r,viewsP)), reach:a.reach+n(getField(r,reachP)),
-    react:a.react+n(getField(r,reactP)), comm:a.comm+n(getField(r,commP)),
-    share:a.share+n(getField(r,shareP)), clicks:a.clicks+n(getField(r,clickP))
-  }),{views:0,reach:0,react:0,comm:0,share:0,clicks:0});
-
-  const lastWeekData = getLastWeekTotals(rows,dateP,reachP,viewsP,clickP,null);
-  const weekRange = lastWeekData.weekKey ? getWeekRange(lastWeekData.weekKey) : '';
-  const weekly = { newFollowers:followersWeekChange||0, reach:lastWeekData.totals.reach, impressions:lastWeekData.totals.views, clicks:lastWeekData.totals.clicks };
-
-  const totEng = tot.react+tot.comm+tot.share;
-  const avgER  = tot.reach>0?(totEng/tot.reach*100).toFixed(2):'0';
-  const avgV   = rows.length?Math.round(tot.views/rows.length):0;
-  const reels  = rows.filter(r=>(getField(r,typeP)||'').toLowerCase().includes('reel'));
-  const videos = rows.filter(r=>{ const t=(getField(r,typeP)||'').toLowerCase(); return t.includes('video')&&!t.includes('reel'); });
-  const fotos  = rows.filter(r=>{ const t=(getField(r,typeP)||'').toLowerCase(); return t.includes('foto')||t.includes('imagen')||t.includes('secuencia'); });
-  const otros  = rows.length-reels.length-videos.length-fotos.length;
-
-  document.getElementById('fb-count').textContent=`${rows.length} publicaciones`;
-
-  const fbIcon=`<span class="kpi-block-icon fb"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" fill="white"/></svg></span>`;
-
-  let wrItems = `<div class="wr-item"><span class="wr-label">Seguidores nuevos</span><span class="wr-value">${weekly.newFollowers>0?'+':''}${weekly.newFollowers}</span></div>`;
-  wrItems += `<div class="wr-item"><span class="wr-label">Alcance total</span><span class="wr-value">${fmt(weekly.reach)}</span><span class="wr-sub">personas únicas</span></div>`;
-  wrItems += `<div class="wr-item"><span class="wr-label">Impresiones</span><span class="wr-value">${fmt(weekly.impressions)}</span><span class="wr-sub">visualizaciones</span></div>`;
-  wrItems += `<div class="wr-item"><span class="wr-label">Clics</span><span class="wr-value">${fmt(weekly.clicks)}</span></div>`;
-
-  const posts = rows.map(r=>({
+  const allPosts = rows.map(r=>({
     title:getField(r,titleP)||'(Sin título)', link:getField(r,linkP), type:getField(r,typeP),
     date:parseDateFlexible(getField(r,dateP))||'',
     views:n(getField(r,viewsP)), reach:n(getField(r,reachP)), react:n(getField(r,reactP)),
     comm:n(getField(r,commP)), shar:n(getField(r,shareP)), saved:0, clicks:n(getField(r,clickP)), retention:0, raw:r
   }));
+  _platformPostsCache.fb = allPosts;
 
-  let html = `
-    <div class="kpi-block-title">${fbIcon} BLOQUE 1 — KPIs DE CUENTA</div>
-    <div class="sec-title" style="margin-bottom:0.3rem;">
-      📊 Reporte Semanal
-      ${weekRange ? `<span style="font-size:9px; font-weight:400; color:#888; margin-left:8px;">${weekRange}</span>` : ''}
-    </div>
-    <div class="weekly-report" style="grid-template-columns:repeat(2,1fr);">${wrItems}</div>
+  const render = () => {
+    const posts = filterPostsByDate(allPosts, 'fb');
 
-    <div class="sec-title">Evolución</div>
-    ${chartControlsHTML('fb',[
-      {color:'rgba(140,140,140,0.6)',label:'Publicaciones',opacity:0.6},
-      {color:'#52BEC0',label:'Visualizaciones'},
-      {color:'#1ABC9C',label:'Alcance',dash:true}
-    ])}
-    <div class="chart-wrap"><canvas id="fb-chart"></canvas></div>
+    const tot = posts.reduce((a,p)=>({
+      views:a.views+p.views, reach:a.reach+p.reach,
+      react:a.react+p.react, comm:a.comm+p.comm,
+      share:a.share+p.shar, clicks:a.clicks+p.clicks
+    }),{views:0,reach:0,react:0,comm:0,share:0,clicks:0});
 
-    ${blockSpacer()}
+    const lastWeekData = getLastWeekTotalsFromPosts(posts);
+    const weekRange = lastWeekData.weekKey ? getWeekRange(lastWeekData.weekKey) : '';
+    const weekly = { newFollowers:followersWeekChange||0, reach:lastWeekData.totals.reach, impressions:lastWeekData.totals.views, clicks:lastWeekData.totals.clicks };
 
-    <div class="kpi-block-title" style="border-bottom-color:#52BEC0;"><span>📊 BLOQUE 2A — HISTÓRICO DE CONTENIDO</span></div>
+    const totEng = tot.react+tot.comm+tot.share;
+    const avgER  = tot.reach>0?(totEng/tot.reach*100).toFixed(2):'0';
+    const avgV   = posts.length?Math.round(tot.views/posts.length):0;
+    const reels  = posts.filter(p=>(p.type||'').toLowerCase().includes('reel'));
+    const videos = posts.filter(p=>{ const t=(p.type||'').toLowerCase(); return t.includes('video')&&!t.includes('reel'); });
+    const fotos  = posts.filter(p=>{ const t=(p.type||'').toLowerCase(); return t.includes('foto')||t.includes('imagen')||t.includes('secuencia'); });
+    const otros  = posts.length-reels.length-videos.length-fotos.length;
 
-    <div class="kpi-grid">
-      <div class="kpi kpi-publicaciones"><div class="k-label">Publicaciones</div><div class="k-val">${rows.length}</div><div class="k-sub">identificadas</div></div>
-      <div class="kpi"><div class="k-label">${ICO.users} Alcance</div><div class="k-val">${fmt(tot.reach)}</div><div class="k-sub">personas únicas</div></div>
-      <div class="kpi"><div class="k-label">${ICO.eye} Visualizaciones</div><div class="k-val">${fmt(tot.views)}</div><div class="k-sub">~${fmt(avgV)} / post</div></div>
-      <div class="kpi"><div class="k-label">${ICO.chart} Engagement</div><div class="k-val">${avgER}%</div><div class="k-sub">sobre alcance</div></div>
-    </div>
-    <div class="kpi-grid-2">
-      <div class="kpi"><div class="k-label">${ICO.click} Clics</div><div class="k-val">${fmt(tot.clicks)}</div><div class="k-sub">totales</div></div>
-      <div class="kpi"><div class="k-label">${ICO.chart} Interacciones</div><div class="k-val">${fmt(totEng)}</div><div class="k-sub">react + comm + share</div></div>
-    </div>
-    <div class="sec-title" style="margin-top:0.3rem;margin-bottom:0.3rem;">Desglose</div>
-    <div class="kpi-grid-small">
-      <div class="kpi kpi-small"><div class="k-label">${ICO.heart} Reacciones</div><div class="k-val">${fmt(tot.react)}</div></div>
-      <div class="kpi kpi-small"><div class="k-label">${ICO.msg} Comentarios</div><div class="k-val">${fmt(tot.comm)}</div></div>
-      <div class="kpi kpi-small"><div class="k-label">${ICO.share} Compartidos</div><div class="k-val">${fmt(tot.share)}</div></div>
-      <div class="kpi kpi-small"><div class="k-label">${ICO.click} Clics</div><div class="k-val">${fmt(tot.clicks)}</div></div>
-    </div>
-    <div class="sec-title">Mix de contenido</div>
-    <div class="pie-chart-wrap"><canvas id="fb-pie-chart"></canvas></div>
-    <div class="mix-row">
-      <div class="mix-pill">Reels <span>${reels.length}</span></div>
-      <div class="mix-pill">Videos <span>${videos.length}</span></div>
-      <div class="mix-pill">Fotos/Imgs <span>${fotos.length}</span></div>
-      <div class="mix-pill">Otros <span>${otros}</span></div>
-    </div>
+    const filterActive = !!_platformDateFilter.fb;
+    const filterLabel = filterActive ? (() => {
+      const f = _platformDateFilter.fb;
+      return [f.from && `Desde ${f.from}`, f.to && `Hasta ${f.to}`].filter(Boolean).join(' · ');
+    })() : '';
 
-    <div id="fb-top-posts"></div>
+    document.getElementById('fb-count').textContent=`${posts.length} publicaciones${filterActive ? ` (filtrado de ${allPosts.length})` : ''}`;
 
-    ${blockSpacer()}
+    const fbIcon=`<span class="kpi-block-icon fb"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" fill="white"/></svg></span>`;
 
-    <div class="kpi-block-title" style="border-bottom-color:#52BEC0;"><span>📊 BLOQUE 2B — ÚLTIMAS 5 PUBLICACIONES</span></div>
-    ${avgRecentHTML(posts,'fb')}
-    <div id="fb-recent-posts"></div>
-  `;
+    let wrItems = `<div class="wr-item"><span class="wr-label">Seguidores nuevos</span><span class="wr-value">${weekly.newFollowers>0?'+':''}${weekly.newFollowers}</span></div>`;
+    wrItems += `<div class="wr-item"><span class="wr-label">Alcance total</span><span class="wr-value">${fmt(weekly.reach)}</span><span class="wr-sub">personas únicas</span></div>`;
+    wrItems += `<div class="wr-item"><span class="wr-label">Impresiones</span><span class="wr-value">${fmt(weekly.impressions)}</span><span class="wr-sub">visualizaciones</span></div>`;
+    wrItems += `<div class="wr-item"><span class="wr-label">Clics</span><span class="wr-value">${fmt(weekly.clicks)}</span></div>`;
 
-  document.getElementById('fb-body').innerHTML = html;
+    const weekPosts = getPostsForWeek(posts, lastWeekData.weekKey);
+    const recent5 = [...posts].filter(p=>p.date).sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5);
+    const top5    = [...posts].sort((a,b)=>b.views-a.views).slice(0,5);
 
-  setTimeout(()=>{
-    renderPieChart('fb-pie-chart',['Reels','Videos','Fotos/Imgs','Otros'],[reels.length,videos.length,fotos.length,otros],['#52BEC0','#3DA8AA','#7DD0D2','#000000']);
-  },100);
+    let html = `
+      <div class="date-filter-notice" id="fb-date-notice"${filterActive?' style="display:flex;"':''}>
+        <span>${filterActive ? `📅 Filtro activo: ${filterLabel}` : ''}</span>
+        <button onclick="clearDateFilter('fb')" title="Quitar filtro">✕</button>
+      </div>
 
-  window.ctrl_fb = new ChartController({canvasId:'fb-chart',navId:'nav-fb',platform:'fb',color1:'#52BEC0',color2:'#1ABC9C',extraDataset:{key:'reach',label:'Alcance'}});
-  rows.forEach(r=>{ const dt=parseDateFlexible(getField(r,dateP)); if(dt) window.ctrl_fb.addRow(dt,n(getField(r,viewsP)),n(getField(r,reachP)),n(getField(r,reactP))+n(getField(r,commP))+n(getField(r,shareP))); });
-  window.ctrl_fb.render();
+      <div class="block-container">
+        <div class="kpi-block-title">${fbIcon} BLOQUE 1 — KPIs DE CUENTA</div>
+        <div class="sec-title" style="margin-bottom:0.3rem;">
+          📊 Reporte Semanal
+          ${weekRange ? `<span style="font-size:9px; font-weight:400; color:#888; margin-left:8px;">${weekRange}</span>` : ''}
+        </div>
+        <div class="weekly-report" style="grid-template-columns:repeat(2,1fr);">${wrItems}</div>
+      </div>
 
-  const top5 = [...posts].sort((a,b)=>b.views-a.views).slice(0,5);
-  renderPostCards('fb-top-posts',top5,'Top 5 por visualizaciones','Facebook','#52BEC0');
+      <div class="block-container">
+        <div class="sec-title">Evolución</div>
+        ${chartControlsHTML('fb',[
+          {color:'rgba(140,140,140,0.6)',label:'Publicaciones',opacity:0.6},
+          {color:'#52BEC0',label:'Visualizaciones'},
+          {color:'#1ABC9C',label:'Alcance',dash:true}
+        ])}
+        <div class="chart-wrap"><canvas id="fb-chart"></canvas></div>
+      </div>
 
-  const recent5 = [...posts].filter(p=>p.date).sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5);
-  renderPostCards('fb-recent-posts',recent5,'📊 BLOQUE 2B — ÚLTIMAS 5 PUBLICACIONES','Facebook','#52BEC0',true);
+      <div class="block-container">
+        <div class="sec-title" style="margin-top:0.5rem;">📌 Publicaciones de esta semana</div>
+        <div id="fb-week-posts"></div>
+      </div>
 
-  return {totViews:tot.views,totReach:tot.reach,totEng,count:rows.length,rows};
+      ${blockSpacer()}
+
+      <div class="block-container">
+        <div class="kpi-block-title" style="border-bottom-color:#52BEC0;"><span>📊 BLOQUE 2A — HISTÓRICO DE CONTENIDO</span></div>
+        <div class="kpi-grid">
+          <div class="kpi kpi-publicaciones"><div class="k-label">Publicaciones</div><div class="k-val">${posts.length}</div><div class="k-sub">identificadas</div></div>
+          <div class="kpi"><div class="k-label">${ICO.users} Alcance</div><div class="k-val">${fmt(tot.reach)}</div><div class="k-sub">personas únicas</div></div>
+          <div class="kpi"><div class="k-label">${ICO.eye} Visualizaciones</div><div class="k-val">${fmt(tot.views)}</div><div class="k-sub">~${fmt(avgV)} / post</div></div>
+          <div class="kpi"><div class="k-label">${ICO.chart} Engagement</div><div class="k-val">${avgER}%</div><div class="k-sub">sobre alcance</div></div>
+        </div>
+        <div class="kpi-grid-2">
+          <div class="kpi"><div class="k-label">${ICO.click} Clics</div><div class="k-val">${fmt(tot.clicks)}</div><div class="k-sub">totales</div></div>
+          <div class="kpi"><div class="k-label">${ICO.chart} Interacciones</div><div class="k-val">${fmt(totEng)}</div><div class="k-sub">react + comm + share</div></div>
+        </div>
+        <div class="sec-title" style="margin-top:0.3rem;margin-bottom:0.3rem;">Desglose</div>
+        <div class="kpi-grid-small">
+          <div class="kpi kpi-small"><div class="k-label">${ICO.heart} Reacciones</div><div class="k-val">${fmt(tot.react)}</div></div>
+          <div class="kpi kpi-small"><div class="k-label">${ICO.msg} Comentarios</div><div class="k-val">${fmt(tot.comm)}</div></div>
+          <div class="kpi kpi-small"><div class="k-label">${ICO.share} Compartidos</div><div class="k-val">${fmt(tot.share)}</div></div>
+          <div class="kpi kpi-small"><div class="k-label">${ICO.click} Clics</div><div class="k-val">${fmt(tot.clicks)}</div></div>
+        </div>
+        <div class="sec-title">Mix de contenido</div>
+        <div class="pie-chart-wrap"><canvas id="fb-pie-chart"></canvas></div>
+        <div class="mix-row">
+          <div class="mix-pill">Reels <span>${reels.length}</span></div>
+          <div class="mix-pill">Videos <span>${videos.length}</span></div>
+          <div class="mix-pill">Fotos/Imgs <span>${fotos.length}</span></div>
+          <div class="mix-pill">Otros <span>${otros}</span></div>
+        </div>
+        <div id="fb-top-posts"></div>
+      </div>
+
+      ${blockSpacer()}
+
+      <div class="block-container">
+        <div class="kpi-block-title" style="border-bottom-color:#52BEC0;"><span>📊 BLOQUE 2B — ÚLTIMAS 5 PUBLICACIONES</span></div>
+        ${avgRecentHTML(posts,'fb')}
+        <div style="position:relative;width:100%;height:160px;margin-bottom:0.8rem;"><canvas id="fb-recent-bar"></canvas></div>
+        <div id="fb-recent-posts"></div>
+      </div>
+    `;
+
+    document.getElementById('fb-body').innerHTML = html;
+
+    renderPostCards('fb-week-posts', weekPosts, 'Publicaciones de esta semana', 'Facebook', '#52BEC0');
+
+    setTimeout(()=>{
+      renderPieChart('fb-pie-chart',['Reels','Videos','Fotos/Imgs','Otros'],[reels.length,videos.length,fotos.length,otros],['#52BEC0','#3DA8AA','#7DD0D2','#000000']);
+    },100);
+
+    window.ctrl_fb = new ChartController({canvasId:'fb-chart',navId:'nav-fb',platform:'fb',color1:'#52BEC0',color2:'#1ABC9C',extraDataset:{key:'reach',label:'Alcance'}});
+    posts.forEach(p=>{ if(p.date) window.ctrl_fb.addRow(p.date, p.views, p.reach, p.react+p.comm+p.shar); });
+    window.ctrl_fb.render();
+
+    renderPostCards('fb-top-posts', top5, 'Top 5 por visualizaciones', 'Facebook', '#52BEC0');
+    renderPostCards('fb-recent-posts', recent5, '', 'Facebook', '#52BEC0', true);
+    setTimeout(()=>{ renderRecentCombinedChart('fb-recent-bar', recent5, 'fb', '#52BEC0', '#1ABC9C'); }, 200);
+    
+    setTimeout(syncBlockHeights, 300);
+  };
+
+  _platformBuildFn.fb = render;
+  render();
+
+  return { totViews: allPosts.reduce((s,p)=>s+p.views,0), totReach: allPosts.reduce((s,p)=>s+p.reach,0), totEng: allPosts.reduce((s,p)=>s+p.react+p.comm+p.shar,0), count: allPosts.length, rows };
 }
 
 /* ══ INSTAGRAM ══ */
@@ -1075,116 +1541,146 @@ function buildIG(data, followersWeekChange) {
 
   if (!rows.length) return null;
 
-  const tot = rows.reduce((a,r)=>({
-    views:a.views+n(getField(r,viewsP)), reach:a.reach+n(getField(r,reachP)),
-    likes:a.likes+n(getField(r,likesP)), comm:a.comm+n(getField(r,commP)),
-    share:a.share+n(getField(r,shareP)), saved:a.saved+n(getField(r,savedP)),
-    follow:a.follow+n(getField(r,followP))
-  }),{views:0,reach:0,likes:0,comm:0,share:0,saved:0,follow:0});
-
-  const lastWeekData = getLastWeekTotals(rows,dateP,reachP,viewsP,null,followP);
-  const weekRange = lastWeekData.weekKey ? getWeekRange(lastWeekData.weekKey) : '';
-  const weekly = { newFollowers:followersWeekChange||0, reach:lastWeekData.totals.reach, impressions:lastWeekData.totals.views, profileVisits:lastWeekData.totals.follow };
-
-  const totEng = tot.likes+tot.comm+tot.share+tot.saved;
-  const avgER  = tot.reach>0?(totEng/tot.reach*100).toFixed(2):'0';
-  const avgV   = rows.length?Math.round(tot.views/rows.length):0;
-  const reels  = rows.filter(r=>(getField(r,typeP)||'').toLowerCase().includes('reel'));
-  const stories= rows.filter(r=>{ const t=(getField(r,typeP)||'').toLowerCase(); return t.includes('historia')||t.includes('story'); });
-  const fotos  = rows.filter(r=>{ const t=(getField(r,typeP)||'').toLowerCase(); return t.includes('foto')||t.includes('imagen')||t.includes('secuencia'); });
-  const otros  = rows.length-reels.length-stories.length-fotos.length;
-
-  document.getElementById('ig-count').textContent=`${rows.length} publicaciones`;
-
-  const igIcon=`<span class="kpi-block-icon ig"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" fill="white"/></svg></span>`;
-
-  let wrItems = `<div class="wr-item"><span class="wr-label">Seguidores nuevos</span><span class="wr-value">${weekly.newFollowers>0?'+':''}${weekly.newFollowers}</span></div>`;
-  wrItems += `<div class="wr-item"><span class="wr-label">Alcance total</span><span class="wr-value">${fmt(weekly.reach)}</span><span class="wr-sub">personas únicas</span></div>`;
-  wrItems += `<div class="wr-item"><span class="wr-label">Impresiones</span><span class="wr-value">${fmt(weekly.impressions)}</span><span class="wr-sub">visualizaciones</span></div>`;
-  if (weekly.profileVisits > 0) {
-    wrItems += `<div class="wr-item"><span class="wr-label">Visitas al perfil</span><span class="wr-value">${fmt(weekly.profileVisits)}</span></div>`;
-  }
-
-  const posts = rows.map(r=>({
+  const allPosts = rows.map(r=>({
     title:getField(r,titleP)||'(Sin título)', link:getField(r,linkP), type:getField(r,typeP),
     date:parseDateFlexible(getField(r,dateP))||'',
     views:n(getField(r,viewsP)), reach:n(getField(r,reachP)), react:n(getField(r,likesP)),
     comm:n(getField(r,commP)), shar:n(getField(r,shareP)), saved:n(getField(r,savedP)),
-    clicks:0, retention:n(getField(r,retP)), raw:r
+    clicks:0, retention:n(getField(r,retP)), follow:n(getField(r,followP)), raw:r
   }));
+  _platformPostsCache.ig = allPosts;
 
-  let html = `
-    <div class="kpi-block-title">${igIcon} BLOQUE 1 — KPIs DE CUENTA</div>
-    <div class="sec-title" style="margin-bottom:0.3rem;">
-      📊 Reporte Semanal
-      ${weekRange ? `<span style="font-size:9px; font-weight:400; color:#888; margin-left:8px;">${weekRange}</span>` : ''}
-    </div>
-    <div class="weekly-report" style="grid-template-columns:repeat(2,1fr);">${wrItems}</div>
+  const render = () => {
+    const posts = filterPostsByDate(allPosts, 'ig');
 
-    <div class="sec-title">Evolución</div>
-    ${chartControlsHTML('ig',[
-      {color:'rgba(140,140,140,0.6)',label:'Publicaciones',opacity:0.6},
-      {color:'#C13584',label:'Visualizaciones'},
-      {color:'#1ABC9C',label:'Alcance',dash:true}
-    ])}
-    <div class="chart-wrap"><canvas id="ig-chart"></canvas></div>
+    const tot = posts.reduce((a,p)=>({
+      views:a.views+p.views, reach:a.reach+p.reach,
+      likes:a.likes+p.react, comm:a.comm+p.comm,
+      share:a.share+p.shar, saved:a.saved+p.saved,
+      follow:a.follow+(p.follow||0)
+    }),{views:0,reach:0,likes:0,comm:0,share:0,saved:0,follow:0});
 
-    ${blockSpacer()}
+    const lastWeekData = getLastWeekTotalsFromPosts(posts);
+    const weekRange = lastWeekData.weekKey ? getWeekRange(lastWeekData.weekKey) : '';
+    const weekly = { newFollowers:followersWeekChange||0, reach:lastWeekData.totals.reach, impressions:lastWeekData.totals.views, profileVisits:lastWeekData.totals.follow };
 
-    <div class="kpi-block-title" style="border-bottom-color:#52BEC0;"><span>📊 BLOQUE 2A — HISTÓRICO DE CONTENIDO</span></div>
+    const totEng = tot.likes+tot.comm+tot.share+tot.saved;
+    const avgER  = tot.reach>0?(totEng/tot.reach*100).toFixed(2):'0';
+    const avgV   = posts.length?Math.round(tot.views/posts.length):0;
+    const reels  = posts.filter(p=>(p.type||'').toLowerCase().includes('reel'));
+    const stories= posts.filter(p=>{ const t=(p.type||'').toLowerCase(); return t.includes('historia')||t.includes('story'); });
+    const fotos  = posts.filter(p=>{ const t=(p.type||'').toLowerCase(); return t.includes('foto')||t.includes('imagen')||t.includes('secuencia'); });
+    const otros  = posts.length-reels.length-stories.length-fotos.length;
 
-    <div class="kpi-grid">
-      <div class="kpi kpi-publicaciones"><div class="k-label">Publicaciones</div><div class="k-val">${rows.length}</div><div class="k-sub">identificadas</div></div>
-      <div class="kpi"><div class="k-label">${ICO.users} Alcance</div><div class="k-val">${fmt(tot.reach)}</div><div class="k-sub">personas únicas</div></div>
-      <div class="kpi"><div class="k-label">${ICO.eye} Visualizaciones</div><div class="k-val">${fmt(tot.views)}</div><div class="k-sub">~${fmt(avgV)} / post</div></div>
-      <div class="kpi"><div class="k-label">${ICO.chart} Engagement</div><div class="k-val">${avgER}%</div><div class="k-sub">sobre alcance</div></div>
-    </div>
-    <div class="kpi-grid-2">
-      <div class="kpi"><div class="k-label">${ICO.follow} Visitas perfil</div><div class="k-val">${fmt(tot.follow)}</div><div class="k-sub">totales</div></div>
-      <div class="kpi"><div class="k-label">${ICO.chart} Interacciones</div><div class="k-val">${fmt(totEng)}</div><div class="k-sub">likes + comm + share + saved</div></div>
-    </div>
-    <div class="sec-title" style="margin-top:0.3rem;margin-bottom:0.3rem;">Desglose</div>
-    <div class="kpi-grid-small">
-      <div class="kpi kpi-small"><div class="k-label">${ICO.heart} Me gusta</div><div class="k-val">${fmt(tot.likes)}</div></div>
-      <div class="kpi kpi-small"><div class="k-label">${ICO.msg} Comentarios</div><div class="k-val">${fmt(tot.comm)}</div></div>
-      <div class="kpi kpi-small"><div class="k-label">${ICO.share} Compartidos</div><div class="k-val">${fmt(tot.share)}</div></div>
-      <div class="kpi kpi-small"><div class="k-label">${ICO.save} Guardados</div><div class="k-val">${fmt(tot.saved)}</div></div>
-    </div>
-    <div class="sec-title">Mix de contenido</div>
-    <div class="pie-chart-wrap"><canvas id="ig-pie-chart"></canvas></div>
-    <div class="mix-row">
-      <div class="mix-pill">Reels <span>${reels.length}</span></div>
-      <div class="mix-pill">Historias <span>${stories.length}</span></div>
-      <div class="mix-pill">Fotos/Imgs <span>${fotos.length}</span></div>
-      <div class="mix-pill">Otros <span>${otros}</span></div>
-    </div>
+    const filterActive = !!_platformDateFilter.ig;
+    const filterLabel  = filterActive ? (() => { const f=_platformDateFilter.ig; return [f.from&&`Desde ${f.from}`,f.to&&`Hasta ${f.to}`].filter(Boolean).join(' · '); })() : '';
 
-    <div id="ig-top-posts"></div>
+    document.getElementById('ig-count').textContent=`${posts.length} publicaciones${filterActive ? ` (filtrado de ${allPosts.length})` : ''}`;
 
-    ${blockSpacer()}
+    const igIcon=`<span class="kpi-block-icon ig"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" fill="white"/></svg></span>`;
 
-    <div class="kpi-block-title" style="border-bottom-color:#C13584;"><span>📊 BLOQUE 2B — ÚLTIMAS 5 PUBLICACIONES</span></div>
-    ${avgRecentHTML(posts,'ig')}
-    <div id="ig-recent-posts"></div>
-  `;
+    let wrItems = `<div class="wr-item"><span class="wr-label">Seguidores nuevos</span><span class="wr-value">${weekly.newFollowers>0?'+':''}${weekly.newFollowers}</span></div>`;
+    wrItems += `<div class="wr-item"><span class="wr-label">Alcance total</span><span class="wr-value">${fmt(weekly.reach)}</span><span class="wr-sub">personas únicas</span></div>`;
+    wrItems += `<div class="wr-item"><span class="wr-label">Impresiones</span><span class="wr-value">${fmt(weekly.impressions)}</span><span class="wr-sub">visualizaciones</span></div>`;
+    if (weekly.profileVisits > 0) wrItems += `<div class="wr-item"><span class="wr-label">Visitas al perfil</span><span class="wr-value">${fmt(weekly.profileVisits)}</span></div>`;
 
-  document.getElementById('ig-body').innerHTML = html;
+    const weekPosts = getPostsForWeek(posts, lastWeekData.weekKey);
+    const recent5 = [...posts].filter(p=>p.date).sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5);
+    const top5    = [...posts].sort((a,b)=>b.views-a.views).slice(0,5);
 
-  setTimeout(()=>{
-    renderPieChart('ig-pie-chart',['Reels','Historias','Fotos/Imgs','Otros'],[reels.length,stories.length,fotos.length,otros],['#52BEC0','#3DA8AA','#7DD0D2','#000000']);
-  },100);
+    let html = `
+      <div class="date-filter-notice" id="ig-date-notice"${filterActive?' style="display:flex;"':''}>
+        <span>${filterActive ? `📅 Filtro activo: ${filterLabel}` : ''}</span>
+        <button onclick="clearDateFilter('ig')" title="Quitar filtro">✕</button>
+      </div>
 
-  window.ctrl_ig = new ChartController({canvasId:'ig-chart',navId:'nav-ig',platform:'ig',color1:'#C13584',color2:'#1ABC9C',extraDataset:{key:'reach',label:'Alcance'}});
-  rows.forEach(r=>{ const dt=parseDateFlexible(getField(r,dateP)); if(dt) window.ctrl_ig.addRow(dt,n(getField(r,viewsP)),n(getField(r,reachP)),n(getField(r,likesP))+n(getField(r,commP))+n(getField(r,shareP))+n(getField(r,savedP))); });
-  window.ctrl_ig.render();
+      <div class="block-container">
+        <div class="kpi-block-title">${igIcon} BLOQUE 1 — KPIs DE CUENTA</div>
+        <div class="sec-title" style="margin-bottom:0.3rem;">
+          📊 Reporte Semanal
+          ${weekRange ? `<span style="font-size:9px; font-weight:400; color:#888; margin-left:8px;">${weekRange}</span>` : ''}
+        </div>
+        <div class="weekly-report" style="grid-template-columns:repeat(2,1fr);">${wrItems}</div>
+      </div>
 
-  const top5 = [...posts].sort((a,b)=>b.views-a.views).slice(0,5);
-  renderPostCards('ig-top-posts',top5,'Top 5 por visualizaciones','Instagram','#C13584');
+      <div class="block-container">
+        <div class="sec-title">Evolución</div>
+        ${chartControlsHTML('ig',[
+          {color:'rgba(140,140,140,0.6)',label:'Publicaciones',opacity:0.6},
+          {color:'#C13584',label:'Visualizaciones'},
+          {color:'#1ABC9C',label:'Alcance',dash:true}
+        ])}
+        <div class="chart-wrap"><canvas id="ig-chart"></canvas></div>
+      </div>
 
-  const recent5 = [...posts].filter(p=>p.date).sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5);
-  renderPostCards('ig-recent-posts',recent5,'📊 BLOQUE 2B — ÚLTIMAS 5 PUBLICACIONES','Instagram','#C13584',true);
+      <div class="block-container">
+        <div class="sec-title" style="margin-top:0.5rem;">📌 Publicaciones de esta semana</div>
+        <div id="ig-week-posts"></div>
+      </div>
 
-  return {totViews:tot.views,totReach:tot.reach,totEng,count:rows.length,rows};
+      ${blockSpacer()}
+
+      <div class="block-container">
+        <div class="kpi-block-title" style="border-bottom-color:#52BEC0;"><span>📊 BLOQUE 2A — HISTÓRICO DE CONTENIDO</span></div>
+        <div class="kpi-grid">
+          <div class="kpi kpi-publicaciones"><div class="k-label">Publicaciones</div><div class="k-val">${posts.length}</div><div class="k-sub">identificadas</div></div>
+          <div class="kpi"><div class="k-label">${ICO.users} Alcance</div><div class="k-val">${fmt(tot.reach)}</div><div class="k-sub">personas únicas</div></div>
+          <div class="kpi"><div class="k-label">${ICO.eye} Visualizaciones</div><div class="k-val">${fmt(tot.views)}</div><div class="k-sub">~${fmt(avgV)} / post</div></div>
+          <div class="kpi"><div class="k-label">${ICO.chart} Engagement</div><div class="k-val">${avgER}%</div><div class="k-sub">sobre alcance</div></div>
+        </div>
+        <div class="kpi-grid-2">
+          <div class="kpi"><div class="k-label">${ICO.follow} Visitas perfil</div><div class="k-val">${fmt(tot.follow)}</div><div class="k-sub">totales</div></div>
+          <div class="kpi"><div class="k-label">${ICO.chart} Interacciones</div><div class="k-val">${fmt(totEng)}</div><div class="k-sub">likes + comm + share + saved</div></div>
+        </div>
+        <div class="sec-title" style="margin-top:0.3rem;margin-bottom:0.3rem;">Desglose</div>
+        <div class="kpi-grid-small">
+          <div class="kpi kpi-small"><div class="k-label">${ICO.heart} Me gusta</div><div class="k-val">${fmt(tot.likes)}</div></div>
+          <div class="kpi kpi-small"><div class="k-label">${ICO.msg} Comentarios</div><div class="k-val">${fmt(tot.comm)}</div></div>
+          <div class="kpi kpi-small"><div class="k-label">${ICO.share} Compartidos</div><div class="k-val">${fmt(tot.share)}</div></div>
+          <div class="kpi kpi-small"><div class="k-label">${ICO.save} Guardados</div><div class="k-val">${fmt(tot.saved)}</div></div>
+        </div>
+        <div class="sec-title">Mix de contenido</div>
+        <div class="pie-chart-wrap"><canvas id="ig-pie-chart"></canvas></div>
+        <div class="mix-row">
+          <div class="mix-pill">Reels <span>${reels.length}</span></div>
+          <div class="mix-pill">Historias <span>${stories.length}</span></div>
+          <div class="mix-pill">Fotos/Imgs <span>${fotos.length}</span></div>
+          <div class="mix-pill">Otros <span>${otros}</span></div>
+        </div>
+        <div id="ig-top-posts"></div>
+      </div>
+
+      ${blockSpacer()}
+
+      <div class="block-container">
+        <div class="kpi-block-title" style="border-bottom-color:#C13584;"><span>📊 BLOQUE 2B — ÚLTIMAS 5 PUBLICACIONES</span></div>
+        ${avgRecentHTML(posts,'ig')}
+        <div style="position:relative;width:100%;height:160px;margin-bottom:0.8rem;"><canvas id="ig-recent-bar"></canvas></div>
+        <div id="ig-recent-posts"></div>
+      </div>
+    `;
+
+    document.getElementById('ig-body').innerHTML = html;
+
+    renderPostCards('ig-week-posts', weekPosts, 'Publicaciones de esta semana', 'Instagram', '#C13584');
+    setTimeout(()=>{ renderPieChart('ig-pie-chart',['Reels','Historias','Fotos/Imgs','Otros'],[reels.length,stories.length,fotos.length,otros],['#52BEC0','#3DA8AA','#7DD0D2','#000000']); },100);
+
+    window.ctrl_ig = new ChartController({canvasId:'ig-chart',navId:'nav-ig',platform:'ig',color1:'#C13584',color2:'#1ABC9C',extraDataset:{key:'reach',label:'Alcance'}});
+    posts.forEach(p=>{ if(p.date) window.ctrl_ig.addRow(p.date, p.views, p.reach, p.react+p.comm+p.shar+p.saved); });
+    window.ctrl_ig.render();
+
+    renderPostCards('ig-top-posts', top5, 'Top 5 por visualizaciones', 'Instagram', '#C13584');
+    renderPostCards('ig-recent-posts', recent5, '', 'Instagram', '#C13584', true);
+    setTimeout(()=>{ renderRecentCombinedChart('ig-recent-bar', recent5, 'ig', '#C13584', '#1ABC9C'); }, 200);
+    
+    setTimeout(syncBlockHeights, 300);
+  };
+
+  _platformBuildFn.ig = render;
+  render();
+
+  const totIG = allPosts.reduce((a,p)=>({ views:a.views+p.views, reach:a.reach+p.reach, eng:a.eng+p.react+p.comm+p.shar+p.saved }),{views:0,reach:0,eng:0});
+  return { totViews:totIG.views, totReach:totIG.reach, totEng:totIG.eng, count:allPosts.length, rows };
 }
 
 /* ══ TIKTOK ══ */
@@ -1198,100 +1694,147 @@ function buildTT(data, followersWeekChange) {
   const retP   = ['retención','retencion','retention','avg watch'];
 
   const rows = data.filter(r=>{ const title=getField(r,titleP); const dt=getField(r,dateP); return title&&dt; });
-
   if (!rows.length) return null;
 
-  const tot = rows.reduce((a,r)=>({
-    views:a.views+n(getField(r,viewsP)), likes:a.likes+n(getField(r,likesP)), comm:a.comm+n(getField(r,commP))
-  }),{views:0,likes:0,comm:0});
-
-  const lastWeekData = getLastWeekTotals(rows,dateP,null,viewsP,null,null);
-  const weekRange = lastWeekData.weekKey ? getWeekRange(lastWeekData.weekKey) : '';
-  const weekly = { newFollowers:followersWeekChange||0, impressions:lastWeekData.totals.views };
-
-  const totEng = tot.likes+tot.comm;
-  const avgV = rows.length?Math.round(tot.views/rows.length):0;
-
-  document.getElementById('tt-count').textContent=`${rows.length} publicaciones`;
-
-  const ttIcon=`<span class="kpi-block-icon tt"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-5.201 1.743l-.002-.001.002.001a2.895 2.895 0 0 1 3.183-4.51v-3.5a6.329 6.329 0 0 0-5.394 10.692 6.33 6.33 0 0 0 10.857-4.424V8.687a8.182 8.182 0 0 0 4.773 1.526V6.79a4.831 4.831 0 0 1-1.003-.104z" fill="white"/></svg></span>`;
-
-  let wrItems = `<div class="wr-item"><span class="wr-label">Seguidores nuevos</span><span class="wr-value">${weekly.newFollowers>0?'+':''}${weekly.newFollowers}</span></div>`;
-  wrItems += `<div class="wr-item"><span class="wr-label">Impresiones</span><span class="wr-value">${fmt(weekly.impressions)}</span><span class="wr-sub">visualizaciones</span></div>`;
-
-  const posts = rows.map(r=>({
+  const allPosts = rows.map(r=>({
     title:getField(r,titleP)||'(Sin título)', link:getField(r,linkP), type:'video',
     date:parseDateFlexible(getField(r,dateP))||'',
     views:n(getField(r,viewsP)), reach:0, react:n(getField(r,likesP)),
     comm:n(getField(r,commP)), shar:0, saved:0, clicks:0,
     retention:n(getField(r,retP)), raw:r
   }));
+  _platformPostsCache.tt = allPosts;
 
-  let html = `
-    <div class="kpi-block-title">${ttIcon} BLOQUE 1 — KPIs DE CUENTA</div>
-    <div class="sec-title" style="margin-bottom:0.3rem;">
-      📊 Reporte Semanal
-      ${weekRange ? `<span style="font-size:9px; font-weight:400; color:#888; margin-left:8px;">${weekRange}</span>` : ''}
-    </div>
-    <div class="weekly-report" style="grid-template-columns:repeat(2,1fr);">${wrItems}</div>
+  const render = () => {
+    const posts = filterPostsByDate(allPosts, 'tt');
 
-    <div class="sec-title">Evolución</div>
-    ${chartControlsHTML('tt',[
-      {color:'rgba(140,140,140,0.6)',label:'Publicaciones',opacity:0.6},
-      {color:'#444',label:'Visualizaciones'},
-      {color:'#FF004F',label:'Engagement',dash:true}
-    ])}
-    <div class="chart-wrap"><canvas id="tt-chart"></canvas></div>
+    const tot = posts.reduce((a,p)=>({
+      views:a.views+p.views, likes:a.likes+p.react, comm:a.comm+p.comm
+    }),{views:0,likes:0,comm:0});
 
-    ${blockSpacer()}
+    const lastWeekData = getLastWeekTotalsFromPosts(posts);
+    const weekRange = lastWeekData.weekKey ? getWeekRange(lastWeekData.weekKey) : '';
+    const weekly = { newFollowers:followersWeekChange||0, impressions:lastWeekData.totals.views };
+    const totEng = tot.likes+tot.comm;
+    const avgV = posts.length?Math.round(tot.views/posts.length):0;
 
-    <div class="kpi-block-title" style="border-bottom-color:#52BEC0;"><span>📊 BLOQUE 2A — HISTÓRICO DE CONTENIDO</span></div>
+    const filterActive = !!_platformDateFilter.tt;
+    const filterLabel  = filterActive ? (() => { const f=_platformDateFilter.tt; return [f.from&&`Desde ${f.from}`,f.to&&`Hasta ${f.to}`].filter(Boolean).join(' · '); })() : '';
 
-    <div class="kpi-grid">
-      <div class="kpi kpi-publicaciones"><div class="k-label">Publicaciones</div><div class="k-val">${rows.length}</div><div class="k-sub">identificadas</div></div>
-      <div class="kpi"><div class="k-label">${ICO.users} Alcance</div><div class="k-val">—</div><div class="k-sub">no disponible</div></div>
-      <div class="kpi"><div class="k-label">${ICO.eye} Visualizaciones</div><div class="k-val">${fmt(tot.views)}</div><div class="k-sub">~${fmt(avgV)} / post</div></div>
-      <div class="kpi"><div class="k-label">${ICO.chart} Engagement</div><div class="k-val">${totEng>0&&tot.views>0?(totEng/tot.views*100).toFixed(2):'0'}%</div><div class="k-sub">sobre vistas</div></div>
-    </div>
-    <div class="kpi-grid-2">
-      <div class="kpi"><div class="k-label">${ICO.click} Clics</div><div class="k-val">—</div><div class="k-sub">no disponible</div></div>
-      <div class="kpi"><div class="k-label">${ICO.chart} Interacciones</div><div class="k-val">${fmt(totEng)}</div><div class="k-sub">likes + comentarios</div></div>
-    </div>
-    <div class="sec-title" style="margin-top:0.3rem;margin-bottom:0.3rem;">Desglose</div>
-    <div class="kpi-grid-small">
-      <div class="kpi kpi-small"><div class="k-label">${ICO.heart} Me gusta</div><div class="k-val">${fmt(tot.likes)}</div></div>
-      <div class="kpi kpi-small"><div class="k-label">${ICO.msg} Comentarios</div><div class="k-val">${fmt(tot.comm)}</div></div>
-    </div>
-    <div class="sec-title">Mix de contenido</div>
-    <div class="pie-chart-wrap"><canvas id="tt-pie-chart"></canvas></div>
-    <div class="mix-row"><div class="mix-pill">Videos/Fotos <span>${rows.length}</span></div></div>
+    document.getElementById('tt-count').textContent=`${posts.length} publicaciones${filterActive ? ` (filtrado de ${allPosts.length})` : ''}`;
 
-    <div id="tt-top-posts"></div>
+    const ttIcon=`<span class="kpi-block-icon tt"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-5.201 1.743l-.002-.001.002.001a2.895 2.895 0 0 1 3.183-4.51v-3.5a6.329 6.329 0 0 0-5.394 10.692 6.33 6.33 0 0 0 10.857-4.424V8.687a8.182 8.182 0 0 0 4.773 1.526V6.79a4.831 4.831 0 0 1-1.003-.104z" fill="white"/></svg></span>`;
 
-    ${blockSpacer()}
+    let wrItems = `<div class="wr-item"><span class="wr-label">Seguidores nuevos</span><span class="wr-value">${weekly.newFollowers>0?'+':''}${weekly.newFollowers}</span></div>`;
+    wrItems += `<div class="wr-item"><span class="wr-label">Impresiones</span><span class="wr-value">${fmt(weekly.impressions)}</span><span class="wr-sub">visualizaciones</span></div>`;
 
-    <div class="kpi-block-title" style="border-bottom-color:#000000;"><span>📊 BLOQUE 2B — ÚLTIMAS 5 PUBLICACIONES</span></div>
-    ${avgRecentHTML(posts,'tt')}
-    <div id="tt-recent-posts"></div>
-  `;
+    const weekPosts = getPostsForWeek(posts, lastWeekData.weekKey);
+    const recent5 = [...posts].filter(p=>p.date).sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5);
+    const top5    = [...posts].sort((a,b)=>b.views-a.views).slice(0,5);
 
-  document.getElementById('tt-body').innerHTML = html;
+    let html = `
+      <div class="date-filter-notice" id="tt-date-notice"${filterActive?' style="display:flex;"':''}>
+        <span>${filterActive ? `📅 Filtro activo: ${filterLabel}` : ''}</span>
+        <button onclick="clearDateFilter('tt')" title="Quitar filtro">✕</button>
+      </div>
 
-  setTimeout(()=>{
-    renderPieChart('tt-pie-chart',['Videos/Fotos'],[rows.length],['#52BEC0']);
-  },100);
+      <div class="block-container">
+        <div class="kpi-block-title">${ttIcon} BLOQUE 1 — KPIs DE CUENTA</div>
+        <div class="sec-title" style="margin-bottom:0.3rem;">
+          📊 Reporte Semanal
+          ${weekRange ? `<span style="font-size:9px; font-weight:400; color:#888; margin-left:8px;">${weekRange}</span>` : ''}
+        </div>
+        <div class="weekly-report" style="grid-template-columns:repeat(2,1fr);">${wrItems}</div>
+      </div>
 
-  window.ctrl_tt = new ChartController({canvasId:'tt-chart',navId:'nav-tt',platform:'tt',color1:'#444444',color2:'#FF004F',extraDataset:{key:'eng',label:'Engagement'}});
-  rows.forEach(r=>{ const dt=parseDateFlexible(getField(r,dateP)); if(dt) window.ctrl_tt.addRow(dt,n(getField(r,viewsP)),0,n(getField(r,likesP))+n(getField(r,commP))); });
-  window.ctrl_tt.render();
+      <div class="block-container">
+        <div class="sec-title">Evolución</div>
+        ${chartControlsHTML('tt',[
+          {color:'rgba(140,140,140,0.6)',label:'Publicaciones',opacity:0.6},
+          {color:'#444',label:'Visualizaciones'},
+          {color:'#FF004F',label:'Engagement',dash:true}
+        ])}
+        <div class="chart-wrap"><canvas id="tt-chart"></canvas></div>
+      </div>
 
-  const top5 = [...posts].sort((a,b)=>b.views-a.views).slice(0,5);
-  renderPostCards('tt-top-posts',top5,'Top 5 por visualizaciones','TikTok','#000000');
+      <div class="block-container">
+        <div class="sec-title" style="margin-top:0.5rem;">📌 Publicaciones de esta semana</div>
+        <div id="tt-week-posts"></div>
+      </div>
 
-  const recent5 = [...posts].filter(p=>p.date).sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5);
-  renderPostCards('tt-recent-posts',recent5,'📊 BLOQUE 2B — ÚLTIMAS 5 PUBLICACIONES','TikTok','#000000',true);
+      ${blockSpacer()}
 
-  return {totViews:tot.views,totReach:0,totEng,count:rows.length,rows};
+      <div class="block-container">
+        <div class="kpi-block-title" style="border-bottom-color:#52BEC0;"><span>📊 BLOQUE 2A — HISTÓRICO DE CONTENIDO</span></div>
+        <div class="kpi-grid">
+          <div class="kpi kpi-publicaciones"><div class="k-label">Publicaciones</div><div class="k-val">${posts.length}</div><div class="k-sub">identificadas</div></div>
+          <div class="kpi"><div class="k-label">${ICO.users} Alcance</div><div class="k-val">—</div><div class="k-sub">no disponible</div></div>
+          <div class="kpi"><div class="k-label">${ICO.eye} Visualizaciones</div><div class="k-val">${fmt(tot.views)}</div><div class="k-sub">~${fmt(avgV)} / post</div></div>
+          <div class="kpi"><div class="k-label">${ICO.chart} Engagement</div><div class="k-val">${totEng>0&&tot.views>0?(totEng/tot.views*100).toFixed(2):'0'}%</div><div class="k-sub">sobre vistas</div></div>
+        </div>
+        <div class="kpi-grid-2">
+          <div class="kpi"><div class="k-label">${ICO.click} Clics</div><div class="k-val">—</div><div class="k-sub">no disponible</div></div>
+          <div class="kpi"><div class="k-label">${ICO.chart} Interacciones</div><div class="k-val">${fmt(totEng)}</div><div class="k-sub">likes + comentarios</div></div>
+        </div>
+        <div class="sec-title" style="margin-top:0.3rem;margin-bottom:0.3rem;">Desglose</div>
+        <div class="kpi-grid-small">
+          <div class="kpi kpi-small"><div class="k-label">${ICO.heart} Me gusta</div><div class="k-val">${fmt(tot.likes)}</div></div>
+          <div class="kpi kpi-small"><div class="k-label">${ICO.msg} Comentarios</div><div class="k-val">${fmt(tot.comm)}</div></div>
+        </div>
+        <div class="sec-title">Mix de contenido</div>
+        <div class="pie-chart-wrap"><canvas id="tt-pie-chart"></canvas></div>
+        <div class="mix-row"><div class="mix-pill">Videos/Fotos <span>${posts.length}</span></div></div>
+        <div id="tt-top-posts"></div>
+      </div>
+
+      ${blockSpacer()}
+
+      <div class="block-container">
+        <div class="kpi-block-title" style="border-bottom-color:#000000;"><span>📊 BLOQUE 2B — ÚLTIMAS 5 PUBLICACIONES</span></div>
+        ${avgRecentHTML(posts,'tt')}
+        <div style="position:relative;width:100%;height:160px;margin-bottom:0.8rem;"><canvas id="tt-recent-bar"></canvas></div>
+        <div id="tt-recent-posts"></div>
+      </div>
+    `;
+
+    document.getElementById('tt-body').innerHTML = html;
+
+    renderPostCards('tt-week-posts', weekPosts, 'Publicaciones de esta semana', 'TikTok', '#000000');
+    setTimeout(()=>{ renderPieChart('tt-pie-chart',['Videos/Fotos'],[posts.length],['#52BEC0']); },100);
+
+    window.ctrl_tt = new ChartController({canvasId:'tt-chart',navId:'nav-tt',platform:'tt',color1:'#444444',color2:'#FF004F',extraDataset:{key:'eng',label:'Engagement'}});
+    posts.forEach(p=>{ if(p.date) window.ctrl_tt.addRow(p.date, p.views, 0, p.react+p.comm); });
+    window.ctrl_tt.render();
+
+    renderPostCards('tt-top-posts', top5, 'Top 5 por visualizaciones', 'TikTok', '#000000');
+    renderPostCards('tt-recent-posts', recent5, '', 'TikTok', '#000000', true);
+    setTimeout(()=>{ renderRecentCombinedChart('tt-recent-bar', recent5, 'tt', '#444444', '#FF004F'); }, 200);
+    
+    setTimeout(syncBlockHeights, 300);
+  };
+
+  _platformBuildFn.tt = render;
+  render();
+
+  const totTT = allPosts.reduce((a,p)=>({ views:a.views+p.views, eng:a.eng+p.react+p.comm }),{views:0,eng:0});
+  return { totViews:totTT.views, totReach:0, totEng:totTT.eng, count:allPosts.length, rows };
+}
+
+function getLastWeekTotalsFromPosts(posts) {
+  const dates = posts.map(p=>p.date).filter(d=>d);
+  if (!dates.length) return {weekKey:null,totals:{reach:0,views:0,clicks:0,follow:0}};
+  const weekKeys = dates.map(d=>getWeekKey(d)).filter(w=>w);
+  const uniqueWeeks = [...new Set(weekKeys)].sort();
+  if (!uniqueWeeks.length) return {weekKey:null,totals:{reach:0,views:0,clicks:0,follow:0}};
+  const lastWeek = uniqueWeeks[uniqueWeeks.length-1];
+  const weekPosts = posts.filter(p=>p.date&&getWeekKey(p.date)===lastWeek);
+  const totals = weekPosts.reduce((acc,p)=>({
+    reach: acc.reach+(p.reach||0),
+    views: acc.views+(p.views||0),
+    clicks:acc.clicks+(p.clicks||0),
+    follow:acc.follow+(p.follow||0)
+  }),{reach:0,views:0,clicks:0,follow:0});
+  return {weekKey:lastWeek, totals};
 }
 
 /* ══ TABLA COMPLETA ══ */
@@ -1326,7 +1869,10 @@ function applyFiltersAndSort() {
     switch(currentSortColumn){
       case 'platform': valA=a.platform||''; valB=b.platform||''; break;
       case 'title': valA=(a['Título']||a['Descripción']||a['Publicación']||'').toLowerCase(); valB=(b['Título']||b['Descripción']||b['Publicación']||'').toLowerCase(); break;
-      case 'date': valA=a['Hora de publicación']||a['Fecha']||a['fecha']||''; valB=b['Hora de publicación']||b['Fecha']||b['fecha']||''; break;
+      case 'date':
+        valA = parseDateFlexible(a['Hora de publicación']||a['Fecha']||a['fecha']||'') || '';
+        valB = parseDateFlexible(b['Hora de publicación']||b['Fecha']||b['fecha']||'') || '';
+        break;
       case 'type': valA=getTypeFromString(a['Tipo de publicación']||a['Publicación']||''); valB=getTypeFromString(b['Tipo de publicación']||b['Publicación']||''); break;
       case 'views': valA=n(a['Visualizaciones']||a['Vistas']||0); valB=n(b['Visualizaciones']||b['Vistas']||0); break;
       case 'reach': valA=n(a['Alcance']||0); valB=n(b['Alcance']||0); break;
@@ -1479,14 +2025,19 @@ async function init() {
       currentSortColumn='views'; currentSortDirection='desc';
       applyFiltersAndSort();
     });
+
+    // Configurar headers fijos y sincronización de alturas
+    setupStickyHeaders();
+    setTimeout(syncAllBlocks, 500);
+    setTimeout(syncBlockHeights, 800);
+
   } catch(err) {
-    console.error('❌ Error:',err);
+    console.error('❌ Error:', err);
     ['fb-body','ig-body','tt-body'].forEach(id=>{ document.getElementById(id).innerHTML=`<div class="error">Error: ${err.message}<br><small>Verifica que los links del Sheet sean públicos.</small></div>`; });
     document.getElementById('all-posts-body').innerHTML=`<div class="error">Error: ${err.message}</div>`;
     document.getElementById('last-update').textContent='Error de carga';
   }
 }
-
 init();
 </script>
 </body>
