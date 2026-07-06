@@ -447,6 +447,7 @@
     transition: transform .35s ease, border-color .35s ease, box-shadow .35s ease;
     opacity:0;
     transform: translateY(24px);
+    cursor:pointer;
   }
   .card.in-view{
     animation: rise .7s ease forwards;
@@ -619,6 +620,111 @@
     header.hero{min-height:auto; padding:72px 20px 48px;}
     .status-strip{flex-direction:column; gap:8px;}
     .map-grid{ grid-template-columns:1fr; }
+  }
+
+  /* ---------- Modal de autenticación ---------- */
+  .auth-modal-overlay{
+    position:fixed;
+    inset:0;
+    z-index:1000;
+    background:rgba(0,0,0,.85);
+    backdrop-filter: blur(6px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    opacity:0;
+    pointer-events:none;
+    transition: opacity .3s ease;
+  }
+  .auth-modal-overlay.active{
+    opacity:1;
+    pointer-events:auto;
+  }
+  .auth-modal{
+    background:var(--panel-glass-soft);
+    border:1px solid var(--teal);
+    border-radius:8px;
+    padding:40px 32px 32px;
+    max-width:420px;
+    width:90%;
+    box-shadow: 0 20px 60px rgba(0,0,0,.8);
+    text-align:center;
+    transform:scale(.96);
+    transition: transform .3s ease;
+  }
+  .auth-modal-overlay.active .auth-modal{
+    transform:scale(1);
+  }
+  .auth-modal h3{
+    font-family:var(--font-display);
+    font-weight:600;
+    font-size:22px;
+    color:var(--grey-light);
+    margin:0 0 6px;
+  }
+  .auth-modal p{
+    font-size:14px;
+    color:var(--grey-mid);
+    margin:0 0 24px;
+  }
+  .auth-modal input{
+    width:100%;
+    padding:12px 16px;
+    background:rgba(0,0,0,.5);
+    border:1px solid var(--line);
+    border-radius:4px;
+    color:var(--grey-light);
+    font-family:var(--font-mono);
+    font-size:16px;
+    letter-spacing:.05em;
+    outline:none;
+    transition: border-color .2s;
+    margin-bottom:16px;
+  }
+  .auth-modal input:focus{
+    border-color:var(--cyan);
+  }
+  .auth-modal .btn-group{
+    display:flex;
+    gap:12px;
+    justify-content:center;
+  }
+  .auth-modal button{
+    padding:10px 28px;
+    border:none;
+    border-radius:4px;
+    font-family:var(--font-body);
+    font-weight:600;
+    font-size:14px;
+    cursor:pointer;
+    transition: background .2s, transform .1s;
+  }
+  .auth-modal .btn-primary{
+    background:var(--cyan);
+    color:var(--void);
+  }
+  .auth-modal .btn-primary:hover{
+    background:#88ffff;
+  }
+  .auth-modal .btn-secondary{
+    background:rgba(214,214,214,.15);
+    color:var(--grey-mid);
+  }
+  .auth-modal .btn-secondary:hover{
+    background:rgba(214,214,214,.25);
+  }
+  .auth-modal .error-msg{
+    color:#ff6b6b;
+    font-size:13px;
+    min-height:24px;
+    margin:0 0 8px;
+    font-family:var(--font-mono);
+  }
+  .auth-modal .lock-icon{
+    font-size:32px;
+    margin-bottom:12px;
+    display:block;
+    color:var(--teal);
   }
 </style>
 </head>
@@ -855,52 +961,74 @@
   </div>
 </footer>
 
+<!-- MODAL DE AUTENTICACIÓN -->
+<div class="auth-modal-overlay" id="authModal">
+  <div class="auth-modal">
+    <span class="lock-icon">🔒</span>
+    <h3>Acceso restringido</h3>
+    <p>Este panel requiere autenticación. Ingresa la contraseña para continuar.</p>
+    <div class="error-msg" id="authError"></div>
+    <input type="password" id="authPassword" placeholder="Contraseña" autocomplete="off">
+    <div class="btn-group">
+      <button class="btn-secondary" id="authCancel">Cancelar</button>
+      <button class="btn-primary" id="authConfirm">Desbloquear</button>
+    </div>
+  </div>
+</div>
+
 <script>
   /* ============================================================
-     Para añadir un nuevo dashboard, agrega un objeto aquí con:
-     title, tag, desc y url. Se genera la tarjeta automáticamente,
-     incluyendo la vista previa en vivo (iframe) del sitio.
+     DASHBOARDS: añade protected: true para proteger con contraseña
      ============================================================ */
   const DASHBOARDS = [
     {
       tag: "Panel · Marketing / Ventas",
       title: "KPI Ejecutivo",
       desc: "Embudo completo de marketing a cierre: leads, citas y contratos por asesor, comparados semana a semana.",
-      url: "https://omaranayalucio.github.io/Dashboards/KPIs.html"
+      url: "https://omaranayalucio.github.io/Dashboards/KPIs.html",
+      protected: false
     },
     {
       tag: "Panel · Redes sociales",
       title: "Redes Sociales",
       desc: "Alcance, interacciones y publicaciones de Facebook, Instagram y TikTok en un solo tablero.",
-      url: "https://omaranayalucio.github.io/Dashboards/RedesSociales.html"
+      url: "https://omaranayalucio.github.io/Dashboards/RedesSociales.html",
+      protected: false
     },
     {
       tag: "Panel · Clientes",
       title: "Análisis de Ventas Histórico",
       desc: "Perfil histórico de clientes: segmento, edad, precio y alcaldía, para entender quién compra y por qué.",
-      url: "https://omaranayalucio.github.io/CustomerClustering/"
+      url: "https://omaranayalucio.github.io/CustomerClustering/",
+      protected: true
     },
     {
-    tag: "Panel · RENOVA",
-    title: "Proyectos RENOVA",
-    desc: "Se muestra el portafolio de proyectos que actualmente trabaja el equipo de Arquitectura, tableros y recursos de Altaltium.",
-    url: "https://omaranayalucio.github.io/Dashboards/index.html"
+      tag: "Panel · RENOVA",
+      title: "Proyectos RENOVA",
+      desc: "Se muestra el portafolio de proyectos que actualmente trabaja el equipo de Arquitectura, tableros y recursos de Altaltium.",
+      url: "https://omaranayalucio.github.io/Dashboards/index.html",
+      protected: false
     },
     {
       tag: "Panel · PASANTES",
       title: "Performance de pasantes en LEADs, Reporte Looker Studio",
       desc: "Reporte adicional alojado en Looker Studio con métricas complementarias del negocio.",
-      url: "https://datastudio.google.com/s/vyl21Ix7Bc4"
+      url: "https://datastudio.google.com/s/vyl21Ix7Bc4",
+      protected: false
     }
   ];
 
-  const grid = document.getElementById('panels-grid');
+  const PASSWORD = "Altaltium$2026";
 
-  function cardHTML(d){
+  const grid = document.getElementById('panels-grid');
+  let pendingUrl = null;
+
+  function cardHTML(d, index){
     let host = '';
     try { host = new URL(d.url).hostname + new URL(d.url).pathname; } catch(e){ host = d.url; }
+    const dataProtect = d.protected ? 'data-protected="true"' : '';
     return `
-      <a class="card" href="${d.url}" target="_blank" rel="noopener">
+      <a class="card" href="${d.url}" target="_blank" rel="noopener" ${dataProtect} data-index="${index}">
         <div class="preview-wrap">
           <span class="preview-badge"><span class="dot-live" style="background:var(--void);box-shadow:none;width:5px;height:5px;"></span>Vista en vivo</span>
           <iframe class="preview-frame" src="${d.url}" loading="lazy" tabindex="-1" title="Vista previa — ${d.title}"></iframe>
@@ -917,7 +1045,7 @@
       </a>`;
   }
 
-  grid.innerHTML = DASHBOARDS.map(cardHTML).join('') + `
+  grid.innerHTML = DASHBOARDS.map((d, i) => cardHTML(d, i)).join('') + `
     <div class="card placeholder">
       <div class="placeholder-plus">+</div>
       <p class="placeholder-title">Próximo panel</p>
@@ -935,9 +1063,66 @@
     });
   }, {threshold:.15});
 
-  document.querySelectorAll('.card').forEach(c => io.observe(c));
+  document.querySelectorAll('.card:not(.placeholder)').forEach(c => io.observe(c));
 
-  // Blueprint grid nodes — soft pulsing points at intersection-like positions
+  // ---------- Lógica de autenticación (siempre pide contraseña) ----------
+  const modal = document.getElementById('authModal');
+  const authInput = document.getElementById('authPassword');
+  const authError = document.getElementById('authError');
+  const authConfirm = document.getElementById('authConfirm');
+  const authCancel = document.getElementById('authCancel');
+
+  function closeModal() {
+    modal.classList.remove('active');
+    authInput.value = '';
+    authError.textContent = '';
+    pendingUrl = null;
+  }
+
+  function openModal(url) {
+    pendingUrl = url;
+    modal.classList.add('active');
+    authInput.value = '';
+    authError.textContent = '';
+    authInput.focus();
+  }
+
+  function tryAuth() {
+    const input = authInput.value;
+    if (input === PASSWORD) {
+      // Guardar la URL antes de cerrar el modal
+      const url = pendingUrl;
+      closeModal();
+      if (url) {
+        window.open(url, '_blank');
+      }
+    } else {
+      authError.textContent = '❌ Contraseña incorrecta. Intenta de nuevo.';
+      authInput.value = '';
+      authInput.focus();
+    }
+  }
+
+  authConfirm.addEventListener('click', tryAuth);
+  authInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') tryAuth();
+  });
+  authCancel.addEventListener('click', closeModal);
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  // Interceptar clics en tarjetas protegidas (siempre pide contraseña)
+  document.querySelectorAll('.card[data-protected="true"]').forEach(card => {
+    card.addEventListener('click', (e) => {
+      e.preventDefault();
+      const url = card.getAttribute('href');
+      if (!url) return;
+      openModal(url);
+    });
+  });
+
+  // Blueprint grid nodes
   const nodesLayer = document.getElementById('nodes-layer');
   const nodePositions = [
     ['12%','18%'], ['28%','9%'], ['46%','22%'], ['63%','12%'], ['79%','26%'],
