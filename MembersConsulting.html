@@ -124,7 +124,6 @@
     .tips-section ul li .tip-highlight.green { color: var(--verde); }
     .tips-section ul li .tip-highlight.orange { color: var(--naranja); }
 
-    /* ── CLIENT SWITCHBOARD CARD ──────────────────────────────────────────── */
     .contact-card {
       background: var(--blanco);
       border-radius: 12px;
@@ -163,9 +162,7 @@
       .contact-card { flex-direction: column; align-items: flex-start; gap: 6px; }
       .contact-card .phone-number { font-size: 16px; }
     }
-    /* ─────────────────────────────────────────────────────────────────────── */
 
-    /* ── CALL SCRIPT PANEL ─────────────────────────────────────────── */
     .script-panel {
       background: var(--blanco);
       border-radius: 12px;
@@ -284,9 +281,7 @@
       color: #555;
       line-height: 1.5;
     }
-    /* ───────────────────────────────────────────────────────────────── */
 
-    /* ── CALL SCRIPT MODAL (opens on "Call" click) ────────────────── */
     .script-modal-overlay {
       display: none;
       position: fixed;
@@ -374,7 +369,6 @@
       font-weight: 600; cursor: pointer; transition: background 0.15s;
     }
     .script-modal-footer .btn-copy-now:hover { background: var(--azul-vibrante); }
-    /* ───────────────────────────────────────────────────────────────── */
 
     .summary-bar {
       display: grid;
@@ -726,7 +720,6 @@
       white-space: nowrap;
     }
 
-    /* ---- TIMEZONE REFERENCE TABLE ---- */
     .timezone-ref {
       margin-top: 1.5rem;
       background: var(--blanco);
@@ -783,7 +776,84 @@
     .timezone-ref .diff-pos { color: var(--verde); font-weight: 600; }
     .timezone-ref .diff-neg { color: var(--rojo); font-weight: 600; }
     .timezone-ref .diff-zero { color: var(--naranja); font-weight: 600; }
-    /* ---- end timezone ---- */
+
+    /* ── NEW: HANDLING OBJECTIONS STYLES ── */
+    #handlingContainer {
+      background: var(--blanco);
+      border-radius: 12px;
+      border: 1px solid var(--azul-claro);
+      box-shadow: 0 4px 16px rgba(14,59,92,0.08);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    #handlingContainer h2 {
+      color: var(--azul-profundo);
+      font-size: 20px;
+      margin-bottom: 0.25rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    #handlingContainer .handling-subtitle {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid var(--arena-dark);
+    }
+    .objection-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .objection-card {
+      background: var(--arena);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      border-left: 5px solid var(--azul-medio);
+      transition: background 0.15s;
+    }
+    .objection-card:hover {
+      background: #edebe7;
+    }
+    .objection-card .obj-quote {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--azul-profundo);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .objection-card .obj-quote::before {
+      content: "🗣️";
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .objection-card .obj-response {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--texto);
+      padding-left: 30px;
+      position: relative;
+    }
+    .objection-card .obj-response::before {
+      content: "💬";
+      font-size: 16px;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    .objection-card .obj-response em {
+      color: var(--azul-vibrante);
+      font-style: normal;
+      font-weight: 500;
+    }
+    @media (max-width: 600px) {
+      #handlingContainer { padding: 1rem; }
+      .objection-card .obj-response { padding-left: 28px; }
+    }
+    /* ── END NEW ── */
 
     @media (max-width: 700px) {
       .navbar { flex-wrap: wrap; gap: 6px; padding: 0.5rem 1rem; }
@@ -843,130 +913,137 @@
 
 <div class="main">
 
-  <!-- Key Tips Section -->
-  <div class="tips-section">
-    <h4>💡 Key Tips for Success</h4>
-    <ul>
-      <li><span class="tip-icon">⏰</span> Call <span class="tip-highlight">after 10 AM</span> and <span class="tip-highlight">before 9 PM</span></li>
-      <li><span class="tip-icon">📅</span> <span class="tip-highlight orange">Saturday afternoons</span> have higher contact rates</li>
-      <li><span class="tip-icon">🤝</span> <span class="tip-highlight green">We help members get full value</span> from the benefits already included in their contract</li>
-    </ul>
-  </div>
+  <!-- Key Tips Section (visible siempre, pero podemos ocultarlo en handling si queremos) -->
+  <div id="defaultContent">
+    <div class="tips-section">
+      <h4>💡 Key Tips for Success</h4>
+      <ul>
+        <li><span class="tip-icon">⏰</span> Call <span class="tip-highlight">after 10 AM</span> and <span class="tip-highlight">before 9 PM</span></li>
+        <li><span class="tip-icon">📅</span> <span class="tip-highlight orange">Saturday afternoons</span> have higher contact rates</li>
+        <li><span class="tip-icon">🤝</span> <span class="tip-highlight green">We help members get full value</span> from the benefits already included in their contract</li>
+      </ul>
+    </div>
 
-  <!-- NEW: Client Switchboard Contact Card -->
-  <div class="contact-card">
-    <h4>📞 Client Switchboard</h4>
-    <span class="phone-number">+1 (312) 680‑3958</span>
-    <span class="phone-note">Clients can reach our office calling at this number and dialing the advisor extention.</span>
-  </div>
+    <div class="contact-card">
+      <h4>📞 Client Switchboard</h4>
+      <span class="phone-number">+1 (312) 680‑3958</span>
+      <span class="phone-note">Clients can reach our office calling at this number and dialing the advisor extention.</span>
+    </div>
 
-  <!-- Admin Panel -->
-  <div class="admin-panel" id="adminPanel">
-    <h3>⚙️ Admin Panel - Password Management</h3>
-    <p class="admin-subtitle">
-      Assign or change passwords for each advisor. The "General Report" tab is always accessible.
-      Advisors with 🔒 have a password assigned.
-    </p>
-    <div class="admin-grid" id="adminGrid"></div>
-    <div class="admin-actions-bar">
-      <button class="btn-export" onclick="exportPasswords()">📤 Export passwords</button>
-      <button class="btn-import" onclick="document.getElementById('importFile').click()">📥 Import passwords</button>
-      <input type="file" id="importFile" accept=".json" style="display:none" onchange="importPasswords(event)" />
-      <button class="btn-close-admin" onclick="closeAdminPanel()">🔒 Close Admin</button>
-    </div>
-  </div>
-
-  <div class="summary-bar">
-    <div class="sum-card">
-      <div class="sc-label">👥 Total Clients</div>
-      <div class="sc-val" id="s-total">—</div>
-      <div class="sc-sub">in this view</div>
-    </div>
-    <div class="sum-card c-verde">
-      <div class="sc-label">✅ Interested</div>
-      <div class="sc-val" id="s-interested">—</div>
-      <div class="sc-sub">ready for closing</div>
-    </div>
-    <div class="sum-card c-naranja">
-      <div class="sc-label">🤔 Undecided</div>
-      <div class="sc-val" id="s-undecided">—</div>
-      <div class="sc-sub">reschedule call</div>
-    </div>
-    <div class="sum-card c-rojo">
-      <div class="sc-label">🚫 Not interested</div>
-      <div class="sc-val" id="s-notint">—</div>
-      <div class="sc-sub">no follow-up</div>
-    </div>
-    <div class="sum-card">
-      <div class="sc-label">📵 No contact</div>
-      <div class="sc-val" id="s-noanswer">—</div>
-      <div class="sc-sub">no answer / voicemail</div>
-    </div>
-    <div class="sum-card c-azul">
-      <div class="sc-label">⏳ Unmanaged</div>
-      <div class="sc-val" id="s-pending">—</div>
-      <div class="sc-sub">pending</div>
-    </div>
-    <div class="sum-card c-dorado">
-      <div class="sc-label">💰 Total Monthly Balance</div>
-      <div class="sc-val" id="s-total-balance">—</div>
-      <div class="sc-sub">sum of monthly balances (USD)</div>
-    </div>
-  </div>
-
-  <div class="panel">
-    <div class="panel-header">
-      <h2 id="panel-title">📊 General Report</h2>
-      <div class="filter-group" id="filterGroup">
-        <input type="text" id="searchInput" placeholder="🔍 Search name, phone, address..." />
-        <select id="statusFilter">
-          <option value="">All statuses</option>
-          <option value="interested">✅ Interested</option>
-          <option value="undecided">🤔 Undecided</option>
-          <option value="noanswer">📵 No contact</option>
-          <option value="notint">🚫 Not interested</option>
-          <option value="voicemail">📦 Voicemail</option>
-          <option value="none">⏳ Unmanaged</option>
-        </select>
-        <button id="resetBtn">⟲ Reset</button>
+    <div class="admin-panel" id="adminPanel">
+      <h3>⚙️ Admin Panel - Password Management</h3>
+      <p class="admin-subtitle">
+        Assign or change passwords for each advisor. The "General Report" tab is always accessible.
+        Advisors with 🔒 have a password assigned.
+      </p>
+      <div class="admin-grid" id="adminGrid"></div>
+      <div class="admin-actions-bar">
+        <button class="btn-export" onclick="exportPasswords()">📤 Export passwords</button>
+        <button class="btn-import" onclick="document.getElementById('importFile').click()">📥 Import passwords</button>
+        <input type="file" id="importFile" accept=".json" style="display:none" onchange="importPasswords(event)" />
+        <button class="btn-close-admin" onclick="closeAdminPanel()">🔒 Close Admin</button>
       </div>
     </div>
 
-    <div class="table-wrap" id="tableWrap">
+    <div class="summary-bar">
+      <div class="sum-card">
+        <div class="sc-label">👥 Total Clients</div>
+        <div class="sc-val" id="s-total">—</div>
+        <div class="sc-sub">in this view</div>
+      </div>
+      <div class="sum-card c-verde">
+        <div class="sc-label">✅ Interested</div>
+        <div class="sc-val" id="s-interested">—</div>
+        <div class="sc-sub">ready for closing</div>
+      </div>
+      <div class="sum-card c-naranja">
+        <div class="sc-label">🤔 Undecided</div>
+        <div class="sc-val" id="s-undecided">—</div>
+        <div class="sc-sub">reschedule call</div>
+      </div>
+      <div class="sum-card c-rojo">
+        <div class="sc-label">🚫 Not interested</div>
+        <div class="sc-val" id="s-notint">—</div>
+        <div class="sc-sub">no follow-up</div>
+      </div>
+      <div class="sum-card">
+        <div class="sc-label">📵 No contact</div>
+        <div class="sc-val" id="s-noanswer">—</div>
+        <div class="sc-sub">no answer / voicemail</div>
+      </div>
+      <div class="sum-card c-azul">
+        <div class="sc-label">⏳ Unmanaged</div>
+        <div class="sc-val" id="s-pending">—</div>
+        <div class="sc-sub">pending</div>
+      </div>
+      <div class="sum-card c-dorado">
+        <div class="sc-label">💰 Total Monthly Balance</div>
+        <div class="sc-val" id="s-total-balance">—</div>
+        <div class="sc-sub">sum of monthly balances (USD)</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <h2 id="panel-title">📊 General Report</h2>
+        <div class="filter-group" id="filterGroup">
+          <input type="text" id="searchInput" placeholder="🔍 Search name, phone, address..." />
+          <select id="statusFilter">
+            <option value="">All statuses</option>
+            <option value="interested">✅ Interested</option>
+            <option value="undecided">🤔 Undecided</option>
+            <option value="noanswer">📵 No contact</option>
+            <option value="notint">🚫 Not interested</option>
+            <option value="voicemail">📦 Voicemail</option>
+            <option value="none">⏳ Unmanaged</option>
+          </select>
+          <button id="resetBtn">⟲ Reset</button>
+        </div>
+      </div>
+
+      <div class="table-wrap" id="tableWrap">
+        <table>
+          <thead id="tableHead">
+            <tr id="headerRow"></tr>
+          </thead>
+          <tbody id="tableBody">
+            <tr><td colspan="12"><div class="loading"><div class="spinner"></div>Loading data...</div></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pagination" id="pagination">
+        <span class="info" id="paginationInfo">—</span>
+        <div class="controls">
+          <button id="prevPage" disabled>‹ Prev</button>
+          <span id="pageNumbers"></span>
+          <button id="nextPage" disabled>Next ›</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="timezoneRefContainer" style="display:none;" class="timezone-ref">
+      <div class="ref-header">
+        <span>🕒 Time Zone &amp; LADA Reference</span>
+        <span class="live-clock" id="liveClock">⏱️ CDMX: --:--:--</span>
+      </div>
       <table>
-        <thead id="tableHead">
-          <tr id="headerRow"></tr>
+        <thead>
+          <tr><th>State / Area</th><th>LADA (Area Code)</th><th>Time vs CDMX</th><th>Current Time</th></tr>
         </thead>
-        <tbody id="tableBody">
-          <tr><td colspan="12"><div class="loading"><div class="spinner"></div>Loading data...</div></td></tr>
-        </tbody>
+        <tbody id="timezoneTableBody"></tbody>
       </table>
     </div>
+  </div><!-- /defaultContent -->
 
-    <div class="pagination" id="pagination">
-      <span class="info" id="paginationInfo">—</span>
-      <div class="controls">
-        <button id="prevPage" disabled>‹ Prev</button>
-        <span id="pageNumbers"></span>
-        <button id="nextPage" disabled>Next ›</button>
-      </div>
-    </div>
+  <!-- NEW: Handling Objections Container -->
+  <div id="handlingContainer" style="display:none;">
+    <h2>🗣️ Handling Objections</h2>
+    <div class="handling-subtitle">Respuestas a las objeciones más comunes durante las llamadas</div>
+    <div class="objection-grid" id="objectionGrid"></div>
   </div>
 
-  <!-- Timezone & LADA reference (shown only on advisor tabs) -->
-  <div id="timezoneRefContainer" style="display:none;" class="timezone-ref">
-    <div class="ref-header">
-      <span>🕒 Time Zone &amp; LADA Reference</span>
-      <span class="live-clock" id="liveClock">⏱️ CDMX: --:--:--</span>
-    </div>
-    <table>
-      <thead>
-        <tr><th>State / Area</th><th>LADA (Area Code)</th><th>Time vs CDMX</th><th>Current Time</th></tr>
-      </thead>
-      <tbody id="timezoneTableBody"></tbody>
-    </table>
-  </div>
-</div>
+</div><!-- /main -->
 
 <div class="footer">
   <strong>MEMBER´s CONSULTING · VIDANTA</strong> &nbsp;·&nbsp; Client CRM &nbsp;·&nbsp; Real-time data from Google Sheets
@@ -1027,23 +1104,6 @@ const LADA_DATA = [
   { area: 'Texas (Central)', lada: '214 / 817', offset: 0 },
 ];
 // ────────────────────────────────────────────────────────────────────────────
-
-const PRESETS = [
-  { label: '📵 Phone not connecting',         status: 'noanswer'  },
-  { label: '🤔 Undecided / Reschedule',        status: 'undecided' },
-  { label: '🚫 Does not wish to be contacted', status: 'notint'    },
-  { label: '✅ Interested / Close with Fer',   status: 'interested'},
-  { label: '📦 Voicemail / 3rd party',         status: 'voicemail' },
-];
-
-const STATUS_INFO = {
-  interested: { label: 'Interested',       cls: 'badge-interested' },
-  undecided:  { label: 'Undecided',        cls: 'badge-undecided'  },
-  noanswer:   { label: 'No contact',       cls: 'badge-noanswer'   },
-  notint:     { label: 'Not interested',   cls: 'badge-notint'     },
-  voicemail:  { label: 'Voicemail / 3rd',  cls: 'badge-voicemail'  },
-  none:       { label: 'Unmanaged',        cls: 'badge-none'       },
-};
 
 // ── 📞 CALL SCRIPT FROM PDF ──────────────────────────────────────────────────
 const CALL_SCRIPT = [
@@ -1107,6 +1167,88 @@ Perfect!
 Our next step is to schedule an appointment with Mrs. Aldman. It is important for this appointment that you have a full understanding that this process is based on your terms and conditions. Therefore, it is essential that you have the covers of your contracts and any notes or questions you may have regarding your purchase process on hand for the appointment.`
   }
 ];
+
+// ── 🆕 OBJECTIONS DATA ────────────────────────────────────────────────────
+const OBJECTIONS = [
+  {
+    objection: "I don't have time, I'm really busy.",
+    response: `I understand you're busy. One question: if I can prove in two minutes that I can wipe out your Vidanta debt while keeping your benefits, should we talk now or actually reschedule? To be honest, if you're just trying to get me off the phone, I won't waste our time. But this truly is your chance to save a lot of money.`
+  },
+  {
+    objection: "I don't trust this, I am skeptical.",
+    response: `I understand your skepticism. Just one question: if you have a balance with Vidanta and in the next two minutes I prove to you that this isn't a scam—and that I can eliminate your debt (100%) while keeping your vacation benefits—could we proceed?`
+  },
+  {
+    objection: "I'm really not interested.",
+    response: `We totally get it—many members are unaware they've been oversold. But honestly, Jim, it's time to stop fattening the wallets of those who thrive on your lack of information. Let's make a smart decision before your future turns into a never- ending 'Why didn't I see this coming?'`
+  },
+  {
+    objection: "Call me later.",
+    response: `I understand you're busy. One question: if I can prove in two minutes that I can wipe out your Vidanta debt while keeping your benefits, should we talk now or actually reschedule? To be honest, if you're just trying to get me off the phone, I won't waste our time. But this truly is your chance to save a lot of money.`
+  },
+  {
+    objection: "Why do you have my personal information?",
+    response: `Fortunately, during the time Sara worked at the resort, she had access to thousands of cases similar to yours. We have dedicated ourselves to reaching out to each person individually to provide this specific opportunity for savings.`
+  },
+  {
+    objection: "I want to think about it.",
+    response: `Now, let me be honest with you, Jim. If someone tells me they need to 'think about it' after I've laid this out, 9 out of 10 times it comes down to two things: credibility or affordability. Which one is it for you? (Silence and listen)`
+  },
+  {
+    objection: "Can I handle this with my lawyer directly?",
+    response: `If you seek assistance from a U.S. law firm, it won't proceed. Unfortunately, your contract is governed by Mexican law. You would need to travel to Mexico, hire a local attorney, and file a claim in the specific state mentioned in your agreement. However, you should know that in Mexico, things move 'differently'—if you know what I mean? (Silence and listen)
+
+I mean that, unfortunately, systems in Mexico can be less transparent than in the U.S. There has never been a successful class- action lawsuit in Vidanta's history regarding their 'bait and switch' tactics, and I'm sure you can imagine why. Does that answer your question?`
+  },
+  {
+    objection: "What do you mean by differently?",
+    response: `I mean that, unfortunately, systems in Mexico can be less transparent than in the U.S. There has never been a successful class- action lawsuit in Vidanta's history regarding their 'bait and switch' tactics, and I'm sure you can imagine why. Does that answer your question?`
+  },
+  {
+    objection: "Can I tell the resort I am working with you?",
+    response: `You could, Jim, but if you go that route, you forfeit the chance to eliminate your balance. They are not in the business of giving money back. They will not only refuse to help you, but they will tell you that you can't modify your contract and will 'red- flag' your account. Does that make sense?`
+  },
+  {
+    objection: "I have to talk to my spouse.",
+    response: `I understand. My husband and I make all our decisions together as well. But if this were up to you—since you hold 50% of the decision—what is your perception of my service so far? (Silence and listen)
+
+Follow- up: 'Perfect. I'd love to speak with both of you to ensure everyone is comfortable. I can set up a Zoom meeting tomorrow to answer all your questions. Does [Time A] or [Time B] work better for you?'`
+  },
+  {
+    objection: "How did they offer me something that doesn't exist?",
+    response: `You can actually call the resort and ask: 'I bought this specific inventory and I'd like to know if it has been built yet.' (Silence). Often, they sell memberships for the park in Puerto Vallarta that haven't been finished in 10 years. Look at the front page of your agreement; it lists specific unit info. Have you actually seen the unit you 'own'? Can you reserve it right now? If the answer is no, you're paying for inventory that doesn't exist.`
+  },
+  {
+    objection: "Why should I trust you over Vidanta?",
+    response: `Timeshare reps are experts at embellishing the truth. Most members aren't even allowed to read the full contract before signing. There is a specific clause stating that any verbal promise not in writing is legally invalid. What credibility does a corporation have if they promote 'overselling' and manipulation? You don't have to trust me—call the resort and ask to sell your membership for what the rep promised. They will tell you it's not for resale or investment. They use that clause to protect themselves, not you.`
+  },
+  {
+    objection: "I am going through a personal crisis (respect my privacy).",
+    response: `Mr. [Name], I apologize if I seemed disrespectful; that was not my intention. I started helping members during COVID when people were struggling both financially and with their health. My goal is to help you STOP this unnecessary expense so you have more resources for your current situation. Wouldn't you agree that saving that money would help right now? (Silence and listen)`
+  },
+  {
+    objection: "What is the probability of success?",
+    response: `We don't accept cases we can't win. However, success depends on you following our instructions 100%. To help ease your mind, let's do a Zoom call so you can meet me face- to- face. Does that sound good?`
+  }
+];
+// ────────────────────────────────────────────────────────────────────────────
+
+const PRESETS = [
+  { label: '📵 Phone not connecting',         status: 'noanswer'  },
+  { label: '🤔 Undecided / Reschedule',        status: 'undecided' },
+  { label: '🚫 Does not wish to be contacted', status: 'notint'    },
+  { label: '✅ Interested / Close with Fer',   status: 'interested'},
+  { label: '📦 Voicemail / 3rd party',         status: 'voicemail' },
+];
+
+const STATUS_INFO = {
+  interested: { label: 'Interested',       cls: 'badge-interested' },
+  undecided:  { label: 'Undecided',        cls: 'badge-undecided'  },
+  noanswer:   { label: 'No contact',       cls: 'badge-noanswer'   },
+  notint:     { label: 'Not interested',   cls: 'badge-notint'     },
+  voicemail:  { label: 'Voicemail / 3rd',  cls: 'badge-voicemail'  },
+  none:       { label: 'Unmanaged',        cls: 'badge-none'       },
+};
 
 function renderScriptStepsHtml() {
   return CALL_SCRIPT.map((s, i) => `
@@ -1223,7 +1365,7 @@ function setPassword(advisor, pwd) {
 }
 
 function isTabLocked(advisor) {
-  if (advisor === 'all') return false;
+  if (advisor === 'all' || advisor === 'handling') return false;
   return !!passwords[advisor];
 }
 
@@ -1348,6 +1490,10 @@ function renderTabs() {
   let html = '<button class="tab-btn ' + (activeTab==='all'?'active':'') +
     '" onclick="switchTab(\'all\')">📊 General Report <span class="tab-count">' + allCnt + '</span></button>';
 
+  // 🆕 New tab: Handling Objections
+  html += '<button class="tab-btn ' + (activeTab==='handling'?'active':'') +
+    '" onclick="switchTab(\'handling\')">🗣️ Handling Objections</button>';
+
   advisors.forEach((adv) => {
     const cnt = allRows.filter(r => r.asesor === adv).length;
     const isActive = activeTab === adv ? 'active' : '';
@@ -1371,9 +1517,22 @@ function switchTab(tab) {
     renderTabs();
     applyFiltersAndRender();
     updateTimezoneVisibility();
+    showDefaultContent(true);
+    showHandlingContent(false);
     return;
   }
 
+  // 🆕 Handling Objections
+  if (tab === 'handling') {
+    activeTab = 'handling';
+    renderTabs();
+    showDefaultContent(false);
+    showHandlingContent(true);
+    renderHandling();
+    return;
+  }
+
+  // Advisor tab
   if (isTabLocked(tab)) {
     pendingTab = tab;
     document.getElementById('modalTitle').textContent = '🔒 Access Restricted';
@@ -1390,6 +1549,36 @@ function switchTab(tab) {
   renderTabs();
   applyFiltersAndRender();
   updateTimezoneVisibility();
+  showDefaultContent(true);
+  showHandlingContent(false);
+}
+
+// ── SHOW/HIDE CONTENT ──────────────────────────────────────────────────────
+function showDefaultContent(show) {
+  document.getElementById('defaultContent').style.display = show ? 'block' : 'none';
+}
+function showHandlingContent(show) {
+  document.getElementById('handlingContainer').style.display = show ? 'block' : 'none';
+}
+
+// ── RENDER HANDLING OBJECTIONS ──────────────────────────────────────────────
+function renderHandling() {
+  const grid = document.getElementById('objectionGrid');
+  if (!grid) return;
+  if (!OBJECTIONS.length) {
+    grid.innerHTML = '<p style="color:#999;text-align:center;padding:2rem;">No objections loaded.</p>';
+    return;
+  }
+  let html = '';
+  OBJECTIONS.forEach((obj, idx) => {
+    html += `
+      <div class="objection-card">
+        <div class="obj-quote">${esc(obj.objection)}</div>
+        <div class="obj-response">${obj.response.replace(/\n/g, '<br>')}</div>
+      </div>
+    `;
+  });
+  grid.innerHTML = html;
 }
 
 // ── ADMIN PANEL ────────────────────────────────────────────────────
@@ -1563,6 +1752,8 @@ function checkPassword() {
     renderTabs();
     applyFiltersAndRender();
     updateTimezoneVisibility();
+    showDefaultContent(true);
+    showHandlingContent(false);
     showToast('🔓 Access granted to ' + targetTab);
     pendingTab = null;
   } else {
@@ -1608,6 +1799,10 @@ function updateBalance(key, newVal) {
 
 // ── FILTERS + RENDER ─────────────────────────────────────────────────────────
 function applyFiltersAndRender() {
+  if (activeTab === 'handling') {
+    // handled by switchTab
+    return;
+  }
   if (activeTab === 'all') {
     document.getElementById('filterGroup').classList.add('hidden');
     document.getElementById('panel-title').textContent = '📊 General Report';
@@ -1984,7 +2179,7 @@ document.getElementById('nextPage').addEventListener('click', () => {
 // ── TIMEZONE / LADA REFERENCE ────────────────────────────────────────────
 function updateTimezoneVisibility() {
   const container = document.getElementById('timezoneRefContainer');
-  if (activeTab !== 'all') {
+  if (activeTab !== 'all' && activeTab !== 'handling') {
     container.style.display = 'block';
     updateTimezoneTable();
   } else {
@@ -1994,9 +2189,6 @@ function updateTimezoneVisibility() {
 
 function getCDMXTime() {
   const now = new Date();
-  // CDMX is UTC-6 (standard) or UTC-5 (DST). We'll use the browser's local time
-  // but for reference we assume CDMX time = local time (since we are in CDMX)
-  // In a real scenario we could use Intl.DateTimeFormat, but this is fine.
   return now;
 }
 
@@ -2035,7 +2227,6 @@ function startLiveClock() {
   timezoneInterval = setInterval(() => {
     const now = new Date();
     document.getElementById('liveClock').textContent = '⏱️ CDMX: ' + formatTime(now);
-    // Also update the table every 30 sec (optional)
     if (document.getElementById('timezoneRefContainer').style.display !== 'none') {
       updateTimezoneTable();
     }
