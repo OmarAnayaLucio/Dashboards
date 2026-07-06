@@ -124,6 +124,47 @@
     .tips-section ul li .tip-highlight.green { color: var(--verde); }
     .tips-section ul li .tip-highlight.orange { color: var(--naranja); }
 
+    /* ── CLIENT SWITCHBOARD CARD ──────────────────────────────────────────── */
+    .contact-card {
+      background: var(--blanco);
+      border-radius: 12px;
+      border-left: 5px solid var(--azul-vibrante);
+      padding: 1rem 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 12px rgba(14,59,92,0.10);
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px 20px;
+    }
+    .contact-card h4 {
+      color: var(--azul-profundo);
+      font-size: 14px;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .contact-card .phone-number {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--azul-profundo);
+      letter-spacing: 0.5px;
+      background: var(--azul-suave);
+      padding: 2px 16px;
+      border-radius: 20px;
+    }
+    .contact-card .phone-note {
+      font-size: 13px;
+      color: #666;
+      margin: 0;
+    }
+    @media (max-width: 600px) {
+      .contact-card { flex-direction: column; align-items: flex-start; gap: 6px; }
+      .contact-card .phone-number { font-size: 16px; }
+    }
+    /* ─────────────────────────────────────────────────────────────────────── */
+
     /* ── CALL SCRIPT PANEL ─────────────────────────────────────────── */
     .script-panel {
       background: var(--blanco);
@@ -685,6 +726,65 @@
       white-space: nowrap;
     }
 
+    /* ---- TIMEZONE REFERENCE TABLE ---- */
+    .timezone-ref {
+      margin-top: 1.5rem;
+      background: var(--blanco);
+      border-radius: 12px;
+      border: 1px solid var(--azul-claro);
+      box-shadow: 0 4px 12px rgba(14,59,92,0.08);
+      overflow: hidden;
+    }
+    .timezone-ref .ref-header {
+      background: var(--azul-profundo);
+      color: white;
+      padding: 0.6rem 1.2rem;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .timezone-ref .ref-header .live-clock {
+      margin-left: auto;
+      font-weight: 400;
+      font-size: 13px;
+      background: rgba(255,255,255,0.15);
+      padding: 2px 12px;
+      border-radius: 20px;
+    }
+    .timezone-ref table {
+      font-size: 12.5px;
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .timezone-ref th {
+      background: var(--arena);
+      color: var(--azul-profundo);
+      font-weight: 600;
+      padding: 0.5rem 0.8rem;
+      border-bottom: 2px solid var(--azul-claro);
+      text-align: left;
+    }
+    .timezone-ref td {
+      padding: 0.45rem 0.8rem;
+      border-bottom: 1px solid var(--arena-dark);
+    }
+    .timezone-ref tr:last-child td { border-bottom: none; }
+    .timezone-ref .lada-badge {
+      background: var(--azul-suave);
+      color: var(--azul-profundo);
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 11px;
+      display: inline-block;
+    }
+    .timezone-ref .diff-pos { color: var(--verde); font-weight: 600; }
+    .timezone-ref .diff-neg { color: var(--rojo); font-weight: 600; }
+    .timezone-ref .diff-zero { color: var(--naranja); font-weight: 600; }
+    /* ---- end timezone ---- */
+
     @media (max-width: 700px) {
       .navbar { flex-wrap: wrap; gap: 6px; padding: 0.5rem 1rem; }
       .main { padding: 0.8rem; }
@@ -696,6 +796,8 @@
       .admin-item input[type="password"] { max-width: none; }
       .tips-section ul { flex-direction: column; gap: 8px; }
       .script-step { gap: 10px; }
+      .timezone-ref .ref-header { flex-wrap: wrap; }
+      .timezone-ref .ref-header .live-clock { margin-left: 0; width: 100%; }
     }
     @media (max-width: 480px) {
       .summary-bar { grid-template-columns: 1fr; }
@@ -741,6 +843,7 @@
 
 <div class="main">
 
+  <!-- Key Tips Section -->
   <div class="tips-section">
     <h4>💡 Key Tips for Success</h4>
     <ul>
@@ -748,6 +851,13 @@
       <li><span class="tip-icon">📅</span> <span class="tip-highlight orange">Saturday afternoons</span> have higher contact rates</li>
       <li><span class="tip-icon">🤝</span> <span class="tip-highlight green">We help members get full value</span> from the benefits already included in their contract</li>
     </ul>
+  </div>
+
+  <!-- NEW: Client Switchboard Contact Card -->
+  <div class="contact-card">
+    <h4>📞 Client Switchboard</h4>
+    <span class="phone-number">+1 (312) 680‑3958</span>
+    <span class="phone-note">Clients can reach our office calling at this number and dialing the advisor extention.</span>
   </div>
 
   <!-- Admin Panel -->
@@ -842,6 +952,20 @@
       </div>
     </div>
   </div>
+
+  <!-- Timezone & LADA reference (shown only on advisor tabs) -->
+  <div id="timezoneRefContainer" style="display:none;" class="timezone-ref">
+    <div class="ref-header">
+      <span>🕒 Time Zone &amp; LADA Reference</span>
+      <span class="live-clock" id="liveClock">⏱️ CDMX: --:--:--</span>
+    </div>
+    <table>
+      <thead>
+        <tr><th>State / Area</th><th>LADA (Area Code)</th><th>Time vs CDMX</th><th>Current Time</th></tr>
+      </thead>
+      <tbody id="timezoneTableBody"></tbody>
+    </table>
+  </div>
 </div>
 
 <div class="footer">
@@ -888,6 +1012,20 @@ const DEFAULT_USERS = {
   'User #7': 'user7',
   'User #8': 'user8'
 };
+// ────────────────────────────────────────────────────────────────────────────
+
+// ── LADA / TIMEZONE DATA ──────────────────────────────────────────────────
+const LADA_DATA = [
+  { area: 'Mexico City', lada: '55 / 56', offset: 0 },
+  { area: 'Guadalajara', lada: '33', offset: 0 },
+  { area: 'Monterrey', lada: '81', offset: 0 },
+  { area: 'New York (East)', lada: '212 / 646', offset: 1 },
+  { area: 'Chicago (Central)', lada: '312 / 773', offset: 0 },
+  { area: 'Denver (Mountain)', lada: '303 / 720', offset: -1 },
+  { area: 'Los Angeles (Pacific)', lada: '213 / 310', offset: -2 },
+  { area: 'Miami (East)', lada: '305 / 786', offset: 1 },
+  { area: 'Texas (Central)', lada: '214 / 817', offset: 0 },
+];
 // ────────────────────────────────────────────────────────────────────────────
 
 const PRESETS = [
@@ -1025,6 +1163,7 @@ let filteredData = [];
 let passwords = {};
 let pendingTab = null;
 let adminUnlocked = false;
+let timezoneInterval = null;
 
 // ── STORAGE ──────────────────────────────────────────────────────────────────
 function loadStore() { try { store = JSON.parse(localStorage.getItem(STORE_KEY) || '{}'); } catch(e) { store = {}; } }
@@ -1176,6 +1315,8 @@ async function loadData() {
     if (adminUnlocked) renderAdminPanel();
     applyFiltersAndRender();
     updateAdminButton();
+    updateTimezoneTable();
+    startLiveClock();
   } catch(e) {
     document.getElementById('tableBody').innerHTML =
       '<tr><td colspan="12" style="text-align:center;padding:2rem;color:var(--rojo);">⚠️ Error: ' + e.message + '</td></tr>';
@@ -1220,6 +1361,7 @@ function renderTabs() {
   });
 
   document.getElementById('tabs').innerHTML = html;
+  updateTimezoneVisibility();
 }
 
 function switchTab(tab) {
@@ -1228,6 +1370,7 @@ function switchTab(tab) {
     currentPage = 1;
     renderTabs();
     applyFiltersAndRender();
+    updateTimezoneVisibility();
     return;
   }
 
@@ -1246,6 +1389,7 @@ function switchTab(tab) {
   currentPage = 1;
   renderTabs();
   applyFiltersAndRender();
+  updateTimezoneVisibility();
 }
 
 // ── ADMIN PANEL ────────────────────────────────────────────────────
@@ -1418,6 +1562,7 @@ function checkPassword() {
     currentPage = 1;
     renderTabs();
     applyFiltersAndRender();
+    updateTimezoneVisibility();
     showToast('🔓 Access granted to ' + targetTab);
     pendingTab = null;
   } else {
@@ -1467,6 +1612,7 @@ function applyFiltersAndRender() {
     document.getElementById('filterGroup').classList.add('hidden');
     document.getElementById('panel-title').textContent = '📊 General Report';
     renderResumen();
+    updateTimezoneVisibility();
     return;
   } else {
     document.getElementById('filterGroup').classList.remove('hidden');
@@ -1575,6 +1721,7 @@ function renderResumen() {
 
   document.getElementById('pagination').classList.add('hidden');
   updateSummary(allRows);
+  updateTimezoneVisibility();
 }
 
 // ── CLIENT TABLE ─────────────────────────────────────────────────────────────
@@ -1708,6 +1855,7 @@ function renderTable() {
     pgHtml += '<button onclick="goPage(' + totalPages + ')">' + totalPages + '</button>';
   }
   document.getElementById('pageNumbers').innerHTML = pgHtml;
+  updateTimezoneVisibility();
 }
 
 function goPage(p) { currentPage = p; renderTable(); }
@@ -1832,6 +1980,67 @@ document.getElementById('prevPage').addEventListener('click', () => { if (curren
 document.getElementById('nextPage').addEventListener('click', () => {
   if (currentPage < Math.ceil(filteredData.length / PAGE_SIZE)) { currentPage++; renderTable(); }
 });
+
+// ── TIMEZONE / LADA REFERENCE ────────────────────────────────────────────
+function updateTimezoneVisibility() {
+  const container = document.getElementById('timezoneRefContainer');
+  if (activeTab !== 'all') {
+    container.style.display = 'block';
+    updateTimezoneTable();
+  } else {
+    container.style.display = 'none';
+  }
+}
+
+function getCDMXTime() {
+  const now = new Date();
+  // CDMX is UTC-6 (standard) or UTC-5 (DST). We'll use the browser's local time
+  // but for reference we assume CDMX time = local time (since we are in CDMX)
+  // In a real scenario we could use Intl.DateTimeFormat, but this is fine.
+  return now;
+}
+
+function formatTime(d) {
+  return d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+}
+
+function updateTimezoneTable() {
+  const tbody = document.getElementById('timezoneTableBody');
+  const now = getCDMXTime();
+  const cdmxHour = now.getHours() + now.getMinutes()/60;
+  
+  let html = '';
+  LADA_DATA.forEach(item => {
+    const offset = item.offset;
+    const localTime = new Date(now.getTime() + offset * 3600000);
+    const hourDiff = offset;
+    let diffClass = 'diff-zero';
+    let diffLabel = 'Same time';
+    if (hourDiff > 0) { diffClass = 'diff-pos'; diffLabel = `+${hourDiff}h`; }
+    else if (hourDiff < 0) { diffClass = 'diff-neg'; diffLabel = `${hourDiff}h`; }
+    else { diffLabel = 'Same time'; }
+    
+    html += `<tr>
+      <td><strong>${esc(item.area)}</strong></td>
+      <td><span class="lada-badge">${esc(item.lada)}</span></td>
+      <td class="${diffClass}">${diffLabel}</td>
+      <td>${formatTime(localTime)}</td>
+    </tr>`;
+  });
+  tbody.innerHTML = html;
+}
+
+function startLiveClock() {
+  if (timezoneInterval) clearInterval(timezoneInterval);
+  timezoneInterval = setInterval(() => {
+    const now = new Date();
+    document.getElementById('liveClock').textContent = '⏱️ CDMX: ' + formatTime(now);
+    // Also update the table every 30 sec (optional)
+    if (document.getElementById('timezoneRefContainer').style.display !== 'none') {
+      updateTimezoneTable();
+    }
+  }, 1000);
+}
 
 // ── HELPERS ────────────────────────────────────────────────────────────────────
 function fmtCur(n) { return n ? '$' + Number(n).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}) : '$0.00'; }
