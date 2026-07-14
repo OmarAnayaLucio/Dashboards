@@ -1273,7 +1273,6 @@ const DEFAULT_USERS = {
 };
 
 // ── LADA / TIMEZONE DATA (USA only) ──────────────────────────────────────
-// Full mapping of area codes -> state, region, offset from CDMX (UTC-6)
 const LADA_MAP = {
   // Pacific (-2h from CDMX)
   '213': { state: 'California', region: 'Pacífico', offset: -2, display: '213 / 310 / 408' },
@@ -2161,15 +2160,13 @@ function renderResumen() {
     <th style="cursor:default;text-align:center;">Worked (7 days)</th>
     <th style="cursor:default;text-align:center;">Progress</th>
     <th style="cursor:default;text-align:center;">Total Monthly Balance (USD)</th>
-    <th style="cursor:default;text-align:center;">Advisor Commission (USD)</th>
   </tr>`;
   const tbody = document.getElementById('tableBody');
   if (!resumen.length) {
-    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:2rem;color:#999;">No advisors with clients</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:2rem;color:#999;">No advisors with clients</td></tr>';
   } else {
     tbody.innerHTML = resumen.map(item => {
       const pct = item.total ? Math.round((item.comentadosSemana / item.total) * 100) : 0;
-      const comisionAsesor = item.sumaBalances * 3;
       return `<tr class="resumen-asesor">
         <td><strong>${esc(item.asesor)}</strong></td>
         <td style="text-align:center;font-weight:600;">${item.total}</td>
@@ -2181,7 +2178,6 @@ function renderResumen() {
           </div>
         </td>
         <td style="text-align:center;font-weight:600;">${fmtCur(item.sumaBalances)}</td>
-        <td style="text-align:center;font-weight:600;color:var(--verde);">${fmtCur(comisionAsesor)}</td>
       </tr>`;
     }).join('');
   }
@@ -2199,7 +2195,6 @@ function renderTable() {
     { field: null, label: 'Monthly Balance (USD)' },
     { field: null, label: 'Total Balance (120m)' },
     { field: null, label: 'Team Commission (25%)' },
-    { field: null, label: 'Advisor Commission (10%)' },
     { field: 'domicilio', label: 'Address' },
     { field: 'asesor', label: 'Advisor' },
     { field: null, label: 'Status' },
@@ -2233,7 +2228,7 @@ function renderTable() {
   const pageItems = filteredData.slice(start, end);
   const tbody = document.getElementById('tableBody');
   if (!pageItems.length) {
-    tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;padding:2rem;color:#999;">No clients found</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:2rem;color:#999;">No clients found</td></tr>';
   } else {
     tbody.innerHTML = pageItems.map(r => {
       const key = rowKey(r);
@@ -2247,7 +2242,6 @@ function renderTable() {
       let balance = getClientBalance(r);
       const balanceTotal = balance * 120;
       const comisionEquipo = balanceTotal * 0.25;
-      const comisionAsesor = comisionEquipo * 0.10;
       const presetsHtml = PRESETS.map(p => {
         const sel = (lc && lc.status === p.status) ? 'sel' : '';
         return '<button class="preset-chip ' + sel + '" onclick="pickPreset(event,\'' +
@@ -2260,7 +2254,6 @@ function renderTable() {
         `<td><input class="balance-input" type="number" step="any" value="${balance}" onchange="updateBalance('${escJ(key)}', this.value)" /></td>` +
         `<td class="calc-cell">${fmtCur(balanceTotal)}</td>` +
         `<td class="calc-cell">${fmtCur(comisionEquipo)}</td>` +
-        `<td class="calc-cell">${fmtCur(comisionAsesor)}</td>` +
         `<td>${esc(r.domicilio)}</td>` +
         `<td>${esc(r.asesor)}</td>` +
         `<td><span class="badge ${st.cls}">${st.label}</span>` +
@@ -2273,7 +2266,7 @@ function renderTable() {
           `</button>` +
         `</td>` +
       '</tr>';
-      const commentRow = '<tr class="comment-row"><td colspan="11">' +
+      const commentRow = '<tr class="comment-row"><td colspan="10">' +
         '<div class="comment-panel ' + (hasData?'open':'') + '" id="cp_' + safeKey + '">' +
           '<div class="presets">' + presetsHtml + '</div>' +
           '<textarea class="comment-textarea" id="ta_' + safeKey + '" placeholder="Describe the interaction with the client...">' + esc(comment) + '</textarea>' +
@@ -2546,10 +2539,8 @@ function lookupLada() {
 }
 
 function updateLookupClock() {
-  // Update the lookup result live if it's open
   const resultDiv = document.getElementById('lookupResult');
   if (resultDiv.classList.contains('show')) {
-    // Re-run lookup to refresh times
     const input = document.getElementById('ladaInput');
     if (input.value.trim()) {
       lookupLada();
