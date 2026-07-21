@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MEMBER's CONSULTING · VIDANTA · CRM</title>
   <style>
+    /* ===== TODO EL CSS IGUAL QUE ANTES ===== */
     :root {
       --black: #000000;
       --arena: #F7F3EE;
@@ -1727,17 +1728,42 @@ function parseCSV(raw) {
     return res;
   }
   const headers = splitLine(lines[0]).map(h => h.replace(/^"|"$/g,'').trim().toLowerCase());
+  
+  // Función para encontrar columna: primero busca coincidencia exacta (ignorando mayúsculas), luego por inclusión
   function col(keywords) {
-    return headers.findIndex(h => keywords.some(k => h.includes(k)));
+    // Primero, coincidencia exacta (case-insensitive)
+    for (let h of headers) {
+      const hLower = h.toLowerCase();
+      for (let k of keywords) {
+        if (hLower === k.toLowerCase()) {
+          return headers.indexOf(h);
+        }
+      }
+    }
+    // Si no, buscar por inclusión
+    for (let h of headers) {
+      const hLower = h.toLowerCase();
+      for (let k of keywords) {
+        if (hLower.includes(k.toLowerCase())) {
+          return headers.indexOf(h);
+        }
+      }
+    }
+    return -1;
   }
+
   const iId   = col(['#','id','num','no.']);
   const iNom  = col(['nombre']);
-  const iTel  = col(['tel']);
+  // Home: buscamos "home" o "casa"
+  const iHome = col(['home', 'casa', 'teléfono casa', 'telefono casa']);
+  // Mobile: buscamos "mobile" o "móvil" o "movil" o "celular"
+  const iMobile = col(['mobile', 'móvil', 'movil', 'celular']);
   const iSal  = col(['saldo','balance']);
   const iDom  = col(['domicilio','direcc','address']);
   const iAdv  = col(['asesor','advisor']);
   const iFec  = col(['fecha','date']);
   const iCom  = col(['coment','note','observ']);
+
   const out = [];
   for (let i = 1; i < lines.length; i++) {
     const c = splitLine(lines[i]).map(s => s.replace(/^"|"$/g,'').trim());
@@ -1750,7 +1776,8 @@ function parseCSV(raw) {
     out.push({
       id:          iId  >= 0 ? (parseInt(c[iId]) || (i)) : i,
       nombre:      nombre,
-      telefono:    iTel >= 0 ? c[iTel] || '' : '',
+      telefono:    iHome >= 0 ? c[iHome] || '' : '',
+      telefono_mobile: iMobile >= 0 ? c[iMobile] || '' : '',
       saldo:       saldo,
       domicilio:   iDom >= 0 ? c[iDom] || '' : '',
       asesor:      iAdv >= 0 ? c[iAdv] || '' : '',
@@ -2103,6 +2130,7 @@ function applyFiltersAndRender() {
     data = data.filter(r =>
       r.nombre.toLowerCase().includes(ql) ||
       r.telefono.includes(q) ||
+      r.telefono_mobile.includes(q) ||
       r.domicilio.toLowerCase().includes(ql)
     );
   }
@@ -2191,7 +2219,8 @@ function renderTable() {
   const fields = [
     { field: 'id', label: '#' },
     { field: 'nombre', label: 'Name' },
-    { field: 'telefono', label: 'Phone' },
+    { field: 'telefono', label: 'Home' },
+    { field: null, label: 'Mobile' },
     { field: null, label: 'Monthly Balance (USD)' },
     { field: null, label: 'Total Balance (120m)' },
     { field: null, label: 'Team Commission (25%)' },
@@ -2228,7 +2257,7 @@ function renderTable() {
   const pageItems = filteredData.slice(start, end);
   const tbody = document.getElementById('tableBody');
   if (!pageItems.length) {
-    tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:2rem;color:#999;">No clients found</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;padding:2rem;color:#999;">No clients found</td></tr>';
   } else {
     tbody.innerHTML = pageItems.map(r => {
       const key = rowKey(r);
@@ -2251,6 +2280,7 @@ function renderTable() {
         `<td><span class="cliente-id">#${r.id}</span></td>` +
         `<td><span class="cliente-nombre">${esc(r.nombre)}</span></td>` +
         `<td>${esc(r.telefono)}</td>` +
+        `<td>${esc(r.telefono_mobile || '')}</td>` +
         `<td><input class="balance-input" type="number" step="any" value="${balance}" onchange="updateBalance('${escJ(key)}', this.value)" /></td>` +
         `<td class="calc-cell">${fmtCur(balanceTotal)}</td>` +
         `<td class="calc-cell">${fmtCur(comisionEquipo)}</td>` +
@@ -2266,7 +2296,7 @@ function renderTable() {
           `</button>` +
         `</td>` +
       '</tr>';
-      const commentRow = '<tr class="comment-row"><td colspan="10">' +
+      const commentRow = '<tr class="comment-row"><td colspan="11">' +
         '<div class="comment-panel ' + (hasData?'open':'') + '" id="cp_' + safeKey + '">' +
           '<div class="presets">' + presetsHtml + '</div>' +
           '<textarea class="comment-textarea" id="ta_' + safeKey + '" placeholder="Describe the interaction with the client...">' + esc(comment) + '</textarea>' +
@@ -2376,6 +2406,7 @@ async function saveComment(key, nombre, asesor) {
         idCliente:        String(rowData.id || ''),
         nombreCliente:    nombre,
         telefono:         rowData.telefono || '',
+        telefono_mobile:  rowData.telefono_mobile || '',
         domicilio:        rowData.domicilio || '',
         estado:           statusLabels[status] || status,
         comentario:       comment,
