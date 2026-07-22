@@ -331,11 +331,18 @@ tr.sub td{background:var(--g50);font-weight:700;}
 <div class="view" id="view-tend">
   <div style="background:#fff;border:1px solid var(--g200);border-radius:var(--r);padding:.875rem 1.1rem;margin-bottom:1rem;">
     <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-      <div><div class="nlbl">Ver por</div><div id="grain-tabs" class="npills"></div></div>
+      <div><div class="nlbl">Agrupar por</div><div id="grain-tabs" class="npills"></div></div>
       <div><div class="nlbl">Portal</div><div id="tend-ger" class="npills"></div></div>
-      <div id="tend-ctx" style="margin-left:auto;font-size:9px;color:var(--g500);"></div>
+      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+        <span class="nlbl" style="font-size:8px;">Desde</span>
+        <input type="date" id="tend-fecha-desde" class="filter-input" style="width:140px;margin:0;">
+        <span class="nlbl" style="font-size:8px;">Hasta</span>
+        <input type="date" id="tend-fecha-hasta" class="filter-input" style="width:140px;margin:0;">
+        <button class="rbtn" onclick="aplicarFiltroFecha()" style="padding:2px 10px;">Aplicar</button>
+        <button class="rbtn" onclick="limpiarFiltroFecha()" style="padding:2px 10px;">Limpiar</button>
+      </div>
     </div>
-    <div id="tend-sel" style="margin-top:.75rem;padding:.75rem 1rem;background:var(--g50);border-radius:var(--rs);"></div>
+    <div id="tend-sel" style="margin-top:.75rem;padding:.75rem 1rem;background:var(--g50);border-radius:var(--rs);display:none;"></div>
   </div>
   <div id="tend-notice" style="display:none" class="al al-amber"><span class="al-ico">⚠️</span><div>Algunos períodos tienen datos incompletos (s/d).</div></div>
   <div id="tend-c1" class="cg2"></div>
@@ -495,9 +502,13 @@ const S = {
   curView: 'gen',
   selAs: [],
   sortG: {col:'reg', dir:'desc'},
-  tGrain: 'week', tGer: 'all',
+  tGrain: 'week', 
+  tGer: 'all',
   tSelW: [],
-  tendencias: [],
+  tendencias: [], // array de objetos con fecha y metricas (para filtros)
+  tEventos: [],   // eventos con fecha para granularidad
+  tFiltroDesde: null,
+  tFiltroHasta: null,
   _repFilt: '',
   _intFilt: '',
   errores: {}
@@ -582,24 +593,50 @@ function getColAnio(rows) {
   return keys.find(k => k.trim().toLowerCase() === 'año' || k.trim().toLowerCase() === 'year') || null;
 }
 
-function getWeekFromDate(dateStr) {
-  if (!dateStr) return null;
-  const s = String(dateStr).trim();
+// Parsear fecha desde string con varios formatos
+function parseFecha(str) {
+  if (!str) return null;
+  const s = String(str).trim();
+  // Intentar varios formatos
   let d = null;
-  const parts1 = s.match(/^(\d{4})\/(\d{2})\/(\d{2})/);
-  const parts2 = s.match(/^(\d{2})\/(\d{2})\/(\d{4})/);
-  const parts3 = s.match(/^(\d{2})\/(\d{2})\/(\d{2})/);
-  if (parts1) {
-    d = new Date(parseInt(parts1[1]), parseInt(parts1[2]) - 1, parseInt(parts1[3]));
-  } else if (parts2) {
-    d = new Date(parseInt(parts2[3]), parseInt(parts2[2]) - 1, parseInt(parts2[1]));
-  } else if (parts3) {
-    const year = parseInt(parts3[3]) + 2000;
-    d = new Date(year, parseInt(parts3[2]) - 1, parseInt(parts3[1]));
-  } else {
-    d = new Date(s);
+  // Formato "YYYY/MM/DD HH:MM" o "YYYY/MM/DD"
+  let parts = s.match(/^(\d{4})\/(\d{2})\/(\d{2})(?:\s+(\d{2}):(\d{2}))?/);
+  if (parts) {
+    d = new Date(parseInt(parts[1]), parseInt(parts[2])-1, parseInt(parts[3]));
+    if (parts[4]) d.setHours(parseInt(parts[4]), parseInt(parts[5] || 0));
+    return d;
   }
-  if (!d || isNaN(d)) return null;
+  // Formato "DD/MM/YYYY"
+  parts = s.match(/^(\d{2})\/(\d{2})\/(\d{4})/);
+  if (parts) {
+    d = new Date(parseInt(parts[3]), parseInt(parts[2])-1, parseInt(parts[1]));
+    return d;
+  }
+  // Formato "MM/DD/YYYY"
+  parts = s.match(/^(\d{2})\/(\d{2})\/(\d{4})/);
+  // ya probado, mejor intentar con Date nativo
+  d = new Date(s);
+  if (!isNaN(d)) return d;
+  return null;
+}
+
+function fechaKey(fecha, granularidad) {
+  if (!fecha) return 'sin fecha';
+  const d = new Date(fecha);
+  const y = d.getFullYear();
+  const m = d.getMonth() + 1;
+  const day = d.getDate();
+  const semana = getWeekFromDate(d);
+  const trim = Math.ceil(m / 3);
+  if (granularidad === 'day') return `${y}-${String(m).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+  if (granularidad === 'week') return `${y}-W${String(semana).padStart(2,'0')}`;
+  if (granularidad === 'month') return `${y}-${String(m).padStart(2,'0')}`;
+  if (granularidad === 'quarter') return `${y}-Q${trim}`;
+  if (granularidad === 'year') return `${y}`;
+  return `${y}-W${String(semana).padStart(2,'0')}`;
+}
+
+function getWeekFromDate(d) {
   const tmp = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
   const day = tmp.getUTCDay() || 7;
   tmp.setUTCDate(tmp.getUTCDate() + 4 - day);
@@ -705,7 +742,7 @@ function detectarUltimaSemana() {
 }
 
 // ════════════════════════════════════════════════════════════
-// CARGA DE DATOS (con reintentos)
+// CARGA DE DATOS
 // ════════════════════════════════════════════════════════════
 async function cargar() {
   try {
@@ -853,141 +890,138 @@ function getRol() {
 }
 
 // ════════════════════════════════════════════════════════════
-// TENDENCIAS
+// CONSTRUCCIÓN DE TENDENCIAS CON FECHAS
 // ════════════════════════════════════════════════════════════
 function construirTendenciasDesdeFuentes() {
-  console.log('📊 Construyendo tendencias desde fuentes...');
-  const semanasMap = {};
+  console.log('📊 Construyendo tendencias con fechas...');
+  const eventos = [];
   const ANIO_FILTRO = 2026;
+
+  // 1. Interesados
   const colSemanaInt = getColSemana(S.interesados);
-  if (colSemanaInt) {
-    const colAnioInt = getColAnio(S.interesados);
+  const colFechaInt = findCol(S.interesados[0], ['Fecha']);
+  const colPortalInt = findCol(S.interesados[0], ['Portal']);
+  const colAnioInt = getColAnio(S.interesados);
+  if (colFechaInt && S.interesados.length) {
     S.interesados.forEach(r => {
-      const sem = parseInt(r[colSemanaInt] || 0);
+      let fecha = parseFecha(r[colFechaInt]);
+      if (!fecha) return;
+      // Filtrar año si existe columna Año
       if (colAnioInt) {
         const anio = parseInt(r[colAnioInt] || 0);
         if (anio !== ANIO_FILTRO) return;
       }
-      if (sem <= 0 || sem > 53) return;
-      if (!semanasMap[sem]) {
-        semanasMap[sem] = {
-          num: sem, label: `Semana ${sem}`, short: `S${sem}`,
-          global: { portal_int: 0, crm: 0, citas_ag: 0, citas_at: 0, exp: 0, vis: 0, contratos: 0 },
-          ger: { V1: { portal_int:0, crm:0, citas_ag:0, citas_at:0, exp:0, vis:0, contratos:0 },
-                 V2: { portal_int:0, crm:0, citas_ag:0, citas_at:0, exp:0, vis:0, contratos:0 },
-                 V3: { portal_int:0, crm:0, citas_ag:0, citas_at:0, exp:0, vis:0, contratos:0 },
-                 V4: { portal_int:0, crm:0, citas_ag:0, citas_at:0, exp:0, vis:0, contratos:0 } }
-        };
-      }
-      const portal = pmap(r['Portal'] || '');
-      semanasMap[sem].global.portal_int++;
-      if (portal && semanasMap[sem].ger[portal]) {
-        semanasMap[sem].ger[portal].portal_int++;
-      }
+      const portal = pmap(r[colPortalInt] || '');
+      eventos.push({ fecha, portal, tipo: 'int' });
+    });
+  } else if (colSemanaInt) {
+    // Si no hay fecha, usar semana para crear fecha aprox (lunes de esa semana)
+    S.interesados.forEach(r => {
+      const sem = parseInt(r[colSemanaInt] || 0);
+      if (!sem) return;
+      let anio = ANIO_FILTRO;
+      if (colAnioInt) anio = parseInt(r[colAnioInt] || ANIO_FILTRO);
+      if (anio !== ANIO_FILTRO) return;
+      // Crear fecha: primer día de la semana (lunes)
+      const fecha = new Date(anio, 0, 1 + (sem - 1) * 7);
+      const portal = pmap(r[colPortalInt] || '');
+      eventos.push({ fecha, portal, tipo: 'int' });
     });
   }
+
+  // 2. CRM
   const colSemanaCRM = getColSemana(S.crm);
-  if (colSemanaCRM) {
-    const colAnioCRM = getColAnio(S.crm);
+  const colFechaCRM = findCol(S.crm[0], ['Fecha de registro', 'Fecha']);
+  const colPortalCRM = findCol(S.crm[0], ['Portal origen', 'Portal']);
+  const colAnioCRM = getColAnio(S.crm);
+  if (colFechaCRM && S.crm.length) {
     S.crm.forEach(r => {
-      const sem = parseInt(r[colSemanaCRM] || 0);
+      let fecha = parseFecha(r[colFechaCRM]);
+      if (!fecha) return;
       if (colAnioCRM) {
         const anio = parseInt(r[colAnioCRM] || 0);
         if (anio !== ANIO_FILTRO) return;
       }
-      if (sem <= 0 || sem > 53) return;
-      if (!semanasMap[sem]) {
-        semanasMap[sem] = {
-          num: sem, label: `Semana ${sem}`, short: `S${sem}`,
-          global: { portal_int: 0, crm: 0, citas_ag: 0, citas_at: 0, exp: 0, vis: 0, contratos: 0 },
-          ger: { V1: { portal_int:0, crm:0, citas_ag:0, citas_at:0, exp:0, vis:0, contratos:0 },
-                 V2: { portal_int:0, crm:0, citas_ag:0, citas_at:0, exp:0, vis:0, contratos:0 },
-                 V3: { portal_int:0, crm:0, citas_ag:0, citas_at:0, exp:0, vis:0, contratos:0 },
-                 V4: { portal_int:0, crm:0, citas_ag:0, citas_at:0, exp:0, vis:0, contratos:0 } }
-        };
-      }
-      const portal = pmap(r['Portal origen'] || '');
-      semanasMap[sem].global.crm++;
-      if (portal && semanasMap[sem].ger[portal]) {
-        semanasMap[sem].ger[portal].crm++;
-      }
+      const portal = pmap(r[colPortalCRM] || '');
+      eventos.push({ fecha, portal, tipo: 'crm' });
+    });
+  } else if (colSemanaCRM) {
+    S.crm.forEach(r => {
+      const sem = parseInt(r[colSemanaCRM] || 0);
+      if (!sem) return;
+      let anio = ANIO_FILTRO;
+      if (colAnioCRM) anio = parseInt(r[colAnioCRM] || ANIO_FILTRO);
+      if (anio !== ANIO_FILTRO) return;
+      const fecha = new Date(anio, 0, 1 + (sem - 1) * 7);
+      const portal = pmap(r[colPortalCRM] || '');
+      eventos.push({ fecha, portal, tipo: 'crm' });
     });
   }
+
+  // 3. Citas
   const colSemanaCit = getColSemana(S.citas);
-  if (colSemanaCit) {
-    const colAsistencia = S.citas.length > 0 ? Object.keys(S.citas[0]).find(k => k.toUpperCase().includes('ASISTENCIA')) : 'ASISTENCIA';
-    const colComentarios = S.citas.length > 0 ? Object.keys(S.citas[0]).find(k => k.toUpperCase().includes('COMENTARIOS')) : 'COMENTARIOS';
-    const colAnioCit = getColAnio(S.citas);
+  const colFechaCit = findCol(S.citas[0], ['FECHA DE SOLICITUD', 'Fecha solicitud']);
+  const colPortalCit = findCol(S.citas[0], ['Portal']);
+  const colAsistencia = S.citas.length > 0 ? Object.keys(S.citas[0]).find(k => k.toUpperCase().includes('ASISTENCIA')) : null;
+  const colComentarios = S.citas.length > 0 ? Object.keys(S.citas[0]).find(k => k.toUpperCase().includes('COMENTARIOS')) : null;
+  const colAnioCit = getColAnio(S.citas);
+  if (colFechaCit && S.citas.length) {
     S.citas.forEach(r => {
-      const sem = parseInt(r[colSemanaCit] || 0);
+      let fecha = parseFecha(r[colFechaCit]);
+      if (!fecha) return;
       if (colAnioCit) {
         const anio = parseInt(r[colAnioCit] || 0);
         if (anio !== ANIO_FILTRO) return;
       }
-      if (sem <= 0 || sem > 53) return;
-      if (!semanasMap[sem]) {
-        semanasMap[sem] = {
-          num: sem, label: `Semana ${sem}`, short: `S${sem}`,
-          global: { portal_int: 0, crm: 0, citas_ag: 0, citas_at: 0, exp: 0, vis: 0, contratos: 0 },
-          ger: { V1: { portal_int:0, crm:0, citas_ag:0, citas_at:0, exp:0, vis:0, contratos:0 },
-                 V2: { portal_int:0, crm:0, citas_ag:0, citas_at:0, exp:0, vis:0, contratos:0 },
-                 V3: { portal_int:0, crm:0, citas_ag:0, citas_at:0, exp:0, vis:0, contratos:0 },
-                 V4: { portal_int:0, crm:0, citas_ag:0, citas_at:0, exp:0, vis:0, contratos:0 } }
-        };
-      }
-      const portal = pmap(r['Portal'] || '');
-      semanasMap[sem].global.citas_ag++;
-      if (portal && semanasMap[sem].ger[portal]) semanasMap[sem].ger[portal].citas_ag++;
-      const asist = (r[colAsistencia] || '').trim().toLowerCase();
-      if (asist === 'si' || asist === 'sí') {
-        semanasMap[sem].global.citas_at++;
-        if (portal && semanasMap[sem].ger[portal]) semanasMap[sem].ger[portal].citas_at++;
-      }
-      const comentarios = (r[colComentarios] || '').trim().toLowerCase();
-      if (comentarios.includes('cierre de venta')) {
-        semanasMap[sem].global.contratos++;
-        if (portal && semanasMap[sem].ger[portal]) semanasMap[sem].ger[portal].contratos++;
-      }
+      const portal = pmap(r[colPortalCit] || '');
+      const asist = r[colAsistencia] || '';
+      const coment = r[colComentarios] || '';
+      eventos.push({ fecha, portal, tipo: 'cita', asist: asist.toLowerCase().includes('si') || asist.toLowerCase().includes('sí'), coment });
+    });
+  } else if (colSemanaCit) {
+    S.citas.forEach(r => {
+      const sem = parseInt(r[colSemanaCit] || 0);
+      if (!sem) return;
+      let anio = ANIO_FILTRO;
+      if (colAnioCit) anio = parseInt(r[colAnioCit] || ANIO_FILTRO);
+      if (anio !== ANIO_FILTRO) return;
+      const fecha = new Date(anio, 0, 1 + (sem - 1) * 7);
+      const portal = pmap(r[colPortalCit] || '');
+      const asist = r[colAsistencia] || '';
+      const coment = r[colComentarios] || '';
+      eventos.push({ fecha, portal, tipo: 'cita', asist: asist.toLowerCase().includes('si') || asist.toLowerCase().includes('sí'), coment });
     });
   }
+
+  // 4. Weekly (exposición y visualizaciones)
   const colSemanaW = getColSemana(S.daily);
-  if (colSemanaW) {
-    const colAnioW = getColAnio(S.daily);
+  const colPortalW = findCol(S.daily[0], ['Portal']);
+  const colExp = findCol(S.daily[0], ['Exposición']);
+  const colVis = findCol(S.daily[0], ['Visualizaciones']);
+  const colAnioW = getColAnio(S.daily);
+  if (colSemanaW && S.daily.length) {
     S.daily.forEach(r => {
       const sem = parseInt(r[colSemanaW] || 0);
-      if (colAnioW) {
-        const anio = parseInt(r[colAnioW] || 0);
-        if (anio !== ANIO_FILTRO) return;
-      }
-      if (sem <= 0 || sem > 53) return;
-      if (!semanasMap[sem]) {
-        semanasMap[sem] = {
-          num: sem, label: `Semana ${sem}`, short: `S${sem}`,
-          global: { portal_int: 0, crm: 0, citas_ag: 0, citas_at: 0, exp: 0, vis: 0, contratos: 0 },
-          ger: { V1: { portal_int:0, crm:0, citas_ag:0, citas_at:0, exp:0, vis:0, contratos:0 },
-                 V2: { portal_int:0, crm:0, citas_ag:0, citas_at:0, exp:0, vis:0, contratos:0 },
-                 V3: { portal_int:0, crm:0, citas_ag:0, citas_at:0, exp:0, vis:0, contratos:0 },
-                 V4: { portal_int:0, crm:0, citas_ag:0, citas_at:0, exp:0, vis:0, contratos:0 } }
-        };
-      }
-      const portal = pmap(r['Portal'] || '');
-      const exp = parseFloat(r['Exposición'] || 0) || 0;
-      const vis = parseFloat(r['Visualizaciones'] || 0) || 0;
-      semanasMap[sem].global.exp += exp;
-      semanasMap[sem].global.vis += vis;
-      if (portal && semanasMap[sem].ger[portal]) {
-        semanasMap[sem].ger[portal].exp += exp;
-        semanasMap[sem].ger[portal].vis += vis;
+      if (!sem) return;
+      let anio = ANIO_FILTRO;
+      if (colAnioW) anio = parseInt(r[colAnioW] || ANIO_FILTRO);
+      if (anio !== ANIO_FILTRO) return;
+      const fecha = new Date(anio, 0, 1 + (sem - 1) * 7);
+      const portal = pmap(r[colPortalW] || '');
+      const exp = parseFloat(r[colExp] || 0) || 0;
+      const vis = parseFloat(r[colVis] || 0) || 0;
+      if (exp > 0 || vis > 0) {
+        eventos.push({ fecha, portal, tipo: 'weekly', exp, vis });
       }
     });
   }
-  S.tendencias = Object.values(semanasMap).sort((a, b) => a.num - b.num);
-  console.log('✅ Tendencias construidas:', S.tendencias.length, 'semanas (solo 2026)');
-  S.tSelW = S.tendencias.map(w => w.num);
+
+  S.tEventos = eventos;
+  console.log(`✅ ${eventos.length} eventos de tendencia generados.`);
 }
 
 // ════════════════════════════════════════════════════════════
-// FUNCIONES DE CONSULTA
+// FUNCIONES DE CONSULTA (sin cambios relevantes)
 // ════════════════════════════════════════════════════════════
 function getInteresados() {
   const tot = { V1: 0, V2: 0, V3: 0, V4: 0 };
@@ -1184,7 +1218,6 @@ function buildAsesores() {
   const { porAsesor: intPA, tot: intTot } = getInteresados();
 
   const colAsesorInt = S.interesados.length ? findCol(S.interesados[0], ['Asesor']) : null;
-  // Obtener todos los asesores que aparecen en interesados (todas las semanas) para asignar bloque por portal
   const intAllAsesores = new Set();
   if (colAsesorInt) {
     S.interesados.forEach(r => {
@@ -1194,14 +1227,11 @@ function buildAsesores() {
   }
   console.log('📌 Asesores únicos en Interesados (todas semanas):', intAllAsesores.size);
 
-  // Activos del catálogo (no bajas)
   const activos = S.asesores.filter(a => {
     const fn = (a['Función'] || '').trim().toLowerCase();
     return !fn.includes('baja') && (a['Asesor'] || '').trim();
   });
   const catalogoNombres = new Set(activos.map(a => (a['Asesor'] || '').trim()).filter(Boolean));
-
-  // Unir todos los nombres posibles (catálogo + interesados)
   const allNombres = new Set([...catalogoNombres, ...intAllAsesores]);
 
   const enB1 = name => rol.b1.some(n => nameMatch(n, name));
@@ -1244,7 +1274,6 @@ function buildAsesores() {
     else if (fn === 'Gerente Tradicional') bloque = 'B2';
     else if (fn === 'Gerente Outlet Inm') bloque = 'B2';
     if (!bloque) {
-      // Si no tiene bloque, buscar en interesados si tiene portal V3
       let esV3 = false;
       if (colAsesorInt) {
         S.interesados.forEach(r => {
@@ -1263,7 +1292,6 @@ function buildAsesores() {
     const citD  = getCitasForAsesor(nombre);
     const intD  = getIntForAsesor(nombre);
 
-    // Solo incluir si tiene al menos un dato en la semana actual
     if (crmD.reg === 0 && citD.ag === 0 && intD === 0) return;
 
     result.push({
@@ -1284,7 +1312,7 @@ function buildAsesores() {
 }
 
 // ════════════════════════════════════════════════════════════
-// RENDER PRINCIPAL
+// RENDER PRINCIPAL (sin cambios relevantes)
 // ════════════════════════════════════════════════════════════
 function renderTodo() {
   const rol               = getRol();
@@ -1691,13 +1719,17 @@ function sv(v,btn){
 }
 
 // ════════════════════════════════════════════════════════════
-// TENDENCIAS
+// TENDENCIAS con agrupación y filtro de fechas
 // ════════════════════════════════════════════════════════════
 function buildTendSelectors() {
   let grainDiv = document.getElementById('grain-tabs');
   if (grainDiv) {
     grainDiv.innerHTML = [
-      {key:'week', label:'Semana'}
+      {key:'day', label:'Día'},
+      {key:'week', label:'Semana'},
+      {key:'month', label:'Mes'},
+      {key:'quarter', label:'Trimestre'},
+      {key:'year', label:'Año'}
     ].map(g => 
       `<button class="gtab ${S.tGrain===g.key?'active':''}" onclick="setGrain('${g.key}',this)">${g.label}</button>`
     ).join('');
@@ -1709,23 +1741,11 @@ function buildTendSelectors() {
       return `<button class="np ${cls} ${S.tGer===p?'on':''}" onclick="tendGerSet('${p}',this)">${p==='all'?'Todos':p}</button>`;
     }).join('');
   }
-  let selDiv = document.getElementById('tend-sel');
-  if (!selDiv) return;
-  if (S.tendencias && S.tendencias.length > 0) {
-    selDiv.innerHTML = `<div class="npills">${S.tendencias.map(w => 
-      `<label style="display:flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;border:1px solid ${S.tSelW.includes(w.num)?'var(--teal)':'var(--g300)'};background:${S.tSelW.includes(w.num)?'var(--tl)':'white'};cursor:pointer">
-        <input type="checkbox" style="display:none" ${S.tSelW.includes(w.num)?'checked':''} onchange="tendToggleWeek(${w.num},this.checked)">
-        <span style="font-size:11px;font-weight:${S.tSelW.includes(w.num)?'700':'500'}">Sem ${w.num}</span>
-      </label>`
-    ).join('')}</div>`;
-  } else {
-    selDiv.innerHTML = '<span style="font-size:10px;color:var(--g400)">No hay datos de tendencias disponibles</span>';
-  }
-  let ctx = document.getElementById('tend-ctx');
-  if (ctx) {
-    const total = S.tendencias.reduce((s,w) => s + w.global.exp, 0);
-    ctx.textContent = `${S.tendencias.length} semanas · ${total.toLocaleString()} exposiciones totales (2026)`;
-  }
+  // Inicializar fechas si no tienen valor
+  const desdeInput = document.getElementById('tend-fecha-desde');
+  const hastaInput = document.getElementById('tend-fecha-hasta');
+  if (!desdeInput.value && S.tFiltroDesde) desdeInput.value = S.tFiltroDesde;
+  if (!hastaInput.value && S.tFiltroHasta) hastaInput.value = S.tFiltroHasta;
 }
 
 function setGrain(g,btn) {
@@ -1742,143 +1762,178 @@ function tendGerSet(g,btn) {
   renderTend();
 }
 
-function tendToggleWeek(num, checked) {
-  if (checked && !S.tSelW.includes(num)) S.tSelW.push(num);
-  else if (!checked) S.tSelW = S.tSelW.filter(n => n !== num);
-  if (S.tSelW.length === 0) {
-    S.tSelW = S.tendencias.map(w => w.num);
-  }
-  buildTendSelectors();
+function aplicarFiltroFecha() {
+  const desde = document.getElementById('tend-fecha-desde').value;
+  const hasta = document.getElementById('tend-fecha-hasta').value;
+  S.tFiltroDesde = desde || null;
+  S.tFiltroHasta = hasta || null;
+  renderTend();
+}
+
+function limpiarFiltroFecha() {
+  document.getElementById('tend-fecha-desde').value = '';
+  document.getElementById('tend-fecha-hasta').value = '';
+  S.tFiltroDesde = null;
+  S.tFiltroHasta = null;
   renderTend();
 }
 
 function getActivePeriods() {
-  return S.tendencias.filter(w => S.tSelW.includes(w.num));
-}
-
-function deltaBadge(curr, prev) {
-  if (curr === null || prev === null || curr === undefined || prev === undefined) {
-    return '<span style="font-size:9px;color:#BDC1C6">—</span>';
-  }
-  if (prev === 0 && curr === 0) {
-    return '<span style="background:#F1F3F4;color:#80868B;padding:1px 5px;border-radius:8px;font-size:9px">igual</span>';
-  }
-  if (prev === 0) {
-    return '<span style="background:#E6F4EA;color:#137333;padding:1px 6px;border-radius:8px;font-size:9px;font-weight:700">nuevo</span>';
-  }
-  let p = ((curr - prev) / prev * 100);
-  let up = p >= 0;
-  return `<span style="background:${up?'#E6F4EA':'#FCE8E6'};color:${up?'#137333':'#D93025'};padding:2px 7px;border-radius:8px;font-size:9px;font-weight:700;display:inline-block">${up?'▲':'▼'} ${Math.abs(p).toFixed(1)}%</span>`;
-}
-
-function comboChart(periods, key, col, title) {
-  const getV = p => {
-    if (S.tGer === 'all') return p.global[key] ?? null;
-    return p.ger[S.tGer]?.[key] ?? null;
-  };
-  const data = periods.map(p => ({
-    v: getV(p),
-    lbl: `S${p.num}`,
-    note: ''
-  }));
-  const valid = data.map(d => d.v).filter(v => v !== null && v !== undefined && typeof v === 'number');
-  if (!valid.length) {
-    return `<div class="cc"><div class="ct">${title}</div><div style="height:80px;display:flex;align-items:center;justify-content:center;color:var(--g400);font-size:10px">Sin datos</div></div>`;
-  }
-  const W = 340, H = 130, pL = 36, pR = 10, pT = 18, pB = 28;
-  const cW = W - pL - pR, cH = H - pT - pB;
-  const n = data.length;
-  const maxV = Math.max(...valid, 1);
-  const nM = maxV >= 1000 ? Math.ceil(maxV / 1000) * 1000 : Math.ceil(maxV / 10) * 10 || 1;
-  const sW = cW / n;
-  const bW = Math.min(Math.max(sW * 0.5, 8), 50);
-  let sv = '';
-  [0, Math.round(nM / 2), nM].forEach(v => {
-    let y = pT + cH - (v / nM * cH);
-    sv += `<line x1="${pL}" y1="${y.toFixed(1)}" x2="${W-pR}" y2="${y.toFixed(1)}" stroke="#E8EAED" stroke-width="1"/>`;
-    sv += `<text x="${pL-3}" y="${(y+3).toFixed(1)}" text-anchor="end" font-size="8" fill="#BDC1C6" font-family="DM Mono,monospace">${v>=1000?(v/1000).toFixed(0)+'k':v}</text>`;
-  });
-  let prevX = null, prevY = null;
-  data.forEach((d, i) => {
-    let cx = pL + i * sW + sW / 2;
-    sv += `<text x="${cx.toFixed(1)}" y="${H-6}" text-anchor="middle" font-size="8" fill="#80868B" font-family="DM Mono,monospace">${d.lbl}</text>`;
-    if (d.v !== null && d.v !== undefined && typeof d.v === 'number') {
-      let bh = Math.max((d.v / nM) * cH, 2);
-      let by = pT + cH - bh;
-      let bx = cx - bW / 2;
-      sv += `<rect x="${bx.toFixed(1)}" y="${by.toFixed(1)}" width="${bW}" height="${bh.toFixed(1)}" rx="3" fill="${col}BB"/>`;
-      sv += `<text x="${cx.toFixed(1)}" y="${(by-4).toFixed(1)}" text-anchor="middle" font-size="9" font-weight="700" fill="${col}" font-family="DM Mono,monospace">${d.v>=1000?(d.v/1000).toFixed(1)+'k':d.v}</text>`;
-      let cy = pT + cH - (d.v / nM * cH);
-      if (prevX !== null && prevY !== null) {
-        sv += `<line x1="${prevX.toFixed(1)}" y1="${prevY.toFixed(1)}" x2="${cx.toFixed(1)}" y2="${cy.toFixed(1)}" stroke="${col}" stroke-width="2" opacity=".7"/>`;
-      }
-      prevX = cx;
-      prevY = cy;
-      sv += `<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="4" fill="white" stroke="${col}" stroke-width="2.5"/>`;
-    } else {
-      sv += `<rect x="${(cx-bW/2).toFixed(1)}" y="${pT+2}" width="${bW}" height="${cH-2}" rx="3" fill="none" stroke="#DADCE0" stroke-dasharray="3,2"/>`;
-      sv += `<text x="${cx.toFixed(1)}" y="${(pT+cH/2+4).toFixed(1)}" text-anchor="middle" font-size="9" fill="#BDC1C6">s/d</text>`;
-      prevX = null;
-      prevY = null;
-    }
-  });
-  const last = valid.slice(-2);
-  const badge = last.length === 2 ? deltaBadge(last[1], last[0]) : '';
-  return `<div class="cc" style="padding:.875rem 1rem">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;flex-wrap:wrap;gap:4px">
-      <div class="ct" style="margin-bottom:0">${title}</div>
-      ${badge}
-    </div>
-    <svg width="100%" viewBox="0 0 ${W} ${H}" style="overflow:visible;display:block">${sv}</svg>
-  </div>`;
+  // Ya no usamos semanas predefinidas, usamos eventos con fechas
+  return S.tEventos;
 }
 
 function renderTend() {
-  let periods = getActivePeriods();
-  let charts1 = document.getElementById('tend-c1');
-  let charts2 = document.getElementById('tend-c2');
-  let noticeEl = document.getElementById('tend-notice');
-  let tableEl = document.getElementById('tend-tbl');
-  if (!periods.length) {
-    if (charts1) charts1.innerHTML = '<div style="padding:2rem;text-align:center;color:var(--g400);grid-column:1/-1">Selecciona al menos una semana</div>';
-    if (charts2) charts2.innerHTML = '';
-    if (tableEl) tableEl.innerHTML = '';
+  const eventos = S.tEventos;
+  if (!eventos.length) {
+    document.getElementById('tend-c1').innerHTML = '<div style="padding:2rem;text-align:center;color:var(--g400)">No hay eventos de tendencia</div>';
+    document.getElementById('tend-c2').innerHTML = '';
+    document.getElementById('tend-tbl').innerHTML = '';
     return;
   }
-  if (noticeEl) {
-    let hasGaps = periods.some(p => p.global.exp === 0 && p.global.vis === 0);
-    if (hasGaps) {
-      noticeEl.style.display = 'flex';
-      noticeEl.innerHTML = '<span class="al-ico">⚠️</span><div><strong>Datos incompletos en algunos períodos.</strong> Las celdas "s/d" indican métricas no disponibles para ese período.</div>';
-    } else {
-      noticeEl.style.display = 'none';
+
+  // Filtrar por rango de fechas
+  let filtrados = eventos;
+  if (S.tFiltroDesde) {
+    const desde = new Date(S.tFiltroDesde);
+    filtrados = filtrados.filter(e => e.fecha >= desde);
+  }
+  if (S.tFiltroHasta) {
+    const hasta = new Date(S.tFiltroHasta);
+    // Incluir todo el día
+    hasta.setHours(23,59,59,999);
+    filtrados = filtrados.filter(e => e.fecha <= hasta);
+  }
+
+  // Filtrar por portal
+  if (S.tGer !== 'all') {
+    filtrados = filtrados.filter(e => e.portal === S.tGer);
+  }
+
+  // Agrupar según granularidad
+  const grupos = {};
+  filtrados.forEach(e => {
+    const key = fechaKey(e.fecha, S.tGrain);
+    if (!grupos[key]) {
+      grupos[key] = { 
+        key, 
+        fecha: e.fecha,
+        portal_int: 0, crm: 0, citas_ag: 0, citas_at: 0, 
+        exp: 0, vis: 0, contratos: 0,
+        // Para guardar el primer día del grupo para ordenar
+        fechaRef: new Date(e.fecha)
+      };
     }
-  }
-  if (charts1) {
-    charts1.innerHTML = [
-      {title: '1. Interesados portal', key: 'portal_int', col: '#0097A7'},
-      {title: '2. Leads CRM', key: 'crm', col: '#5E35B1'},
-      {title: '3. Citas agendadas', key: 'citas_ag', col: '#1E8E3E'},
-      {title: '4. Citas atendidas', key: 'citas_at', col: '#34A853'}
-    ].map(m => comboChart(periods, m.key, m.col, m.title)).join('');
-  }
-  if (charts2) {
-    charts2.innerHTML = [
-      {title: '5. Exposición', key: 'exp', col: '#00ACC1'},
-      {title: '6. Visualizaciones', key: 'vis', col: '#7B2FBE'},
-      {title: '7. Contratos pagados', key: 'contratos', col: '#F29900'}
-    ].map(m => comboChart(periods, m.key, m.col, m.title)).join('');
-  }
-  const getV = (p, key) => {
-    if (!key) return null;
-    if (S.tGer === 'all') return p.global[key] ?? null;
-    return p.ger[S.tGer]?.[key] ?? null;
-  };
-  let thead = `<thead><tr><th style="min-width:120px">Métrica</th>`;
-  periods.forEach(p => {
-    thead += `<th class="nr" style="min-width:90px">Sem ${p.num}</th>`;
+    const g = grupos[key];
+    if (e.tipo === 'int') g.portal_int++;
+    else if (e.tipo === 'crm') g.crm++;
+    else if (e.tipo === 'cita') {
+      g.citas_ag++;
+      if (e.asist) g.citas_at++;
+      if (e.coment && e.coment.toLowerCase().includes('cierre de venta')) g.contratos++;
+    } else if (e.tipo === 'weekly') {
+      g.exp += e.exp || 0;
+      g.vis += e.vis || 0;
+    }
   });
-  if (periods.length >= 2) thead += `<th class="nr" style="color:var(--teal)">Δ último</th>`;
+
+  // Ordenar por fecha
+  const periodos = Object.values(grupos).sort((a,b) => a.fechaRef - b.fechaRef);
+  if (!periodos.length) {
+    document.getElementById('tend-c1').innerHTML = '<div style="padding:2rem;text-align:center;color:var(--g400)">No hay datos en el rango seleccionado</div>';
+    document.getElementById('tend-c2').innerHTML = '';
+    document.getElementById('tend-tbl').innerHTML = '';
+    return;
+  }
+
+  // Mostrar notice si hay gaps (si algún periodo tiene exp=0 y vis=0)
+  let hasGaps = periodos.some(p => p.exp === 0 && p.vis === 0 && p.portal_int === 0 && p.crm === 0);
+  document.getElementById('tend-notice').style.display = hasGaps ? 'flex' : 'none';
+
+  // Generar gráficos
+  let c1 = document.getElementById('tend-c1');
+  let c2 = document.getElementById('tend-c2');
+  
+  // Funciones para gráficos de barras (similares a comboChart pero adaptado)
+  function makeChart(data, key, col, title, formatter) {
+    const valid = data.map(d => d[key]).filter(v => typeof v === 'number' && !isNaN(v));
+    if (!valid.length) {
+      return `<div class="cc"><div class="ct">${title}</div><div style="height:80px;display:flex;align-items:center;justify-content:center;color:var(--g400);font-size:10px">Sin datos</div></div>`;
+    }
+    const W = 340, H = 130, pL = 36, pR = 10, pT = 18, pB = 28;
+    const cW = W - pL - pR, cH = H - pT - pB;
+    const n = data.length;
+    const maxV = Math.max(...valid, 1);
+    const nM = maxV >= 1000 ? Math.ceil(maxV / 1000) * 1000 : Math.ceil(maxV / 10) * 10 || 1;
+    const sW = cW / n;
+    const bW = Math.min(Math.max(sW * 0.5, 8), 50);
+    let sv = '';
+    [0, Math.round(nM / 2), nM].forEach(v => {
+      let y = pT + cH - (v / nM * cH);
+      sv += `<line x1="${pL}" y1="${y.toFixed(1)}" x2="${W-pR}" y2="${y.toFixed(1)}" stroke="#E8EAED" stroke-width="1"/>`;
+      sv += `<text x="${pL-3}" y="${(y+3).toFixed(1)}" text-anchor="end" font-size="8" fill="#BDC1C6" font-family="DM Mono,monospace">${v>=1000?(v/1000).toFixed(0)+'k':v}</text>`;
+    });
+    data.forEach((d, i) => {
+      let cx = pL + i * sW + sW / 2;
+      let label = d.key;
+      if (S.tGrain === 'day') label = d.key.slice(5);
+      else if (S.tGrain === 'week') label = 'S' + d.key.split('-W')[1];
+      else if (S.tGrain === 'month') label = d.key.slice(5);
+      else if (S.tGrain === 'quarter') label = 'Q' + d.key.split('-Q')[1];
+      else if (S.tGrain === 'year') label = d.key;
+      sv += `<text x="${cx.toFixed(1)}" y="${H-6}" text-anchor="middle" font-size="8" fill="#80868B" font-family="DM Mono,monospace">${label}</text>`;
+      let val = d[key] || 0;
+      if (typeof val === 'number') {
+        let bh = Math.max((val / nM) * cH, 2);
+        let by = pT + cH - bh;
+        let bx = cx - bW / 2;
+        sv += `<rect x="${bx.toFixed(1)}" y="${by.toFixed(1)}" width="${bW}" height="${bh.toFixed(1)}" rx="3" fill="${col}BB"/>`;
+        let display = val >= 1000 ? (val/1000).toFixed(1)+'k' : val;
+        sv += `<text x="${cx.toFixed(1)}" y="${(by-4).toFixed(1)}" text-anchor="middle" font-size="9" font-weight="700" fill="${col}" font-family="DM Mono,monospace">${display}</text>`;
+      }
+    });
+    // Calcular delta
+    let lastTwo = valid.slice(-2);
+    let badge = '';
+    if (lastTwo.length === 2) {
+      let p = ((lastTwo[1] - lastTwo[0]) / (lastTwo[0] || 1) * 100);
+      let up = p >= 0;
+      badge = `<span style="background:${up?'#E6F4EA':'#FCE8E6'};color:${up?'#137333':'#D93025'};padding:2px 7px;border-radius:8px;font-size:9px;font-weight:700;display:inline-block">${up?'▲':'▼'} ${Math.abs(p).toFixed(1)}%</span>`;
+    }
+    return `<div class="cc" style="padding:.875rem 1rem">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;flex-wrap:wrap;gap:4px">
+        <div class="ct" style="margin-bottom:0">${title}</div>
+        ${badge}
+      </div>
+      <svg width="100%" viewBox="0 0 ${W} ${H}" style="overflow:visible;display:block">${sv}</svg>
+    </div>`;
+  }
+
+  c1.innerHTML = [
+    {title: '1. Interesados portal', key: 'portal_int', col: '#0097A7'},
+    {title: '2. Leads CRM', key: 'crm', col: '#5E35B1'},
+    {title: '3. Citas agendadas', key: 'citas_ag', col: '#1E8E3E'},
+    {title: '4. Citas atendidas', key: 'citas_at', col: '#34A853'}
+  ].map(m => makeChart(periodos, m.key, m.col, m.title)).join('');
+
+  c2.innerHTML = [
+    {title: '5. Exposición', key: 'exp', col: '#00ACC1'},
+    {title: '6. Visualizaciones', key: 'vis', col: '#7B2FBE'},
+    {title: '7. Contratos pagados', key: 'contratos', col: '#F29900'}
+  ].map(m => makeChart(periodos, m.key, m.col, m.title)).join('');
+
+  // Tabla comparativa
+  let thead = `<thead><tr><th style="min-width:120px">Período</th>`;
+  periodos.forEach(p => {
+    let label = p.key;
+    if (S.tGrain === 'day') label = p.key;
+    else if (S.tGrain === 'week') label = 'Sem ' + p.key.split('-W')[1];
+    else if (S.tGrain === 'month') label = p.key;
+    else if (S.tGrain === 'quarter') label = 'Q' + p.key.split('-Q')[1];
+    else if (S.tGrain === 'year') label = p.key;
+    thead += `<th class="nr" style="min-width:80px">${label}</th>`;
+  });
+  if (periodos.length >= 2) thead += `<th class="nr" style="color:var(--teal)">Δ último</th>`;
   thead += `</tr></thead>`;
   let tbody = '<tbody>';
   const metrics = [
@@ -1896,29 +1951,40 @@ function renderTend() {
   ];
   metrics.forEach(m => {
     if (m.isHeader) {
-      tbody += `<tr style="background:var(--g50)"><td colspan="${periods.length+(periods.length>=2?2:1)}" style="font-size:8px;font-weight:700;text-transform:uppercase;color:var(--g500);padding:5px 10px">${m.lbl}</td></tr>`;
+      tbody += `<tr style="background:var(--g50)"><td colspan="${periodos.length+(periodos.length>=2?2:1)}" style="font-size:8px;font-weight:700;text-transform:uppercase;color:var(--g500);padding:5px 10px">${m.lbl}</td></tr>`;
       return;
     }
-    let vals = periods.map(p => getV(p, m.key));
-    let numeros = vals.filter(v => v !== null && v !== undefined && typeof v === 'number');
+    let vals = periodos.map(p => p[m.key] ?? null);
+    let numeros = vals.filter(v => v !== null && typeof v === 'number');
     let deltaHtml = '—';
-    if (numeros.length >= 2) deltaHtml = deltaBadge(numeros[numeros.length-1], numeros[numeros.length-2]);
+    if (numeros.length >= 2) {
+      let curr = numeros[numeros.length-1];
+      let prev = numeros[numeros.length-2];
+      if (prev === 0 && curr === 0) deltaHtml = '<span style="background:#F1F3F4;color:#80868B;padding:1px 5px;border-radius:8px;font-size:9px">igual</span>';
+      else if (prev === 0) deltaHtml = '<span style="background:#E6F4EA;color:#137333;padding:1px 6px;border-radius:8px;font-size:9px;font-weight:700">nuevo</span>';
+      else {
+        let p = ((curr - prev) / prev * 100);
+        let up = p >= 0;
+        deltaHtml = `<span style="background:${up?'#E6F4EA':'#FCE8E6'};color:${up?'#137333':'#D93025'};padding:2px 7px;border-radius:8px;font-size:9px;font-weight:700;display:inline-block">${up?'▲':'▼'} ${Math.abs(p).toFixed(1)}%</span>`;
+      }
+    }
     tbody += `<tr><td class="tn">${m.lbl}</td>`;
     vals.forEach(v => {
       let display = (v === null || v === undefined) ? 's/d' : (typeof v === 'number' ? v.toLocaleString() : v);
       tbody += `<td class="nr mn" style="color:${v===null?'var(--g300)':'var(--g700)'}">${display}</td>`;
     });
-    if (periods.length >= 2) tbody += `<td class="nr">${deltaHtml}</td>`;
+    if (periodos.length >= 2) tbody += `<td class="nr">${deltaHtml}</td>`;
     tbody += `</tr>`;
   });
   tbody += '</tbody>';
-  if (tableEl) {
-    tableEl.innerHTML = `<table>${thead}${tbody}</table>`;
-  }
+  document.getElementById('tend-tbl').innerHTML = `<table>${thead}${tbody}</table>`;
+
+  // Mostrar selector de semanas (oculto para este nuevo enfoque)
+  document.getElementById('tend-sel').style.display = 'none';
 }
 
 // ════════════════════════════════════════════════════════════
-// REPORTES
+// REPORTES (sin cambios)
 // ════════════════════════════════════════════════════════════
 async function cargarRep() {
   document.getElementById('rep-info').textContent = 'Cargando datos de reportes mensuales...';
@@ -2214,7 +2280,7 @@ function renderRep() {
 }
 
 // ════════════════════════════════════════════════════════════
-// DETALLE DE CITAS
+// DETALLE DE CITAS (sin cambios)
 // ════════════════════════════════════════════════════════════
 function renderDetalleCitas() {
   document.getElementById('dc-sem').textContent = S.semana;
@@ -2373,7 +2439,7 @@ function renderDetalleCitas() {
 }
 
 // ════════════════════════════════════════════════════════════
-// VISTA INTERESADOS
+// VISTA INTERESADOS (sin cambios)
 // ════════════════════════════════════════════════════════════
 function renderInteresados() {
   const data = getInteresados();
