@@ -398,11 +398,13 @@ tr.sub td{background:var(--g50);font-weight:700;}
 <div class="view" id="view-rep">
   <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-bottom:1rem;gap:10px;">
     <div>
-      <div class="smktl" style="font-size:13px;">📁 Reportes Mensuales · Mayo 2026</div>
+      <div class="smktl" style="font-size:13px;">📁 Reportes Mensuales</div>
       <div style="font-size:10px;color:var(--g500);margin-top:3px" id="rep-info">Cargando…</div>
     </div>
     <button class="rbtn" onclick="cargarRep()">🔄 Recargar</button>
   </div>
+  <!-- Pestañas de meses -->
+  <div id="rep-meses-tabs" style="display:flex;gap:4px;margin-bottom:1rem;flex-wrap:wrap;"></div>
   <div id="rep-sum"></div>
   <div id="rep-portals"></div>
   <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:.75rem;">
@@ -498,6 +500,8 @@ const S = {
   daily: [],
   reporte: [],
   reporteData: {},
+  reporteMeses: [],          // meses disponibles (ej. [5,7])
+  reporteMesSeleccionado: null, // mes actual
   portalData: {},
   curView: 'gen',
   selAs: [],
@@ -505,8 +509,8 @@ const S = {
   tGrain: 'week', 
   tGer: 'all',
   tSelW: [],
-  tendencias: [], // array de objetos con fecha y metricas (para filtros)
-  tEventos: [],   // eventos con fecha para granularidad
+  tendencias: [],
+  tEventos: [],
   tFiltroDesde: null,
   tFiltroHasta: null,
   _repFilt: '',
@@ -906,7 +910,6 @@ function construirTendenciasDesdeFuentes() {
     S.interesados.forEach(r => {
       let fecha = parseFecha(r[colFechaInt]);
       if (!fecha) return;
-      // Filtrar año si existe columna Año
       if (colAnioInt) {
         const anio = parseInt(r[colAnioInt] || 0);
         if (anio !== ANIO_FILTRO) return;
@@ -915,14 +918,12 @@ function construirTendenciasDesdeFuentes() {
       eventos.push({ fecha, portal, tipo: 'int' });
     });
   } else if (colSemanaInt) {
-    // Si no hay fecha, usar semana para crear fecha aprox (lunes de esa semana)
     S.interesados.forEach(r => {
       const sem = parseInt(r[colSemanaInt] || 0);
       if (!sem) return;
       let anio = ANIO_FILTRO;
       if (colAnioInt) anio = parseInt(r[colAnioInt] || ANIO_FILTRO);
       if (anio !== ANIO_FILTRO) return;
-      // Crear fecha: primer día de la semana (lunes)
       const fecha = new Date(anio, 0, 1 + (sem - 1) * 7);
       const portal = pmap(r[colPortalInt] || '');
       eventos.push({ fecha, portal, tipo: 'int' });
@@ -1984,7 +1985,7 @@ function renderTend() {
 }
 
 // ════════════════════════════════════════════════════════════
-// REPORTES (sin cambios)
+// REPORTES — con selección dinámica de mes
 // ════════════════════════════════════════════════════════════
 async function cargarRep() {
   document.getElementById('rep-info').textContent = 'Cargando datos de reportes mensuales...';
@@ -2014,11 +2015,28 @@ async function cargarRep() {
       ratio: 'Ratio'
     };
     portales.forEach(p => { S.reporteData[p] = []; });
+
+    // Recopilar meses disponibles
+    const mesesSet = new Set();
+    reporteData.forEach(row => {
+      const mes = parseInt(row[colMapping.mes] || 0);
+      if (mes > 0) mesesSet.add(mes);
+    });
+    S.reporteMeses = Array.from(mesesSet).sort((a,b) => a - b);
+    console.log('📅 Meses disponibles en reportes:', S.reporteMeses);
+
+    // Seleccionar el mes más reciente por defecto
+    if (S.reporteMeses.length > 0) {
+      S.reporteMesSeleccionado = S.reporteMeses[S.reporteMeses.length - 1];
+    } else {
+      S.reporteMesSeleccionado = 5; // fallback
+    }
+
     reporteData.forEach(row => {
       const portal = (row[colMapping.portal] || '').trim();
       if (!portales.includes(portal)) return;
       const mes = parseInt(row[colMapping.mes] || 0);
-      if (mes !== 5) return;
+      if (mes === 0) return;
       const registro = {
         portal, mes,
         avisos: parseInt(row[colMapping.avisos] || 0) || 0,
@@ -2049,6 +2067,11 @@ async function cargarRep() {
   }
 }
 
+function cambiarMesReporte(mes) {
+  S.reporteMesSeleccionado = mes;
+  renderRep();
+}
+
 function renderRep() {
   const portales = ['Ventas 1', 'Ventas 2', 'Ventas 3', 'Ventas 4'];
   const portalColors = {
@@ -2063,22 +2086,40 @@ function renderRep() {
     'Ventas 3': 'V3',
     'Ventas 4': 'V4'
   };
+
+  // Generar pestañas de meses
+  const mesSeleccionado = S.reporteMesSeleccionado || 5;
+  const tabsHtml = S.reporteMeses.map(m => {
+    const nombre = new Date(2026, m-1, 1).toLocaleString('es', { month: 'long' });
+    return `<button class="np ${m === mesSeleccionado ? 'on' : ''}" onclick="cambiarMesReporte(${m})">${nombre}</button>`;
+  }).join('');
+  document.getElementById('rep-meses-tabs').innerHTML = tabsHtml || '<span style="font-size:10px;color:var(--g400)">Sin meses disponibles</span>';
+
+  // Filtrar datos por mes seleccionado
   let allRows = [];
   portales.forEach(p => {
     (S.reporteData[p] || []).forEach(r => {
-      allRows.push({ ...r, short: portalShort[p], color: portalColors[p] });
+      if (r.mes === mesSeleccionado) {
+        allRows.push({ ...r, short: portalShort[p], color: portalColors[p] });
+      }
     });
   });
+
+  // Mostrar información del mes
+  const nombreMes = new Date(2026, mesSeleccionado-1, 1).toLocaleString('es', { month: 'long' });
+  document.getElementById('rep-info').textContent = `${nombreMes} 2026 · ${allRows.length} segmentos totales · ${portales.map(p => `${portalShort[p]}: ${(S.reporteData[p]||[]).filter(r => r.mes === mesSeleccionado).length}`).join(' | ')}`;
+
   if (allRows.length === 0) {
-    document.getElementById('rep-sum').innerHTML = '<div style="padding:2rem;text-align:center;color:var(--g400);">No hay datos disponibles</div>';
+    document.getElementById('rep-sum').innerHTML = '<div style="padding:2rem;text-align:center;color:var(--g400);">No hay datos para el mes seleccionado</div>';
     document.getElementById('rep-portals').innerHTML = '';
     document.getElementById('rep-tbl').innerHTML = '';
-    document.getElementById('rep-info').textContent = '⚠️ No se encontraron datos para mayo 2026';
     return;
   }
+
+  // Resumen por portal (solo mes seleccionado)
   let summaryHTML = `<div class="rep-sg">`;
   portales.forEach(p => {
-    const rows = S.reporteData[p] || [];
+    const rows = (S.reporteData[p] || []).filter(r => r.mes === mesSeleccionado);
     const totalAvisos = rows.reduce((s, r) => s + r.avisos, 0);
     const totalSeg = rows.reduce((s, r) => s + r.vistasSeg, 0);
     const promSeg = rows.length > 0 ? (totalSeg / rows.length).toFixed(0) : 0;
@@ -2097,6 +2138,8 @@ function renderRep() {
   });
   summaryHTML += `</div>`;
   document.getElementById('rep-sum').innerHTML = summaryHTML;
+
+  // Top 20
   allRows.sort((a, b) => b.ratio - a.ratio);
   const top20 = allRows.slice(0, 20);
   const maxRatio = top20.length > 0 ? top20[0].ratio : 1;
@@ -2107,7 +2150,7 @@ function renderRep() {
           <div style="background:var(--teal);width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;font-family:DM Mono,monospace;color:#fff;">🏆</div>
           <div>
             <div style="font-size:13px;font-weight:700;color:var(--g900)">Top 20 · Mayor Ratio de Vistas</div>
-            <div style="font-size:10px;color:var(--g500);margin-top:2px">Vistas Propias ÷ Vistas Segmento × 100 — mayo 2026</div>
+            <div style="font-size:10px;color:var(--g500);margin-top:2px">Vistas Propias ÷ Vistas Segmento × 100 — ${new Date(2026, mesSeleccionado-1, 1).toLocaleString('es', { month: 'long' })} 2026</div>
           </div>
         </div>
         <div style="display:flex;gap:10px;flex-wrap:wrap;">
@@ -2148,7 +2191,7 @@ function renderRep() {
   top20HTML += `</div>`;
   let portalChartsHTML = '';
   portales.forEach(p => {
-    const rows = S.reporteData[p] || [];
+    const rows = (S.reporteData[p] || []).filter(r => r.mes === mesSeleccionado);
     if (rows.length === 0) return;
     const sortedDesc = [...rows].sort((a, b) => b.vistasSeg - a.vistasSeg);
     const sortedAsc = [...rows].sort((a, b) => a.vistasSeg - b.vistasSeg);
@@ -2215,6 +2258,8 @@ function renderRep() {
     `;
   });
   document.getElementById('rep-portals').innerHTML = top20HTML + portalChartsHTML;
+
+  // Tabla detallada
   const filt = (document.getElementById('rep-filter')?.value || '').toLowerCase();
   const filtered = filt ? allRows.filter(r => 
     r.zona.toLowerCase().includes(filt) || 
@@ -2276,7 +2321,6 @@ function renderRep() {
     fi._bound = true;
     fi.addEventListener('input', () => renderRep());
   }
-  document.getElementById('rep-info').textContent = `Mayo 2026 · ${allRows.length} segmentos totales · ${portales.map(p => `${portalShort[p]}: ${(S.reporteData[p] || []).length}`).join(' | ')}`;
 }
 
 // ════════════════════════════════════════════════════════════
