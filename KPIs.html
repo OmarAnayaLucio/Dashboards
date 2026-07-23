@@ -6,7 +6,7 @@
 <title>Altaltium · KPI Dashboard · Live</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-/* ===== ESTILOS COMPLETOS (sin cambios) ===== */
+/* ===== ESTILOS COMPLETOS ===== */
 :root{
   --teal:#52BEC0;--tl:rgba(82,190,192,.1);--tm:rgba(82,190,192,.2);
   --black:#1C1E21;--white:#fff;
@@ -414,7 +414,7 @@ tr.sub td{background:var(--g50);font-weight:700;}
   <div id="rep-tbl"></div>
 </div>
 
-<!-- ===== VIEW: INTERESADOS (nuevo) ===== -->
+<!-- ===== VIEW: INTERESADOS ===== -->
 <div class="view" id="view-interesados">
   <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-bottom:1rem;gap:10px;">
     <div>
@@ -456,9 +456,9 @@ tr.sub td{background:var(--g50);font-weight:700;}
 </div>
 
 <script>
-// ════════════════════════════════════════════════════════════
-// CONFIGURACIÓN - GIDs CORRECTOS
-// ════════════════════════════════════════════════════════════
+// ============================================================
+// CONFIGURACIÓN - GIDs
+// ============================================================
 const BASE = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSu3ZxLVYU5I15BjGCKdACCNGAAmgH6Y6KeO7NBz7gL3eh_YHddMACMbR2FWesRIEejxLhmjU94YRWu/pub';
 
 const GID = {
@@ -472,9 +472,9 @@ const GID = {
   reporte     : '1314661128'
 };
 
-// ════════════════════════════════════════════════════════════
-// MAPEO DE PORTALES (incluye variantes)
-// ════════════════════════════════════════════════════════════
+// ============================================================
+// MAPEO DE PORTALES
+// ============================================================
 const PMAP = {
   'VENTAS 1':'V1','VENTAS 2':'V2','VENTAS 3':'V3','VENTAS 4':'V4',
   'V1':'V1','V2':'V2','V3':'V3','V4':'V4',
@@ -486,9 +486,9 @@ const PMAP = {
 const PC = {V1:'#1A73E8',V2:'#1E8E3E',V3:'#7B2FBE',V4:'#D56E0C'};
 const GBD = {B1:'bv1',B2:'bv3'};
 
-// ════════════════════════════════════════════════════════════
+// ============================================================
 // ESTADO GLOBAL
-// ════════════════════════════════════════════════════════════
+// ============================================================
 const S = {
   semana: 26,
   semanas: [],
@@ -500,8 +500,8 @@ const S = {
   daily: [],
   reporte: [],
   reporteData: {},
-  reporteMeses: [],          // meses disponibles (ej. [5,7])
-  reporteMesSeleccionado: null, // mes actual
+  reporteMeses: [],
+  reporteMesSeleccionado: null,
   portalData: {},
   curView: 'gen',
   selAs: [],
@@ -518,9 +518,9 @@ const S = {
   errores: {}
 };
 
-// ════════════════════════════════════════════════════════════
+// ============================================================
 // UTILIDADES
-// ════════════════════════════════════════════════════════════
+// ============================================================
 function parseCSV(text) {
   const lines = text.replace(/\r\n/g,'\n').replace(/\r/g,'\n').trim().split('\n');
   if (lines.length < 2) return [];
@@ -597,28 +597,21 @@ function getColAnio(rows) {
   return keys.find(k => k.trim().toLowerCase() === 'año' || k.trim().toLowerCase() === 'year') || null;
 }
 
-// Parsear fecha desde string con varios formatos
 function parseFecha(str) {
   if (!str) return null;
   const s = String(str).trim();
-  // Intentar varios formatos
   let d = null;
-  // Formato "YYYY/MM/DD HH:MM" o "YYYY/MM/DD"
   let parts = s.match(/^(\d{4})\/(\d{2})\/(\d{2})(?:\s+(\d{2}):(\d{2}))?/);
   if (parts) {
     d = new Date(parseInt(parts[1]), parseInt(parts[2])-1, parseInt(parts[3]));
     if (parts[4]) d.setHours(parseInt(parts[4]), parseInt(parts[5] || 0));
     return d;
   }
-  // Formato "DD/MM/YYYY"
   parts = s.match(/^(\d{2})\/(\d{2})\/(\d{4})/);
   if (parts) {
     d = new Date(parseInt(parts[3]), parseInt(parts[2])-1, parseInt(parts[1]));
     return d;
   }
-  // Formato "MM/DD/YYYY"
-  parts = s.match(/^(\d{2})\/(\d{2})\/(\d{4})/);
-  // ya probado, mejor intentar con Date nativo
   d = new Date(s);
   if (!isNaN(d)) return d;
   return null;
@@ -695,9 +688,9 @@ function mostrarError(msg) {
   document.querySelector('.wrap').prepend(d);
 }
 
-// ════════════════════════════════════════════════════════════
+// ============================================================
 // DETECCIÓN DE ÚLTIMA SEMANA
-// ════════════════════════════════════════════════════════════
+// ============================================================
 function detectarUltimaSemana() {
   let ultimaSemana = 0;
   let fuente = 'ninguna';
@@ -745,9 +738,9 @@ function detectarUltimaSemana() {
   return ultimaSemana;
 }
 
-// ════════════════════════════════════════════════════════════
+// ============================================================
 // CARGA DE DATOS
-// ════════════════════════════════════════════════════════════
+// ============================================================
 async function cargar() {
   try {
     prog(5, 'Iniciando carga de datos…');
@@ -893,15 +886,15 @@ function getRol() {
   return found || { num: S.semana, inicio: '27-03', fin: 'Jul', b1: [], b2: [] };
 }
 
-// ════════════════════════════════════════════════════════════
+// ============================================================
 // CONSTRUCCIÓN DE TENDENCIAS CON FECHAS
-// ════════════════════════════════════════════════════════════
+// ============================================================
 function construirTendenciasDesdeFuentes() {
   console.log('📊 Construyendo tendencias con fechas...');
   const eventos = [];
   const ANIO_FILTRO = 2026;
 
-  // 1. Interesados
+  // Interesados
   const colSemanaInt = getColSemana(S.interesados);
   const colFechaInt = findCol(S.interesados[0], ['Fecha']);
   const colPortalInt = findCol(S.interesados[0], ['Portal']);
@@ -930,7 +923,7 @@ function construirTendenciasDesdeFuentes() {
     });
   }
 
-  // 2. CRM
+  // CRM
   const colSemanaCRM = getColSemana(S.crm);
   const colFechaCRM = findCol(S.crm[0], ['Fecha de registro', 'Fecha']);
   const colPortalCRM = findCol(S.crm[0], ['Portal origen', 'Portal']);
@@ -959,7 +952,7 @@ function construirTendenciasDesdeFuentes() {
     });
   }
 
-  // 3. Citas
+  // Citas
   const colSemanaCit = getColSemana(S.citas);
   const colFechaCit = findCol(S.citas[0], ['FECHA DE SOLICITUD', 'Fecha solicitud']);
   const colPortalCit = findCol(S.citas[0], ['Portal']);
@@ -994,7 +987,7 @@ function construirTendenciasDesdeFuentes() {
     });
   }
 
-  // 4. Weekly (exposición y visualizaciones)
+  // Weekly
   const colSemanaW = getColSemana(S.daily);
   const colPortalW = findCol(S.daily[0], ['Portal']);
   const colExp = findCol(S.daily[0], ['Exposición']);
@@ -1021,9 +1014,9 @@ function construirTendenciasDesdeFuentes() {
   console.log(`✅ ${eventos.length} eventos de tendencia generados.`);
 }
 
-// ════════════════════════════════════════════════════════════
-// FUNCIONES DE CONSULTA (sin cambios relevantes)
-// ════════════════════════════════════════════════════════════
+// ============================================================
+// FUNCIONES DE CONSULTA
+// ============================================================
 function getInteresados() {
   const tot = { V1: 0, V2: 0, V3: 0, V4: 0 };
   const porAsesor = {};
@@ -1209,9 +1202,9 @@ function getCRM() {
   return { porAsesor, totalReg, totalTransf, totalPipe };
 }
 
-// ════════════════════════════════════════════════════════════
-// CONSTRUIR LISTA DE ASESORES (solo con datos en la semana)
-// ════════════════════════════════════════════════════════════
+// ============================================================
+// CONSTRUIR LISTA DE ASESORES
+// ============================================================
 function buildAsesores() {
   const rol = getRol();
   const { porAsesor: crmPA } = getCRM();
@@ -1312,9 +1305,9 @@ function buildAsesores() {
   return result;
 }
 
-// ════════════════════════════════════════════════════════════
-// RENDER PRINCIPAL (sin cambios relevantes)
-// ════════════════════════════════════════════════════════════
+// ============================================================
+// RENDER PRINCIPAL
+// ============================================================
 function renderTodo() {
   const rol               = getRol();
   const { res: rend, periodo } = getRendimientos();
@@ -1461,9 +1454,9 @@ function renderTodo() {
   }
 }
 
-// ════════════════════════════════════════════════════════════
-// FUNCIONES DE RENDER (auxiliares)
-// ════════════════════════════════════════════════════════════
+// ============================================================
+// FUNCIONES DE RENDER AUXILIARES
+// ============================================================
 function renderFunnel(exp,vis,int_,crm_,pipe,cag,cat,firm,pag) {
   const steps = [
     {lbl:'Exposición',  v:exp||0,  col:'#0097A7'},
@@ -1719,9 +1712,9 @@ function sv(v,btn){
   }
 }
 
-// ════════════════════════════════════════════════════════════
-// TENDENCIAS con agrupación y filtro de fechas
-// ════════════════════════════════════════════════════════════
+// ============================================================
+// TENDENCIAS
+// ============================================================
 function buildTendSelectors() {
   let grainDiv = document.getElementById('grain-tabs');
   if (grainDiv) {
@@ -1742,7 +1735,6 @@ function buildTendSelectors() {
       return `<button class="np ${cls} ${S.tGer===p?'on':''}" onclick="tendGerSet('${p}',this)">${p==='all'?'Todos':p}</button>`;
     }).join('');
   }
-  // Inicializar fechas si no tienen valor
   const desdeInput = document.getElementById('tend-fecha-desde');
   const hastaInput = document.getElementById('tend-fecha-hasta');
   if (!desdeInput.value && S.tFiltroDesde) desdeInput.value = S.tFiltroDesde;
@@ -1780,7 +1772,6 @@ function limpiarFiltroFecha() {
 }
 
 function getActivePeriods() {
-  // Ya no usamos semanas predefinidas, usamos eventos con fechas
   return S.tEventos;
 }
 
@@ -1793,7 +1784,6 @@ function renderTend() {
     return;
   }
 
-  // Filtrar por rango de fechas
   let filtrados = eventos;
   if (S.tFiltroDesde) {
     const desde = new Date(S.tFiltroDesde);
@@ -1801,17 +1791,14 @@ function renderTend() {
   }
   if (S.tFiltroHasta) {
     const hasta = new Date(S.tFiltroHasta);
-    // Incluir todo el día
     hasta.setHours(23,59,59,999);
     filtrados = filtrados.filter(e => e.fecha <= hasta);
   }
 
-  // Filtrar por portal
   if (S.tGer !== 'all') {
     filtrados = filtrados.filter(e => e.portal === S.tGer);
   }
 
-  // Agrupar según granularidad
   const grupos = {};
   filtrados.forEach(e => {
     const key = fechaKey(e.fecha, S.tGrain);
@@ -1821,7 +1808,6 @@ function renderTend() {
         fecha: e.fecha,
         portal_int: 0, crm: 0, citas_ag: 0, citas_at: 0, 
         exp: 0, vis: 0, contratos: 0,
-        // Para guardar el primer día del grupo para ordenar
         fechaRef: new Date(e.fecha)
       };
     }
@@ -1838,7 +1824,6 @@ function renderTend() {
     }
   });
 
-  // Ordenar por fecha
   const periodos = Object.values(grupos).sort((a,b) => a.fechaRef - b.fechaRef);
   if (!periodos.length) {
     document.getElementById('tend-c1').innerHTML = '<div style="padding:2rem;text-align:center;color:var(--g400)">No hay datos en el rango seleccionado</div>';
@@ -1847,15 +1832,12 @@ function renderTend() {
     return;
   }
 
-  // Mostrar notice si hay gaps (si algún periodo tiene exp=0 y vis=0)
   let hasGaps = periodos.some(p => p.exp === 0 && p.vis === 0 && p.portal_int === 0 && p.crm === 0);
   document.getElementById('tend-notice').style.display = hasGaps ? 'flex' : 'none';
 
-  // Generar gráficos
   let c1 = document.getElementById('tend-c1');
   let c2 = document.getElementById('tend-c2');
   
-  // Funciones para gráficos de barras (similares a comboChart pero adaptado)
   function makeChart(data, key, col, title, formatter) {
     const valid = data.map(d => d[key]).filter(v => typeof v === 'number' && !isNaN(v));
     if (!valid.length) {
@@ -1893,7 +1875,6 @@ function renderTend() {
         sv += `<text x="${cx.toFixed(1)}" y="${(by-4).toFixed(1)}" text-anchor="middle" font-size="9" font-weight="700" fill="${col}" font-family="DM Mono,monospace">${display}</text>`;
       }
     });
-    // Calcular delta
     let lastTwo = valid.slice(-2);
     let badge = '';
     if (lastTwo.length === 2) {
@@ -1923,7 +1904,6 @@ function renderTend() {
     {title: '7. Contratos pagados', key: 'contratos', col: '#F29900'}
   ].map(m => makeChart(periodos, m.key, m.col, m.title)).join('');
 
-  // Tabla comparativa
   let thead = `<thead><tr><th style="min-width:120px">Período</th>`;
   periodos.forEach(p => {
     let label = p.key;
@@ -1979,14 +1959,12 @@ function renderTend() {
   });
   tbody += '</tbody>';
   document.getElementById('tend-tbl').innerHTML = `<table>${thead}${tbody}</table>`;
-
-  // Mostrar selector de semanas (oculto para este nuevo enfoque)
   document.getElementById('tend-sel').style.display = 'none';
 }
 
-// ════════════════════════════════════════════════════════════
-// REPORTES — con selección dinámica de mes
-// ════════════════════════════════════════════════════════════
+// ============================================================
+// REPORTES — con selección dinámica de mes y doble barra en Top 20
+// ============================================================
 async function cargarRep() {
   document.getElementById('rep-info').textContent = 'Cargando datos de reportes mensuales...';
   try {
@@ -2016,7 +1994,6 @@ async function cargarRep() {
     };
     portales.forEach(p => { S.reporteData[p] = []; });
 
-    // Recopilar meses disponibles
     const mesesSet = new Set();
     reporteData.forEach(row => {
       const mes = parseInt(row[colMapping.mes] || 0);
@@ -2025,11 +2002,10 @@ async function cargarRep() {
     S.reporteMeses = Array.from(mesesSet).sort((a,b) => a - b);
     console.log('📅 Meses disponibles en reportes:', S.reporteMeses);
 
-    // Seleccionar el mes más reciente por defecto
     if (S.reporteMeses.length > 0) {
       S.reporteMesSeleccionado = S.reporteMeses[S.reporteMeses.length - 1];
     } else {
-      S.reporteMesSeleccionado = 5; // fallback
+      S.reporteMesSeleccionado = 5;
     }
 
     reporteData.forEach(row => {
@@ -2087,7 +2063,6 @@ function renderRep() {
     'Ventas 4': 'V4'
   };
 
-  // Generar pestañas de meses
   const mesSeleccionado = S.reporteMesSeleccionado || 5;
   const tabsHtml = S.reporteMeses.map(m => {
     const nombre = new Date(2026, m-1, 1).toLocaleString('es', { month: 'long' });
@@ -2095,7 +2070,6 @@ function renderRep() {
   }).join('');
   document.getElementById('rep-meses-tabs').innerHTML = tabsHtml || '<span style="font-size:10px;color:var(--g400)">Sin meses disponibles</span>';
 
-  // Filtrar datos por mes seleccionado
   let allRows = [];
   portales.forEach(p => {
     (S.reporteData[p] || []).forEach(r => {
@@ -2105,7 +2079,6 @@ function renderRep() {
     });
   });
 
-  // Mostrar información del mes
   const nombreMes = new Date(2026, mesSeleccionado-1, 1).toLocaleString('es', { month: 'long' });
   document.getElementById('rep-info').textContent = `${nombreMes} 2026 · ${allRows.length} segmentos totales · ${portales.map(p => `${portalShort[p]}: ${(S.reporteData[p]||[]).filter(r => r.mes === mesSeleccionado).length}`).join(' | ')}`;
 
@@ -2116,7 +2089,7 @@ function renderRep() {
     return;
   }
 
-  // Resumen por portal (solo mes seleccionado)
+  // Resumen por portal
   let summaryHTML = `<div class="rep-sg">`;
   portales.forEach(p => {
     const rows = (S.reporteData[p] || []).filter(r => r.mes === mesSeleccionado);
@@ -2139,10 +2112,14 @@ function renderRep() {
   summaryHTML += `</div>`;
   document.getElementById('rep-sum').innerHTML = summaryHTML;
 
-  // Top 20
+  // Top 20 con DOBLE BARRA (Segmento en gris, Propio en amarillo)
   allRows.sort((a, b) => b.ratio - a.ratio);
   const top20 = allRows.slice(0, 20);
+  const maxSegGlobal = Math.max(...top20.map(r => r.vistasSeg), 1);
+  const maxPropGlobal = Math.max(...top20.map(r => r.vistasProp), 1);
+  const maxTotal = Math.max(maxSegGlobal, maxPropGlobal, 1);
   const maxRatio = top20.length > 0 ? top20[0].ratio : 1;
+
   let top20HTML = `
     <div class="rep-pb" style="margin-bottom:1.25rem;">
       <div class="rep-pbh">
@@ -2153,38 +2130,53 @@ function renderRep() {
             <div style="font-size:10px;color:var(--g500);margin-top:2px">Vistas Propias ÷ Vistas Segmento × 100 — ${new Date(2026, mesSeleccionado-1, 1).toLocaleString('es', { month: 'long' })} 2026</div>
           </div>
         </div>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          ${portales.map(p => `
-            <div style="display:flex;align-items:center;gap:4px;">
-              <div style="width:8px;height:8px;border-radius:50%;background:${portalColors[p]}"></div>
-              <span style="font-size:8px;color:#80868B;font-weight:600">${portalShort[p]}</span>
-            </div>
-          `).join('')}
+        <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center;">
+          <span style="display:flex;align-items:center;gap:4px;font-size:8px;font-weight:600;color:var(--g500);">
+            <span style="display:inline-block;width:12px;height:4px;background:#9E9E9E;border-radius:2px;"></span> Segmento
+          </span>
+          <span style="display:flex;align-items:center;gap:4px;font-size:8px;font-weight:600;color:var(--g500);">
+            <span style="display:inline-block;width:12px;height:4px;background:#FDD835;border-radius:2px;"></span> Propio
+          </span>
         </div>
       </div>
   `;
   top20.forEach((item, i) => {
-    const pct = Math.max((item.ratio / maxRatio) * 100, 3);
-    const showInside = pct > 28;
     const col = item.color;
     const metaStr = [item.operacion, item.tipoProp, item.ambientes ? item.ambientes + ' amb.' : ''].filter(Boolean).join(' · ');
+    const pctSeg = (item.vistasSeg / maxTotal) * 100;
+    const pctProp = (item.vistasProp / maxTotal) * 100;
+    const pctRatio = (item.ratio / maxRatio) * 100;
+    const showRatioInside = pctRatio > 28;
+
     top20HTML += `
-      <div class="rep-br">
-        <span style="width:22px;font-size:10px;font-weight:700;font-family:DM Mono,monospace;color:var(--teal);text-align:right;flex-shrink:0;">${i+1}</span>
-        <div style="width:220px;flex-shrink:0;">
+      <div class="rep-br" style="align-items:stretch;padding:4px 0;border-bottom:1px solid var(--g50);">
+        <span style="width:22px;font-size:10px;font-weight:700;font-family:DM Mono,monospace;color:var(--teal);text-align:right;flex-shrink:0;align-self:center;">${i+1}</span>
+        <div style="width:240px;flex-shrink:0;display:flex;flex-direction:column;justify-content:center;">
           <div style="display:flex;align-items:center;gap:5px;">
             <div style="width:8px;height:8px;border-radius:50%;background:${col};flex-shrink:0;"></div>
             <span style="font-size:9px;font-weight:700;color:var(--g900);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${item.zona}</span>
           </div>
           <div style="font-size:7.5px;color:var(--g500);margin-top:1px;letter-spacing:.2px;">${item.short} · ${metaStr}</div>
         </div>
-        <div style="flex:1;background:var(--g100);border-radius:3px;height:18px;position:relative;overflow:hidden;">
-          <div style="height:100%;border-radius:3px;background:linear-gradient(90deg,#52BEC0,#00E5FF);width:${pct.toFixed(1)}%;display:flex;align-items:center;padding-left:7px;transition:width .4s;">
-            ${showInside ? `<span style="font-size:8px;font-family:DM Mono,monospace;font-weight:700;color:rgba(0,0,0,.8);">${item.ratio.toFixed(1)}%</span>` : ''}
+        <div style="flex:1;display:flex;flex-direction:column;gap:2px;justify-content:center;min-width:80px;">
+          <div style="display:flex;align-items:center;gap:4px;">
+            <span style="font-size:7px;color:var(--g500);width:18px;flex-shrink:0;">Seg</span>
+            <div style="flex:1;background:var(--g200);border-radius:2px;height:8px;position:relative;overflow:hidden;">
+              <div style="height:100%;border-radius:2px;background:#9E9E9E;width:${Math.min(pctSeg, 100)}%;transition:width .4s;"></div>
+            </div>
+            <span style="font-size:8px;font-family:DM Mono,monospace;color:var(--g600);width:36px;text-align:right;">${item.vistasSeg.toFixed(0)}</span>
           </div>
-          ${!showInside ? `<span style="position:absolute;right:6px;top:50%;transform:translateY(-50%);font-size:8px;font-family:DM Mono,monospace;color:var(--teal);">${item.ratio.toFixed(1)}%</span>` : ''}
+          <div style="display:flex;align-items:center;gap:4px;">
+            <span style="font-size:7px;color:var(--g500);width:18px;flex-shrink:0;">Prop</span>
+            <div style="flex:1;background:var(--g200);border-radius:2px;height:8px;position:relative;overflow:hidden;">
+              <div style="height:100%;border-radius:2px;background:#FDD835;width:${Math.min(pctProp, 100)}%;transition:width .4s;"></div>
+            </div>
+            <span style="font-size:8px;font-family:DM Mono,monospace;color:var(--g600);width:36px;text-align:right;">${item.vistasProp.toFixed(0)}</span>
+          </div>
         </div>
-        <span style="width:52px;font-size:9px;font-family:DM Mono,monospace;font-weight:700;color:${col};text-align:right;flex-shrink:0;">${item.ratio.toFixed(0)}%</span>
+        <div style="width:64px;flex-shrink:0;display:flex;align-items:center;justify-content:flex-end;gap:4px;">
+          <span style="font-size:10px;font-weight:700;font-family:DM Mono,monospace;color:${col};">${item.ratio.toFixed(0)}%</span>
+        </div>
       </div>
     `;
   });
@@ -2323,9 +2315,9 @@ function renderRep() {
   }
 }
 
-// ════════════════════════════════════════════════════════════
-// DETALLE DE CITAS (sin cambios)
-// ════════════════════════════════════════════════════════════
+// ============================================================
+// DETALLE DE CITAS
+// ============================================================
 function renderDetalleCitas() {
   document.getElementById('dc-sem').textContent = S.semana;
   const { rows: citRows, ag, at, cancel } = getCitas();
@@ -2482,9 +2474,9 @@ function renderDetalleCitas() {
   }
 }
 
-// ════════════════════════════════════════════════════════════
-// VISTA INTERESADOS (sin cambios)
-// ════════════════════════════════════════════════════════════
+// ============================================================
+// VISTA INTERESADOS
+// ============================================================
 function renderInteresados() {
   const data = getInteresados();
   const rows = data.rows || [];
@@ -2590,9 +2582,9 @@ function renderInteresados() {
   }
 }
 
-// ════════════════════════════════════════════════════════════
+// ============================================================
 // ARRANQUE
-// ════════════════════════════════════════════════════════════
+// ============================================================
 cargar();
 </script>
 </body>
