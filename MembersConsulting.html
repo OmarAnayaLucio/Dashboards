@@ -1084,14 +1084,14 @@
       <ul>
         <li><span class="tip-icon">⏰</span> Call <span class="tip-highlight">after 10 AM</span> and <span class="tip-highlight">before 9 PM</span></li>
         <li><span class="tip-icon">📅</span> <span class="tip-highlight orange">Saturday afternoons</span> have higher contact rates</li>
-        <li><span class="tip-icon">🤝</span> <span class="tip-highlight green">We help members get full value</span> from the benefits already included in their contract</li>
+        <li><span class="tip-icon">🤝</span> <span class="tip-highlight green">SPEECH: Our intention during this call is to see if you qualify for debt consolidation and renegotiation of your terms and conditions while maintaining the vacation experience you enjoy without losing anymore money. Do you still have a monthly payment active?</span> </li>
       </ul>
     </div>
 
     <div class="contact-card">
-      <h4>📞 Client Switchboard</h4>
-      <span class="phone-number">+1 (312) 680‑3958</span>
-      <span class="phone-note">Clients can reach our office calling at this number and dialing the advisor extention.</span>
+      <h4>📞 Phone for Client Callbacks (Sarah Altman receive the call)</h4>
+      <span class="phone-number">+1 (224) 201‑3647</span>
+      <span class="phone-note">Clients can reach our office calling at this number.</span>
     </div>
 
     <div class="admin-panel" id="adminPanel">
@@ -1255,7 +1255,7 @@
 <script>
 // ── CONFIG ──────────────────────────────────────────────────────────────────
 const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQHy-EAzt6KPNuOHWbfvvN-eddTQSdsV568wcoDmLRCSYmoDj_FOooVi2-_8HMlv3Ircrp8z4M9dnRS/pub?output=csv';
-const APPS_SCRIPT_URL = '';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwRDJ29S9rEajTo-pskTP2RkfSff0usdjyEvSSIJHxHIjmOp7whmq_P8nowGZv5vU4J/exec';
 const STORE_KEY = 'crm_vidanta_v4';
 const PASSWORD_KEY = 'crm_vidanta_passwords';
 const ADMIN_PASSWORD = 'Omar7777';
@@ -1359,6 +1359,7 @@ const LADA_MAP = {
   '815': { state: 'Illinois', region: 'Central', offset: 0, display: '815 / 847 / 872' },
   '847': { state: 'Illinois', region: 'Central', offset: 0, display: '815 / 847 / 872' },
   '872': { state: 'Illinois', region: 'Central', offset: 0, display: '815 / 847 / 872' },
+  '224': { state: 'Illinois', region: 'Central', offset: 0, display: '224 / 847' },
   '218': { state: 'Minnesota', region: 'Central', offset: 0, display: '218 / 320 / 507' },
   '320': { state: 'Minnesota', region: 'Central', offset: 0, display: '218 / 320 / 507' },
   '507': { state: 'Minnesota', region: 'Central', offset: 0, display: '218 / 320 / 507' },
@@ -1423,6 +1424,44 @@ const LADA_MAP = {
   '781': { state: 'Massachusetts', region: 'Este', offset: 1, display: '781 / 857 / 978' },
   '857': { state: 'Massachusetts', region: 'Este', offset: 1, display: '781 / 857 / 978' },
   '978': { state: 'Massachusetts', region: 'Este', offset: 1, display: '781 / 857 / 978' },
+
+  // ── CANADA ──
+  // Pacific (-2h from CDMX)
+  '604': { state: 'British Columbia (Vancouver)', region: 'Pacífico · Canadá', offset: -2, display: '604 / 778 / 236' },
+  '778': { state: 'British Columbia (Vancouver)', region: 'Pacífico · Canadá', offset: -2, display: '604 / 778 / 236' },
+  '236': { state: 'British Columbia (Vancouver)', region: 'Pacífico · Canadá', offset: -2, display: '604 / 778 / 236' },
+  '250': { state: 'British Columbia (Victoria)', region: 'Pacífico · Canadá', offset: -2, display: '250 / 672' },
+  '672': { state: 'British Columbia (Victoria)', region: 'Pacífico · Canadá', offset: -2, display: '250 / 672' },
+
+  // Mountain (-1h from CDMX)
+  '403': { state: 'Alberta (Calgary)', region: 'Montaña · Canadá', offset: -1, display: '403 / 587 / 825' },
+  '587': { state: 'Alberta (Calgary/Edmonton)', region: 'Montaña · Canadá', offset: -1, display: '403 / 587 / 825' },
+  '825': { state: 'Alberta (Calgary/Edmonton)', region: 'Montaña · Canadá', offset: -1, display: '403 / 587 / 825' },
+  '780': { state: 'Alberta (Edmonton)', region: 'Montaña · Canadá', offset: -1, display: '780 / 587 / 825' },
+
+  // Central (same as CDMX)
+  '204': { state: 'Manitoba (Winnipeg)', region: 'Central · Canadá', offset: 0, display: '204 / 431' },
+  '431': { state: 'Manitoba (Winnipeg)', region: 'Central · Canadá', offset: 0, display: '204 / 431' },
+  '306': { state: 'Saskatchewan (Regina)', region: 'Central · Canadá', offset: 0, display: '306 / 639' },
+  '639': { state: 'Saskatchewan (Regina)', region: 'Central · Canadá', offset: 0, display: '306 / 639' },
+
+  // Eastern (+1h from CDMX)
+  '416': { state: 'Ontario (Toronto)', region: 'Este · Canadá', offset: 1, display: '416 / 647 / 437' },
+  '647': { state: 'Ontario (Toronto)', region: 'Este · Canadá', offset: 1, display: '416 / 647 / 437' },
+  '437': { state: 'Ontario (Toronto)', region: 'Este · Canadá', offset: 1, display: '416 / 647 / 437' },
+  '613': { state: 'Ontario (Ottawa)', region: 'Este · Canadá', offset: 1, display: '613 / 343' },
+  '343': { state: 'Ontario (Ottawa)', region: 'Este · Canadá', offset: 1, display: '613 / 343' },
+  '905': { state: 'Ontario (GTA)', region: 'Este · Canadá', offset: 1, display: '905 / 289 / 365' },
+  '289': { state: 'Ontario (GTA)', region: 'Este · Canadá', offset: 1, display: '905 / 289 / 365' },
+  '365': { state: 'Ontario (GTA)', region: 'Este · Canadá', offset: 1, display: '905 / 289 / 365' },
+  '514': { state: 'Québec (Montreal)', region: 'Este · Canadá', offset: 1, display: '514 / 438' },
+  '438': { state: 'Québec (Montreal)', region: 'Este · Canadá', offset: 1, display: '514 / 438' },
+  '418': { state: 'Québec (Québec City)', region: 'Este · Canadá', offset: 1, display: '418 / 581' },
+  '581': { state: 'Québec (Québec City)', region: 'Este · Canadá', offset: 1, display: '418 / 581' },
+
+  // Atlantic (+2h from CDMX)
+  '902': { state: 'Nova Scotia (Halifax)', region: 'Atlántico · Canadá', offset: 2, display: '902 / 782' },
+  '782': { state: 'Nova Scotia (Halifax)', region: 'Atlántico · Canadá', offset: 2, display: '902 / 782' },
 };
 
 // USA Map Data (regions for visual map)
@@ -1461,7 +1500,7 @@ const USA_REGIONS = [
     color: '#D4A017',
     states: [
       { name: 'Texas', codes: '210 / 214 / 254 / 281 / 325 / 361 / 409 / 430 / 432 / 469 / 512 / 713 / 737 / 806 / 817 / 830 / 832 / 903 / 915 / 936 / 940 / 956 / 972 / 979' },
-      { name: 'Illinois', codes: '217 / 309 / 312 / 331 / 618 / 630 / 708 / 773 / 779 / 815 / 847 / 872' },
+      { name: 'Illinois', codes: '217 / 224 / 309 / 312 / 331 / 618 / 630 / 708 / 773 / 779 / 815 / 847 / 872' },
       { name: 'Minnesota', codes: '218 / 320 / 507 / 612 / 651 / 763 / 952' },
       { name: 'Missouri', codes: '314 / 417 / 573 / 636 / 660 / 816' }
     ]
@@ -1481,10 +1520,71 @@ const USA_REGIONS = [
   }
 ];
 
+// Canada Map Data (regions for visual map)
+const CANADA_REGIONS = [
+  {
+    id: 'pacific',
+    label: '🌊 Pacífico',
+    offset: -2,
+    offsetLabel: '-2h vs CDMX',
+    color: '#2E86C1',
+    states: [
+      { name: 'British Columbia (Vancouver)', codes: '604 / 778 / 236' },
+      { name: 'British Columbia (Victoria)', codes: '250 / 672' }
+    ]
+  },
+  {
+    id: 'mountain',
+    label: '⛰️ Montaña',
+    offset: -1,
+    offsetLabel: '-1h vs CDMX',
+    color: '#1A7A5A',
+    states: [
+      { name: 'Alberta (Calgary)', codes: '403 / 587 / 825' },
+      { name: 'Alberta (Edmonton)', codes: '780 / 587 / 825' }
+    ]
+  },
+  {
+    id: 'central',
+    label: '🌽 Central',
+    offset: 0,
+    offsetLabel: 'Misma hora que CDMX',
+    color: '#D4A017',
+    states: [
+      { name: 'Manitoba (Winnipeg)', codes: '204 / 431' },
+      { name: 'Saskatchewan (Regina)', codes: '306 / 639' }
+    ]
+  },
+  {
+    id: 'eastern',
+    label: '🗽 Este',
+    offset: 1,
+    offsetLabel: '+1h vs CDMX',
+    color: '#A04040',
+    states: [
+      { name: 'Ontario (Toronto)', codes: '416 / 647 / 437' },
+      { name: 'Ontario (Ottawa)', codes: '613 / 343' },
+      { name: 'Ontario (GTA)', codes: '905 / 289 / 365' },
+      { name: 'Québec (Montreal)', codes: '514 / 438' },
+      { name: 'Québec (Québec City)', codes: '418 / 581' }
+    ]
+  },
+  {
+    id: 'atlantic',
+    label: '🌅 Atlántico',
+    offset: 2,
+    offsetLabel: '+2h vs CDMX',
+    color: '#7D3C98',
+    states: [
+      { name: 'Nova Scotia (Halifax)', codes: '902 / 782' }
+    ]
+  }
+];
+
 // Table data (for the reference table)
 const LADA_TABLE = [
   { area: 'New York (Este)', lada: '212 / 646 / 718', offset: 1 },
-  { area: 'Chicago (Central)', lada: '312 / 773 / 847', offset: 0 },
+  { area: 'Chicago (Central)', lada: '312 / 773 / 847 / 224', offset: 0 },
   { area: 'Denver (Montaña)', lada: '303 / 720 / 719', offset: -1 },
   { area: 'Los Ángeles (Pacífico)', lada: '213 / 310 / 818', offset: -2 },
   { area: 'Miami (Este)', lada: '305 / 786 / 954', offset: 1 },
@@ -1493,6 +1593,12 @@ const LADA_TABLE = [
   { area: 'San Francisco (Pacífico)', lada: '415 / 510 / 408', offset: -2 },
   { area: 'Atlanta (Este)', lada: '404 / 678 / 770', offset: 1 },
   { area: 'Minneapolis (Central)', lada: '612 / 651 / 763', offset: 0 },
+  { area: 'Toronto, ON (Este · Canadá)', lada: '416 / 647 / 437', offset: 1 },
+  { area: 'Montreal, QC (Este · Canadá)', lada: '514 / 438', offset: 1 },
+  { area: 'Vancouver, BC (Pacífico · Canadá)', lada: '604 / 778', offset: -2 },
+  { area: 'Calgary, AB (Montaña · Canadá)', lada: '403 / 587', offset: -1 },
+  { area: 'Winnipeg, MB (Central · Canadá)', lada: '204 / 431', offset: 0 },
+  { area: 'Halifax, NS (Atlántico · Canadá)', lada: '902 / 782', offset: 2 },
 ];
 
 // ── OBJECTIONS DATA ────────────────────────────────────────────────────────
@@ -2513,6 +2619,30 @@ function renderUSAMap() {
     html += `</div></div>`;
   });
   html += '</div>';
+
+  html += `
+    <div class="usa-map-title" style="margin-top:20px;">🍁 Mapa de Canadá · LADAs por región</div>
+    <div class="usa-map-grid">
+  `;
+  CANADA_REGIONS.forEach(region => {
+    const zoneClass = 'zone-' + region.id;
+    html += `<div class="usa-zone ${zoneClass}">
+      <div class="zone-header" style="background:${region.color};">
+        <span>${region.label}</span>
+        <span class="zone-offset">${region.offsetLabel}</span>
+      </div>
+      <div class="zone-body">
+    `;
+    region.states.forEach(state => {
+      html += `<div class="zone-state">
+        <span class="state-name">${esc(state.name)}</span>
+        <span class="state-code">${esc(state.codes)}</span>
+      </div>`;
+    });
+    html += `</div></div>`;
+  });
+  html += '</div>';
+
   container.innerHTML = html;
 }
 
