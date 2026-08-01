@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MEMBER's CONSULTING · VIDANTA · CRM</title>
   <style>
-    /* ===== TODO EL CSS IGUAL QUE ANTES ===== */
+    /* ===== TODO EL CSS ===== */
     :root {
       --black: #000000;
       --arena: #F7F3EE;
@@ -583,16 +583,43 @@
     }
     .admin-actions-bar .btn-close-admin:hover { background: #a93226; }
 
-    .table-wrap { overflow-x: auto; }
+    .table-wrap {
+      overflow-x: auto;
+      overflow-y: auto;
+      max-height: 70vh;
+      position: relative;
+    }
     table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    thead {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: var(--azul-profundo);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
     th {
-      background: var(--azul-profundo); color: var(--blanco); font-weight: 600;
-      text-align: left; padding: 0.7rem 0.5rem; border-bottom: 2px solid var(--azul-vibrante);
-      cursor: default; user-select: none; white-space: nowrap;
+      background: var(--azul-profundo); 
+      color: var(--blanco); 
+      font-weight: 600;
+      text-align: left; 
+      padding: 0.7rem 0.5rem; 
+      border-bottom: 2px solid var(--azul-vibrante);
+      cursor: default; 
+      user-select: none; 
+      white-space: nowrap;
     }
     th.sortable { cursor: pointer; }
     th.sortable:hover { background: var(--azul-vibrante); }
     th .arrow { margin-left: 4px; font-size: 10px; opacity: 0.7; color: var(--azul-claro); }
+    th.dark-header {
+      background: #0A2A44 !important;
+    }
+    th.dark-header.sortable:hover {
+      background: #0A2A44 !important;
+    }
+    th.yellow-text {
+      color: #FFD700 !important;
+    }
     td { padding: 0.5rem 0.5rem; border-bottom: 1px solid var(--arena-dark); vertical-align: middle; }
     tr:hover td { background: var(--azul-suave); }
     .cliente-nombre { font-weight: 500; }
@@ -607,6 +634,22 @@
       transition: background 0.15s;
     }
     .btn-llamar:hover { background: var(--azul-vibrante); color: white; }
+
+    .btn-save-row {
+      background: var(--verde);
+      color: white;
+      border: none;
+      border-radius: 7px;
+      padding: 4px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+      white-space: nowrap;
+    }
+    .btn-save-row:hover {
+      background: #1e8449;
+    }
 
     .badge {
       display: inline-block; font-size: 10px; font-weight: 700;
@@ -643,12 +686,6 @@
     .comment-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; gap: 10px; flex-wrap: wrap; }
     .comment-saved { font-size: 11px; color: #999; font-style: italic; }
     .comment-saved b { color: var(--verde); font-style: normal; }
-    .btn-save-comment {
-      background: var(--azul-profundo); color: white; border: none;
-      border-radius: 7px; padding: 6px 16px; font-size: 12px;
-      font-weight: 600; cursor: pointer; transition: background 0.15s;
-    }
-    .btn-save-comment:hover { background: var(--azul-vibrante); }
     .btn-comment-toggle {
       display: inline-flex; align-items: center; gap: 4px;
       background: transparent; border: 1px solid var(--arena-dark);
@@ -721,20 +758,192 @@
       white-space: nowrap;
     }
 
-    /* ── TIMEZONE / LADA REFERENCE ── */
+    /* ── LADA SECTION (movido arriba) ── */
+    #ladaSection {
+      margin-top: 1.5rem;
+      background: var(--blanco);
+      border-radius: 16px;
+      border: 1px solid #e0e7ef;
+      box-shadow: 0 4px 16px rgba(14,59,92,0.08);
+      overflow: hidden;
+      padding: 1.2rem 1.5rem 1.5rem;
+      transition: box-shadow 0.2s;
+    }
+    #ladaSection:hover {
+      box-shadow: 0 6px 24px rgba(14,59,92,0.12);
+    }
+    #ladaSection .lada-lookup {
+      padding: 0;
+      border-top: none;
+      background: transparent;
+    }
+    #ladaSection .lada-lookup-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--azul-profundo);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    #ladaSection .lada-lookup-title::before {
+      content: "🌍";
+      font-size: 20px;
+    }
+    #ladaSection .lada-lookup-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      background: #f8faff;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid #eef3f8;
+    }
+    #ladaSection .lada-lookup-row input {
+      flex: 1;
+      min-width: 160px;
+      padding: 10px 16px;
+      border: 2px solid #dce5ed;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      background: white;
+      color: var(--texto);
+    }
+    #ladaSection .lada-lookup-row input:focus {
+      border-color: var(--azul-medio);
+      box-shadow: 0 0 0 3px rgba(46,134,193,0.12);
+    }
+    #ladaSection .lada-lookup-row input::placeholder {
+      font-weight: 400;
+      color: #aab8c9;
+    }
+    #ladaSection .lada-lookup-row button {
+      background: var(--azul-profundo);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 24px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    #ladaSection .lada-lookup-row button:hover {
+      background: var(--azul-vibrante);
+      transform: scale(1.02);
+    }
+    #ladaSection .lada-lookup-row .lookup-suggestions {
+      font-size: 12px;
+      color: #6b7f94;
+      flex-basis: 100%;
+      margin-top: 4px;
+      padding-left: 4px;
+    }
+    #ladaSection .lookup-result {
+      margin-top: 16px;
+      padding: 16px 20px;
+      border-radius: 12px;
+      background: #f8faff;
+      border: 2px solid #dde6ef;
+      display: none;
+      transition: all 0.2s;
+    }
+    #ladaSection .lookup-result.show {
+      display: block;
+      border-color: var(--azul-claro);
+      background: #f5faff;
+    }
+    #ladaSection .lookup-result .result-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      font-size: 13.5px;
+      border-bottom: 1px solid #e8edf3;
+    }
+    #ladaSection .lookup-result .result-row:last-child {
+      border-bottom: none;
+    }
+    #ladaSection .lookup-result .result-label {
+      font-weight: 600;
+      color: var(--azul-profundo);
+    }
+    #ladaSection .lookup-result .result-value {
+      font-weight: 500;
+    }
+    #ladaSection .lookup-result .result-value .highlight {
+      color: var(--azul-medio);
+      font-weight: 700;
+    }
+    #ladaSection .lookup-result .result-value .live-time {
+      font-weight: 700;
+      color: var(--verde);
+    }
+    #ladaSection .lookup-result .not-found {
+      color: var(--rojo);
+      font-weight: 500;
+      padding: 8px 0;
+      text-align: center;
+    }
+    #ladaSection table {
+      margin-top: 1.2rem;
+      font-size: 12.5px;
+      width: 100%;
+      border-collapse: collapse;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    #ladaSection table th {
+      background: var(--azul-profundo);
+      color: white;
+      font-weight: 600;
+      padding: 0.7rem 0.8rem;
+      text-align: left;
+    }
+    #ladaSection table td {
+      padding: 0.6rem 0.8rem;
+      border-bottom: 1px solid #e8edf3;
+    }
+    #ladaSection table tr:nth-child(even) td {
+      background: #f9fcff;
+    }
+    #ladaSection table tr:last-child td {
+      border-bottom: none;
+    }
+    #ladaSection .lada-badge {
+      background: var(--azul-suave);
+      color: var(--azul-profundo);
+      font-weight: 700;
+      padding: 2px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      display: inline-block;
+    }
+    #ladaSection .diff-pos { color: var(--verde); font-weight: 600; }
+    #ladaSection .diff-neg { color: var(--rojo); font-weight: 600; }
+    #ladaSection .diff-zero { color: var(--naranja); font-weight: 600; }
+
+    /* ── TIMEZONE / LADA REFERENCE (solo mapa y reloj) ── */
     .timezone-ref {
       margin-top: 1.5rem;
       background: var(--blanco);
-      border-radius: 12px;
-      border: 1px solid var(--azul-claro);
-      box-shadow: 0 4px 12px rgba(14,59,92,0.08);
+      border-radius: 16px;
+      border: 1px solid #e0e7ef;
+      box-shadow: 0 4px 16px rgba(14,59,92,0.08);
       overflow: hidden;
     }
     .timezone-ref .ref-header {
       background: var(--azul-profundo);
       color: white;
-      padding: 0.6rem 1.2rem;
-      font-size: 13px;
+      padding: 0.7rem 1.5rem;
+      font-size: 14px;
       font-weight: 600;
       display: flex;
       align-items: center;
@@ -744,52 +953,21 @@
     .timezone-ref .ref-header .live-clock {
       margin-left: auto;
       font-weight: 400;
-      font-size: 13px;
-      background: rgba(255,255,255,0.15);
-      padding: 2px 12px;
-      border-radius: 20px;
+      font-size: 14px;
+      background: rgba(255,255,255,0.12);
+      padding: 4px 16px;
+      border-radius: 30px;
+      letter-spacing: 0.5px;
     }
-    .timezone-ref table {
-      font-size: 12.5px;
-      width: 100%;
-      border-collapse: collapse;
-    }
-    .timezone-ref th {
-      background: var(--arena);
-      color: var(--azul-profundo);
-      font-weight: 600;
-      padding: 0.5rem 0.8rem;
-      border-bottom: 2px solid var(--azul-claro);
-      text-align: left;
-    }
-    .timezone-ref td {
-      padding: 0.45rem 0.8rem;
-      border-bottom: 1px solid var(--arena-dark);
-    }
-    .timezone-ref tr:last-child td { border-bottom: none; }
-    .timezone-ref .lada-badge {
-      background: var(--azul-suave);
-      color: var(--azul-profundo);
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 20px;
-      font-size: 11px;
-      display: inline-block;
-    }
-    .timezone-ref .diff-pos { color: var(--verde); font-weight: 600; }
-    .timezone-ref .diff-neg { color: var(--rojo); font-weight: 600; }
-    .timezone-ref .diff-zero { color: var(--naranja); font-weight: 600; }
-
-    /* ── USA MAP ── */
     .usa-map-container {
-      padding: 1rem 1.2rem 1.5rem;
-      background: #fafbfc;
+      padding: 1rem 1.5rem 1.8rem;
+      background: #fafcfe;
     }
     .usa-map-title {
       font-size: 14px;
       font-weight: 700;
       color: var(--azul-profundo);
-      margin-bottom: 12px;
+      margin-bottom: 14px;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -797,17 +975,19 @@
     .usa-map-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
+      gap: 14px;
     }
     @media (max-width: 768px) {
       .usa-map-grid { grid-template-columns: 1fr 1fr; }
+      #ladaSection .lada-lookup-row input { min-width: 120px; }
     }
     @media (max-width: 480px) {
       .usa-map-grid { grid-template-columns: 1fr; }
+      #ladaSection { padding: 1rem; }
     }
     .usa-zone {
       background: var(--blanco);
-      border-radius: 10px;
+      border-radius: 12px;
       border: 1px solid var(--arena-dark);
       overflow: hidden;
       box-shadow: 0 2px 8px rgba(0,0,0,0.04);
@@ -818,7 +998,7 @@
       box-shadow: 0 6px 16px rgba(14,59,92,0.12);
     }
     .zone-header {
-      padding: 8px 12px;
+      padding: 8px 14px;
       font-weight: 700;
       font-size: 13px;
       color: white;
@@ -830,18 +1010,18 @@
       font-weight: 400;
       font-size: 11px;
       background: rgba(255,255,255,0.2);
-      padding: 1px 10px;
+      padding: 2px 12px;
       border-radius: 20px;
     }
     .zone-body {
-      padding: 10px 12px;
+      padding: 10px 14px;
     }
     .zone-state {
       display: flex;
       justify-content: space-between;
       font-size: 12px;
-      padding: 3px 0;
-      border-bottom: 1px solid var(--arena);
+      padding: 4px 0;
+      border-bottom: 1px solid #f0f3f7;
     }
     .zone-state:last-child { border-bottom: none; }
     .zone-state .state-name {
@@ -858,96 +1038,10 @@
     .zone-central .zone-header { background: #D4A017; }
     .zone-eastern .zone-header { background: #A04040; }
 
-    /* ── LADA LOOKUP TOOL ── */
-    .lada-lookup {
-      padding: 1rem 1.2rem 1.5rem;
-      background: #f8faff;
-      border-top: 2px solid var(--azul-claro);
-    }
-    .lada-lookup-title {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--azul-profundo);
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .lada-lookup-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-    .lada-lookup-row input {
-      flex: 1;
-      min-width: 140px;
-      padding: 8px 14px;
-      border: 2px solid var(--arena-dark);
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 600;
-      outline: none;
-      transition: border-color 0.15s;
-      background: white;
-    }
-    .lada-lookup-row input:focus {
-      border-color: var(--azul-medio);
-      box-shadow: 0 0 0 3px rgba(46,134,193,0.15);
-    }
-    .lada-lookup-row input::placeholder {
-      font-weight: 400;
-      color: #aaa;
-    }
-    .lada-lookup-row button {
-      background: var(--azul-profundo);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 8px 20px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.15s;
-      white-space: nowrap;
-    }
-    .lada-lookup-row button:hover { background: var(--azul-vibrante); }
-    .lada-lookup-row .lookup-suggestions {
-      font-size: 12px;
-      color: #888;
-      flex-basis: 100%;
-    }
-    .lookup-result {
-      margin-top: 14px;
-      padding: 14px 18px;
-      border-radius: 10px;
-      background: var(--blanco);
-      border: 2px solid var(--azul-claro);
-      display: none;
-    }
-    .lookup-result.show { display: block; }
-    .lookup-result .result-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 4px 0;
-      font-size: 13px;
-      border-bottom: 1px solid var(--arena);
-    }
-    .lookup-result .result-row:last-child { border-bottom: none; }
-    .lookup-result .result-label { font-weight: 600; color: var(--azul-profundo); }
-    .lookup-result .result-value { font-weight: 500; }
-    .lookup-result .result-value .highlight { color: var(--azul-medio); font-weight: 700; }
-    .lookup-result .result-value .live-time { font-weight: 700; color: var(--verde); }
-    .lookup-result .not-found {
-      color: var(--rojo);
-      font-weight: 500;
-      padding: 8px 0;
-    }
-
     /* ── HANDLING OBJECTIONS ── */
     #handlingContainer {
       background: var(--blanco);
-      border-radius: 12px;
+      border-radius: 16px;
       border: 1px solid var(--azul-claro);
       box-shadow: 0 4px 16px rgba(14,59,92,0.08);
       padding: 1.5rem;
@@ -1030,7 +1124,6 @@
       .script-step { gap: 10px; }
       .timezone-ref .ref-header { flex-wrap: wrap; }
       .timezone-ref .ref-header .live-clock { margin-left: 0; width: 100%; }
-      .lada-lookup-row input { min-width: 100px; }
       .usa-map-grid { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 480px) {
@@ -1186,22 +1279,13 @@
       </div>
     </div>
 
-    <!-- TIMEZONE & LADA REFERENCE -->
-    <div id="timezoneRefContainer" style="display:none;" class="timezone-ref">
-      <div class="ref-header">
-        <span>🕒 Time Zone &amp; LADA Reference</span>
-        <span class="live-clock" id="liveClock">⏱️ CDMX: --:--:--</span>
-      </div>
-
-      <!-- USA MAP -->
-      <div class="usa-map-container" id="usaMapContainer"></div>
-
-      <!-- LADA LOOKUP TOOL -->
+    <!-- ===== LADA SECTION (búsqueda + tabla) ===== -->
+    <div id="ladaSection" style="display:none;">
       <div class="lada-lookup">
-        <div class="lada-lookup-title">🔍 Buscar LADA (área code)</div>
+        <div class="lada-lookup-title">🔍 Buscar LADA por código o nombre</div>
         <div class="lada-lookup-row">
-          <input type="text" id="ladaInput" placeholder="Ej: 212, 305, 312..." oninput="onLadaInput()" onkeydown="if(event.key==='Enter') lookupLada()" />
-          <button onclick="lookupLada()">🔍 Revisar</button>
+          <input type="text" id="ladaInput" placeholder="Ej: 212, 305, California, New York..." oninput="onLadaInput()" onkeydown="if(event.key==='Enter') lookupLada()" />
+          <button onclick="lookupLada()">🔍 Buscar</button>
           <div class="lookup-suggestions" id="ladaSuggestions"></div>
         </div>
         <div class="lookup-result" id="lookupResult">
@@ -1209,14 +1293,24 @@
         </div>
       </div>
 
-      <!-- TABLE -->
+      <!-- Tabla de referencia -->
       <table>
         <thead>
-          <tr><th>State / Area</th><th>LADA (Area Code)</th><th>Time vs CDMX</th><th>Current Time</th></tr>
+          <tr><th>Estado / Área</th><th>Código LADA</th><th>Diferencia vs CDMX</th><th>Hora actual</th></tr>
         </thead>
         <tbody id="timezoneTableBody"></tbody>
       </table>
     </div>
+
+    <!-- TIMEZONE & LADA REFERENCE (mapa y reloj) -->
+    <div id="timezoneRefContainer" style="display:none;" class="timezone-ref">
+      <div class="ref-header">
+        <span>🕒 Time Zone &amp; LADA Reference</span>
+        <span class="live-clock" id="liveClock">⏱️ CDMX: --:--:--</span>
+      </div>
+      <div class="usa-map-container" id="usaMapContainer"></div>
+    </div>
+
   </div><!-- /defaultContent -->
 
   <!-- HANDLING OBJECTIONS -->
@@ -1273,9 +1367,9 @@ const DEFAULT_USERS = {
   'User #8': 'user8'
 };
 
-// ── LADA / TIMEZONE DATA (USA only) ──────────────────────────────────────
+// ── LADA / TIMEZONE DATA (USA + CANADA) ──────────────────────────────────
 const LADA_MAP = {
-  // Pacific (-2h from CDMX)
+  // Pacific (-2h)
   '213': { state: 'California', region: 'Pacífico', offset: -2, display: '213 / 310 / 408' },
   '310': { state: 'California', region: 'Pacífico', offset: -2, display: '213 / 310 / 408' },
   '408': { state: 'California', region: 'Pacífico', offset: -2, display: '213 / 310 / 408' },
@@ -1305,8 +1399,7 @@ const LADA_MAP = {
   '564': { state: 'Washington', region: 'Pacífico', offset: -2, display: '425 / 509 / 564' },
   '702': { state: 'Nevada', region: 'Pacífico', offset: -2, display: '702 / 775' },
   '775': { state: 'Nevada', region: 'Pacífico', offset: -2, display: '702 / 775' },
-
-  // Mountain (-1h from CDMX)
+  // Mountain (-1h)
   '303': { state: 'Colorado', region: 'Montaña', offset: -1, display: '303 / 719 / 720' },
   '719': { state: 'Colorado', region: 'Montaña', offset: -1, display: '303 / 719 / 720' },
   '720': { state: 'Colorado', region: 'Montaña', offset: -1, display: '303 / 719 / 720' },
@@ -1321,8 +1414,7 @@ const LADA_MAP = {
   '801': { state: 'Utah', region: 'Montaña', offset: -1, display: '385 / 435 / 801' },
   '505': { state: 'New Mexico', region: 'Montaña', offset: -1, display: '505 / 575' },
   '575': { state: 'New Mexico', region: 'Montaña', offset: -1, display: '505 / 575' },
-
-  // Central (same as CDMX)
+  // Central (0h)
   '210': { state: 'Texas', region: 'Central', offset: 0, display: '210 / 214 / 254' },
   '214': { state: 'Texas', region: 'Central', offset: 0, display: '210 / 214 / 254' },
   '254': { state: 'Texas', region: 'Central', offset: 0, display: '210 / 214 / 254' },
@@ -1373,8 +1465,7 @@ const LADA_MAP = {
   '636': { state: 'Missouri', region: 'Central', offset: 0, display: '636 / 660 / 816' },
   '660': { state: 'Missouri', region: 'Central', offset: 0, display: '636 / 660 / 816' },
   '816': { state: 'Missouri', region: 'Central', offset: 0, display: '636 / 660 / 816' },
-
-  // Eastern (+1h from CDMX)
+  // Eastern (+1h)
   '212': { state: 'New York', region: 'Este', offset: 1, display: '212 / 315 / 347' },
   '315': { state: 'New York', region: 'Este', offset: 1, display: '212 / 315 / 347' },
   '347': { state: 'New York', region: 'Este', offset: 1, display: '212 / 315 / 347' },
@@ -1424,28 +1515,20 @@ const LADA_MAP = {
   '781': { state: 'Massachusetts', region: 'Este', offset: 1, display: '781 / 857 / 978' },
   '857': { state: 'Massachusetts', region: 'Este', offset: 1, display: '781 / 857 / 978' },
   '978': { state: 'Massachusetts', region: 'Este', offset: 1, display: '781 / 857 / 978' },
-
-  // ── CANADA ──
-  // Pacific (-2h from CDMX)
+  // CANADA
   '604': { state: 'British Columbia (Vancouver)', region: 'Pacífico · Canadá', offset: -2, display: '604 / 778 / 236' },
   '778': { state: 'British Columbia (Vancouver)', region: 'Pacífico · Canadá', offset: -2, display: '604 / 778 / 236' },
   '236': { state: 'British Columbia (Vancouver)', region: 'Pacífico · Canadá', offset: -2, display: '604 / 778 / 236' },
   '250': { state: 'British Columbia (Victoria)', region: 'Pacífico · Canadá', offset: -2, display: '250 / 672' },
   '672': { state: 'British Columbia (Victoria)', region: 'Pacífico · Canadá', offset: -2, display: '250 / 672' },
-
-  // Mountain (-1h from CDMX)
   '403': { state: 'Alberta (Calgary)', region: 'Montaña · Canadá', offset: -1, display: '403 / 587 / 825' },
   '587': { state: 'Alberta (Calgary/Edmonton)', region: 'Montaña · Canadá', offset: -1, display: '403 / 587 / 825' },
   '825': { state: 'Alberta (Calgary/Edmonton)', region: 'Montaña · Canadá', offset: -1, display: '403 / 587 / 825' },
   '780': { state: 'Alberta (Edmonton)', region: 'Montaña · Canadá', offset: -1, display: '780 / 587 / 825' },
-
-  // Central (same as CDMX)
   '204': { state: 'Manitoba (Winnipeg)', region: 'Central · Canadá', offset: 0, display: '204 / 431' },
   '431': { state: 'Manitoba (Winnipeg)', region: 'Central · Canadá', offset: 0, display: '204 / 431' },
   '306': { state: 'Saskatchewan (Regina)', region: 'Central · Canadá', offset: 0, display: '306 / 639' },
   '639': { state: 'Saskatchewan (Regina)', region: 'Central · Canadá', offset: 0, display: '306 / 639' },
-
-  // Eastern (+1h from CDMX)
   '416': { state: 'Ontario (Toronto)', region: 'Este · Canadá', offset: 1, display: '416 / 647 / 437' },
   '647': { state: 'Ontario (Toronto)', region: 'Este · Canadá', offset: 1, display: '416 / 647 / 437' },
   '437': { state: 'Ontario (Toronto)', region: 'Este · Canadá', offset: 1, display: '416 / 647 / 437' },
@@ -1458,8 +1541,6 @@ const LADA_MAP = {
   '438': { state: 'Québec (Montreal)', region: 'Este · Canadá', offset: 1, display: '514 / 438' },
   '418': { state: 'Québec (Québec City)', region: 'Este · Canadá', offset: 1, display: '418 / 581' },
   '581': { state: 'Québec (Québec City)', region: 'Este · Canadá', offset: 1, display: '418 / 581' },
-
-  // Atlantic (+2h from CDMX)
   '902': { state: 'Nova Scotia (Halifax)', region: 'Atlántico · Canadá', offset: 2, display: '902 / 782' },
   '782': { state: 'Nova Scotia (Halifax)', region: 'Atlántico · Canadá', offset: 2, display: '902 / 782' },
 };
@@ -1835,9 +1916,7 @@ function parseCSV(raw) {
   }
   const headers = splitLine(lines[0]).map(h => h.replace(/^"|"$/g,'').trim().toLowerCase());
   
-  // Función para encontrar columna: primero busca coincidencia exacta (ignorando mayúsculas), luego por inclusión
   function col(keywords) {
-    // Primero, coincidencia exacta (case-insensitive)
     for (let h of headers) {
       const hLower = h.toLowerCase();
       for (let k of keywords) {
@@ -1846,7 +1925,6 @@ function parseCSV(raw) {
         }
       }
     }
-    // Si no, buscar por inclusión
     for (let h of headers) {
       const hLower = h.toLowerCase();
       for (let k of keywords) {
@@ -1859,10 +1937,8 @@ function parseCSV(raw) {
   }
 
   const iId   = col(['#','id','num','no.']);
-  const iNom  = col(['nombre']);
-  // Home: buscamos "home" o "casa"
+  const iNom  = col(['nombre', 'nameperson']);
   const iHome = col(['home', 'casa', 'teléfono casa', 'telefono casa']);
-  // Mobile: buscamos "mobile" o "móvil" o "movil" o "celular"
   const iMobile = col(['mobile', 'móvil', 'movil', 'celular']);
   const iSal  = col(['saldo','balance']);
   const iDom  = col(['domicilio','direcc','address']);
@@ -1870,26 +1946,62 @@ function parseCSV(raw) {
   const iFec  = col(['fecha','date']);
   const iCom  = col(['coment','note','observ']);
 
+  const iNamePerson = col(['nameperson', 'nombre']);
+  const iBirthDate = col(['birthdate', 'birth date']);
+  const iAge = col(['age', 'edad']);
+  const iStateLong = col(['statelong', 'state long', 'estado']);
+  const iOffice = col(['office', 'oficina']);
+  const iSalesOffice = col(['salesoffice', 'sales office', 'oficina ventas']);
+  const iContractDate = col(['contractdate', 'contract date', 'fecha contrato']);
+  const iContractSaleType = col(['contractsaletype', 'contract sale type', 'tipo contrato']);
+  const iProduct = col(['product', 'producto']);
+  const iSalesPrice = col(['salesprice', 'sales price', 'precio venta']);
+  const iDownPayment = col(['downpayment', 'down payment', 'enganche']);
+  const iMonthlyPayment = col(['monthly payment', 'monthlypayment', 'pago mensual']);
+  const iTerm = col(['term', 'plazo']);
+  const iScheduledLoan = col(['scheduledloan', 'scheduled loan', 'prestamo programado']);
+  const iFinancingType = col(['financingtype', 'financing type', 'tipo financiamiento']);
+  const iEquity = col(['equity', 'capital']);
+
   const out = [];
   for (let i = 1; i < lines.length; i++) {
     const c = splitLine(lines[i]).map(s => s.replace(/^"|"$/g,'').trim());
-    const nombre = iNom >= 0 ? c[iNom] || '' : '';
+    const nombre = iNamePerson >= 0 ? c[iNamePerson] || '' : (iNom >= 0 ? c[iNom] || '' : '');
     if (!nombre) continue;
     let saldo = 0;
     if (iSal >= 0 && c[iSal]) {
       saldo = parseFloat(c[iSal].replace(/[$,\s]/g,'')) || 0;
     }
-    out.push({
-      id:          iId  >= 0 ? (parseInt(c[iId]) || (i)) : i,
-      nombre:      nombre,
-      telefono:    iHome >= 0 ? c[iHome] || '' : '',
+    const row = {
+      id: iId >= 0 ? (parseInt(c[iId]) || i) : i,
+      nombre: nombre,
+      telefono: iHome >= 0 ? c[iHome] || '' : '',
       telefono_mobile: iMobile >= 0 ? c[iMobile] || '' : '',
-      saldo:       saldo,
-      domicilio:   iDom >= 0 ? c[iDom] || '' : '',
-      asesor:      iAdv >= 0 ? c[iAdv] || '' : '',
-      fecha:       iFec >= 0 ? c[iFec] || '' : '',
+      saldo: saldo,
+      domicilio: iDom >= 0 ? c[iDom] || '' : '',
+      asesor: iAdv >= 0 ? c[iAdv] || '' : '',
+      fecha: iFec >= 0 ? c[iFec] || '' : '',
       comentarios: iCom >= 0 ? c[iCom] || '' : '',
-    });
+      namePerson: nombre,
+      birthDate: iBirthDate >= 0 ? c[iBirthDate] || '' : '',
+      age: iAge >= 0 ? c[iAge] || '' : '',
+      stateLong: iStateLong >= 0 ? c[iStateLong] || '' : '',
+      home: iHome >= 0 ? c[iHome] || '' : '',
+      mobile: iMobile >= 0 ? c[iMobile] || '' : '',
+      office: iOffice >= 0 ? c[iOffice] || '' : '',
+      salesOffice: iSalesOffice >= 0 ? c[iSalesOffice] || '' : '',
+      contractDate: iContractDate >= 0 ? c[iContractDate] || '' : '',
+      contractSaleType: iContractSaleType >= 0 ? c[iContractSaleType] || '' : '',
+      product: iProduct >= 0 ? c[iProduct] || '' : '',
+      salesPrice: iSalesPrice >= 0 ? c[iSalesPrice] || '' : '',
+      downPayment: iDownPayment >= 0 ? c[iDownPayment] || '' : '',
+      monthlyPayment: iMonthlyPayment >= 0 ? c[iMonthlyPayment] || '' : '',
+      term: iTerm >= 0 ? c[iTerm] || '' : '',
+      scheduledLoan: iScheduledLoan >= 0 ? c[iScheduledLoan] || '' : '',
+      financingType: iFinancingType >= 0 ? c[iFinancingType] || '' : '',
+      equity: iEquity >= 0 ? c[iEquity] || '' : '',
+    };
+    out.push(row);
   }
   return out;
 }
@@ -2213,7 +2325,27 @@ function updateBalance(key, newVal) {
     updateSummary(allRows);
     renderResumen();
   }
-  showToast('Balance updated ✓');
+  showToast('Actual Monthly Payment updated ✓');
+}
+
+function updateMonthsPaid(key, newVal) {
+  const num = parseFloat(newVal);
+  if (isNaN(num) || num < 0) {
+    showToast('Please enter a valid number (0 or more)', false);
+    return;
+  }
+  if (!store[key]) store[key] = {};
+  store[key].monthsPaid = num;
+  saveStore();
+  if (activeTab !== 'all') {
+    const data = allRows.filter(r => r.asesor === activeTab);
+    updateSummary(data);
+    renderTable();
+  } else {
+    updateSummary(allRows);
+    renderResumen();
+  }
+  showToast('Months paid updated ✓');
 }
 
 function applyFiltersAndRender() {
@@ -2234,10 +2366,11 @@ function applyFiltersAndRender() {
   if (q.trim()) {
     const ql = q.toLowerCase();
     data = data.filter(r =>
-      r.nombre.toLowerCase().includes(ql) ||
-      r.telefono.includes(q) ||
-      r.telefono_mobile.includes(q) ||
-      r.domicilio.toLowerCase().includes(ql)
+      (r.namePerson || r.nombre || '').toLowerCase().includes(ql) ||
+      (r.home || '').includes(q) ||
+      (r.mobile || '').includes(q) ||
+      (r.telefono || '').includes(q) ||
+      (r.telefono_mobile || '').includes(q)
     );
   }
   if (sf) data = data.filter(r => getStatus(r) === sf);
@@ -2320,32 +2453,127 @@ function renderResumen() {
   updateTimezoneVisibility();
 }
 
+// ===== FORMATO CONDICIONAL (MEJORADO) =====
+function applyConditionalFormatting() {
+  // Buscar columnas por su etiqueta en el thead (limpiando flechas)
+  const ths = document.querySelectorAll('#tableHead th');
+  let idxSalesPrice = -1, idxTotalRem = -1, idxEquity = -1;
+  ths.forEach((th, i) => {
+    let label = th.textContent.trim().replace(/[↑↓]/g, '').trim(); // elimina flechas
+    if (label === 'SalesPrice') idxSalesPrice = i;
+    else if (label === 'Total Remaining Balance') idxTotalRem = i;
+    else if (label === 'Equity') idxEquity = i;
+  });
+
+  if (idxSalesPrice === -1 && idxTotalRem === -1 && idxEquity === -1) return;
+
+  const tbody = document.getElementById('tableBody');
+  if (!tbody) return;
+  // Obtener solo filas de datos (excluir comment-row)
+  const rows = Array.from(tbody.querySelectorAll('tr:not(.comment-row)'));
+  if (!rows.length) return;
+
+  function getNumericValues(idx) {
+    const vals = [];
+    rows.forEach(row => {
+      const cells = row.querySelectorAll('td');
+      if (cells.length > idx) {
+        const text = cells[idx].textContent.trim().replace(/[$,]/g, '');
+        const num = parseFloat(text);
+        if (!isNaN(num)) vals.push(num);
+      }
+    });
+    return vals;
+  }
+
+  function colorizeColumn(idx, values) {
+    if (idx === -1 || values.length === 0) return;
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+    const range = max - min;
+    rows.forEach(row => {
+      const cells = row.querySelectorAll('td');
+      if (cells.length > idx) {
+        const text = cells[idx].textContent.trim().replace(/[$,]/g, '');
+        const num = parseFloat(text);
+        if (!isNaN(num)) {
+          let ratio = 0;
+          if (range !== 0) ratio = (num - min) / range;
+          else ratio = 0.5;
+          // rojo suave (#fce4e4) a verde suave (#e4fce4)
+          const r = Math.round(252 - ratio * (252 - 228));
+          const g = Math.round(228 + ratio * (252 - 228));
+          const b = Math.round(228 + ratio * (252 - 228));
+          cells[idx].style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+        } else {
+          cells[idx].style.backgroundColor = '';
+        }
+      }
+    });
+  }
+
+  const salesPriceValues = getNumericValues(idxSalesPrice);
+  const totalRemValues = getNumericValues(idxTotalRem);
+  const equityValues = getNumericValues(idxEquity);
+
+  colorizeColumn(idxSalesPrice, salesPriceValues);
+  colorizeColumn(idxTotalRem, totalRemValues);
+  colorizeColumn(idxEquity, equityValues);
+}
+
+// ── RENDER TABLE ──────────────────────────────────────────────────────────
 function renderTable() {
+  if (activeTab === 'all') {
+    return;
+  }
   document.getElementById('pagination').classList.remove('hidden');
-  const fields = [
-    { field: 'id', label: '#' },
-    { field: 'nombre', label: 'Name' },
-    { field: 'telefono', label: 'Home' },
-    { field: null, label: 'Mobile' },
-    { field: null, label: 'Monthly Balance (USD)' },
-    { field: null, label: 'Total Balance (120m)' },
-    { field: null, label: 'Team Commission (25%)' },
-    { field: 'domicilio', label: 'Address' },
-    { field: 'asesor', label: 'Advisor' },
-    { field: null, label: 'Status' },
-    { field: null, label: 'Action' }
+
+  const columnas = [
+    { label: 'Status', field: null, sortable: false },  
+    { label: 'Save', field: null, sortable: false },  
+    { label: 'Action', field: null, sortable: false },  
+    { label: 'Name', field: 'namePerson', sortable: true },
+    { label: 'BirthDate', field: 'birthDate', sortable: true },
+    { label: 'Age', field: 'age', sortable: true },
+    { label: 'State', field: 'stateLong', sortable: true },
+    { label: 'Home', field: 'home', sortable: true },
+    { label: 'Mobile', field: 'mobile', sortable: true },
+    { label: 'Office', field: 'office', sortable: true },
+    { label: 'SalesOffice', field: 'salesOffice', sortable: true },
+    { label: 'ContractDate', field: 'contractDate', sortable: true },
+    { label: 'ContractType', field: 'contractSaleType', sortable: true },
+    { label: 'Product', field: 'product', sortable: true },
+    { label: 'SalesPrice', field: 'salesPrice', sortable: true },
+    { label: 'DownPayment', field: 'downPayment', sortable: true },
+    { label: 'Monthly payment', field: 'monthlyPayment', sortable: true },
+    { label: 'Term', field: 'term', sortable: true },
+    { label: 'ScheduledLoan', field: 'scheduledLoan', sortable: true },
+    { label: 'Actual Monthly Payment', field: null, sortable: false, editable: true },
+    { label: 'Months already paid', field: null, sortable: false, editable: true, inputType: 'months' },
+    { label: 'Total Remaining Balance', field: null, sortable: false, computed: true },
+    { label: 'Team Commission (25%)', field: null, sortable: false, computed: true },
+    { label: 'Equity', field: 'equity', sortable: true }  
   ];
+
   let headerHtml = '<tr>';
-  fields.forEach(f => {
-    if (f.field) {
-      const arrow = (sortField === f.field) ? (sortAsc ? '↑' : '↓') : '↕';
-      headerHtml += `<th class="sortable" data-field="${f.field}">${f.label} <span class="arrow">${arrow}</span></th>`;
+  columnas.forEach((col, index) => {
+    const isDark = (col.label === 'Name' || col.label === 'BirthDate' || col.label === 'Age' || 
+                     col.label === 'State' || col.label === 'Home' || col.label === 'Mobile' || 
+                     col.label === 'Office');
+    const isYellow = col.label === 'Monthly payment' || col.label === 'Actual Monthly Payment';
+    let thClass = (isDark ? 'dark-header' : '');
+    if (isYellow) thClass += (thClass ? ' ' : '') + 'yellow-text';
+    
+    if (col.sortable && col.field) {
+      const arrow = (sortField === col.field) ? (sortAsc ? '↑' : '↓') : '↕';
+      headerHtml += `<th class="sortable ${thClass}" data-field="${col.field}">${col.label} <span class="arrow">${arrow}</span></th>`;
     } else {
-      headerHtml += `<th style="cursor:default;background:var(--azul-vibrante);">${f.label}</th>`;
+      headerHtml += `<th style="cursor:default;background:var(--azul-vibrante);" class="${thClass}">${col.label}</th>`;
     }
   });
   headerHtml += '</tr>';
   document.getElementById('tableHead').innerHTML = headerHtml;
+
   document.querySelectorAll('#tableHead th.sortable').forEach(th => {
     th.addEventListener('click', function() {
       const field = this.dataset.field;
@@ -2355,17 +2583,19 @@ function renderTable() {
       applyFiltersAndRender();
     });
   });
+
   const total = filteredData.length;
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
   if (currentPage > totalPages) currentPage = totalPages;
   const start = (currentPage - 1) * PAGE_SIZE;
   const end   = Math.min(start + PAGE_SIZE, total);
   const pageItems = filteredData.slice(start, end);
+
   const tbody = document.getElementById('tableBody');
   if (!pageItems.length) {
-    tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;padding:2rem;color:#999;">No clients found</td></tr>';
+    tbody.innerHTML = `<tr><td colspan="${columnas.length}" style="text-align:center;padding:2rem;color:#999;">No clients found</td></tr>`;
   } else {
-    tbody.innerHTML = pageItems.map(r => {
+    const rowsHtml = pageItems.map(r => {
       const key = rowKey(r);
       const lc  = store[key];
       const status = getStatus(r);
@@ -2374,49 +2604,70 @@ function renderTable() {
       const savedAt = lc ? lc.date : '';
       const comment = lc ? lc.comment : (r.comentarios || '');
       const safeKey = key.replace(/[^a-z0-9]/gi,'_');
-      let balance = getClientBalance(r);
-      const balanceTotal = balance * 120;
-      const comisionEquipo = balanceTotal * 0.25;
+      
+      const actualPayment = getClientBalance(r);
+      const monthsPaid = parseFloat(store[key]?.monthsPaid) || 0;
+      const remainingMonths = Math.max(0, 120 - monthsPaid);
+      const totalRemaining = remainingMonths * actualPayment;
+      const teamCommission = totalRemaining * 0.25;
+
       const presetsHtml = PRESETS.map(p => {
         const sel = (lc && lc.status === p.status) ? 'sel' : '';
         return '<button class="preset-chip ' + sel + '" onclick="pickPreset(event,\'' +
           escJ(key) + '\',\'' + p.status + '\',`' + p.label + '`)">' + p.label + '</button>';
       }).join('');
-      const dataRow = '<tr>' +
-        `<td><span class="cliente-id">#${r.id}</span></td>` +
-        `<td><span class="cliente-nombre">${esc(r.nombre)}</span></td>` +
-        `<td>${esc(r.telefono)}</td>` +
-        `<td>${esc(r.telefono_mobile || '')}</td>` +
-        `<td><input class="balance-input" type="number" step="any" value="${balance}" onchange="updateBalance('${escJ(key)}', this.value)" /></td>` +
-        `<td class="calc-cell">${fmtCur(balanceTotal)}</td>` +
-        `<td class="calc-cell">${fmtCur(comisionEquipo)}</td>` +
-        `<td>${esc(r.domicilio)}</td>` +
-        `<td>${esc(r.asesor)}</td>` +
-        `<td><span class="badge ${st.cls}">${st.label}</span>` +
-          (savedAt ? `<br><span style="font-size:10px;color:#aaa">${savedAt}</span>` : '') +
-        `</td>` +
-        `<td style="white-space:nowrap">` +
-          `<button class="btn-llamar" title="Call" onclick="openScriptModal('${escJ(r.nombre)}','${escJ(r.telefono)}')">📞 <span>Call</span></button> ` +
-          `<button class="btn-comment-toggle ${hasData?'has-data':''}" onclick="toggleComment('${safeKey}')">` +
-            (hasData ? '✏️ Edit' : '+ Comment') +
-          `</button>` +
-        `</td>` +
-      '</tr>';
-      const commentRow = '<tr class="comment-row"><td colspan="11">' +
-        '<div class="comment-panel ' + (hasData?'open':'') + '" id="cp_' + safeKey + '">' +
-          '<div class="presets">' + presetsHtml + '</div>' +
-          '<textarea class="comment-textarea" id="ta_' + safeKey + '" placeholder="Describe the interaction with the client...">' + esc(comment) + '</textarea>' +
-          '<div class="comment-footer">' +
-            '<div class="comment-saved" id="msg_' + safeKey + '">' +
-              (lc ? '<b>Saved</b> · ' + savedAt : 'Not saved') +
-            '</div>' +
-            '<button class="btn-save-comment" onclick="saveComment(\'' + escJ(key) + '\',\'' + escJ(r.nombre) + '\',\'' + escJ(r.asesor) + '\')">💾 Save</button>' +
-          '</div>' +
-        '</div>' +
-      '</td></tr>';
+
+      let cells = '';
+      columnas.forEach(col => {
+        if (col.field && !col.editable && !col.computed) {
+          const val = r[col.field] || '';
+          cells += `<td>${esc(val)}</td>`;
+        } else if (col.label === 'Save') {
+          cells += `<td><button class="btn-save-row" onclick="saveComment('${escJ(key)}','${escJ(r.namePerson || r.nombre)}','${escJ(r.asesor)}')">💾 Save</button></td>`;
+        } else if (col.editable && col.inputType === 'months') {
+          cells += `<td><input class="balance-input" type="number" step="1" min="0" value="${monthsPaid}" onchange="updateMonthsPaid('${escJ(key)}', this.value)" /></td>`;
+        } else if (col.editable) {
+          cells += `<td><input class="balance-input" type="number" step="any" value="${actualPayment}" onchange="updateBalance('${escJ(key)}', this.value)" /></td>`;
+        } else if (col.computed) {
+          let val = 0;
+          if (col.label === 'Total Remaining Balance') {
+            val = totalRemaining;
+          } else if (col.label === 'Team Commission (25%)') {
+            val = teamCommission;
+          }
+          cells += `<td class="calc-cell">${fmtCur(val)}</td>`;
+        } else if (col.label === 'Status') {
+          cells += `<td><span class="badge ${st.cls}">${st.label}</span>` +
+            (savedAt ? `<br><span style="font-size:10px;color:#aaa">${savedAt}</span>` : '') +
+          `</td>`;
+        } else if (col.label === 'Action') {
+          cells += `<td style="white-space:nowrap">
+            <button class="btn-llamar" title="Call" onclick="openScriptModal('${escJ(r.namePerson || r.nombre)}','${escJ(r.home || r.telefono)}')">📞 <span>Call</span></button>
+            <button class="btn-comment-toggle ${hasData?'has-data':''}" onclick="toggleComment('${safeKey}')">${hasData ? '✏️ Edit' : '+ Comment'}</button>
+          </td>`;
+        }
+      });
+
+      const dataRow = `<tr>${cells}</tr>`;
+
+      const commentRow = `<tr class="comment-row"><td colspan="${columnas.length}">
+        <div class="comment-panel ${hasData?'open':''}" id="cp_${safeKey}">
+          <div class="presets">${presetsHtml}</div>
+          <textarea class="comment-textarea" id="ta_${safeKey}" placeholder="Describe the interaction with the client...">${esc(comment)}</textarea>
+          <div class="comment-footer">
+            <div class="comment-saved" id="msg_${safeKey}">${lc ? '<b>Saved</b> · ' + savedAt : 'Not saved'}</div>
+          </div>
+        </div>
+      </td></tr>`;
+
       return dataRow + commentRow;
     }).join('');
+    tbody.innerHTML = rowsHtml;
   }
+
+  // Aplicar formato condicional después de renderizar
+  applyConditionalFormatting();
+
   document.getElementById('paginationInfo').textContent =
     total === 0 ? 'No results' : 'Showing ' + (start+1) + '–' + end + ' of ' + total + ' clients';
   document.getElementById('prevPage').disabled = currentPage <= 1;
@@ -2516,6 +2767,13 @@ async function saveComment(key, nombre, asesor) {
         domicilio:        rowData.domicilio || '',
         estado:           statusLabels[status] || status,
         comentario:       comment,
+        salesPrice:       String(rowData.salesPrice || ''),
+        downPayment:      String(rowData.downPayment || ''),
+        monthlyPayment:   String(rowData.monthlyPayment || ''),
+        term:             String(rowData.term || ''),
+        scheduledLoan:    String(rowData.scheduledLoan || ''),
+        financingType:    String(rowData.financingType || ''),
+        equity:           String(rowData.equity || '')
       };
       const res = await fetch(APPS_SCRIPT_URL, {
         method: 'POST',
@@ -2553,12 +2811,15 @@ document.getElementById('nextPage').addEventListener('click', () => {
 // ── TIMEZONE / LADA REFERENCE ──────────────────────────────────────────────
 function updateTimezoneVisibility() {
   const container = document.getElementById('timezoneRefContainer');
+  const ladaSection = document.getElementById('ladaSection');
   if (activeTab !== 'all' && activeTab !== 'handling') {
     container.style.display = 'block';
+    ladaSection.style.display = 'block';
     updateTimezoneTable();
     renderUSAMap();
   } else {
     container.style.display = 'none';
+    ladaSection.style.display = 'none';
   }
 }
 
@@ -2646,17 +2907,25 @@ function renderUSAMap() {
   container.innerHTML = html;
 }
 
-// ── LADA LOOKUP TOOL ───────────────────────────────────────────────────────
+// ── LADA LOOKUP TOOL (MEJORADO: búsqueda por nombre) ────────────────────
 function onLadaInput() {
   const input = document.getElementById('ladaInput');
-  const val = input.value.trim();
+  const val = input.value.trim().toLowerCase();
   const suggestions = document.getElementById('ladaSuggestions');
   if (!val) {
     suggestions.textContent = '';
     document.getElementById('lookupResult').classList.remove('show');
     return;
   }
-  const matches = Object.keys(LADA_MAP).filter(code => code.startsWith(val));
+  // Buscar coincidencias en códigos y nombres de estados
+  const matches = [];
+  Object.keys(LADA_MAP).forEach(code => {
+    const info = LADA_MAP[code];
+    if (code.startsWith(val) || info.state.toLowerCase().includes(val)) {
+      matches.push(code);
+    }
+  });
+  // Mostrar sugerencias (máximo 5)
   if (matches.length > 0 && matches.length <= 5) {
     suggestions.textContent = '💡 Sugerencias: ' + matches.join(', ');
   } else if (matches.length > 5) {
@@ -2675,7 +2944,15 @@ function lookupLada() {
     resultDiv.classList.remove('show');
     return;
   }
-  const info = LADA_MAP[val];
+  let info = LADA_MAP[val];
+  // Si no se encuentra por código exacto, buscar por nombre (primera coincidencia)
+  if (!info) {
+    const lowerVal = val.toLowerCase();
+    const foundKey = Object.keys(LADA_MAP).find(code => 
+      LADA_MAP[code].state.toLowerCase().includes(lowerVal)
+    );
+    if (foundKey) info = LADA_MAP[foundKey];
+  }
   const now = getCDMXTime();
   const cdmxTime = formatTime(now);
   if (info) {
@@ -2688,13 +2965,13 @@ function lookupLada() {
     content.innerHTML = `
       <div class="result-row"><span class="result-label">📍 Estado</span><span class="result-value"><span class="highlight">${esc(info.state)}</span></span></div>
       <div class="result-row"><span class="result-label">🗺️ Región</span><span class="result-value">${esc(info.region)}</span></div>
-      <div class="result-row"><span class="result-label">📞 LADA</span><span class="result-value"><span class="highlight">${esc(info.display)}</span></span></div>
+      <div class="result-row"><span class="result-label">📞 Códigos LADA</span><span class="result-value"><span class="highlight">${esc(info.display)}</span></span></div>
       <div class="result-row"><span class="result-label">🕒 Hora CDMX</span><span class="result-value"><span class="live-time">${cdmxTime}</span></span></div>
       <div class="result-row"><span class="result-label">🕒 Hora en ${esc(info.state)}</span><span class="result-value"><span class="live-time">${localTimeStr}</span> (${diffLabel})</span></div>
     `;
     resultDiv.classList.add('show');
   } else {
-    content.innerHTML = `<div class="not-found">❌ No se encontró ninguna LADA "${esc(val)}". Verifica el código de área.</div>`;
+    content.innerHTML = `<div class="not-found">❌ No se encontró ninguna LADA para "${esc(val)}". Verifica el código o nombre.</div>`;
     resultDiv.classList.add('show');
   }
 }
