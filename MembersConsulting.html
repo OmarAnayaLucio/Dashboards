@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MEMBER's CONSULTING · VIDANTA · CRM</title>
   <style>
-    /* ===== TODO EL CSS ===== */
+    /* ===== TODO EL CSS IGUAL QUE ANTES ===== */
     :root {
       --black: #000000;
       --arena: #F7F3EE;
@@ -594,7 +594,7 @@
       position: sticky;
       top: 0;
       z-index: 10;
-      background: var(--azul-profundo);
+      background: var(--azul-profundo); /* fondo para que no se transparente */
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     th {
@@ -611,12 +611,14 @@
     th.sortable { cursor: pointer; }
     th.sortable:hover { background: var(--azul-vibrante); }
     th .arrow { margin-left: 4px; font-size: 10px; opacity: 0.7; color: var(--azul-claro); }
+    /* Encabezados más oscuros (Name a Office) */
     th.dark-header {
       background: #0A2A44 !important;
     }
     th.dark-header.sortable:hover {
       background: #0A2A44 !important;
     }
+    /* Encabezados en amarillo (Monthly payment y Actual Monthly Payment) */
     th.yellow-text {
       color: #FFD700 !important;
     }
@@ -635,6 +637,7 @@
     }
     .btn-llamar:hover { background: var(--azul-vibrante); color: white; }
 
+    /* Botón Save en la fila principal */
     .btn-save-row {
       background: var(--verde);
       color: white;
@@ -758,192 +761,20 @@
       white-space: nowrap;
     }
 
-    /* ── LADA SECTION (movido arriba) ── */
-    #ladaSection {
-      margin-top: 1.5rem;
-      background: var(--blanco);
-      border-radius: 16px;
-      border: 1px solid #e0e7ef;
-      box-shadow: 0 4px 16px rgba(14,59,92,0.08);
-      overflow: hidden;
-      padding: 1.2rem 1.5rem 1.5rem;
-      transition: box-shadow 0.2s;
-    }
-    #ladaSection:hover {
-      box-shadow: 0 6px 24px rgba(14,59,92,0.12);
-    }
-    #ladaSection .lada-lookup {
-      padding: 0;
-      border-top: none;
-      background: transparent;
-    }
-    #ladaSection .lada-lookup-title {
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--azul-profundo);
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    #ladaSection .lada-lookup-title::before {
-      content: "🌍";
-      font-size: 20px;
-    }
-    #ladaSection .lada-lookup-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-      background: #f8faff;
-      padding: 10px 14px;
-      border-radius: 12px;
-      border: 1px solid #eef3f8;
-    }
-    #ladaSection .lada-lookup-row input {
-      flex: 1;
-      min-width: 160px;
-      padding: 10px 16px;
-      border: 2px solid #dce5ed;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: 500;
-      outline: none;
-      transition: border-color 0.15s, box-shadow 0.15s;
-      background: white;
-      color: var(--texto);
-    }
-    #ladaSection .lada-lookup-row input:focus {
-      border-color: var(--azul-medio);
-      box-shadow: 0 0 0 3px rgba(46,134,193,0.12);
-    }
-    #ladaSection .lada-lookup-row input::placeholder {
-      font-weight: 400;
-      color: #aab8c9;
-    }
-    #ladaSection .lada-lookup-row button {
-      background: var(--azul-profundo);
-      color: white;
-      border: none;
-      border-radius: 10px;
-      padding: 10px 24px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.15s, transform 0.1s;
-      white-space: nowrap;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    #ladaSection .lada-lookup-row button:hover {
-      background: var(--azul-vibrante);
-      transform: scale(1.02);
-    }
-    #ladaSection .lada-lookup-row .lookup-suggestions {
-      font-size: 12px;
-      color: #6b7f94;
-      flex-basis: 100%;
-      margin-top: 4px;
-      padding-left: 4px;
-    }
-    #ladaSection .lookup-result {
-      margin-top: 16px;
-      padding: 16px 20px;
-      border-radius: 12px;
-      background: #f8faff;
-      border: 2px solid #dde6ef;
-      display: none;
-      transition: all 0.2s;
-    }
-    #ladaSection .lookup-result.show {
-      display: block;
-      border-color: var(--azul-claro);
-      background: #f5faff;
-    }
-    #ladaSection .lookup-result .result-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 6px 0;
-      font-size: 13.5px;
-      border-bottom: 1px solid #e8edf3;
-    }
-    #ladaSection .lookup-result .result-row:last-child {
-      border-bottom: none;
-    }
-    #ladaSection .lookup-result .result-label {
-      font-weight: 600;
-      color: var(--azul-profundo);
-    }
-    #ladaSection .lookup-result .result-value {
-      font-weight: 500;
-    }
-    #ladaSection .lookup-result .result-value .highlight {
-      color: var(--azul-medio);
-      font-weight: 700;
-    }
-    #ladaSection .lookup-result .result-value .live-time {
-      font-weight: 700;
-      color: var(--verde);
-    }
-    #ladaSection .lookup-result .not-found {
-      color: var(--rojo);
-      font-weight: 500;
-      padding: 8px 0;
-      text-align: center;
-    }
-    #ladaSection table {
-      margin-top: 1.2rem;
-      font-size: 12.5px;
-      width: 100%;
-      border-collapse: collapse;
-      border-radius: 10px;
-      overflow: hidden;
-    }
-    #ladaSection table th {
-      background: var(--azul-profundo);
-      color: white;
-      font-weight: 600;
-      padding: 0.7rem 0.8rem;
-      text-align: left;
-    }
-    #ladaSection table td {
-      padding: 0.6rem 0.8rem;
-      border-bottom: 1px solid #e8edf3;
-    }
-    #ladaSection table tr:nth-child(even) td {
-      background: #f9fcff;
-    }
-    #ladaSection table tr:last-child td {
-      border-bottom: none;
-    }
-    #ladaSection .lada-badge {
-      background: var(--azul-suave);
-      color: var(--azul-profundo);
-      font-weight: 700;
-      padding: 2px 12px;
-      border-radius: 20px;
-      font-size: 11px;
-      display: inline-block;
-    }
-    #ladaSection .diff-pos { color: var(--verde); font-weight: 600; }
-    #ladaSection .diff-neg { color: var(--rojo); font-weight: 600; }
-    #ladaSection .diff-zero { color: var(--naranja); font-weight: 600; }
-
-    /* ── TIMEZONE / LADA REFERENCE (solo mapa y reloj) ── */
+    /* ── TIMEZONE / LADA REFERENCE ── */
     .timezone-ref {
       margin-top: 1.5rem;
       background: var(--blanco);
-      border-radius: 16px;
-      border: 1px solid #e0e7ef;
-      box-shadow: 0 4px 16px rgba(14,59,92,0.08);
+      border-radius: 12px;
+      border: 1px solid var(--azul-claro);
+      box-shadow: 0 4px 12px rgba(14,59,92,0.08);
       overflow: hidden;
     }
     .timezone-ref .ref-header {
       background: var(--azul-profundo);
       color: white;
-      padding: 0.7rem 1.5rem;
-      font-size: 14px;
+      padding: 0.6rem 1.2rem;
+      font-size: 13px;
       font-weight: 600;
       display: flex;
       align-items: center;
@@ -953,21 +784,52 @@
     .timezone-ref .ref-header .live-clock {
       margin-left: auto;
       font-weight: 400;
-      font-size: 14px;
-      background: rgba(255,255,255,0.12);
-      padding: 4px 16px;
-      border-radius: 30px;
-      letter-spacing: 0.5px;
+      font-size: 13px;
+      background: rgba(255,255,255,0.15);
+      padding: 2px 12px;
+      border-radius: 20px;
     }
+    .timezone-ref table {
+      font-size: 12.5px;
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .timezone-ref th {
+      background: var(--arena);
+      color: var(--azul-profundo);
+      font-weight: 600;
+      padding: 0.5rem 0.8rem;
+      border-bottom: 2px solid var(--azul-claro);
+      text-align: left;
+    }
+    .timezone-ref td {
+      padding: 0.45rem 0.8rem;
+      border-bottom: 1px solid var(--arena-dark);
+    }
+    .timezone-ref tr:last-child td { border-bottom: none; }
+    .timezone-ref .lada-badge {
+      background: var(--azul-suave);
+      color: var(--azul-profundo);
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 11px;
+      display: inline-block;
+    }
+    .timezone-ref .diff-pos { color: var(--verde); font-weight: 600; }
+    .timezone-ref .diff-neg { color: var(--rojo); font-weight: 600; }
+    .timezone-ref .diff-zero { color: var(--naranja); font-weight: 600; }
+
+    /* ── USA MAP ── */
     .usa-map-container {
-      padding: 1rem 1.5rem 1.8rem;
-      background: #fafcfe;
+      padding: 1rem 1.2rem 1.5rem;
+      background: #fafbfc;
     }
     .usa-map-title {
       font-size: 14px;
       font-weight: 700;
       color: var(--azul-profundo);
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -975,19 +837,17 @@
     .usa-map-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
+      gap: 12px;
     }
     @media (max-width: 768px) {
       .usa-map-grid { grid-template-columns: 1fr 1fr; }
-      #ladaSection .lada-lookup-row input { min-width: 120px; }
     }
     @media (max-width: 480px) {
       .usa-map-grid { grid-template-columns: 1fr; }
-      #ladaSection { padding: 1rem; }
     }
     .usa-zone {
       background: var(--blanco);
-      border-radius: 12px;
+      border-radius: 10px;
       border: 1px solid var(--arena-dark);
       overflow: hidden;
       box-shadow: 0 2px 8px rgba(0,0,0,0.04);
@@ -998,7 +858,7 @@
       box-shadow: 0 6px 16px rgba(14,59,92,0.12);
     }
     .zone-header {
-      padding: 8px 14px;
+      padding: 8px 12px;
       font-weight: 700;
       font-size: 13px;
       color: white;
@@ -1010,18 +870,18 @@
       font-weight: 400;
       font-size: 11px;
       background: rgba(255,255,255,0.2);
-      padding: 2px 12px;
+      padding: 1px 10px;
       border-radius: 20px;
     }
     .zone-body {
-      padding: 10px 14px;
+      padding: 10px 12px;
     }
     .zone-state {
       display: flex;
       justify-content: space-between;
       font-size: 12px;
-      padding: 4px 0;
-      border-bottom: 1px solid #f0f3f7;
+      padding: 3px 0;
+      border-bottom: 1px solid var(--arena);
     }
     .zone-state:last-child { border-bottom: none; }
     .zone-state .state-name {
@@ -1038,10 +898,183 @@
     .zone-central .zone-header { background: #D4A017; }
     .zone-eastern .zone-header { background: #A04040; }
 
+    /* ── LADA LOOKUP TOOL (mejorado) ── */
+    .lada-lookup {
+      padding: 1.2rem 1.5rem 1.5rem;
+      background: linear-gradient(145deg, #f8faff, #ffffff);
+      border-bottom: 2px solid var(--azul-claro);
+    }
+    .lada-lookup-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--azul-profundo);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .lada-lookup-title span {
+      background: var(--azul-suave);
+      padding: 0 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--azul-profundo);
+    }
+    .lada-lookup-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      background: var(--blanco);
+      padding: 12px 16px;
+      border-radius: 14px;
+      box-shadow: 0 2px 12px rgba(14,59,92,0.06);
+      border: 1px solid var(--arena-dark);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .lada-lookup-row:focus-within {
+      border-color: var(--azul-medio);
+      box-shadow: 0 4px 20px rgba(46,134,193,0.15);
+    }
+    .lada-lookup-row .input-wrapper {
+      flex: 1;
+      min-width: 160px;
+      position: relative;
+    }
+    .lada-lookup-row .input-wrapper .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 16px;
+      opacity: 0.6;
+    }
+    .lada-lookup-row input {
+      width: 100%;
+      padding: 10px 14px 10px 40px;
+      border: 2px solid var(--arena-dark);
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 500;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      background: white;
+      color: var(--texto);
+    }
+    .lada-lookup-row input:focus {
+      border-color: var(--azul-medio);
+      box-shadow: 0 0 0 4px rgba(46,134,193,0.12);
+    }
+    .lada-lookup-row input::placeholder {
+      font-weight: 400;
+      color: #aaa;
+      font-size: 14px;
+    }
+    .lada-lookup-row button {
+      background: linear-gradient(135deg, var(--azul-profundo), var(--azul-vibrante));
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 28px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+      white-space: nowrap;
+      letter-spacing: 0.3px;
+      box-shadow: 0 2px 8px rgba(14,59,92,0.2);
+    }
+    .lada-lookup-row button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(14,59,92,0.3);
+    }
+    .lada-lookup-row button:active {
+      transform: translateY(0px);
+    }
+    .lada-lookup-row .lookup-suggestions {
+      font-size: 13px;
+      color: #888;
+      flex-basis: 100%;
+      padding-top: 4px;
+      min-height: 22px;
+      font-weight: 500;
+    }
+    .lada-lookup-row .lookup-suggestions strong {
+      color: var(--azul-medio);
+      font-weight: 700;
+    }
+
+    .lookup-result {
+      margin-top: 16px;
+      padding: 18px 22px;
+      border-radius: 14px;
+      background: var(--blanco);
+      border: 2px solid var(--azul-claro);
+      display: none;
+      box-shadow: 0 4px 20px rgba(14,59,92,0.08);
+      animation: fadeSlide 0.25s ease;
+    }
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .lookup-result.show { display: block; }
+    .lookup-result .result-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      font-size: 14px;
+      border-bottom: 1px solid var(--arena);
+    }
+    .lookup-result .result-row:last-child { border-bottom: none; }
+    .lookup-result .result-label {
+      font-weight: 600;
+      color: var(--azul-profundo);
+      opacity: 0.8;
+    }
+    .lookup-result .result-value {
+      font-weight: 500;
+      text-align: right;
+    }
+    .lookup-result .result-value .highlight {
+      color: var(--azul-medio);
+      font-weight: 700;
+    }
+    .lookup-result .result-value .live-time {
+      font-weight: 700;
+      color: var(--verde);
+    }
+    .lookup-result .not-found {
+      color: var(--rojo);
+      font-weight: 600;
+      padding: 8px 0;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .lookup-result .result-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--azul-suave);
+    }
+    .lookup-result .result-card-header .region-badge {
+      background: var(--azul-suave);
+      padding: 2px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--azul-profundo);
+    }
+
     /* ── HANDLING OBJECTIONS ── */
     #handlingContainer {
       background: var(--blanco);
-      border-radius: 16px;
+      border-radius: 12px;
       border: 1px solid var(--azul-claro);
       box-shadow: 0 4px 16px rgba(14,59,92,0.08);
       padding: 1.5rem;
@@ -1124,7 +1157,9 @@
       .script-step { gap: 10px; }
       .timezone-ref .ref-header { flex-wrap: wrap; }
       .timezone-ref .ref-header .live-clock { margin-left: 0; width: 100%; }
+      .lada-lookup-row input { min-width: 100px; }
       .usa-map-grid { grid-template-columns: 1fr 1fr; }
+      .lada-lookup-row .input-wrapper { min-width: 120px; }
     }
     @media (max-width: 480px) {
       .summary-bar { grid-template-columns: 1fr; }
@@ -1279,13 +1314,25 @@
       </div>
     </div>
 
-    <!-- ===== LADA SECTION (búsqueda + tabla) ===== -->
-    <div id="ladaSection" style="display:none;">
+    <!-- TIMEZONE & LADA REFERENCE -->
+    <div id="timezoneRefContainer" style="display:none;" class="timezone-ref">
+      <div class="ref-header">
+        <span>🕒 Time Zone &amp; LADA Reference</span>
+        <span class="live-clock" id="liveClock">⏱️ CDMX: --:--:--</span>
+      </div>
+
+      <!-- LADA LOOKUP TOOL (movido arriba y mejorado) -->
       <div class="lada-lookup">
-        <div class="lada-lookup-title">🔍 Buscar LADA por código o nombre</div>
+        <div class="lada-lookup-title">
+          🔍 Buscar LADA (área code)
+          <span>por código, estado o ciudad</span>
+        </div>
         <div class="lada-lookup-row">
-          <input type="text" id="ladaInput" placeholder="Ej: 212, 305, California, New York..." oninput="onLadaInput()" onkeydown="if(event.key==='Enter') lookupLada()" />
-          <button onclick="lookupLada()">🔍 Buscar</button>
+          <div class="input-wrapper">
+            <span class="search-icon">🔎</span>
+            <input type="text" id="ladaInput" placeholder="Ej: 212, New York, Texas, Toronto..." oninput="onLadaInput()" onkeydown="if(event.key==='Enter') lookupLada()" />
+          </div>
+          <button onclick="lookupLada()">🔍 Revisar</button>
           <div class="lookup-suggestions" id="ladaSuggestions"></div>
         </div>
         <div class="lookup-result" id="lookupResult">
@@ -1293,24 +1340,17 @@
         </div>
       </div>
 
-      <!-- Tabla de referencia -->
+      <!-- USA MAP -->
+      <div class="usa-map-container" id="usaMapContainer"></div>
+
+      <!-- TABLE -->
       <table>
         <thead>
-          <tr><th>Estado / Área</th><th>Código LADA</th><th>Diferencia vs CDMX</th><th>Hora actual</th></tr>
+          <tr><th>State / Area</th><th>LADA (Area Code)</th><th>Time vs CDMX</th><th>Current Time</th></tr>
         </thead>
         <tbody id="timezoneTableBody"></tbody>
       </table>
     </div>
-
-    <!-- TIMEZONE & LADA REFERENCE (mapa y reloj) -->
-    <div id="timezoneRefContainer" style="display:none;" class="timezone-ref">
-      <div class="ref-header">
-        <span>🕒 Time Zone &amp; LADA Reference</span>
-        <span class="live-clock" id="liveClock">⏱️ CDMX: --:--:--</span>
-      </div>
-      <div class="usa-map-container" id="usaMapContainer"></div>
-    </div>
-
   </div><!-- /defaultContent -->
 
   <!-- HANDLING OBJECTIONS -->
@@ -1367,9 +1407,9 @@ const DEFAULT_USERS = {
   'User #8': 'user8'
 };
 
-// ── LADA / TIMEZONE DATA (USA + CANADA) ──────────────────────────────────
+// ── LADA / TIMEZONE DATA (USA + Canada) ──────────────────────────────────
 const LADA_MAP = {
-  // Pacific (-2h)
+  // Pacific (-2h from CDMX)
   '213': { state: 'California', region: 'Pacífico', offset: -2, display: '213 / 310 / 408' },
   '310': { state: 'California', region: 'Pacífico', offset: -2, display: '213 / 310 / 408' },
   '408': { state: 'California', region: 'Pacífico', offset: -2, display: '213 / 310 / 408' },
@@ -1399,7 +1439,8 @@ const LADA_MAP = {
   '564': { state: 'Washington', region: 'Pacífico', offset: -2, display: '425 / 509 / 564' },
   '702': { state: 'Nevada', region: 'Pacífico', offset: -2, display: '702 / 775' },
   '775': { state: 'Nevada', region: 'Pacífico', offset: -2, display: '702 / 775' },
-  // Mountain (-1h)
+
+  // Mountain (-1h from CDMX)
   '303': { state: 'Colorado', region: 'Montaña', offset: -1, display: '303 / 719 / 720' },
   '719': { state: 'Colorado', region: 'Montaña', offset: -1, display: '303 / 719 / 720' },
   '720': { state: 'Colorado', region: 'Montaña', offset: -1, display: '303 / 719 / 720' },
@@ -1414,7 +1455,8 @@ const LADA_MAP = {
   '801': { state: 'Utah', region: 'Montaña', offset: -1, display: '385 / 435 / 801' },
   '505': { state: 'New Mexico', region: 'Montaña', offset: -1, display: '505 / 575' },
   '575': { state: 'New Mexico', region: 'Montaña', offset: -1, display: '505 / 575' },
-  // Central (0h)
+
+  // Central (same as CDMX)
   '210': { state: 'Texas', region: 'Central', offset: 0, display: '210 / 214 / 254' },
   '214': { state: 'Texas', region: 'Central', offset: 0, display: '210 / 214 / 254' },
   '254': { state: 'Texas', region: 'Central', offset: 0, display: '210 / 214 / 254' },
@@ -1465,7 +1507,8 @@ const LADA_MAP = {
   '636': { state: 'Missouri', region: 'Central', offset: 0, display: '636 / 660 / 816' },
   '660': { state: 'Missouri', region: 'Central', offset: 0, display: '636 / 660 / 816' },
   '816': { state: 'Missouri', region: 'Central', offset: 0, display: '636 / 660 / 816' },
-  // Eastern (+1h)
+
+  // Eastern (+1h from CDMX)
   '212': { state: 'New York', region: 'Este', offset: 1, display: '212 / 315 / 347' },
   '315': { state: 'New York', region: 'Este', offset: 1, display: '212 / 315 / 347' },
   '347': { state: 'New York', region: 'Este', offset: 1, display: '212 / 315 / 347' },
@@ -1515,20 +1558,28 @@ const LADA_MAP = {
   '781': { state: 'Massachusetts', region: 'Este', offset: 1, display: '781 / 857 / 978' },
   '857': { state: 'Massachusetts', region: 'Este', offset: 1, display: '781 / 857 / 978' },
   '978': { state: 'Massachusetts', region: 'Este', offset: 1, display: '781 / 857 / 978' },
-  // CANADA
+
+  // ── CANADA ──
+  // Pacific (-2h from CDMX)
   '604': { state: 'British Columbia (Vancouver)', region: 'Pacífico · Canadá', offset: -2, display: '604 / 778 / 236' },
   '778': { state: 'British Columbia (Vancouver)', region: 'Pacífico · Canadá', offset: -2, display: '604 / 778 / 236' },
   '236': { state: 'British Columbia (Vancouver)', region: 'Pacífico · Canadá', offset: -2, display: '604 / 778 / 236' },
   '250': { state: 'British Columbia (Victoria)', region: 'Pacífico · Canadá', offset: -2, display: '250 / 672' },
   '672': { state: 'British Columbia (Victoria)', region: 'Pacífico · Canadá', offset: -2, display: '250 / 672' },
+
+  // Mountain (-1h from CDMX)
   '403': { state: 'Alberta (Calgary)', region: 'Montaña · Canadá', offset: -1, display: '403 / 587 / 825' },
   '587': { state: 'Alberta (Calgary/Edmonton)', region: 'Montaña · Canadá', offset: -1, display: '403 / 587 / 825' },
   '825': { state: 'Alberta (Calgary/Edmonton)', region: 'Montaña · Canadá', offset: -1, display: '403 / 587 / 825' },
   '780': { state: 'Alberta (Edmonton)', region: 'Montaña · Canadá', offset: -1, display: '780 / 587 / 825' },
+
+  // Central (same as CDMX)
   '204': { state: 'Manitoba (Winnipeg)', region: 'Central · Canadá', offset: 0, display: '204 / 431' },
   '431': { state: 'Manitoba (Winnipeg)', region: 'Central · Canadá', offset: 0, display: '204 / 431' },
   '306': { state: 'Saskatchewan (Regina)', region: 'Central · Canadá', offset: 0, display: '306 / 639' },
   '639': { state: 'Saskatchewan (Regina)', region: 'Central · Canadá', offset: 0, display: '306 / 639' },
+
+  // Eastern (+1h from CDMX)
   '416': { state: 'Ontario (Toronto)', region: 'Este · Canadá', offset: 1, display: '416 / 647 / 437' },
   '647': { state: 'Ontario (Toronto)', region: 'Este · Canadá', offset: 1, display: '416 / 647 / 437' },
   '437': { state: 'Ontario (Toronto)', region: 'Este · Canadá', offset: 1, display: '416 / 647 / 437' },
@@ -1541,9 +1592,23 @@ const LADA_MAP = {
   '438': { state: 'Québec (Montreal)', region: 'Este · Canadá', offset: 1, display: '514 / 438' },
   '418': { state: 'Québec (Québec City)', region: 'Este · Canadá', offset: 1, display: '418 / 581' },
   '581': { state: 'Québec (Québec City)', region: 'Este · Canadá', offset: 1, display: '418 / 581' },
+
+  // Atlantic (+2h from CDMX)
   '902': { state: 'Nova Scotia (Halifax)', region: 'Atlántico · Canadá', offset: 2, display: '902 / 782' },
   '782': { state: 'Nova Scotia (Halifax)', region: 'Atlántico · Canadá', offset: 2, display: '902 / 782' },
 };
+
+// Índice invertido para búsqueda por nombre de estado o ciudad
+function buildStateIndex() {
+  const index = {};
+  for (const [code, info] of Object.entries(LADA_MAP)) {
+    const key = info.state.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    if (!index[key]) index[key] = [];
+    index[key].push(code);
+  }
+  return index;
+}
+const STATE_INDEX = buildStateIndex();
 
 // USA Map Data (regions for visual map)
 const USA_REGIONS = [
@@ -1601,7 +1666,7 @@ const USA_REGIONS = [
   }
 ];
 
-// Canada Map Data (regions for visual map)
+// Canada Map Data
 const CANADA_REGIONS = [
   {
     id: 'pacific',
@@ -1916,7 +1981,9 @@ function parseCSV(raw) {
   }
   const headers = splitLine(lines[0]).map(h => h.replace(/^"|"$/g,'').trim().toLowerCase());
   
+  // Función para encontrar columna: primero busca coincidencia exacta (ignorando mayúsculas), luego por inclusión
   function col(keywords) {
+    // Primero, coincidencia exacta (case-insensitive)
     for (let h of headers) {
       const hLower = h.toLowerCase();
       for (let k of keywords) {
@@ -1925,6 +1992,7 @@ function parseCSV(raw) {
         }
       }
     }
+    // Si no, buscar por inclusión
     for (let h of headers) {
       const hLower = h.toLowerCase();
       for (let k of keywords) {
@@ -1936,6 +2004,7 @@ function parseCSV(raw) {
     return -1;
   }
 
+  // Índices de columnas existentes
   const iId   = col(['#','id','num','no.']);
   const iNom  = col(['nombre', 'nameperson']);
   const iHome = col(['home', 'casa', 'teléfono casa', 'telefono casa']);
@@ -1946,6 +2015,7 @@ function parseCSV(raw) {
   const iFec  = col(['fecha','date']);
   const iCom  = col(['coment','note','observ']);
 
+  // Nuevas columnas
   const iNamePerson = col(['nameperson', 'nombre']);
   const iBirthDate = col(['birthdate', 'birth date']);
   const iAge = col(['age', 'edad']);
@@ -1982,6 +2052,7 @@ function parseCSV(raw) {
       asesor: iAdv >= 0 ? c[iAdv] || '' : '',
       fecha: iFec >= 0 ? c[iFec] || '' : '',
       comentarios: iCom >= 0 ? c[iCom] || '' : '',
+      // Nuevos campos
       namePerson: nombre,
       birthDate: iBirthDate >= 0 ? c[iBirthDate] || '' : '',
       age: iAge >= 0 ? c[iAge] || '' : '',
@@ -2453,81 +2524,13 @@ function renderResumen() {
   updateTimezoneVisibility();
 }
 
-// ===== FORMATO CONDICIONAL (MEJORADO) =====
-function applyConditionalFormatting() {
-  // Buscar columnas por su etiqueta en el thead (limpiando flechas)
-  const ths = document.querySelectorAll('#tableHead th');
-  let idxSalesPrice = -1, idxTotalRem = -1, idxEquity = -1;
-  ths.forEach((th, i) => {
-    let label = th.textContent.trim().replace(/[↑↓]/g, '').trim(); // elimina flechas
-    if (label === 'SalesPrice') idxSalesPrice = i;
-    else if (label === 'Total Remaining Balance') idxTotalRem = i;
-    else if (label === 'Equity') idxEquity = i;
-  });
-
-  if (idxSalesPrice === -1 && idxTotalRem === -1 && idxEquity === -1) return;
-
-  const tbody = document.getElementById('tableBody');
-  if (!tbody) return;
-  // Obtener solo filas de datos (excluir comment-row)
-  const rows = Array.from(tbody.querySelectorAll('tr:not(.comment-row)'));
-  if (!rows.length) return;
-
-  function getNumericValues(idx) {
-    const vals = [];
-    rows.forEach(row => {
-      const cells = row.querySelectorAll('td');
-      if (cells.length > idx) {
-        const text = cells[idx].textContent.trim().replace(/[$,]/g, '');
-        const num = parseFloat(text);
-        if (!isNaN(num)) vals.push(num);
-      }
-    });
-    return vals;
-  }
-
-  function colorizeColumn(idx, values) {
-    if (idx === -1 || values.length === 0) return;
-    const min = Math.min(...values);
-    const max = Math.max(...values);
-    const range = max - min;
-    rows.forEach(row => {
-      const cells = row.querySelectorAll('td');
-      if (cells.length > idx) {
-        const text = cells[idx].textContent.trim().replace(/[$,]/g, '');
-        const num = parseFloat(text);
-        if (!isNaN(num)) {
-          let ratio = 0;
-          if (range !== 0) ratio = (num - min) / range;
-          else ratio = 0.5;
-          // rojo suave (#fce4e4) a verde suave (#e4fce4)
-          const r = Math.round(252 - ratio * (252 - 228));
-          const g = Math.round(228 + ratio * (252 - 228));
-          const b = Math.round(228 + ratio * (252 - 228));
-          cells[idx].style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
-        } else {
-          cells[idx].style.backgroundColor = '';
-        }
-      }
-    });
-  }
-
-  const salesPriceValues = getNumericValues(idxSalesPrice);
-  const totalRemValues = getNumericValues(idxTotalRem);
-  const equityValues = getNumericValues(idxEquity);
-
-  colorizeColumn(idxSalesPrice, salesPriceValues);
-  colorizeColumn(idxTotalRem, totalRemValues);
-  colorizeColumn(idxEquity, equityValues);
-}
-
-// ── RENDER TABLE ──────────────────────────────────────────────────────────
 function renderTable() {
   if (activeTab === 'all') {
     return;
   }
   document.getElementById('pagination').classList.remove('hidden');
 
+  // Modificado: Save column movido justo después de Status
   const columnas = [
     { label: 'Status', field: null, sortable: false },  
     { label: 'Save', field: null, sortable: false },  
@@ -2650,6 +2653,7 @@ function renderTable() {
 
       const dataRow = `<tr>${cells}</tr>`;
 
+      // Eliminado el botón Save del panel de comentarios
       const commentRow = `<tr class="comment-row"><td colspan="${columnas.length}">
         <div class="comment-panel ${hasData?'open':''}" id="cp_${safeKey}">
           <div class="presets">${presetsHtml}</div>
@@ -2664,9 +2668,6 @@ function renderTable() {
     }).join('');
     tbody.innerHTML = rowsHtml;
   }
-
-  // Aplicar formato condicional después de renderizar
-  applyConditionalFormatting();
 
   document.getElementById('paginationInfo').textContent =
     total === 0 ? 'No results' : 'Showing ' + (start+1) + '–' + end + ' of ' + total + ' clients';
@@ -2745,6 +2746,14 @@ async function saveComment(key, nombre, asesor) {
   };
   store[key] = { comment, status, date: dateStr, nombre, asesor };
   saveStore();
+
+  // Cálculos de los campos editables/derivados (mismos que se usan en la tabla)
+  const actualMonthlyPayment  = getClientBalance(rowData);
+  const monthsAlreadyPaid     = parseFloat(store[key]?.monthsPaid) || 0;
+  const remainingMonthsCalc   = Math.max(0, 120 - monthsAlreadyPaid);
+  const totalRemainingBalance = remainingMonthsCalc * actualMonthlyPayment;
+  const teamCommission25      = totalRemainingBalance * 0.25;
+
   if (activeTab !== 'all') {
     const data = allRows.filter(r => r.asesor === activeTab);
     updateSummary(data);
@@ -2757,6 +2766,8 @@ async function saveComment(key, nombre, asesor) {
   if (msgEl) msgEl.innerHTML = '<b>Saved locally</b> · ' + dateStr;
   if (APPS_SCRIPT_URL) {
     try {
+      // Se agregan las nuevas columnas: SalesPrice, DownPayment, MonthlyPayment, Term, ScheduledLoan, FinancingType, Equity
+      // + Actual Monthly Payment, Months already paid, Total Remaining Balance y Team Commission (25%)
       const payload = {
         fechaInteraccion: datetime,
         asesor:           asesor,
@@ -2767,13 +2778,19 @@ async function saveComment(key, nombre, asesor) {
         domicilio:        rowData.domicilio || '',
         estado:           statusLabels[status] || status,
         comentario:       comment,
+        // Nuevos campos para el Sheets
         salesPrice:       String(rowData.salesPrice || ''),
         downPayment:      String(rowData.downPayment || ''),
         monthlyPayment:   String(rowData.monthlyPayment || ''),
         term:             String(rowData.term || ''),
         scheduledLoan:    String(rowData.scheduledLoan || ''),
         financingType:    String(rowData.financingType || ''),
-        equity:           String(rowData.equity || '')
+        equity:           String(rowData.equity || ''),
+        // Campos calculados/editables en el CRM
+        actualMonthlyPayment:  String(actualMonthlyPayment.toFixed(2)),
+        monthsAlreadyPaid:     String(monthsAlreadyPaid),
+        totalRemainingBalance: String(totalRemainingBalance.toFixed(2)),
+        teamCommission:        String(teamCommission25.toFixed(2))
       };
       const res = await fetch(APPS_SCRIPT_URL, {
         method: 'POST',
@@ -2811,15 +2828,12 @@ document.getElementById('nextPage').addEventListener('click', () => {
 // ── TIMEZONE / LADA REFERENCE ──────────────────────────────────────────────
 function updateTimezoneVisibility() {
   const container = document.getElementById('timezoneRefContainer');
-  const ladaSection = document.getElementById('ladaSection');
   if (activeTab !== 'all' && activeTab !== 'handling') {
     container.style.display = 'block';
-    ladaSection.style.display = 'block';
     updateTimezoneTable();
     renderUSAMap();
   } else {
     container.style.display = 'none';
-    ladaSection.style.display = 'none';
   }
 }
 
@@ -2907,29 +2921,54 @@ function renderUSAMap() {
   container.innerHTML = html;
 }
 
-// ── LADA LOOKUP TOOL (MEJORADO: búsqueda por nombre) ────────────────────
+// ── LADA LOOKUP TOOL (mejorado) ──────────────────────────────────────────
+function normalizeString(str) {
+  return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
 function onLadaInput() {
   const input = document.getElementById('ladaInput');
-  const val = input.value.trim().toLowerCase();
+  const val = input.value.trim();
   const suggestions = document.getElementById('ladaSuggestions');
   if (!val) {
     suggestions.textContent = '';
     document.getElementById('lookupResult').classList.remove('show');
     return;
   }
-  // Buscar coincidencias en códigos y nombres de estados
-  const matches = [];
-  Object.keys(LADA_MAP).forEach(code => {
-    const info = LADA_MAP[code];
-    if (code.startsWith(val) || info.state.toLowerCase().includes(val)) {
-      matches.push(code);
+
+  // Buscar por código exacto o por estado/ciudad
+  const normVal = normalizeString(val);
+  let matches = [];
+
+  // 1. Coincidencia exacta de código LADA
+  if (LADA_MAP[val]) {
+    matches = [val];
+  } else {
+    // 2. Buscar por nombre de estado o ciudad
+    const keys = Object.keys(STATE_INDEX);
+    for (const key of keys) {
+      if (key.includes(normVal)) {
+        matches = matches.concat(STATE_INDEX[key]);
+      }
     }
-  });
-  // Mostrar sugerencias (máximo 5)
-  if (matches.length > 0 && matches.length <= 5) {
-    suggestions.textContent = '💡 Sugerencias: ' + matches.join(', ');
-  } else if (matches.length > 5) {
-    suggestions.textContent = '💡 ' + matches.length + ' coincidencias. Escribe más dígitos.';
+    // 3. Si no hay coincidencia, mostrar sugerencias de códigos que empiecen con el input
+    if (matches.length === 0) {
+      const codeMatches = Object.keys(LADA_MAP).filter(code => code.startsWith(val));
+      if (codeMatches.length > 0 && codeMatches.length <= 5) {
+        suggestions.textContent = '💡 Sugerencias: ' + codeMatches.join(', ');
+      } else if (codeMatches.length > 5) {
+        suggestions.textContent = '💡 ' + codeMatches.length + ' coincidencias. Escribe más dígitos.';
+      } else {
+        suggestions.textContent = '❌ No se encontró ninguna LADA, estado o ciudad con "' + val + '"';
+      }
+      return;
+    }
+  }
+
+  // Si hay matches, mostrar sugerencias
+  if (matches.length > 1) {
+    const names = matches.map(code => LADA_MAP[code]?.state || code);
+    suggestions.textContent = '💡 Coincidencias: ' + names.join(', ') + ' (códigos: ' + matches.join(', ') + ')';
   } else {
     suggestions.textContent = '';
   }
@@ -2944,36 +2983,70 @@ function lookupLada() {
     resultDiv.classList.remove('show');
     return;
   }
-  let info = LADA_MAP[val];
-  // Si no se encuentra por código exacto, buscar por nombre (primera coincidencia)
-  if (!info) {
-    const lowerVal = val.toLowerCase();
-    const foundKey = Object.keys(LADA_MAP).find(code => 
-      LADA_MAP[code].state.toLowerCase().includes(lowerVal)
-    );
-    if (foundKey) info = LADA_MAP[foundKey];
+
+  const normVal = normalizeString(val);
+  let codes = [];
+
+  // 1. Coincidencia exacta de código
+  if (LADA_MAP[val]) {
+    codes = [val];
+  } else {
+    // 2. Buscar por estado/ciudad
+    const keys = Object.keys(STATE_INDEX);
+    for (const key of keys) {
+      if (key.includes(normVal)) {
+        codes = codes.concat(STATE_INDEX[key]);
+      }
+    }
+    // Si no hay, buscar coincidencia parcial en el nombre del estado
+    if (codes.length === 0) {
+      for (const [code, info] of Object.entries(LADA_MAP)) {
+        if (normalizeString(info.state).includes(normVal)) {
+          codes.push(code);
+        }
+      }
+    }
   }
+
+  if (codes.length === 0) {
+    content.innerHTML = `<div class="not-found">❌ No se encontró ninguna LADA, estado o ciudad con "${esc(val)}". Verifica el código o nombre.</div>`;
+    resultDiv.classList.add('show');
+    return;
+  }
+
+  // Tomar el primer resultado (si hay múltiples, mostrar el primero y sugerir los demás)
+  const code = codes[0];
+  const info = LADA_MAP[code];
   const now = getCDMXTime();
   const cdmxTime = formatTime(now);
-  if (info) {
-    const localTime = new Date(now.getTime() + info.offset * 3600000);
-    const localTimeStr = formatTime(localTime);
-    const diff = info.offset;
-    let diffLabel = 'Misma hora';
-    if (diff > 0) diffLabel = `+${diff}h`;
-    else if (diff < 0) diffLabel = `${diff}h`;
-    content.innerHTML = `
-      <div class="result-row"><span class="result-label">📍 Estado</span><span class="result-value"><span class="highlight">${esc(info.state)}</span></span></div>
-      <div class="result-row"><span class="result-label">🗺️ Región</span><span class="result-value">${esc(info.region)}</span></div>
-      <div class="result-row"><span class="result-label">📞 Códigos LADA</span><span class="result-value"><span class="highlight">${esc(info.display)}</span></span></div>
-      <div class="result-row"><span class="result-label">🕒 Hora CDMX</span><span class="result-value"><span class="live-time">${cdmxTime}</span></span></div>
-      <div class="result-row"><span class="result-label">🕒 Hora en ${esc(info.state)}</span><span class="result-value"><span class="live-time">${localTimeStr}</span> (${diffLabel})</span></div>
-    `;
-    resultDiv.classList.add('show');
-  } else {
-    content.innerHTML = `<div class="not-found">❌ No se encontró ninguna LADA para "${esc(val)}". Verifica el código o nombre.</div>`;
-    resultDiv.classList.add('show');
+  const localTime = new Date(now.getTime() + info.offset * 3600000);
+  const localTimeStr = formatTime(localTime);
+  const diff = info.offset;
+  let diffLabel = 'Misma hora';
+  if (diff > 0) diffLabel = `+${diff}h`;
+  else if (diff < 0) diffLabel = `${diff}h`;
+
+  let extraInfo = '';
+  if (codes.length > 1) {
+    const otherCodes = codes.slice(1).map(c => LADA_MAP[c]?.state + ' (' + c + ')').join(', ');
+    extraInfo = `<div class="result-row" style="color:#888;font-size:13px;border-top:1px dashed var(--arena);padding-top:8px;margin-top:6px;">
+      <span class="result-label">🔍 También coincide con</span>
+      <span class="result-value" style="font-weight:400;text-align:right;">${esc(otherCodes)}</span>
+    </div>`;
   }
+
+  content.innerHTML = `
+    <div class="result-card-header">
+      <span style="font-size:20px;">📞</span>
+      <span style="font-weight:700;font-size:18px;color:var(--azul-profundo);">${esc(info.display)}</span>
+      <span class="region-badge">${esc(info.region)}</span>
+    </div>
+    <div class="result-row"><span class="result-label">📍 Estado / Ciudad</span><span class="result-value"><span class="highlight">${esc(info.state)}</span></span></div>
+    <div class="result-row"><span class="result-label">🕒 Hora CDMX</span><span class="result-value"><span class="live-time">${cdmxTime}</span></span></div>
+    <div class="result-row"><span class="result-label">🕒 Hora local</span><span class="result-value"><span class="live-time">${localTimeStr}</span> (${diffLabel})</span></div>
+    ${extraInfo}
+  `;
+  resultDiv.classList.add('show');
 }
 
 function updateLookupClock() {
