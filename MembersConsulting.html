@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -565,18 +564,6 @@
       transition: all 0.15s;
     }
 
-    .admin-actions-bar .btn-export {
-      background: var(--azul-medio);
-      color: white;
-    }
-    .admin-actions-bar .btn-export:hover { background: var(--azul-vibrante); }
-
-    .admin-actions-bar .btn-import {
-      background: var(--naranja);
-      color: white;
-    }
-    .admin-actions-bar .btn-import:hover { background: #d35400; }
-
     .admin-actions-bar .btn-close-admin {
       background: var(--rojo);
       color: white;
@@ -611,15 +598,9 @@
     th.sortable { cursor: pointer; }
     th.sortable:hover { background: var(--azul-vibrante); }
     th .arrow { margin-left: 4px; font-size: 10px; opacity: 0.7; color: var(--azul-claro); }
-    th.dark-header {
-      background: #0A2A44 !important;
-    }
-    th.dark-header.sortable:hover {
-      background: #0A2A44 !important;
-    }
-    th.yellow-text {
-      color: #FFD700 !important;
-    }
+    th.dark-header { background: #0A2A44 !important; }
+    th.dark-header.sortable:hover { background: #0A2A44 !important; }
+    th.yellow-text { color: #FFD700 !important; }
     td { padding: 0.5rem 0.5rem; border-bottom: 1px solid var(--arena-dark); vertical-align: middle; }
     tr:hover td { background: var(--azul-suave); }
     .cliente-nombre { font-weight: 500; }
@@ -647,9 +628,7 @@
       transition: background 0.15s;
       white-space: nowrap;
     }
-    .btn-save-row:hover {
-      background: #1e8449;
-    }
+    .btn-save-row:hover { background: #1e8449; }
 
     .badge {
       display: inline-block; font-size: 10px; font-weight: 700;
@@ -752,318 +731,7 @@
       outline: none;
       box-shadow: 0 0 0 2px rgba(46,134,193,0.2);
     }
-    .calc-cell {
-      font-weight: 500;
-      color: var(--azul-profundo);
-      white-space: nowrap;
-    }
-
-    .timezone-ref {
-      margin-top: 1.5rem;
-      background: var(--blanco);
-      border-radius: 12px;
-      border: 1px solid var(--azul-claro);
-      box-shadow: 0 4px 12px rgba(14,59,92,0.08);
-      overflow: hidden;
-    }
-    .timezone-ref .ref-header {
-      background: var(--azul-profundo);
-      color: white;
-      padding: 0.6rem 1.2rem;
-      font-size: 13px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    .timezone-ref .ref-header .live-clock {
-      margin-left: auto;
-      font-weight: 400;
-      font-size: 13px;
-      background: rgba(255,255,255,0.15);
-      padding: 2px 12px;
-      border-radius: 20px;
-    }
-    .timezone-ref table {
-      font-size: 12.5px;
-      width: 100%;
-      border-collapse: collapse;
-    }
-    .timezone-ref th {
-      background: var(--arena);
-      color: var(--azul-profundo);
-      font-weight: 600;
-      padding: 0.5rem 0.8rem;
-      border-bottom: 2px solid var(--azul-claro);
-      text-align: left;
-    }
-    .timezone-ref td {
-      padding: 0.45rem 0.8rem;
-      border-bottom: 1px solid var(--arena-dark);
-    }
-    .timezone-ref tr:last-child td { border-bottom: none; }
-    .timezone-ref .lada-badge {
-      background: var(--azul-suave);
-      color: var(--azul-profundo);
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 20px;
-      font-size: 11px;
-      display: inline-block;
-    }
-    .timezone-ref .diff-pos { color: var(--verde); font-weight: 600; }
-    .timezone-ref .diff-neg { color: var(--rojo); font-weight: 600; }
-    .timezone-ref .diff-zero { color: var(--naranja); font-weight: 600; }
-
-    .usa-map-container {
-      padding: 1rem 1.2rem 1.5rem;
-      background: #fafbfc;
-    }
-    .usa-map-title {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--azul-profundo);
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .usa-map-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-    }
-    @media (max-width: 768px) {
-      .usa-map-grid { grid-template-columns: 1fr 1fr; }
-    }
-    @media (max-width: 480px) {
-      .usa-map-grid { grid-template-columns: 1fr; }
-    }
-    .usa-zone {
-      background: var(--blanco);
-      border-radius: 10px;
-      border: 1px solid var(--arena-dark);
-      overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-      transition: transform 0.15s, box-shadow 0.15s;
-    }
-    .usa-zone:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 16px rgba(14,59,92,0.12);
-    }
-    .zone-header {
-      padding: 8px 12px;
-      font-weight: 700;
-      font-size: 13px;
-      color: white;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .zone-header .zone-offset {
-      font-weight: 400;
-      font-size: 11px;
-      background: rgba(255,255,255,0.2);
-      padding: 1px 10px;
-      border-radius: 20px;
-    }
-    .zone-body {
-      padding: 10px 12px;
-    }
-    .zone-state {
-      display: flex;
-      justify-content: space-between;
-      font-size: 12px;
-      padding: 3px 0;
-      border-bottom: 1px solid var(--arena);
-    }
-    .zone-state:last-child { border-bottom: none; }
-    .zone-state .state-name {
-      font-weight: 500;
-      color: var(--texto);
-    }
-    .zone-state .state-code {
-      font-weight: 600;
-      color: var(--azul-medio);
-      font-size: 11px;
-    }
-    .zone-pacific .zone-header { background: #2E86C1; }
-    .zone-mountain .zone-header { background: #1A7A5A; }
-    .zone-central .zone-header { background: #D4A017; }
-    .zone-eastern .zone-header { background: #A04040; }
-
-    .lada-lookup {
-      padding: 1.2rem 1.5rem 1.5rem;
-      background: linear-gradient(145deg, #f8faff, #ffffff);
-      border-bottom: 2px solid var(--azul-claro);
-    }
-    .lada-lookup-title {
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--azul-profundo);
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .lada-lookup-title span {
-      background: var(--azul-suave);
-      padding: 0 12px;
-      border-radius: 20px;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--azul-profundo);
-    }
-    .lada-lookup-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      align-items: center;
-      background: var(--blanco);
-      padding: 12px 16px;
-      border-radius: 14px;
-      box-shadow: 0 2px 12px rgba(14,59,92,0.06);
-      border: 1px solid var(--arena-dark);
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-    .lada-lookup-row:focus-within {
-      border-color: var(--azul-medio);
-      box-shadow: 0 4px 20px rgba(46,134,193,0.15);
-    }
-    .lada-lookup-row .input-wrapper {
-      flex: 1;
-      min-width: 160px;
-      position: relative;
-    }
-    .lada-lookup-row .input-wrapper .search-icon {
-      position: absolute;
-      left: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 16px;
-      opacity: 0.6;
-    }
-    .lada-lookup-row input {
-      width: 100%;
-      padding: 10px 14px 10px 40px;
-      border: 2px solid var(--arena-dark);
-      border-radius: 10px;
-      font-size: 15px;
-      font-weight: 500;
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
-      background: white;
-      color: var(--texto);
-    }
-    .lada-lookup-row input:focus {
-      border-color: var(--azul-medio);
-      box-shadow: 0 0 0 4px rgba(46,134,193,0.12);
-    }
-    .lada-lookup-row input::placeholder {
-      font-weight: 400;
-      color: #aaa;
-      font-size: 14px;
-    }
-    .lada-lookup-row button {
-      background: linear-gradient(135deg, var(--azul-profundo), var(--azul-vibrante));
-      color: white;
-      border: none;
-      border-radius: 10px;
-      padding: 10px 28px;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: transform 0.15s, box-shadow 0.15s;
-      white-space: nowrap;
-      letter-spacing: 0.3px;
-      box-shadow: 0 2px 8px rgba(14,59,92,0.2);
-    }
-    .lada-lookup-row button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(14,59,92,0.3);
-    }
-    .lada-lookup-row button:active {
-      transform: translateY(0px);
-    }
-    .lada-lookup-row .lookup-suggestions {
-      font-size: 13px;
-      color: #888;
-      flex-basis: 100%;
-      padding-top: 4px;
-      min-height: 22px;
-      font-weight: 500;
-    }
-    .lada-lookup-row .lookup-suggestions strong {
-      color: var(--azul-medio);
-      font-weight: 700;
-    }
-
-    .lookup-result {
-      margin-top: 16px;
-      padding: 18px 22px;
-      border-radius: 14px;
-      background: var(--blanco);
-      border: 2px solid var(--azul-claro);
-      display: none;
-      box-shadow: 0 4px 20px rgba(14,59,92,0.08);
-      animation: fadeSlide 0.25s ease;
-    }
-    @keyframes fadeSlide {
-      from { opacity: 0; transform: translateY(-8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .lookup-result.show { display: block; }
-    .lookup-result .result-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 6px 0;
-      font-size: 14px;
-      border-bottom: 1px solid var(--arena);
-    }
-    .lookup-result .result-row:last-child { border-bottom: none; }
-    .lookup-result .result-label {
-      font-weight: 600;
-      color: var(--azul-profundo);
-      opacity: 0.8;
-    }
-    .lookup-result .result-value {
-      font-weight: 500;
-      text-align: right;
-    }
-    .lookup-result .result-value .highlight {
-      color: var(--azul-medio);
-      font-weight: 700;
-    }
-    .lookup-result .result-value .live-time {
-      font-weight: 700;
-      color: var(--verde);
-    }
-    .lookup-result .not-found {
-      color: var(--rojo);
-      font-weight: 600;
-      padding: 8px 0;
-      font-size: 15px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .lookup-result .result-card-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 10px;
-      padding-bottom: 10px;
-      border-bottom: 2px solid var(--azul-suave);
-    }
-    .lookup-result .result-card-header .region-badge {
-      background: var(--azul-suave);
-      padding: 2px 14px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--azul-profundo);
-    }
+    .calc-cell { font-weight: 500; color: var(--azul-profundo); white-space: nowrap; }
 
     #handlingContainer {
       background: var(--blanco);
@@ -1088,11 +756,7 @@
       padding-bottom: 0.75rem;
       border-bottom: 2px solid var(--arena-dark);
     }
-    .objection-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 1.25rem;
-    }
+    .objection-grid { display: flex; flex-direction: column; gap: 1.25rem; }
     .objection-card {
       background: var(--arena);
       border-radius: 10px;
@@ -1100,41 +764,131 @@
       border-left: 5px solid var(--azul-medio);
       transition: background 0.15s;
     }
-    .objection-card:hover {
-      background: #edebe7;
-    }
+    .objection-card:hover { background: #edebe7; }
     .objection-card .obj-quote {
-      font-size: 15px;
+      font-size: 15px; font-weight: 600; color: var(--azul-profundo);
+      margin-bottom: 0.5rem; display: flex; align-items: flex-start; gap: 8px;
+    }
+    .objection-card .obj-quote::before { content: "🗣️"; font-size: 18px; flex-shrink: 0; }
+    .objection-card .obj-response {
+      font-size: 14px; line-height: 1.6; color: var(--texto);
+      padding-left: 30px; position: relative;
+    }
+    .objection-card .obj-response::before { content: "💬"; font-size: 16px; position: absolute; left: 0; top: 0; }
+    .objection-card .obj-response em { color: var(--azul-vibrante); font-style: normal; font-weight: 500; }
+
+    .session-banner {
+      display: none;
+      background: #eaf7ee;
+      border: 1px solid var(--verde);
+      color: #1e8449;
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 12.5px;
       font-weight: 600;
+      margin-bottom: 12px;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .session-banner.show { display: flex; }
+    .session-banner button {
+      margin-left: auto;
+      background: transparent;
+      border: 1px solid #1e8449;
+      color: #1e8449;
+      border-radius: 6px;
+      padding: 3px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .session-banner button:hover { background: #1e8449; color: white; }
+
+    /* ─── Nuevo: buscador de ladas ─── */
+    #areaCodeSearch {
+      background: var(--blanco);
+      border-radius: 12px;
+      border: 1px solid var(--azul-claro);
+      box-shadow: 0 4px 12px rgba(14,59,92,0.08);
+      padding: 1rem 1.2rem;
+      margin-top: 1.5rem;
+      transition: display 0.2s;
+    }
+    #areaCodeSearch h4 {
       color: var(--azul-profundo);
-      margin-bottom: 0.5rem;
+      font-size: 14px;
+      margin-bottom: 8px;
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       gap: 8px;
     }
-    .objection-card .obj-quote::before {
-      content: "🗣️";
-      font-size: 18px;
-      flex-shrink: 0;
+    #areaCodeSearch .search-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
     }
-    .objection-card .obj-response {
-      font-size: 14px;
-      line-height: 1.6;
-      color: var(--texto);
-      padding-left: 30px;
-      position: relative;
+    #areaCodeSearch .search-row input {
+      flex: 1;
+      min-width: 150px;
+      padding: 0.5rem 0.8rem;
+      border: 1px solid var(--arena-dark);
+      border-radius: 6px;
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.15s;
     }
-    .objection-card .obj-response::before {
-      content: "💬";
-      font-size: 16px;
-      position: absolute;
-      left: 0;
-      top: 0;
+    #areaCodeSearch .search-row input:focus {
+      border-color: var(--azul-medio);
+      box-shadow: 0 0 0 3px rgba(46,134,193,0.15);
     }
-    .objection-card .obj-response em {
-      color: var(--azul-vibrante);
-      font-style: normal;
-      font-weight: 500;
+    #areaCodeSearch .search-row button {
+      padding: 0.5rem 1.2rem;
+      background: var(--azul-medio);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    #areaCodeSearch .search-row button:hover {
+      background: var(--azul-vibrante);
+    }
+    #areaCodeResults {
+      max-height: 220px;
+      overflow-y: auto;
+      font-size: 13px;
+      border-top: 1px solid var(--arena-dark);
+      padding-top: 10px;
+      margin-top: 6px;
+    }
+    #areaCodeResults .result-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 6px;
+      border-bottom: 1px solid #f0f0f0;
+      transition: background 0.1s;
+      font-size: 13px;
+    }
+    #areaCodeResults .result-item:hover {
+      background: var(--azul-suave);
+    }
+    #areaCodeResults .result-item .code {
+      font-weight: 700;
+      color: var(--azul-profundo);
+      margin-right: 12px;
+      min-width: 50px;
+    }
+    #areaCodeResults .result-item .location {
+      color: #555;
+    }
+    #areaCodeResults .no-results {
+      color: #888;
+      font-style: italic;
+      padding: 8px 0;
     }
 
     @media (max-width: 700px) {
@@ -1148,16 +902,11 @@
       .admin-item input[type="password"] { max-width: none; }
       .tips-section ul { flex-direction: column; gap: 8px; }
       .script-step { gap: 10px; }
-      .timezone-ref .ref-header { flex-wrap: wrap; }
-      .timezone-ref .ref-header .live-clock { margin-left: 0; width: 100%; }
-      .lada-lookup-row input { min-width: 100px; }
-      .usa-map-grid { grid-template-columns: 1fr 1fr; }
-      .lada-lookup-row .input-wrapper { min-width: 120px; }
+      #areaCodeSearch .search-row input { min-width: 100px; }
     }
     @media (max-width: 480px) {
       .summary-bar { grid-template-columns: 1fr; }
       .btn-llamar span { display: none; }
-      .usa-map-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -1174,12 +923,12 @@
   <div class="sync-info">
     <div class="sync-dot"></div>
     <span id="last-update">Loading...</span>
-    <button class="btn-refresh" onclick="loadData()">↻ Refresh</button>
+    <button class="btn-refresh" onclick="loadInitial()">↻ Refresh</button>
     <button class="btn-admin locked" id="adminBtn" onclick="toggleAdminPanel()">🔒 Admin</button>
   </div>
 </nav>
 
-<!-- Password Modal -->
+<!-- Password / Login Modal -->
 <div class="modal-overlay" id="passwordModal">
   <div class="modal">
     <h3 id="modalTitle">🔒 Access Restricted</h3>
@@ -1205,7 +954,7 @@
       <ul>
         <li><span class="tip-icon">⏰</span> Call <span class="tip-highlight">after 10 AM</span> and <span class="tip-highlight">before 9 PM</span></li>
         <li><span class="tip-icon">📅</span> <span class="tip-highlight orange">Saturday afternoons</span> have higher contact rates</li>
-        <li><span class="tip-icon">🤝</span> <span class="tip-highlight green">SPEECH: Our intention during this call is to see if you qualify for debt consolidation and renegotiation of your terms and conditions while maintaining the vacation experience you enjoy without losing anymore money. Do you still have a monthly payment active?</span> </li>
+        <li><span class="tip-icon">🤝</span> <span class="tip-highlight green">SPEECH: Our intention during this call is to see if you qualify for debt consolidation and renegotiation of your terms and conditions while maintaining the vacation experience you enjoy without losing anymore money. Do you still have a monthly payment active?</span></li>
       </ul>
     </div>
 
@@ -1218,16 +967,18 @@
     <div class="admin-panel" id="adminPanel">
       <h3>⚙️ Admin Panel - Password Management</h3>
       <p class="admin-subtitle">
-        Assign or change passwords for each advisor. The "General Report" tab is always accessible.
-        Advisors with 🔒 have a password assigned. Passwords now sync to all devices automatically.
+        Assign or change passwords for each advisor. Passwords are hashed with a unique salt
+        on the server — this device never stores or sees plaintext passwords.
       </p>
       <div class="admin-grid" id="adminGrid"></div>
       <div class="admin-actions-bar">
-        <button class="btn-export" onclick="exportPasswords()">📤 Export passwords</button>
-        <button class="btn-import" onclick="document.getElementById('importFile').click()">📥 Import passwords</button>
-        <input type="file" id="importFile" accept=".json" style="display:none" onchange="importPasswords(event)" />
         <button class="btn-close-admin" onclick="closeAdminPanel()">🔒 Close Admin</button>
       </div>
+    </div>
+
+    <div class="session-banner" id="sessionBanner">
+      <span id="sessionBannerText"></span>
+      <button onclick="logoutCurrentTab()">Log out</button>
     </div>
 
     <div class="summary-bar">
@@ -1271,7 +1022,7 @@
     <div class="panel">
       <div class="panel-header">
         <h2 id="panel-title">📊 General Report</h2>
-        <div class="filter-group" id="filterGroup">
+        <div class="filter-group hidden" id="filterGroup">
           <input type="text" id="searchInput" placeholder="🔍 Search name, phone, address..." />
           <select id="statusFilter">
             <option value="">All statuses</option>
@@ -1307,43 +1058,16 @@
       </div>
     </div>
 
-    <!-- TIMEZONE & LADA REFERENCE -->
-    <div id="timezoneRefContainer" style="display:none;" class="timezone-ref">
-      <div class="ref-header">
-        <span>🕒 Time Zone &amp; LADA Reference</span>
-        <span class="live-clock" id="liveClock">⏱️ CDMX: --:--:--</span>
+    <!-- ─── NUEVO: BUSCADOR DE LADAS (USA / Canadá) ─── -->
+    <div id="areaCodeSearch" style="display:none;">
+      <h4>📞 Buscar Ladas (USA / Canadá)</h4>
+      <div class="search-row">
+        <input type="text" id="areaCodeInput" placeholder="Ej. 212, 305, New York, California..." />
+        <button id="areaCodeSearchBtn">🔍 Buscar</button>
       </div>
-
-      <!-- LADA LOOKUP TOOL -->
-      <div class="lada-lookup">
-        <div class="lada-lookup-title">
-          🔍 Buscar LADA (área code)
-          <span>por código, estado o ciudad</span>
-        </div>
-        <div class="lada-lookup-row">
-          <div class="input-wrapper">
-            <span class="search-icon">🔎</span>
-            <input type="text" id="ladaInput" placeholder="Ej: 212, New York, Texas, Toronto..." oninput="onLadaInput()" onkeydown="if(event.key==='Enter') lookupLada()" />
-          </div>
-          <button onclick="lookupLada()">🔍 Revisar</button>
-          <div class="lookup-suggestions" id="ladaSuggestions"></div>
-        </div>
-        <div class="lookup-result" id="lookupResult">
-          <div id="lookupContent"></div>
-        </div>
-      </div>
-
-      <!-- USA MAP -->
-      <div class="usa-map-container" id="usaMapContainer"></div>
-
-      <!-- TABLE -->
-      <table>
-        <thead>
-          <tr><th>State / Area</th><th>LADA (Area Code)</th><th>Time vs CDMX</th><th>Current Time</th></tr>
-        </thead>
-        <tbody id="timezoneTableBody"></tbody>
-      </table>
+      <div id="areaCodeResults"></div>
     </div>
+
   </div><!-- /defaultContent -->
 
   <!-- HANDLING OBJECTIONS -->
@@ -1378,438 +1102,46 @@
 </div>
 
 <div class="toast" id="toast"></div>
+
 <script>
-// ── CONFIG ──────────────────────────────────────────────────────────────────
-const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQHy-EAzt6KPNuOHWbfvvN-eddTQSdsV568wcoDmLRCSYmoDj_FOooVi2-_8HMlv3Ircrp8z4M9dnRS/pub?output=csv';
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwQosCEvp3E_KonqjI4YqiADisnPWSfvl7gcEv_B_VvhPBHjivh2hk37a9bp1s9pzIs/exec';
-// NOTA: reemplaza APPS_SCRIPT_URL por la URL del NUEVO deployment del Apps Script
-// (el que incluye las funciones de passwords). Si reusas el mismo script.gs
-// simplemente agregando las funciones nuevas y vuelves a desplegar, la URL puede
-// mantenerse igual siempre que uses "Manage deployments > Edit > New version".
-const STORE_KEY = 'crm_vidanta_v4';
-const PASSWORD_KEY = 'crm_vidanta_passwords'; // ahora solo se usa como CACHE local de respaldo
-const ADMIN_PASSWORD = 'Omar7777';
+// ══════════════════════════════════════════════════════════════
+//  CONFIG — solo el endpoint público. Ya NO hay token estático
+//  ni contraseñas en este archivo. Toda autenticación ocurre en
+//  el servidor (Apps Script) vía sesiones temporales.
+// ══════════════════════════════════════════════════════════════
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzD7POBnMIw6b4qeGxXoYcGW3BDpNOO15nf-87r85kCdK1CI9Qcg5TsTGqaWYsOy_8/exec';
+const STORE_KEY = 'crm_vidanta_local_notes_v1'; // solo notas/estatus locales pendientes de sincronizar
 const PAGE_SIZE = 15;
-
-// ── 🔑 DEFAULT USERS & PASSWORDS ──────────────────────────────────────────
-const DEFAULT_USERS = {
-  'User #1': 'user1',
-  'User #2': 'user2',
-  'User #3': 'user3',
-  'User #4': 'user4',
-  'User #5': 'user5',
-  'User #6': 'user6',
-  'User #7': 'user7',
-  'User #8': 'user8'
-};
-
-// ── LADA / TIMEZONE DATA (USA + Canada) ──────────────────────────────────
-const LADA_MAP = {
-  '213': { state: 'California', region: 'Pacífico', offset: -2, display: '213 / 310 / 408' },
-  '310': { state: 'California', region: 'Pacífico', offset: -2, display: '213 / 310 / 408' },
-  '408': { state: 'California', region: 'Pacífico', offset: -2, display: '213 / 310 / 408' },
-  '415': { state: 'California', region: 'Pacífico', offset: -2, display: '415 / 510 / 619' },
-  '510': { state: 'California', region: 'Pacífico', offset: -2, display: '415 / 510 / 619' },
-  '619': { state: 'California', region: 'Pacífico', offset: -2, display: '415 / 510 / 619' },
-  '650': { state: 'California', region: 'Pacífico', offset: -2, display: '650 / 707 / 714' },
-  '707': { state: 'California', region: 'Pacífico', offset: -2, display: '650 / 707 / 714' },
-  '714': { state: 'California', region: 'Pacífico', offset: -2, display: '650 / 707 / 714' },
-  '760': { state: 'California', region: 'Pacífico', offset: -2, display: '760 / 805 / 818' },
-  '805': { state: 'California', region: 'Pacífico', offset: -2, display: '760 / 805 / 818' },
-  '818': { state: 'California', region: 'Pacífico', offset: -2, display: '760 / 805 / 818' },
-  '831': { state: 'California', region: 'Pacífico', offset: -2, display: '831 / 858 / 909' },
-  '858': { state: 'California', region: 'Pacífico', offset: -2, display: '831 / 858 / 909' },
-  '909': { state: 'California', region: 'Pacífico', offset: -2, display: '831 / 858 / 909' },
-  '916': { state: 'California', region: 'Pacífico', offset: -2, display: '916 / 925 / 949' },
-  '925': { state: 'California', region: 'Pacífico', offset: -2, display: '916 / 925 / 949' },
-  '949': { state: 'California', region: 'Pacífico', offset: -2, display: '916 / 925 / 949' },
-  '503': { state: 'Oregon', region: 'Pacífico', offset: -2, display: '503 / 541 / 971' },
-  '541': { state: 'Oregon', region: 'Pacífico', offset: -2, display: '503 / 541 / 971' },
-  '971': { state: 'Oregon', region: 'Pacífico', offset: -2, display: '503 / 541 / 971' },
-  '206': { state: 'Washington', region: 'Pacífico', offset: -2, display: '206 / 253 / 360' },
-  '253': { state: 'Washington', region: 'Pacífico', offset: -2, display: '206 / 253 / 360' },
-  '360': { state: 'Washington', region: 'Pacífico', offset: -2, display: '206 / 253 / 360' },
-  '425': { state: 'Washington', region: 'Pacífico', offset: -2, display: '425 / 509 / 564' },
-  '509': { state: 'Washington', region: 'Pacífico', offset: -2, display: '425 / 509 / 564' },
-  '564': { state: 'Washington', region: 'Pacífico', offset: -2, display: '425 / 509 / 564' },
-  '702': { state: 'Nevada', region: 'Pacífico', offset: -2, display: '702 / 775' },
-  '775': { state: 'Nevada', region: 'Pacífico', offset: -2, display: '702 / 775' },
-  '303': { state: 'Colorado', region: 'Montaña', offset: -1, display: '303 / 719 / 720' },
-  '719': { state: 'Colorado', region: 'Montaña', offset: -1, display: '303 / 719 / 720' },
-  '720': { state: 'Colorado', region: 'Montaña', offset: -1, display: '303 / 719 / 720' },
-  '970': { state: 'Colorado', region: 'Montaña', offset: -1, display: '970' },
-  '480': { state: 'Arizona', region: 'Montaña', offset: -1, display: '480 / 520 / 602' },
-  '520': { state: 'Arizona', region: 'Montaña', offset: -1, display: '480 / 520 / 602' },
-  '602': { state: 'Arizona', region: 'Montaña', offset: -1, display: '480 / 520 / 602' },
-  '623': { state: 'Arizona', region: 'Montaña', offset: -1, display: '623 / 928' },
-  '928': { state: 'Arizona', region: 'Montaña', offset: -1, display: '623 / 928' },
-  '385': { state: 'Utah', region: 'Montaña', offset: -1, display: '385 / 435 / 801' },
-  '435': { state: 'Utah', region: 'Montaña', offset: -1, display: '385 / 435 / 801' },
-  '801': { state: 'Utah', region: 'Montaña', offset: -1, display: '385 / 435 / 801' },
-  '505': { state: 'New Mexico', region: 'Montaña', offset: -1, display: '505 / 575' },
-  '575': { state: 'New Mexico', region: 'Montaña', offset: -1, display: '505 / 575' },
-  '210': { state: 'Texas', region: 'Central', offset: 0, display: '210 / 214 / 254' },
-  '214': { state: 'Texas', region: 'Central', offset: 0, display: '210 / 214 / 254' },
-  '254': { state: 'Texas', region: 'Central', offset: 0, display: '210 / 214 / 254' },
-  '281': { state: 'Texas', region: 'Central', offset: 0, display: '281 / 325 / 361' },
-  '325': { state: 'Texas', region: 'Central', offset: 0, display: '281 / 325 / 361' },
-  '361': { state: 'Texas', region: 'Central', offset: 0, display: '281 / 325 / 361' },
-  '409': { state: 'Texas', region: 'Central', offset: 0, display: '409 / 430 / 432' },
-  '430': { state: 'Texas', region: 'Central', offset: 0, display: '409 / 430 / 432' },
-  '432': { state: 'Texas', region: 'Central', offset: 0, display: '409 / 430 / 432' },
-  '469': { state: 'Texas', region: 'Central', offset: 0, display: '469 / 512 / 713' },
-  '512': { state: 'Texas', region: 'Central', offset: 0, display: '469 / 512 / 713' },
-  '713': { state: 'Texas', region: 'Central', offset: 0, display: '469 / 512 / 713' },
-  '737': { state: 'Texas', region: 'Central', offset: 0, display: '737 / 806 / 817' },
-  '806': { state: 'Texas', region: 'Central', offset: 0, display: '737 / 806 / 817' },
-  '817': { state: 'Texas', region: 'Central', offset: 0, display: '737 / 806 / 817' },
-  '830': { state: 'Texas', region: 'Central', offset: 0, display: '830 / 832 / 903' },
-  '832': { state: 'Texas', region: 'Central', offset: 0, display: '830 / 832 / 903' },
-  '903': { state: 'Texas', region: 'Central', offset: 0, display: '830 / 832 / 903' },
-  '915': { state: 'Texas', region: 'Central', offset: 0, display: '915 / 936 / 940' },
-  '936': { state: 'Texas', region: 'Central', offset: 0, display: '915 / 936 / 940' },
-  '940': { state: 'Texas', region: 'Central', offset: 0, display: '915 / 936 / 940' },
-  '956': { state: 'Texas', region: 'Central', offset: 0, display: '956 / 972 / 979' },
-  '972': { state: 'Texas', region: 'Central', offset: 0, display: '956 / 972 / 979' },
-  '979': { state: 'Texas', region: 'Central', offset: 0, display: '956 / 972 / 979' },
-  '217': { state: 'Illinois', region: 'Central', offset: 0, display: '217 / 309 / 312' },
-  '309': { state: 'Illinois', region: 'Central', offset: 0, display: '217 / 309 / 312' },
-  '312': { state: 'Illinois', region: 'Central', offset: 0, display: '217 / 309 / 312' },
-  '331': { state: 'Illinois', region: 'Central', offset: 0, display: '331 / 618 / 630' },
-  '618': { state: 'Illinois', region: 'Central', offset: 0, display: '331 / 618 / 630' },
-  '630': { state: 'Illinois', region: 'Central', offset: 0, display: '331 / 618 / 630' },
-  '708': { state: 'Illinois', region: 'Central', offset: 0, display: '708 / 773 / 779' },
-  '773': { state: 'Illinois', region: 'Central', offset: 0, display: '708 / 773 / 779' },
-  '779': { state: 'Illinois', region: 'Central', offset: 0, display: '708 / 773 / 779' },
-  '815': { state: 'Illinois', region: 'Central', offset: 0, display: '815 / 847 / 872' },
-  '847': { state: 'Illinois', region: 'Central', offset: 0, display: '815 / 847 / 872' },
-  '872': { state: 'Illinois', region: 'Central', offset: 0, display: '815 / 847 / 872' },
-  '224': { state: 'Illinois', region: 'Central', offset: 0, display: '224 / 847' },
-  '218': { state: 'Minnesota', region: 'Central', offset: 0, display: '218 / 320 / 507' },
-  '320': { state: 'Minnesota', region: 'Central', offset: 0, display: '218 / 320 / 507' },
-  '507': { state: 'Minnesota', region: 'Central', offset: 0, display: '218 / 320 / 507' },
-  '612': { state: 'Minnesota', region: 'Central', offset: 0, display: '612 / 651 / 763' },
-  '651': { state: 'Minnesota', region: 'Central', offset: 0, display: '612 / 651 / 763' },
-  '763': { state: 'Minnesota', region: 'Central', offset: 0, display: '612 / 651 / 763' },
-  '952': { state: 'Minnesota', region: 'Central', offset: 0, display: '952' },
-  '314': { state: 'Missouri', region: 'Central', offset: 0, display: '314 / 417 / 573' },
-  '417': { state: 'Missouri', region: 'Central', offset: 0, display: '314 / 417 / 573' },
-  '573': { state: 'Missouri', region: 'Central', offset: 0, display: '314 / 417 / 573' },
-  '636': { state: 'Missouri', region: 'Central', offset: 0, display: '636 / 660 / 816' },
-  '660': { state: 'Missouri', region: 'Central', offset: 0, display: '636 / 660 / 816' },
-  '816': { state: 'Missouri', region: 'Central', offset: 0, display: '636 / 660 / 816' },
-  '212': { state: 'New York', region: 'Este', offset: 1, display: '212 / 315 / 347' },
-  '315': { state: 'New York', region: 'Este', offset: 1, display: '212 / 315 / 347' },
-  '347': { state: 'New York', region: 'Este', offset: 1, display: '212 / 315 / 347' },
-  '516': { state: 'New York', region: 'Este', offset: 1, display: '516 / 518 / 585' },
-  '518': { state: 'New York', region: 'Este', offset: 1, display: '516 / 518 / 585' },
-  '585': { state: 'New York', region: 'Este', offset: 1, display: '516 / 518 / 585' },
-  '607': { state: 'New York', region: 'Este', offset: 1, display: '607 / 631 / 646' },
-  '631': { state: 'New York', region: 'Este', offset: 1, display: '607 / 631 / 646' },
-  '646': { state: 'New York', region: 'Este', offset: 1, display: '607 / 631 / 646' },
-  '716': { state: 'New York', region: 'Este', offset: 1, display: '716 / 718 / 845' },
-  '718': { state: 'New York', region: 'Este', offset: 1, display: '716 / 718 / 845' },
-  '845': { state: 'New York', region: 'Este', offset: 1, display: '716 / 718 / 845' },
-  '914': { state: 'New York', region: 'Este', offset: 1, display: '914 / 917 / 929' },
-  '917': { state: 'New York', region: 'Este', offset: 1, display: '914 / 917 / 929' },
-  '929': { state: 'New York', region: 'Este', offset: 1, display: '914 / 917 / 929' },
-  '305': { state: 'Florida', region: 'Este', offset: 1, display: '305 / 321 / 352' },
-  '321': { state: 'Florida', region: 'Este', offset: 1, display: '305 / 321 / 352' },
-  '352': { state: 'Florida', region: 'Este', offset: 1, display: '305 / 321 / 352' },
-  '386': { state: 'Florida', region: 'Este', offset: 1, display: '386 / 407 / 561' },
-  '407': { state: 'Florida', region: 'Este', offset: 1, display: '386 / 407 / 561' },
-  '561': { state: 'Florida', region: 'Este', offset: 1, display: '386 / 407 / 561' },
-  '727': { state: 'Florida', region: 'Este', offset: 1, display: '727 / 754 / 772' },
-  '754': { state: 'Florida', region: 'Este', offset: 1, display: '727 / 754 / 772' },
-  '772': { state: 'Florida', region: 'Este', offset: 1, display: '727 / 754 / 772' },
-  '786': { state: 'Florida', region: 'Este', offset: 1, display: '786 / 813 / 850' },
-  '813': { state: 'Florida', region: 'Este', offset: 1, display: '786 / 813 / 850' },
-  '850': { state: 'Florida', region: 'Este', offset: 1, display: '786 / 813 / 850' },
-  '863': { state: 'Florida', region: 'Este', offset: 1, display: '863 / 904 / 941' },
-  '904': { state: 'Florida', region: 'Este', offset: 1, display: '863 / 904 / 941' },
-  '941': { state: 'Florida', region: 'Este', offset: 1, display: '863 / 904 / 941' },
-  '954': { state: 'Florida', region: 'Este', offset: 1, display: '954' },
-  '229': { state: 'Georgia', region: 'Este', offset: 1, display: '229 / 404 / 470' },
-  '404': { state: 'Georgia', region: 'Este', offset: 1, display: '229 / 404 / 470' },
-  '470': { state: 'Georgia', region: 'Este', offset: 1, display: '229 / 404 / 470' },
-  '478': { state: 'Georgia', region: 'Este', offset: 1, display: '478 / 678 / 706' },
-  '678': { state: 'Georgia', region: 'Este', offset: 1, display: '478 / 678 / 706' },
-  '706': { state: 'Georgia', region: 'Este', offset: 1, display: '478 / 678 / 706' },
-  '762': { state: 'Georgia', region: 'Este', offset: 1, display: '762 / 770 / 912' },
-  '770': { state: 'Georgia', region: 'Este', offset: 1, display: '762 / 770 / 912' },
-  '912': { state: 'Georgia', region: 'Este', offset: 1, display: '762 / 770 / 912' },
-  '339': { state: 'Massachusetts', region: 'Este', offset: 1, display: '339 / 351 / 413' },
-  '351': { state: 'Massachusetts', region: 'Este', offset: 1, display: '339 / 351 / 413' },
-  '413': { state: 'Massachusetts', region: 'Este', offset: 1, display: '339 / 351 / 413' },
-  '508': { state: 'Massachusetts', region: 'Este', offset: 1, display: '508 / 617 / 774' },
-  '617': { state: 'Massachusetts', region: 'Este', offset: 1, display: '508 / 617 / 774' },
-  '774': { state: 'Massachusetts', region: 'Este', offset: 1, display: '508 / 617 / 774' },
-  '781': { state: 'Massachusetts', region: 'Este', offset: 1, display: '781 / 857 / 978' },
-  '857': { state: 'Massachusetts', region: 'Este', offset: 1, display: '781 / 857 / 978' },
-  '978': { state: 'Massachusetts', region: 'Este', offset: 1, display: '781 / 857 / 978' },
-  '604': { state: 'British Columbia (Vancouver)', region: 'Pacífico · Canadá', offset: -2, display: '604 / 778 / 236' },
-  '778': { state: 'British Columbia (Vancouver)', region: 'Pacífico · Canadá', offset: -2, display: '604 / 778 / 236' },
-  '236': { state: 'British Columbia (Vancouver)', region: 'Pacífico · Canadá', offset: -2, display: '604 / 778 / 236' },
-  '250': { state: 'British Columbia (Victoria)', region: 'Pacífico · Canadá', offset: -2, display: '250 / 672' },
-  '672': { state: 'British Columbia (Victoria)', region: 'Pacífico · Canadá', offset: -2, display: '250 / 672' },
-  '403': { state: 'Alberta (Calgary)', region: 'Montaña · Canadá', offset: -1, display: '403 / 587 / 825' },
-  '587': { state: 'Alberta (Calgary/Edmonton)', region: 'Montaña · Canadá', offset: -1, display: '403 / 587 / 825' },
-  '825': { state: 'Alberta (Calgary/Edmonton)', region: 'Montaña · Canadá', offset: -1, display: '403 / 587 / 825' },
-  '780': { state: 'Alberta (Edmonton)', region: 'Montaña · Canadá', offset: -1, display: '780 / 587 / 825' },
-  '204': { state: 'Manitoba (Winnipeg)', region: 'Central · Canadá', offset: 0, display: '204 / 431' },
-  '431': { state: 'Manitoba (Winnipeg)', region: 'Central · Canadá', offset: 0, display: '204 / 431' },
-  '306': { state: 'Saskatchewan (Regina)', region: 'Central · Canadá', offset: 0, display: '306 / 639' },
-  '639': { state: 'Saskatchewan (Regina)', region: 'Central · Canadá', offset: 0, display: '306 / 639' },
-  '416': { state: 'Ontario (Toronto)', region: 'Este · Canadá', offset: 1, display: '416 / 647 / 437' },
-  '647': { state: 'Ontario (Toronto)', region: 'Este · Canadá', offset: 1, display: '416 / 647 / 437' },
-  '437': { state: 'Ontario (Toronto)', region: 'Este · Canadá', offset: 1, display: '416 / 647 / 437' },
-  '613': { state: 'Ontario (Ottawa)', region: 'Este · Canadá', offset: 1, display: '613 / 343' },
-  '343': { state: 'Ontario (Ottawa)', region: 'Este · Canadá', offset: 1, display: '613 / 343' },
-  '905': { state: 'Ontario (GTA)', region: 'Este · Canadá', offset: 1, display: '905 / 289 / 365' },
-  '289': { state: 'Ontario (GTA)', region: 'Este · Canadá', offset: 1, display: '905 / 289 / 365' },
-  '365': { state: 'Ontario (GTA)', region: 'Este · Canadá', offset: 1, display: '905 / 289 / 365' },
-  '514': { state: 'Québec (Montreal)', region: 'Este · Canadá', offset: 1, display: '514 / 438' },
-  '438': { state: 'Québec (Montreal)', region: 'Este · Canadá', offset: 1, display: '514 / 438' },
-  '418': { state: 'Québec (Québec City)', region: 'Este · Canadá', offset: 1, display: '418 / 581' },
-  '581': { state: 'Québec (Québec City)', region: 'Este · Canadá', offset: 1, display: '418 / 581' },
-  '902': { state: 'Nova Scotia (Halifax)', region: 'Atlántico · Canadá', offset: 2, display: '902 / 782' },
-  '782': { state: 'Nova Scotia (Halifax)', region: 'Atlántico · Canadá', offset: 2, display: '902 / 782' },
-};
-
-function buildStateIndex() {
-  const index = {};
-  for (const [code, info] of Object.entries(LADA_MAP)) {
-    const key = info.state.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-    if (!index[key]) index[key] = [];
-    index[key].push(code);
-  }
-  return index;
-}
-const STATE_INDEX = buildStateIndex();
-
-const USA_REGIONS = [
-  {
-    id: 'pacific', label: '🌊 Pacífico', offset: -2, offsetLabel: '-2h vs CDMX', color: '#2E86C1',
-    states: [
-      { name: 'California', codes: '213 / 310 / 408 / 415 / 510 / 619 / 650 / 707 / 714 / 760 / 805 / 818 / 831 / 858 / 909 / 916 / 925 / 949' },
-      { name: 'Oregon', codes: '503 / 541 / 971' },
-      { name: 'Washington', codes: '206 / 253 / 360 / 425 / 509 / 564' },
-      { name: 'Nevada', codes: '702 / 775' }
-    ]
-  },
-  {
-    id: 'mountain', label: '⛰️ Montaña', offset: -1, offsetLabel: '-1h vs CDMX', color: '#1A7A5A',
-    states: [
-      { name: 'Colorado', codes: '303 / 719 / 720 / 970' },
-      { name: 'Arizona', codes: '480 / 520 / 602 / 623 / 928' },
-      { name: 'Utah', codes: '385 / 435 / 801' },
-      { name: 'New Mexico', codes: '505 / 575' }
-    ]
-  },
-  {
-    id: 'central', label: '🌽 Central', offset: 0, offsetLabel: 'Misma hora que CDMX', color: '#D4A017',
-    states: [
-      { name: 'Texas', codes: '210 / 214 / 254 / 281 / 325 / 361 / 409 / 430 / 432 / 469 / 512 / 713 / 737 / 806 / 817 / 830 / 832 / 903 / 915 / 936 / 940 / 956 / 972 / 979' },
-      { name: 'Illinois', codes: '217 / 224 / 309 / 312 / 331 / 618 / 630 / 708 / 773 / 779 / 815 / 847 / 872' },
-      { name: 'Minnesota', codes: '218 / 320 / 507 / 612 / 651 / 763 / 952' },
-      { name: 'Missouri', codes: '314 / 417 / 573 / 636 / 660 / 816' }
-    ]
-  },
-  {
-    id: 'eastern', label: '🗽 Este', offset: 1, offsetLabel: '+1h vs CDMX', color: '#A04040',
-    states: [
-      { name: 'New York', codes: '212 / 315 / 347 / 516 / 518 / 585 / 607 / 631 / 646 / 716 / 718 / 845 / 914 / 917 / 929' },
-      { name: 'Florida', codes: '305 / 321 / 352 / 386 / 407 / 561 / 727 / 754 / 772 / 786 / 813 / 850 / 863 / 904 / 941 / 954' },
-      { name: 'Georgia', codes: '229 / 404 / 470 / 478 / 678 / 706 / 762 / 770 / 912' },
-      { name: 'Massachusetts', codes: '339 / 351 / 413 / 508 / 617 / 774 / 781 / 857 / 978' }
-    ]
-  }
-];
-
-const CANADA_REGIONS = [
-  {
-    id: 'pacific', label: '🌊 Pacífico', offset: -2, offsetLabel: '-2h vs CDMX', color: '#2E86C1',
-    states: [
-      { name: 'British Columbia (Vancouver)', codes: '604 / 778 / 236' },
-      { name: 'British Columbia (Victoria)', codes: '250 / 672' }
-    ]
-  },
-  {
-    id: 'mountain', label: '⛰️ Montaña', offset: -1, offsetLabel: '-1h vs CDMX', color: '#1A7A5A',
-    states: [
-      { name: 'Alberta (Calgary)', codes: '403 / 587 / 825' },
-      { name: 'Alberta (Edmonton)', codes: '780 / 587 / 825' }
-    ]
-  },
-  {
-    id: 'central', label: '🌽 Central', offset: 0, offsetLabel: 'Misma hora que CDMX', color: '#D4A017',
-    states: [
-      { name: 'Manitoba (Winnipeg)', codes: '204 / 431' },
-      { name: 'Saskatchewan (Regina)', codes: '306 / 639' }
-    ]
-  },
-  {
-    id: 'eastern', label: '🗽 Este', offset: 1, offsetLabel: '+1h vs CDMX', color: '#A04040',
-    states: [
-      { name: 'Ontario (Toronto)', codes: '416 / 647 / 437' },
-      { name: 'Ontario (Ottawa)', codes: '613 / 343' },
-      { name: 'Ontario (GTA)', codes: '905 / 289 / 365' },
-      { name: 'Québec (Montreal)', codes: '514 / 438' },
-      { name: 'Québec (Québec City)', codes: '418 / 581' }
-    ]
-  },
-  {
-    id: 'atlantic', label: '🌅 Atlántico', offset: 2, offsetLabel: '+2h vs CDMX', color: '#7D3C98',
-    states: [
-      { name: 'Nova Scotia (Halifax)', codes: '902 / 782' }
-    ]
-  }
-];
-
-const LADA_TABLE = [
-  { area: 'New York (Este)', lada: '212 / 646 / 718', offset: 1 },
-  { area: 'Chicago (Central)', lada: '312 / 773 / 847 / 224', offset: 0 },
-  { area: 'Denver (Montaña)', lada: '303 / 720 / 719', offset: -1 },
-  { area: 'Los Ángeles (Pacífico)', lada: '213 / 310 / 818', offset: -2 },
-  { area: 'Miami (Este)', lada: '305 / 786 / 954', offset: 1 },
-  { area: 'Texas (Central)', lada: '214 / 817 / 512', offset: 0 },
-  { area: 'Arizona (Montaña)', lada: '480 / 602 / 623', offset: -1 },
-  { area: 'San Francisco (Pacífico)', lada: '415 / 510 / 408', offset: -2 },
-  { area: 'Atlanta (Este)', lada: '404 / 678 / 770', offset: 1 },
-  { area: 'Minneapolis (Central)', lada: '612 / 651 / 763', offset: 0 },
-  { area: 'Toronto, ON (Este · Canadá)', lada: '416 / 647 / 437', offset: 1 },
-  { area: 'Montreal, QC (Este · Canadá)', lada: '514 / 438', offset: 1 },
-  { area: 'Vancouver, BC (Pacífico · Canadá)', lada: '604 / 778', offset: -2 },
-  { area: 'Calgary, AB (Montaña · Canadá)', lada: '403 / 587', offset: -1 },
-  { area: 'Winnipeg, MB (Central · Canadá)', lada: '204 / 431', offset: 0 },
-  { area: 'Halifax, NS (Atlántico · Canadá)', lada: '902 / 782', offset: 2 },
-];
 
 // ── OBJECTIONS DATA ────────────────────────────────────────────────────────
 const OBJECTIONS = [
-  {
-    objection: "I don't have time, I'm really busy.",
-    response: `I understand you're busy. One question: if I can prove in two minutes that I can wipe out your Vidanta debt while keeping your benefits, should we talk now or actually reschedule? To be honest, if you're just trying to get me off the phone, I won't waste our time. But this truly is your chance to save a lot of money.`
-  },
-  {
-    objection: "I don't trust this, I am skeptical.",
-    response: `I understand your skepticism. Just one question: if you have a balance with Vidanta and in the next two minutes I prove to you that this isn't a scam—and that I can eliminate your debt (100%) while keeping your vacation benefits—could we proceed?`
-  },
-  {
-    objection: "I'm really not interested.",
-    response: `We totally get it—many members are unaware they've been oversold. But honestly, Jim, it's time to stop fattening the wallets of those who thrive on your lack of information. Let's make a smart decision before your future turns into a never- ending 'Why didn't I see this coming?'`
-  },
-  {
-    objection: "Call me later.",
-    response: `I understand you're busy. One question: if I can prove in two minutes that I can wipe out your Vidanta debt while keeping your benefits, should we talk now or actually reschedule? To be honest, if you're just trying to get me off the phone, I won't waste our time. But this truly is your chance to save a lot of money.`
-  },
-  {
-    objection: "Why do you have my personal information?",
-    response: `Fortunately, during the time Sara worked at the resort, she had access to thousands of cases similar to yours. We have dedicated ourselves to reaching out to each person individually to provide this specific opportunity for savings.`
-  },
-  {
-    objection: "I want to think about it.",
-    response: `Now, let me be honest with you, Jim. If someone tells me they need to 'think about it' after I've laid this out, 9 out of 10 times it comes down to two things: credibility or affordability. Which one is it for you? (Silence and listen)`
-  },
-  {
-    objection: "Can I handle this with my lawyer directly?",
-    response: `If you seek assistance from a U.S. law firm, it won't proceed. Unfortunately, your contract is governed by Mexican law. You would need to travel to Mexico, hire a local attorney, and file a claim in the specific state mentioned in your agreement. However, you should know that in Mexico, things move 'differently'—if you know what I mean? (Silence and listen)
-
-I mean that, unfortunately, systems in Mexico can be less transparent than in the U.S. There has never been a successful class- action lawsuit in Vidanta's history regarding their 'bait and switch' tactics, and I'm sure you can imagine why. Does that answer your question?`
-  },
-  {
-    objection: "What do you mean by differently?",
-    response: `I mean that, unfortunately, systems in Mexico can be less transparent than in the U.S. There has never been a successful class- action lawsuit in Vidanta's history regarding their 'bait and switch' tactics, and I'm sure you can imagine why. Does that answer your question?`
-  },
-  {
-    objection: "Can I tell the resort I am working with you?",
-    response: `You could, Jim, but if you go that route, you forfeit the chance to eliminate your balance. They are not in the business of giving money back. They will not only refuse to help you, but they will tell you that you can't modify your contract and will 'red- flag' your account. Does that make sense?`
-  },
-  {
-    objection: "I have to talk to my spouse.",
-    response: `I understand. My husband and I make all our decisions together as well. But if this were up to you—since you hold 50% of the decision—what is your perception of my service so far? (Silence and listen)
-
-Follow- up: 'Perfect. I'd love to speak with both of you to ensure everyone is comfortable. I can set up a Zoom meeting tomorrow to answer all your questions. Does [Time A] or [Time B] work better for you?'`
-  },
-  {
-    objection: "How did they offer me something that doesn't exist?",
-    response: `You can actually call the resort and ask: 'I bought this specific inventory and I'd like to know if it has been built yet.' (Silence). Often, they sell memberships for the park in Puerto Vallarta that haven't been finished in 10 years. Look at the front page of your agreement; it lists specific unit info. Have you actually seen the unit you 'own'? Can you reserve it right now? If the answer is no, you're paying for inventory that doesn't exist.`
-  },
-  {
-    objection: "Why should I trust you over Vidanta?",
-    response: `Timeshare reps are experts at embellishing the truth. Most members aren't even allowed to read the full contract before signing. There is a specific clause stating that any verbal promise not in writing is legally invalid. What credibility does a corporation have if they promote 'overselling' and manipulation? You don't have to trust me—call the resort and ask to sell your membership for what the rep promised. They will tell you it's not for resale or investment. They use that clause to protect themselves, not you.`
-  },
-  {
-    objection: "I am going through a personal crisis (respect my privacy).",
-    response: `Mr. [Name], I apologize if I seemed disrespectful; that was not my intention. I started helping members during COVID when people were struggling both financially and with their health. My goal is to help you STOP this unnecessary expense so you have more resources for your current situation. Wouldn't you agree that saving that money would help right now? (Silence and listen)`
-  },
-  {
-    objection: "What is the probability of success?",
-    response: `We don't accept cases we can't win. However, success depends on you following our instructions 100%. To help ease your mind, let's do a Zoom call so you can meet me face- to- face. Does that sound good?`
-  }
+  { objection: "I don't have time, I'm really busy.", response: `I understand you're busy. One question: if I can prove in two minutes that I can wipe out your Vidanta debt while keeping your benefits, should we talk now or actually reschedule? To be honest, if you're just trying to get me off the phone, I won't waste our time. But this truly is your chance to save a lot of money.` },
+  { objection: "I don't trust this, I am skeptical.", response: `I understand your skepticism. Just one question: if you have a balance with Vidanta and in the next two minutes I prove to you that this isn't a scam—and that I can eliminate your debt (100%) while keeping your vacation benefits—could we proceed?` },
+  { objection: "I'm really not interested.", response: `We totally get it—many members are unaware they've been oversold. But honestly, Jim, it's time to stop fattening the wallets of those who thrive on your lack of information. Let's make a smart decision before your future turns into a never- ending 'Why didn't I see this coming?'` },
+  { objection: "Call me later.", response: `I understand you're busy. One question: if I can prove in two minutes that I can wipe out your Vidanta debt while keeping your benefits, should we talk now or actually reschedule? To be honest, if you're just trying to get me off the phone, I won't waste our time. But this truly is your chance to save a lot of money.` },
+  { objection: "Why do you have my personal information?", response: `Fortunately, during the time Sara worked at the resort, she had access to thousands of cases similar to yours. We have dedicated ourselves to reaching out to each person individually to provide this specific opportunity for savings.` },
+  { objection: "I want to think about it.", response: `Now, let me be honest with you, Jim. If someone tells me they need to 'think about it' after I've laid this out, 9 out of 10 times it comes down to two things: credibility or affordability. Which one is it for you? (Silence and listen)` },
+  { objection: "Can I handle this with my lawyer directly?", response: `If you seek assistance from a U.S. law firm, it won't proceed. Unfortunately, your contract is governed by Mexican law. You would need to travel to Mexico, hire a local attorney, and file a claim in the specific state mentioned in your agreement. However, you should know that in Mexico, things move 'differently'—if you know what I mean? (Silence and listen)\n\nI mean that, unfortunately, systems in Mexico can be less transparent than in the U.S. There has never been a successful class- action lawsuit in Vidanta's history regarding their 'bait and switch' tactics, and I'm sure you can imagine why. Does that answer your question?` },
+  { objection: "What do you mean by differently?", response: `I mean that, unfortunately, systems in Mexico can be less transparent than in the U.S. There has never been a successful class- action lawsuit in Vidanta's history regarding their 'bait and switch' tactics, and I'm sure you can imagine why. Does that answer your question?` },
+  { objection: "Can I tell the resort I am working with you?", response: `You could, Jim, but if you go that route, you forfeit the chance to eliminate your balance. They are not in the business of giving money back. They will not only refuse to help you, but they will tell you that you can't modify your contract and will 'red- flag' your account. Does that make sense?` },
+  { objection: "I have to talk to my spouse.", response: `I understand. My husband and I make all our decisions together as well. But if this were up to you—since you hold 50% of the decision—what is your perception of my service so far? (Silence and listen)\n\nFollow- up: 'Perfect. I'd love to speak with both of you to ensure everyone is comfortable. I can set up a Zoom meeting tomorrow to answer all your questions. Does [Time A] or [Time B] work better for you?'` },
+  { objection: "How did they offer me something that doesn't exist?", response: `You can actually call the resort and ask: 'I bought this specific inventory and I'd like to know if it has been built yet.' (Silence). Often, they sell memberships for the park in Puerto Vallarta that haven't been finished in 10 years. Look at the front page of your agreement; it lists specific unit info. Have you actually seen the unit you 'own'? Can you reserve it right now? If the answer is no, you're paying for inventory that doesn't exist.` },
+  { objection: "Why should I trust you over Vidanta?", response: `Timeshare reps are experts at embellishing the truth. Most members aren't even allowed to read the full contract before signing. There is a specific clause stating that any verbal promise not in writing is legally invalid. What credibility does a corporation have if they promote 'overselling' and manipulation? You don't have to trust me—call the resort and ask to sell your membership for what the rep promised. They will tell you it's not for resale or investment. They use that clause to protect themselves, not you.` },
+  { objection: "I am going through a personal crisis (respect my privacy).", response: `Mr. [Name], I apologize if I seemed disrespectful; that was not my intention. I started helping members during COVID when people were struggling both financially and with their health. My goal is to help you STOP this unnecessary expense so you have more resources for your current situation. Wouldn't you agree that saving that money would help right now? (Silence and listen)` },
+  { objection: "What is the probability of success?", response: `We don't accept cases we can't win. However, success depends on you following our instructions 100%. To help ease your mind, let's do a Zoom call so you can meet me face- to- face. Does that sound good?` }
 ];
 
 // ── CALL SCRIPT ──────────────────────────────────────────────────────────────
 const CALL_SCRIPT = [
-  {
-    title: '1. Opening & Introduction',
-    tag: null,
-    html: `Thank you for taking my call. My name is <em>[Your Name]</em>, and I am calling on behalf of <em>Sara Aldman</em>, representing <em>Members Consulting</em>. We specialize in the balance elimination of your Vidanta membership.
-
-Let me ask you something, <em>[Client Name]</em>: If I were to offer you the opportunity to eliminate your monthly payments with Vidanta today, while still enjoying the same vacation benefits—100 percent verifiable—would you take it?`
-  },
-  {
-    title: '2. Understanding Their Situation',
-    tag: null,
-    html: `The majority of the members we work with truly enjoy their vacations on property, but they often feel dissatisfied with the amount of money invested in these memberships.
-
-Obviously, the qualifying factor for you is that you must have a balance or a monthly payment with Vidanta. Do you have a monthly payment?`
-  },
-  {
-    title: '3. Addressing Initial Concerns',
-    tag: 'Objection Handling',
-    html: `I understand your concerns <em>[Client Name]</em>. You may be thinking that you don't know me and that this seems too good to be true, or perhaps just another scam. For us, gaining your trust is crucial for a successful negotiation. Allow me to explain why you can trust us.`
-  },
-  {
-    title: '4. Trust Factor #1 - Referrals',
-    tag: 'Credibility',
-    html: `<strong>Referrals</strong> — Sarah has been in business for over four years, and we kindly ask our members to assist us as referrals if possible. We have hundreds of members who can attest to our services and share their results, demonstrating how they continue to travel successfully.`
-  },
-  {
-    title: '5. Trust Factor #2 - Zoom',
-    tag: 'Credibility',
-    html: `<strong>Zoom</strong> — To our knowledge, we are the only ones in this industry offering face-to-face calls where we address all of your questions and concerns based on the terms and conditions of your contract.`
-  },
-  {
-    title: '6. Trust Factor #3 - Not a Cancellation',
-    tag: 'Credibility',
-    html: `<strong>This is not a cancellation</strong> — We value growth and are delighted that you can continue to vacation, provided it is at a fair price—especially one that does not destabilize your family's finances.`
-  },
-  {
-    title: '7. Deep Knowledge & Expertise',
-    tag: 'Advantage',
-    html: `<strong>Knowledge</strong> — As I mentioned earlier, we have helped hundreds of members thanks to Sara's expertise. She worked for over four years at Vidanta, which made her an expert in the terms and conditions that, unfortunately, are not explained properly to you, the members, allowing the hotel to manipulate your contract to their advantage. For example:
-
-When you signed your contract, you were taken to an office where you were informed that you were being recorded and that you were acquiring this contract for vacation purposes, not for resale or investment. Do you remember?
-
-This negates any credibility of resale and investment plans, as you do not actually own any property; you merely hold a very expensive membership.`
-  },
-  {
-    title: '8. Effectiveness & Guaranteed Results',
-    tag: 'Process',
-    html: `<strong>Effectiveness</strong> — We have contacts within the organization who ensure that your file remains in the correct line of communication and is not sidetracked.
-
-<strong>Guaranteed & Done in a Timely Manner</strong> — We guarantee contract elimination within 35 to 45 business days, all without cancellation.`
-  },
-  {
-    title: '9. Call to Action',
-    tag: 'Next Step',
-    html: `Do you have any questions?
-
-Perfect!
-
-Our next step is to schedule an appointment with Mrs. Aldman. It is important for this appointment that you have a full understanding that this process is based on your terms and conditions. Therefore, it is essential that you have the covers of your contracts and any notes or questions you may have regarding your purchase process on hand for the appointment.`
-  }
+  { title: '1. Opening & Introduction', tag: null, html: `Thank you for taking my call. My name is <em>[Your Name]</em>, and I am calling on behalf of <em>Sara Aldman</em>, representing <em>Members Consulting</em>. We specialize in the balance elimination of your Vidanta membership.\n\nLet me ask you something, <em>[Client Name]</em>: If I were to offer you the opportunity to eliminate your monthly payments with Vidanta today, while still enjoying the same vacation benefits—100 percent verifiable—would you take it?` },
+  { title: '2. Understanding Their Situation', tag: null, html: `The majority of the members we work with truly enjoy their vacations on property, but they often feel dissatisfied with the amount of money invested in these memberships.\n\nObviously, the qualifying factor for you is that you must have a balance or a monthly payment with Vidanta. Do you have a monthly payment?` },
+  { title: '3. Addressing Initial Concerns', tag: 'Objection Handling', html: `I understand your concerns <em>[Client Name]</em>. You may be thinking that you don't know me and that this seems too good to be true, or perhaps just another scam. For us, gaining your trust is crucial for a successful negotiation. Allow me to explain why you can trust us.` },
+  { title: '4. Trust Factor #1 - Referrals', tag: 'Credibility', html: `<strong>Referrals</strong> — Sarah has been in business for over four years, and we kindly ask our members to assist us as referrals if possible. We have hundreds of members who can attest to our services and share their results, demonstrating how they continue to travel successfully.` },
+  { title: '5. Trust Factor #2 - Zoom', tag: 'Credibility', html: `<strong>Zoom</strong> — To our knowledge, we are the only ones in this industry offering face-to-face calls where we address all of your questions and concerns based on the terms and conditions of your contract.` },
+  { title: '6. Trust Factor #3 - Not a Cancellation', tag: 'Credibility', html: `<strong>This is not a cancellation</strong> — We value growth and are delighted that you can continue to vacation, provided it is at a fair price—especially one that does not destabilize your family's finances.` },
+  { title: '7. Deep Knowledge & Expertise', tag: 'Advantage', html: `<strong>Knowledge</strong> — As I mentioned earlier, we have helped hundreds of members thanks to Sara's expertise. She worked for over four years at Vidanta, which made her an expert in the terms and conditions that, unfortunately, are not explained properly to you, the members, allowing the hotel to manipulate your contract to their advantage. For example:\n\nWhen you signed your contract, you were taken to an office where you were informed that you were being recorded and that you were acquiring this contract for vacation purposes, not for resale or investment. Do you remember?\n\nThis negates any credibility of resale and investment plans, as you do not actually own any property; you merely hold a very expensive membership.` },
+  { title: '8. Effectiveness & Guaranteed Results', tag: 'Process', html: `<strong>Effectiveness</strong> — We have contacts within the organization who ensure that your file remains in the correct line of communication and is not sidetracked.\n\n<strong>Guaranteed & Done in a Timely Manner</strong> — We guarantee contract elimination within 35 to 45 business days, all without cancellation.` },
+  { title: '9. Call to Action', tag: 'Next Step', html: `Do you have any questions?\n\nPerfect!\n\nOur next step is to schedule an appointment with Mrs. Aldman. It is important for this appointment that you have a full understanding that this process is based on your terms and conditions. Therefore, it is essential that you have the covers of your contracts and any notes or questions you may have regarding your purchase process on hand for the appointment.` }
 ];
 
 const PRESETS = [
@@ -1830,277 +1162,500 @@ const STATUS_INFO = {
 };
 
 // ── STATE ────────────────────────────────────────────────────────────────────
-let allRows    = [];
-let advisors   = [];
-let activeTab  = 'all';
-let store      = {};
-let currentPage = 1;
-let sortField  = 'id';
-let sortAsc    = true;
+let advisorList  = [];      // [{name, count, locked}]
+let summaryData  = [];      // [{asesor, total, sumaBalances}]
+let activeTab    = 'all';
+let store        = {};      // notas/estatus/balance locales pendientes de sync (por cliente)
+let sessions     = {};      // { advisorName: { token, role } }  — en memoria + sessionStorage
+let advisorRows  = {};      // cache de filas ya descargadas por asesor autenticado: { advisorName: [...] }
+let currentPage  = 1;
+let sortField    = 'namePerson';
+let sortAsc      = true;
 let filteredData = [];
-let passwords = {};
-let pendingTab = null;
+let pendingTab   = null;
 let adminUnlocked = false;
-let timezoneInterval = null;
 
-// ── STORAGE ──────────────────────────────────────────────────────────────────
+// ── ÁREA DE CÓDIGOS DE LADA (USA y Canadá) ──────────────────────────────
+// Mapeo de abreviaturas a nombres completos de estados y provincias
+const STATE_NAMES = {
+  'AL': 'Alabama', 'AK': 'Alaska', 'AZ': 'Arizona', 'AR': 'Arkansas',
+  'CA': 'California', 'CO': 'Colorado', 'CT': 'Connecticut', 'DE': 'Delaware',
+  'FL': 'Florida', 'GA': 'Georgia', 'HI': 'Hawaii', 'ID': 'Idaho',
+  'IL': 'Illinois', 'IN': 'Indiana', 'IA': 'Iowa', 'KS': 'Kansas',
+  'KY': 'Kentucky', 'LA': 'Louisiana', 'ME': 'Maine', 'MD': 'Maryland',
+  'MA': 'Massachusetts', 'MI': 'Michigan', 'MN': 'Minnesota', 'MS': 'Mississippi',
+  'MO': 'Missouri', 'MT': 'Montana', 'NE': 'Nebraska', 'NV': 'Nevada',
+  'NH': 'New Hampshire', 'NJ': 'New Jersey', 'NM': 'New Mexico', 'NY': 'New York',
+  'NC': 'North Carolina', 'ND': 'North Dakota', 'OH': 'Ohio', 'OK': 'Oklahoma',
+  'OR': 'Oregon', 'PA': 'Pennsylvania', 'RI': 'Rhode Island', 'SC': 'South Carolina',
+  'SD': 'South Dakota', 'TN': 'Tennessee', 'TX': 'Texas', 'UT': 'Utah',
+  'VT': 'Vermont', 'VA': 'Virginia', 'WA': 'Washington', 'WV': 'West Virginia',
+  'WI': 'Wisconsin', 'WY': 'Wyoming',
+  // Canadá
+  'AB': 'Alberta', 'BC': 'British Columbia', 'MB': 'Manitoba', 'NB': 'New Brunswick',
+  'NL': 'Newfoundland and Labrador', 'NT': 'Northwest Territories', 'NS': 'Nova Scotia',
+  'NU': 'Nunavut', 'ON': 'Ontario', 'PE': 'Prince Edward Island', 'QC': 'Quebec',
+  'SK': 'Saskatchewan', 'YT': 'Yukon'
+};
+
+const AREA_CODES = [
+  // Alabama
+  { code: '205', state: 'AL', city: 'Birmingham' },
+  { code: '251', state: 'AL', city: 'Mobile' },
+  { code: '256', state: 'AL', city: 'Huntsville' },
+  { code: '334', state: 'AL', city: 'Montgomery' },
+  { code: '938', state: 'AL', city: 'Huntsville' },
+  // Alaska
+  { code: '907', state: 'AK', city: 'Anchorage' },
+  // Arizona
+  { code: '480', state: 'AZ', city: 'Phoenix' },
+  { code: '520', state: 'AZ', city: 'Tucson' },
+  { code: '602', state: 'AZ', city: 'Phoenix' },
+  { code: '623', state: 'AZ', city: 'Phoenix' },
+  { code: '928', state: 'AZ', city: 'Flagstaff' },
+  // Arkansas
+  { code: '479', state: 'AR', city: 'Fayetteville' },
+  { code: '501', state: 'AR', city: 'Little Rock' },
+  { code: '870', state: 'AR', city: 'Jonesboro' },
+  // California
+  { code: '209', state: 'CA', city: 'Stockton' },
+  { code: '213', state: 'CA', city: 'Los Angeles' },
+  { code: '310', state: 'CA', city: 'Los Angeles' },
+  { code: '323', state: 'CA', city: 'Los Angeles' },
+  { code: '408', state: 'CA', city: 'San Jose' },
+  { code: '415', state: 'CA', city: 'San Francisco' },
+  { code: '510', state: 'CA', city: 'Oakland' },
+  { code: '530', state: 'CA', city: 'Sacramento' },
+  { code: '559', state: 'CA', city: 'Fresno' },
+  { code: '562', state: 'CA', city: 'Long Beach' },
+  { code: '619', state: 'CA', city: 'San Diego' },
+  { code: '626', state: 'CA', city: 'Pasadena' },
+  { code: '650', state: 'CA', city: 'San Mateo' },
+  { code: '661', state: 'CA', city: 'Bakersfield' },
+  { code: '707', state: 'CA', city: 'Santa Rosa' },
+  { code: '714', state: 'CA', city: 'Anaheim' },
+  { code: '760', state: 'CA', city: 'Palm Springs' },
+  { code: '805', state: 'CA', city: 'Santa Barbara' },
+  { code: '818', state: 'CA', city: 'Los Angeles' },
+  { code: '831', state: 'CA', city: 'Monterey' },
+  { code: '858', state: 'CA', city: 'San Diego' },
+  { code: '909', state: 'CA', city: 'San Bernardino' },
+  { code: '916', state: 'CA', city: 'Sacramento' },
+  { code: '925', state: 'CA', city: 'Walnut Creek' },
+  { code: '949', state: 'CA', city: 'Irvine' },
+  { code: '951', state: 'CA', city: 'Riverside' },
+  // Colorado
+  { code: '303', state: 'CO', city: 'Denver' },
+  { code: '719', state: 'CO', city: 'Colorado Springs' },
+  { code: '720', state: 'CO', city: 'Denver' },
+  { code: '970', state: 'CO', city: 'Fort Collins' },
+  // Connecticut
+  { code: '203', state: 'CT', city: 'Bridgeport' },
+  { code: '860', state: 'CT', city: 'Hartford' },
+  { code: '959', state: 'CT', city: 'Hartford' },
+  // Delaware
+  { code: '302', state: 'DE', city: 'Wilmington' },
+  // Florida
+  { code: '239', state: 'FL', city: 'Fort Myers' },
+  { code: '305', state: 'FL', city: 'Miami' },
+  { code: '321', state: 'FL', city: 'Orlando' },
+  { code: '352', state: 'FL', city: 'Gainesville' },
+  { code: '386', state: 'FL', city: 'Daytona Beach' },
+  { code: '407', state: 'FL', city: 'Orlando' },
+  { code: '561', state: 'FL', city: 'West Palm Beach' },
+  { code: '727', state: 'FL', city: 'St. Petersburg' },
+  { code: '754', state: 'FL', city: 'Fort Lauderdale' },
+  { code: '772', state: 'FL', city: 'Port St. Lucie' },
+  { code: '786', state: 'FL', city: 'Miami' },
+  { code: '813', state: 'FL', city: 'Tampa' },
+  { code: '850', state: 'FL', city: 'Tallahassee' },
+  { code: '904', state: 'FL', city: 'Jacksonville' },
+  { code: '941', state: 'FL', city: 'Sarasota' },
+  { code: '954', state: 'FL', city: 'Fort Lauderdale' },
+  // Georgia
+  { code: '229', state: 'GA', city: 'Albany' },
+  { code: '404', state: 'GA', city: 'Atlanta' },
+  { code: '470', state: 'GA', city: 'Atlanta' },
+  { code: '478', state: 'GA', city: 'Macon' },
+  { code: '678', state: 'GA', city: 'Atlanta' },
+  { code: '706', state: 'GA', city: 'Augusta' },
+  { code: '762', state: 'GA', city: 'Augusta' },
+  { code: '770', state: 'GA', city: 'Atlanta' },
+  { code: '912', state: 'GA', city: 'Savannah' },
+  // Hawaii
+  { code: '808', state: 'HI', city: 'Honolulu' },
+  // Idaho
+  { code: '208', state: 'ID', city: 'Boise' },
+  // Illinois
+  { code: '217', state: 'IL', city: 'Springfield' },
+  { code: '224', state: 'IL', city: 'Chicago' },
+  { code: '309', state: 'IL', city: 'Peoria' },
+  { code: '312', state: 'IL', city: 'Chicago' },
+  { code: '331', state: 'IL', city: 'Chicago' },
+  { code: '618', state: 'IL', city: 'Belleville' },
+  { code: '630', state: 'IL', city: 'Naperville' },
+  { code: '708', state: 'IL', city: 'Chicago' },
+  { code: '773', state: 'IL', city: 'Chicago' },
+  { code: '779', state: 'IL', city: 'Rockford' },
+  { code: '815', state: 'IL', city: 'Rockford' },
+  { code: '847', state: 'IL', city: 'Chicago' },
+  { code: '872', state: 'IL', city: 'Chicago' },
+  // Indiana
+  { code: '219', state: 'IN', city: 'Gary' },
+  { code: '260', state: 'IN', city: 'Fort Wayne' },
+  { code: '317', state: 'IN', city: 'Indianapolis' },
+  { code: '463', state: 'IN', city: 'Indianapolis' },
+  { code: '574', state: 'IN', city: 'South Bend' },
+  { code: '765', state: 'IN', city: 'Lafayette' },
+  { code: '812', state: 'IN', city: 'Evansville' },
+  { code: '930', state: 'IN', city: 'Evansville' },
+  // Iowa
+  { code: '319', state: 'IA', city: 'Cedar Rapids' },
+  { code: '515', state: 'IA', city: 'Des Moines' },
+  { code: '563', state: 'IA', city: 'Davenport' },
+  { code: '641', state: 'IA', city: 'Mason City' },
+  { code: '712', state: 'IA', city: 'Sioux City' },
+  // Kansas
+  { code: '316', state: 'KS', city: 'Wichita' },
+  { code: '620', state: 'KS', city: 'Dodge City' },
+  { code: '785', state: 'KS', city: 'Topeka' },
+  { code: '913', state: 'KS', city: 'Kansas City' },
+  // Kentucky
+  { code: '270', state: 'KY', city: 'Bowling Green' },
+  { code: '502', state: 'KY', city: 'Louisville' },
+  { code: '606', state: 'KY', city: 'Ashland' },
+  { code: '859', state: 'KY', city: 'Lexington' },
+  // Louisiana
+  { code: '225', state: 'LA', city: 'Baton Rouge' },
+  { code: '318', state: 'LA', city: 'Shreveport' },
+  { code: '337', state: 'LA', city: 'Lafayette' },
+  { code: '504', state: 'LA', city: 'New Orleans' },
+  { code: '985', state: 'LA', city: 'Houma' },
+  // Maine
+  { code: '207', state: 'ME', city: 'Portland' },
+  // Maryland
+  { code: '240', state: 'MD', city: 'Silver Spring' },
+  { code: '301', state: 'MD', city: 'Silver Spring' },
+  { code: '410', state: 'MD', city: 'Baltimore' },
+  { code: '443', state: 'MD', city: 'Baltimore' },
+  { code: '667', state: 'MD', city: 'Baltimore' },
+  // Massachusetts
+  { code: '339', state: 'MA', city: 'Boston' },
+  { code: '351', state: 'MA', city: 'Lowell' },
+  { code: '413', state: 'MA', city: 'Springfield' },
+  { code: '508', state: 'MA', city: 'Worcester' },
+  { code: '617', state: 'MA', city: 'Boston' },
+  { code: '774', state: 'MA', city: 'Worcester' },
+  { code: '781', state: 'MA', city: 'Boston' },
+  { code: '857', state: 'MA', city: 'Boston' },
+  { code: '978', state: 'MA', city: 'Lowell' },
+  // Michigan
+  { code: '231', state: 'MI', city: 'Muskegon' },
+  { code: '248', state: 'MI', city: 'Detroit' },
+  { code: '269', state: 'MI', city: 'Kalamazoo' },
+  { code: '313', state: 'MI', city: 'Detroit' },
+  { code: '517', state: 'MI', city: 'Lansing' },
+  { code: '586', state: 'MI', city: 'Detroit' },
+  { code: '616', state: 'MI', city: 'Grand Rapids' },
+  { code: '734', state: 'MI', city: 'Detroit' },
+  { code: '810', state: 'MI', city: 'Flint' },
+  { code: '906', state: 'MI', city: 'Marquette' },
+  { code: '947', state: 'MI', city: 'Detroit' },
+  { code: '989', state: 'MI', city: 'Saginaw' },
+  // Minnesota
+  { code: '218', state: 'MN', city: 'Duluth' },
+  { code: '320', state: 'MN', city: 'St. Cloud' },
+  { code: '507', state: 'MN', city: 'Rochester' },
+  { code: '612', state: 'MN', city: 'Minneapolis' },
+  { code: '651', state: 'MN', city: 'St. Paul' },
+  { code: '763', state: 'MN', city: 'Minneapolis' },
+  { code: '952', state: 'MN', city: 'Minneapolis' },
+  // Mississippi
+  { code: '228', state: 'MS', city: 'Biloxi' },
+  { code: '601', state: 'MS', city: 'Jackson' },
+  { code: '662', state: 'MS', city: 'Tupelo' },
+  { code: '769', state: 'MS', city: 'Jackson' },
+  // Missouri
+  { code: '314', state: 'MO', city: 'St. Louis' },
+  { code: '417', state: 'MO', city: 'Springfield' },
+  { code: '573', state: 'MO', city: 'Columbia' },
+  { code: '636', state: 'MO', city: 'St. Louis' },
+  { code: '660', state: 'MO', city: 'Sedalia' },
+  { code: '816', state: 'MO', city: 'Kansas City' },
+  { code: '975', state: 'MO', city: 'Kansas City' },
+  // Montana
+  { code: '406', state: 'MT', city: 'Billings' },
+  // Nebraska
+  { code: '308', state: 'NE', city: 'North Platte' },
+  { code: '402', state: 'NE', city: 'Omaha' },
+  { code: '531', state: 'NE', city: 'Omaha' },
+  // Nevada
+  { code: '702', state: 'NV', city: 'Las Vegas' },
+  { code: '775', state: 'NV', city: 'Reno' },
+  // New Hampshire
+  { code: '603', state: 'NH', city: 'Manchester' },
+  // New Jersey
+  { code: '201', state: 'NJ', city: 'Jersey City' },
+  { code: '609', state: 'NJ', city: 'Trenton' },
+  { code: '732', state: 'NJ', city: 'New Brunswick' },
+  { code: '848', state: 'NJ', city: 'New Brunswick' },
+  { code: '856', state: 'NJ', city: 'Camden' },
+  { code: '862', state: 'NJ', city: 'Newark' },
+  { code: '908', state: 'NJ', city: 'Elizabeth' },
+  { code: '973', state: 'NJ', city: 'Newark' },
+  // New Mexico
+  { code: '505', state: 'NM', city: 'Albuquerque' },
+  { code: '575', state: 'NM', city: 'Las Cruces' },
+  // New York
+  { code: '212', state: 'NY', city: 'New York' },
+  { code: '315', state: 'NY', city: 'Syracuse' },
+  { code: '347', state: 'NY', city: 'New York' },
+  { code: '516', state: 'NY', city: 'Long Island' },
+  { code: '518', state: 'NY', city: 'Albany' },
+  { code: '585', state: 'NY', city: 'Rochester' },
+  { code: '607', state: 'NY', city: 'Binghamton' },
+  { code: '631', state: 'NY', city: 'Long Island' },
+  { code: '646', state: 'NY', city: 'New York' },
+  { code: '716', state: 'NY', city: 'Buffalo' },
+  { code: '718', state: 'NY', city: 'New York' },
+  { code: '845', state: 'NY', city: 'Poughkeepsie' },
+  { code: '914', state: 'NY', city: 'White Plains' },
+  { code: '917', state: 'NY', city: 'New York' },
+  { code: '929', state: 'NY', city: 'New York' },
+  // North Carolina
+  { code: '252', state: 'NC', city: 'Greenville' },
+  { code: '336', state: 'NC', city: 'Greensboro' },
+  { code: '704', state: 'NC', city: 'Charlotte' },
+  { code: '828', state: 'NC', city: 'Asheville' },
+  { code: '910', state: 'NC', city: 'Fayetteville' },
+  { code: '919', state: 'NC', city: 'Raleigh' },
+  { code: '980', state: 'NC', city: 'Charlotte' },
+  { code: '984', state: 'NC', city: 'Raleigh' },
+  // North Dakota
+  { code: '701', state: 'ND', city: 'Fargo' },
+  // Ohio
+  { code: '216', state: 'OH', city: 'Cleveland' },
+  { code: '234', state: 'OH', city: 'Akron' },
+  { code: '330', state: 'OH', city: 'Akron' },
+  { code: '419', state: 'OH', city: 'Toledo' },
+  { code: '440', state: 'OH', city: 'Cleveland' },
+  { code: '513', state: 'OH', city: 'Cincinnati' },
+  { code: '567', state: 'OH', city: 'Toledo' },
+  { code: '614', state: 'OH', city: 'Columbus' },
+  { code: '740', state: 'OH', city: 'Columbus' },
+  { code: '937', state: 'OH', city: 'Dayton' },
+  // Oklahoma
+  { code: '405', state: 'OK', city: 'Oklahoma City' },
+  { code: '580', state: 'OK', city: 'Lawton' },
+  { code: '918', state: 'OK', city: 'Tulsa' },
+  // Oregon
+  { code: '503', state: 'OR', city: 'Portland' },
+  { code: '541', state: 'OR', city: 'Eugene' },
+  { code: '971', state: 'OR', city: 'Portland' },
+  // Pennsylvania
+  { code: '215', state: 'PA', city: 'Philadelphia' },
+  { code: '267', state: 'PA', city: 'Philadelphia' },
+  { code: '412', state: 'PA', city: 'Pittsburgh' },
+  { code: '484', state: 'PA', city: 'Allentown' },
+  { code: '570', state: 'PA', city: 'Scranton' },
+  { code: '610', state: 'PA', city: 'Allentown' },
+  { code: '717', state: 'PA', city: 'Harrisburg' },
+  { code: '724', state: 'PA', city: 'Pittsburgh' },
+  { code: '814', state: 'PA', city: 'Erie' },
+  { code: '878', state: 'PA', city: 'Pittsburgh' },
+  // Rhode Island
+  { code: '401', state: 'RI', city: 'Providence' },
+  // South Carolina
+  { code: '803', state: 'SC', city: 'Columbia' },
+  { code: '843', state: 'SC', city: 'Charleston' },
+  { code: '854', state: 'SC', city: 'Charleston' },
+  { code: '864', state: 'SC', city: 'Greenville' },
+  // South Dakota
+  { code: '605', state: 'SD', city: 'Sioux Falls' },
+  // Tennessee
+  { code: '423', state: 'TN', city: 'Chattanooga' },
+  { code: '615', state: 'TN', city: 'Nashville' },
+  { code: '731', state: 'TN', city: 'Jackson' },
+  { code: '865', state: 'TN', city: 'Knoxville' },
+  { code: '901', state: 'TN', city: 'Memphis' },
+  { code: '931', state: 'TN', city: 'Clarksville' },
+  // Texas
+  { code: '210', state: 'TX', city: 'San Antonio' },
+  { code: '214', state: 'TX', city: 'Dallas' },
+  { code: '254', state: 'TX', city: 'Waco' },
+  { code: '281', state: 'TX', city: 'Houston' },
+  { code: '325', state: 'TX', city: 'Abilene' },
+  { code: '361', state: 'TX', city: 'Corpus Christi' },
+  { code: '409', state: 'TX', city: 'Beaumont' },
+  { code: '430', state: 'TX', city: 'Tyler' },
+  { code: '432', state: 'TX', city: 'Midland' },
+  { code: '469', state: 'TX', city: 'Dallas' },
+  { code: '512', state: 'TX', city: 'Austin' },
+  { code: '682', state: 'TX', city: 'Fort Worth' },
+  { code: '713', state: 'TX', city: 'Houston' },
+  { code: '737', state: 'TX', city: 'Austin' },
+  { code: '806', state: 'TX', city: 'Amarillo' },
+  { code: '817', state: 'TX', city: 'Fort Worth' },
+  { code: '830', state: 'TX', city: 'San Antonio' },
+  { code: '832', state: 'TX', city: 'Houston' },
+  { code: '903', state: 'TX', city: 'Tyler' },
+  { code: '915', state: 'TX', city: 'El Paso' },
+  { code: '936', state: 'TX', city: 'Conroe' },
+  { code: '940', state: 'TX', city: 'Denton' },
+  { code: '956', state: 'TX', city: 'Laredo' },
+  { code: '972', state: 'TX', city: 'Dallas' },
+  { code: '979', state: 'TX', city: 'Bryan' },
+  // Utah
+  { code: '385', state: 'UT', city: 'Salt Lake City' },
+  { code: '435', state: 'UT', city: 'St. George' },
+  { code: '801', state: 'UT', city: 'Salt Lake City' },
+  // Vermont
+  { code: '802', state: 'VT', city: 'Burlington' },
+  // Virginia
+  { code: '276', state: 'VA', city: 'Bristol' },
+  { code: '434', state: 'VA', city: 'Lynchburg' },
+  { code: '540', state: 'VA', city: 'Roanoke' },
+  { code: '571', state: 'VA', city: 'Arlington' },
+  { code: '703', state: 'VA', city: 'Arlington' },
+  { code: '757', state: 'VA', city: 'Norfolk' },
+  { code: '804', state: 'VA', city: 'Richmond' },
+  // Washington
+  { code: '206', state: 'WA', city: 'Seattle' },
+  { code: '253', state: 'WA', city: 'Tacoma' },
+  { code: '360', state: 'WA', city: 'Olympia' },
+  { code: '425', state: 'WA', city: 'Bellevue' },
+  { code: '509', state: 'WA', city: 'Spokane' },
+  { code: '564', state: 'WA', city: 'Seattle' },
+  // West Virginia
+  { code: '304', state: 'WV', city: 'Charleston' },
+  { code: '681', state: 'WV', city: 'Charleston' },
+  // Wisconsin
+  { code: '262', state: 'WI', city: 'Kenosha' },
+  { code: '414', state: 'WI', city: 'Milwaukee' },
+  { code: '534', state: 'WI', city: 'Milwaukee' },
+  { code: '608', state: 'WI', city: 'Madison' },
+  { code: '715', state: 'WI', city: 'Eau Claire' },
+  { code: '920', state: 'WI', city: 'Green Bay' },
+  // Wyoming
+  { code: '307', state: 'WY', city: 'Cheyenne' },
+  // CANADÁ
+  { code: '403', state: 'AB', city: 'Calgary' },
+  { code: '587', state: 'AB', city: 'Calgary' },
+  { code: '780', state: 'AB', city: 'Edmonton' },
+  { code: '825', state: 'AB', city: 'Calgary' },
+  { code: '236', state: 'BC', city: 'Vancouver' },
+  { code: '250', state: 'BC', city: 'Victoria' },
+  { code: '604', state: 'BC', city: 'Vancouver' },
+  { code: '672', state: 'BC', city: 'Vancouver' },
+  { code: '778', state: 'BC', city: 'Vancouver' },
+  { code: '204', state: 'MB', city: 'Winnipeg' },
+  { code: '431', state: 'MB', city: 'Winnipeg' },
+  { code: '506', state: 'NB', city: 'Saint John' },
+  { code: '709', state: 'NL', city: 'St. John\'s' },
+  { code: '867', state: 'NT', city: 'Yellowknife' },
+  { code: '782', state: 'NS', city: 'Halifax' },
+  { code: '902', state: 'NS', city: 'Halifax' },
+  { code: '867', state: 'NU', city: 'Iqaluit' },
+  { code: '226', state: 'ON', city: 'London' },
+  { code: '249', state: 'ON', city: 'Toronto' },
+  { code: '289', state: 'ON', city: 'Toronto' },
+  { code: '343', state: 'ON', city: 'Ottawa' },
+  { code: '365', state: 'ON', city: 'Toronto' },
+  { code: '416', state: 'ON', city: 'Toronto' },
+  { code: '437', state: 'ON', city: 'Toronto' },
+  { code: '519', state: 'ON', city: 'London' },
+  { code: '613', state: 'ON', city: 'Ottawa' },
+  { code: '647', state: 'ON', city: 'Toronto' },
+  { code: '705', state: 'ON', city: 'Sudbury' },
+  { code: '807', state: 'ON', city: 'Thunder Bay' },
+  { code: '905', state: 'ON', city: 'Toronto' },
+  { code: '782', state: 'PE', city: 'Charlottetown' },
+  { code: '902', state: 'PE', city: 'Charlottetown' },
+  { code: '418', state: 'QC', city: 'Quebec' },
+  { code: '438', state: 'QC', city: 'Montreal' },
+  { code: '450', state: 'QC', city: 'Montreal' },
+  { code: '514', state: 'QC', city: 'Montreal' },
+  { code: '579', state: 'QC', city: 'Montreal' },
+  { code: '581', state: 'QC', city: 'Quebec' },
+  { code: '819', state: 'QC', city: 'Sherbrooke' },
+  { code: '873', state: 'QC', city: 'Sherbrooke' },
+  { code: '306', state: 'SK', city: 'Saskatoon' },
+  { code: '639', state: 'SK', city: 'Saskatoon' },
+  { code: '867', state: 'YT', city: 'Whitehorse' }
+];
+
+// ── LOCAL STORE (notas/estatus, NO credenciales) ────────────────────────────
 function loadStore() { try { store = JSON.parse(localStorage.getItem(STORE_KEY) || '{}'); } catch(e) { store = {}; } }
 function saveStore() { try { localStorage.setItem(STORE_KEY, JSON.stringify(store)); } catch(e) {} }
 
-// ── PASSWORDS: ahora sincronizadas via Apps Script (Google Sheet) ──────────
-// loadPasswords() ahora es ASYNC: intenta traer las contraseñas desde el
-// Apps Script (fuente central compartida por todo el equipo). Si falla
-// (sin internet, script caído, etc.) usa localStorage como respaldo para
-// no dejar el CRM sin funcionar.
-async function loadPasswords() {
-  let remoteOk = false;
-  try {
-    const res = await fetch(APPS_SCRIPT_URL + '?action=getPasswords&cb=' + Date.now());
-    if (res.ok) {
-      const json = await res.json();
-      if (json && json.ok && json.passwords && typeof json.passwords === 'object') {
-        passwords = json.passwords;
-        remoteOk = true;
-        // guardamos copia local como cache/respaldo offline
-        try { localStorage.setItem(PASSWORD_KEY, JSON.stringify(passwords)); } catch(e) {}
-      }
-    }
-  } catch (e) {
-    console.warn('No se pudo obtener passwords remotas, usando cache local:', e);
-  }
-
-  if (!remoteOk) {
-    // fallback: cache local (última copia conocida)
-    try { passwords = JSON.parse(localStorage.getItem(PASSWORD_KEY) || '{}'); } catch(e) { passwords = {}; }
-    showToast('⚠️ No se pudo sincronizar passwords, usando copia local', false);
-  }
-
-  // Asegurar defaults para los "User #1".."User #8" si nunca se han configurado
-  // (esto NO sobreescribe si el admin ya definió una contraseña distinta)
-  let hasChanges = false;
-  for (const [user, pwd] of Object.entries(DEFAULT_USERS)) {
-    if (!passwords[user]) {
-      passwords[user] = hashPassword(pwd);
-      hasChanges = true;
-    }
-  }
-  if (hasChanges && remoteOk) {
-    // solo persistimos localmente; no forzamos escritura remota de defaults
-    // para no pisar lo que otros compañeros ya configuraron
-    try { localStorage.setItem(PASSWORD_KEY, JSON.stringify(passwords)); } catch(e) {}
-  }
+// ── SESSIONS (sessionStorage: se borran al cerrar la pestaña) ──────────────
+function loadSessions() {
+  try { sessions = JSON.parse(sessionStorage.getItem('crm_sessions') || '{}'); } catch(e) { sessions = {}; }
 }
-
-// Guarda SOLO localmente (respaldo). El guardado real/central ocurre en
-// syncPasswordToServer() que manda el cambio al Apps Script.
-function savePasswordsLocalCache() {
-  try { localStorage.setItem(PASSWORD_KEY, JSON.stringify(passwords)); } catch(e) {}
+function saveSessions() {
+  try { sessionStorage.setItem('crm_sessions', JSON.stringify(sessions)); } catch(e) {}
 }
+function getSessionFor(advisor) { return sessions[advisor] || null; }
 
 function rowKey(r) { return r.id + '||' + r.nombre + '||' + r.telefono; }
 
-function hashPassword(pwd) {
-  let hash = 0;
-  for (let i = 0; i < pwd.length; i++) {
-    const char = pwd.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash;
-  }
-  return 'hash_' + hash.toString(36);
+// ── API HELPERS ──────────────────────────────────────────────────────────────
+async function apiGet(params) {
+  const url = APPS_SCRIPT_URL + '?' + new URLSearchParams(params).toString() + '&cb=' + Date.now();
+  const res = await fetch(url);
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  return res.json();
+}
+async function apiPost(body) {
+  const res = await fetch(APPS_SCRIPT_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain' }, // evita preflight CORS
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  return res.json();
 }
 
-function verifyPassword(advisor, pwd) {
-  if (advisor === 'admin') return pwd === ADMIN_PASSWORD;
-  if (!passwords[advisor]) return false;
-  return passwords[advisor] === hashPassword(pwd);
-}
-
-// setPassword ahora es ASYNC: actualiza en memoria + cache local
-// inmediatamente (para que la UI responda rápido), y en paralelo
-// manda el cambio al Apps Script para que quede disponible para
-// todo el equipo.
-async function setPassword(advisor, pwd) {
-  if (pwd && pwd.trim()) {
-    passwords[advisor] = hashPassword(pwd.trim());
-  } else {
-    delete passwords[advisor];
-  }
-  savePasswordsLocalCache();
-  renderTabs();
-  if (adminUnlocked) renderAdminPanel();
-
-  // Sincronizar al servidor (Apps Script -> Google Sheet)
-  try {
-    const res = await fetch(APPS_SCRIPT_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify({
-        action: 'setPassword',
-        advisor: advisor,
-        passwordHash: passwords[advisor] || ''  // vacío = eliminar contraseña
-      }),
-    });
-    const json = await res.json();
-    if (!json.ok) throw new Error(json.error || 'Unknown error');
-    showToast('🔒 Contraseña sincronizada para todo el equipo');
-  } catch (err) {
-    showToast('⚠️ Guardado local, pero no se sincronizó al servidor', false);
-    console.warn('Error sincronizando password:', err);
-  }
-}
-
-function isTabLocked(advisor) {
-  if (advisor === 'all' || advisor === 'handling') return false;
-  return !!passwords[advisor];
-}
-
-// ── CSV PARSER ────────────────────────────────────────────────────────────────
-function parseCSV(raw) {
-  const text = raw.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
-  const lines = text.split('\n').filter(l => l.trim());
-  if (!lines.length) return [];
-  const sep = lines[0].includes('\t') ? '\t' : ',';
-  function splitLine(line) {
-    if (sep === '\t') return line.split('\t').map(s => s.trim());
-    const res = []; let cur = '', inQ = false;
-    for (let i = 0; i < line.length; i++) {
-      const c = line[i];
-      if (c === '"') { if (inQ && line[i+1]==='"') { cur+='"'; i++; } else { inQ=!inQ; } }
-      else if (c===',' && !inQ) { res.push(cur.trim()); cur=''; }
-      else { cur+=c; }
-    }
-    res.push(cur.trim());
-    return res;
-  }
-  const headers = splitLine(lines[0]).map(h => h.replace(/^"|"$/g,'').trim().toLowerCase());
-
-  function col(keywords) {
-    for (let h of headers) {
-      const hLower = h.toLowerCase();
-      for (let k of keywords) {
-        if (hLower === k.toLowerCase()) {
-          return headers.indexOf(h);
-        }
-      }
-    }
-    for (let h of headers) {
-      const hLower = h.toLowerCase();
-      for (let k of keywords) {
-        if (hLower.includes(k.toLowerCase())) {
-          return headers.indexOf(h);
-        }
-      }
-    }
-    return -1;
-  }
-
-  const iId   = col(['#','id','num','no.']);
-  const iNom  = col(['nombre', 'nameperson']);
-  const iHome = col(['home', 'casa', 'teléfono casa', 'telefono casa']);
-  const iMobile = col(['mobile', 'móvil', 'movil', 'celular']);
-  const iSal  = col(['saldo','balance']);
-  const iDom  = col(['domicilio','direcc','address']);
-  const iAdv  = col(['asesor','advisor']);
-  const iFec  = col(['fecha','date']);
-  const iCom  = col(['coment','note','observ']);
-
-  const iNamePerson = col(['nameperson', 'nombre']);
-  const iBirthDate = col(['birthdate', 'birth date']);
-  const iAge = col(['age', 'edad']);
-  const iStateLong = col(['statelong', 'state long', 'estado']);
-  const iOffice = col(['office', 'oficina']);
-  const iSalesOffice = col(['salesoffice', 'sales office', 'oficina ventas']);
-  const iContractDate = col(['contractdate', 'contract date', 'fecha contrato']);
-  const iContractSaleType = col(['contractsaletype', 'contract sale type', 'tipo contrato']);
-  const iProduct = col(['product', 'producto']);
-  const iSalesPrice = col(['salesprice', 'sales price', 'precio venta']);
-  const iDownPayment = col(['downpayment', 'down payment', 'enganche']);
-  const iMonthlyPayment = col(['monthly payment', 'monthlypayment', 'pago mensual']);
-  const iTerm = col(['term', 'plazo']);
-  const iScheduledLoan = col(['scheduledloan', 'scheduled loan', 'prestamo programado']);
-  const iFinancingType = col(['financingtype', 'financing type', 'tipo financiamiento']);
-  const iEquity = col(['equity', 'capital']);
-
-  const out = [];
-  for (let i = 1; i < lines.length; i++) {
-    const c = splitLine(lines[i]).map(s => s.replace(/^"|"$/g,'').trim());
-    const nombre = iNamePerson >= 0 ? c[iNamePerson] || '' : (iNom >= 0 ? c[iNom] || '' : '');
-    if (!nombre) continue;
-    let saldo = 0;
-    if (iSal >= 0 && c[iSal]) {
-      saldo = parseFloat(c[iSal].replace(/[$,\s]/g,'')) || 0;
-    }
-    const row = {
-      id: iId >= 0 ? (parseInt(c[iId]) || i) : i,
-      nombre: nombre,
-      telefono: iHome >= 0 ? c[iHome] || '' : '',
-      telefono_mobile: iMobile >= 0 ? c[iMobile] || '' : '',
-      saldo: saldo,
-      domicilio: iDom >= 0 ? c[iDom] || '' : '',
-      asesor: iAdv >= 0 ? c[iAdv] || '' : '',
-      fecha: iFec >= 0 ? c[iFec] || '' : '',
-      comentarios: iCom >= 0 ? c[iCom] || '' : '',
-      namePerson: nombre,
-      birthDate: iBirthDate >= 0 ? c[iBirthDate] || '' : '',
-      age: iAge >= 0 ? c[iAge] || '' : '',
-      stateLong: iStateLong >= 0 ? c[iStateLong] || '' : '',
-      home: iHome >= 0 ? c[iHome] || '' : '',
-      mobile: iMobile >= 0 ? c[iMobile] || '' : '',
-      office: iOffice >= 0 ? c[iOffice] || '' : '',
-      salesOffice: iSalesOffice >= 0 ? c[iSalesOffice] || '' : '',
-      contractDate: iContractDate >= 0 ? c[iContractDate] || '' : '',
-      contractSaleType: iContractSaleType >= 0 ? c[iContractSaleType] || '' : '',
-      product: iProduct >= 0 ? c[iProduct] || '' : '',
-      salesPrice: iSalesPrice >= 0 ? c[iSalesPrice] || '' : '',
-      downPayment: iDownPayment >= 0 ? c[iDownPayment] || '' : '',
-      monthlyPayment: iMonthlyPayment >= 0 ? c[iMonthlyPayment] || '' : '',
-      term: iTerm >= 0 ? c[iTerm] || '' : '',
-      scheduledLoan: iScheduledLoan >= 0 ? c[iScheduledLoan] || '' : '',
-      financingType: iFinancingType >= 0 ? c[iFinancingType] || '' : '',
-      equity: iEquity >= 0 ? c[iEquity] || '' : '',
-    };
-    out.push(row);
-  }
-  return out;
-}
-
-// ── LOAD ─────────────────────────────────────────────────────────────────────
-async function loadData() {
+// ── INITIAL LOAD (público: solo lista de asesores + resumen agregado) ──────
+async function loadInitial() {
   document.getElementById('tableBody').innerHTML =
-    '<tr><td colspan="12"><div class="loading"><div class="spinner"></div>Updating data...</div></td></tr>';
+    '<tr><td colspan="12"><div class="loading"><div class="spinner"></div>Loading data...</div></td></tr>';
   try {
-    const res = await fetch(CSV_URL + '&cb=' + Date.now());
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const text = await res.text();
-    allRows = parseCSV(text);
     loadStore();
-    await loadPasswords(); // ahora es async: espera la sincronización remota
-    const seen = new Set();
-    advisors = [];
-    allRows.forEach(r => {
-      if (r.asesor && r.asesor.trim() && !seen.has(r.asesor.trim())) {
-        seen.add(r.asesor.trim());
-        advisors.push(r.asesor.trim());
-      }
-    });
+    loadSessions();
+
+    const [advRes, sumRes] = await Promise.all([
+      apiGet({ action: 'getAdvisorList' }),
+      apiGet({ action: 'getSummary' }),
+    ]);
+    if (!advRes.ok) throw new Error(advRes.error || 'Error obteniendo asesores');
+    if (!sumRes.ok) throw new Error(sumRes.error || 'Error obteniendo resumen');
+
+    advisorList = advRes.advisors || [];
+    summaryData = sumRes.summary || [];
+
     document.getElementById('last-update').textContent =
       'Updated ' + new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+
     renderTabs();
-    if (adminUnlocked) renderAdminPanel();
-    applyFiltersAndRender();
     updateAdminButton();
-    renderUSAMap();
-    updateTimezoneTable();
-    startLiveClock();
-    updateLookupClock();
+
+    if (activeTab === 'all') {
+      renderResumen();
+    } else if (activeTab === 'handling') {
+      showDefaultContent(false); showHandlingContent(true); renderHandling();
+    } else {
+      applyFiltersAndRender();
+    }
   } catch(e) {
     document.getElementById('tableBody').innerHTML =
-      '<tr><td colspan="12" style="text-align:center;padding:2rem;color:var(--rojo);">⚠️ Error: ' + e.message + '</td></tr>';
+      '<tr><td colspan="12" style="text-align:center;padding:2rem;color:var(--rojo);">⚠️ Error: ' + esc(e.message) + '</td></tr>';
     showToast('Error loading data', false);
   }
 }
+function loadData() { loadInitial(); } // alias usado por el botón Refresh
 
-// ── STATUS ────────────────────────────────────────────────────────────────────
+// ── STATUS (local overrides / inferred) ──────────────────────────────────────
 function getStatus(r) {
   const k = rowKey(r);
   if (store[k] && store[k].status) return store[k].status;
@@ -2114,52 +1669,51 @@ function inferStatus(c) {
   if (t.includes('no desea') || t.includes('no está interesad') || t.includes('no interesad')) return 'notint';
   if (t.includes('no enlaza') || t.includes('teléfono no')) return 'noanswer';
   if (t.includes('buzón') || t.includes('3era') || t.includes('buzon')) return 'voicemail';
-  if (c.trim()) return 'none';
   return 'none';
 }
 
 // ── TABS ─────────────────────────────────────────────────────────────────────
 function renderTabs() {
-  const allCnt = allRows.length;
   let html = '<button class="tab-btn ' + (activeTab==='all'?'active':'') +
-    '" onclick="switchTab(\'all\')">📊 General Report <span class="tab-count">' + allCnt + '</span></button>';
+    '" onclick="switchTab(\'all\')">📊 General Report <span class="tab-count">' + summaryData.reduce((s,a)=>s+a.total,0) + '</span></button>';
   html += '<button class="tab-btn ' + (activeTab==='handling'?'active':'') +
     '" onclick="switchTab(\'handling\')">🗣️ Handling Objections</button>';
-  advisors.forEach((adv) => {
-    const cnt = allRows.filter(r => r.asesor === adv).length;
-    const isActive = activeTab === adv ? 'active' : '';
-    const isLocked = isTabLocked(adv);
+  advisorList.forEach((adv) => {
+    const isActive = activeTab === adv.name ? 'active' : '';
+    const isAuthed = !!getSessionFor(adv.name);
     let lockClass = '';
-    if (!isLocked) lockClass = 'unlocked';
-    else lockClass = 'locked';
-    const safeAdv = adv.replace(/'/g,"\\'");
+    if (!adv.locked) lockClass = 'unlocked';
+    else lockClass = isAuthed ? 'unlocked' : 'locked';
+    const safeAdv = adv.name.replace(/'/g,"\\'");
     html += '<button class="tab-btn ' + isActive + ' ' + lockClass + '" onclick="switchTab(\'' + safeAdv + '\')">' +
-      adv + ' <span class="tab-count">' + cnt + '</span></button>';
+      esc(adv.name) + ' <span class="tab-count">' + adv.count + '</span></button>';
   });
   document.getElementById('tabs').innerHTML = html;
-  updateTimezoneVisibility();
 }
 
-function switchTab(tab) {
+async function switchTab(tab) {
   if (tab === 'all') {
-    activeTab = 'all';
-    currentPage = 1;
-    renderTabs();
-    applyFiltersAndRender();
-    updateTimezoneVisibility();
-    showDefaultContent(true);
-    showHandlingContent(false);
+    activeTab = 'all'; currentPage = 1;
+    renderTabs(); showDefaultContent(true); showHandlingContent(false);
+    document.getElementById('filterGroup').classList.add('hidden');
+    document.getElementById('panel-title').textContent = '📊 General Report';
+    document.getElementById('sessionBanner').classList.remove('show');
+    renderResumen();
+    updateAreaCodeVisibility(); // ocultar ladas
     return;
   }
   if (tab === 'handling') {
     activeTab = 'handling';
-    renderTabs();
-    showDefaultContent(false);
-    showHandlingContent(true);
+    renderTabs(); showDefaultContent(false); showHandlingContent(true);
     renderHandling();
+    updateAreaCodeVisibility(); // ocultar ladas
     return;
   }
-  if (isTabLocked(tab)) {
+
+  const advInfo = advisorList.find(a => a.name === tab);
+  const needsAuth = advInfo && advInfo.locked && !getSessionFor(tab);
+
+  if (needsAuth) {
     pendingTab = tab;
     document.getElementById('modalTitle').textContent = '🔒 Access Restricted';
     document.getElementById('modalAdvisorName').textContent = tab;
@@ -2169,37 +1723,61 @@ function switchTab(tab) {
     document.getElementById('modalPassword').focus();
     return;
   }
-  activeTab = tab;
-  currentPage = 1;
-  renderTabs();
+
+  activeTab = tab; currentPage = 1;
+  renderTabs(); showDefaultContent(true); showHandlingContent(false);
+  document.getElementById('filterGroup').classList.remove('hidden');
+  document.getElementById('panel-title').textContent = '📋 ' + tab;
+
+  const session = getSessionFor(tab);
+  if (session) {
+    document.getElementById('sessionBanner').classList.add('show');
+    document.getElementById('sessionBannerText').textContent = '🔓 Sesión activa para ' + tab;
+  } else {
+    document.getElementById('sessionBanner').classList.remove('show');
+  }
+
+  await ensureAdvisorData(tab);
   applyFiltersAndRender();
-  updateTimezoneVisibility();
-  showDefaultContent(true);
-  showHandlingContent(false);
+  updateAreaCodeVisibility(); // mostrar ladas en pestañas de asesor
 }
 
-function showDefaultContent(show) {
-  document.getElementById('defaultContent').style.display = show ? 'block' : 'none';
-}
-function showHandlingContent(show) {
-  document.getElementById('handlingContainer').style.display = show ? 'block' : 'none';
+function showDefaultContent(show) { document.getElementById('defaultContent').style.display = show ? 'block' : 'none'; }
+function showHandlingContent(show) { document.getElementById('handlingContainer').style.display = show ? 'block' : 'none'; }
+
+// ── DATA FETCH POR ASESOR AUTENTICADO ───────────────────────────────────────
+async function ensureAdvisorData(advisor) {
+  const session = getSessionFor(advisor);
+  if (!session) {
+    advisorRows[advisor] = [];
+    return;
+  }
+  if (advisorRows[advisor]) return; // ya en cache
+  try {
+    const res = await apiGet({ action: 'getData', token: session.token });
+    if (!res.ok) {
+      if (res.code === 401) {
+        delete sessions[advisor]; saveSessions();
+        showToast('⚠️ Sesión expirada, vuelve a iniciar sesión', false);
+      }
+      throw new Error(res.error || 'Error obteniendo datos');
+    }
+    advisorRows[advisor] = res.data || [];
+  } catch (e) {
+    advisorRows[advisor] = [];
+    showToast('Error: ' + e.message, false);
+  }
 }
 
 function renderHandling() {
   const grid = document.getElementById('objectionGrid');
   if (!grid) return;
-  if (!OBJECTIONS.length) {
-    grid.innerHTML = '<p style="color:#999;text-align:center;padding:2rem;">No objections loaded.</p>';
-    return;
-  }
   let html = '';
   OBJECTIONS.forEach((obj) => {
-    html += `
-      <div class="objection-card">
+    html += `<div class="objection-card">
         <div class="obj-quote">${esc(obj.objection)}</div>
         <div class="obj-response">${obj.response.replace(/\n/g, '<br>')}</div>
-      </div>
-    `;
+      </div>`;
   });
   grid.innerHTML = html;
 }
@@ -2207,7 +1785,7 @@ function renderHandling() {
 // ── ADMIN PANEL ──────────────────────────────────────────────────────────────
 function toggleAdminPanel() {
   if (adminUnlocked) { closeAdminPanel(); return; }
-  pendingTab = 'admin';
+  pendingTab = '__admin__';
   document.getElementById('modalTitle').textContent = '🔐 Admin Panel Access';
   document.getElementById('modalAdvisorName').textContent = 'Administrator';
   document.getElementById('modalPassword').value = '';
@@ -2222,41 +1800,31 @@ function closeAdminPanel() {
 }
 function updateAdminButton() {
   const btn = document.getElementById('adminBtn');
-  if (adminUnlocked) {
-    btn.textContent = '🔓 Admin';
-    btn.className = 'btn-admin unlocked';
-  } else {
-    btn.textContent = '🔒 Admin';
-    btn.className = 'btn-admin locked';
-  }
+  if (adminUnlocked) { btn.textContent = '🔓 Admin'; btn.className = 'btn-admin unlocked'; }
+  else { btn.textContent = '🔒 Admin'; btn.className = 'btn-admin locked'; }
 }
 function renderAdminPanel() {
   if (!adminUnlocked) return;
   const grid = document.getElementById('adminGrid');
-  const allAdvisors = [...new Set([...advisors, ...Object.keys(DEFAULT_USERS)])];
-  if (!allAdvisors.length) {
-    grid.innerHTML = '<p style="color:#999;grid-column:1/-1;text-align:center;padding:20px;">No advisors registered.</p>';
+  if (!advisorList.length) {
+    grid.innerHTML = '<p style="color:#999;grid-column:1/-1;text-align:center;padding:20px;">No hay asesores registrados.</p>';
     return;
   }
   let html = '';
-  allAdvisors.forEach(adv => {
-    const hasPwd = !!passwords[adv];
-    const isDefault = !!DEFAULT_USERS[adv];
-    const statusText = hasPwd ? '🔒 Has password' : '🔓 No password';
-    const statusClass = hasPwd ? 'has-password' : '';
-    const defaultLabel = isDefault ? ' (default)' : '';
+  advisorList.forEach(adv => {
+    const statusText = adv.locked ? '🔒 Has password' : '🔓 No password';
+    const statusClass = adv.locked ? 'has-password' : '';
     html += `
       <div class="admin-item">
-        <span class="admin-name">${esc(adv)}${defaultLabel}</span>
+        <span class="admin-name">${esc(adv.name)}</span>
         <span class="admin-status ${statusClass}">${statusText}</span>
-        <input type="password" id="pwd_${escJ(adv)}" placeholder="New..." />
+        <input type="password" id="pwd_${escJ(adv.name)}" placeholder="New..." />
         <div class="admin-actions">
-          <button class="btn-save" onclick="saveAdminPassword('${escJ(adv)}')">${hasPwd ? '🔄' : '🔒'}</button>
-          ${hasPwd ? `<button class="btn-remove" onclick="removeAdminPassword('${escJ(adv)}')">🗑️</button>` : ''}
-          <button class="btn-clear" onclick="clearPasswordField('${escJ(adv)}')">✕</button>
+          <button class="btn-save" onclick="saveAdminPassword('${escJ(adv.name)}')">${adv.locked ? '🔄' : '🔒'}</button>
+          ${adv.locked ? `<button class="btn-remove" onclick="removeAdminPassword('${escJ(adv.name)}')">🗑️</button>` : ''}
+          <button class="btn-clear" onclick="clearPasswordField('${escJ(adv.name)}')">✕</button>
         </div>
-      </div>
-    `;
+      </div>`;
   });
   grid.innerHTML = html;
 }
@@ -2269,70 +1837,66 @@ async function saveAdminPassword(advisor) {
   if (!input) return;
   const pwd = input.value.trim();
   if (!pwd) { showToast('⚠️ Please enter a valid password', false); return; }
-  await setPassword(advisor, pwd);
-  renderAdminPanel();
-  renderTabs();
+  const session = getSessionFor('__admin__');
+  if (!session) { showToast('⚠️ Admin session expired', false); return; }
+  try {
+    const res = await apiPost({ action: 'setPassword', token: session.token, advisor, password: pwd });
+    if (!res.ok) throw new Error(res.error);
+    showToast('🔒 Contraseña actualizada para ' + advisor);
+    await refreshAdvisorList();
+    renderAdminPanel();
+    renderTabs();
+  } catch (err) {
+    showToast('⚠️ Error: ' + err.message, false);
+  }
 }
 async function removeAdminPassword(advisor) {
   if (!confirm('Remove password for ' + advisor + '?')) return;
-  await setPassword(advisor, ''); // '' => setPassword elimina y sincroniza al servidor
-  renderAdminPanel();
-  renderTabs();
-  if (activeTab === advisor) { activeTab = 'all'; applyFiltersAndRender(); }
+  const session = getSessionFor('__admin__');
+  if (!session) { showToast('⚠️ Admin session expired', false); return; }
+  try {
+    const res = await apiPost({ action: 'setPassword', token: session.token, advisor, password: '' });
+    if (!res.ok) throw new Error(res.error);
+    showToast('🗑️ Contraseña eliminada para ' + advisor);
+    await refreshAdvisorList();
+    renderAdminPanel();
+    renderTabs();
+    if (activeTab === advisor) { activeTab = 'all'; switchTab('all'); }
+  } catch (err) {
+    showToast('⚠️ Error: ' + err.message, false);
+  }
 }
-function exportPasswords() {
-  const data = JSON.stringify(passwords, null, 2);
-  const blob = new Blob([data], {type: 'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'crm_passwords_' + new Date().toISOString().slice(0,10) + '.json';
-  a.click();
-  URL.revokeObjectURL(url);
-  showToast('📤 Passwords exported (backup local)');
-}
-async function importPasswords(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = async function(e) {
-    try {
-      const data = JSON.parse(e.target.result);
-      if (typeof data === 'object') {
-        // Sincroniza cada entrada al servidor una por una
-        for (const [advisor, hash] of Object.entries(data)) {
-          passwords[advisor] = hash;
-          try {
-            await fetch(APPS_SCRIPT_URL, {
-              method: 'POST',
-              headers: { 'Content-Type': 'text/plain' },
-              body: JSON.stringify({ action: 'setPassword', advisor, passwordHash: hash }),
-            });
-          } catch(err) { console.warn('Error sincronizando', advisor, err); }
-        }
-        savePasswordsLocalCache();
-        if (adminUnlocked) renderAdminPanel();
-        renderTabs();
-        showToast('📥 Passwords imported and synced');
-      } else throw new Error('Invalid format');
-    } catch(err) {
-      showToast('⚠️ Error importing: invalid file', false);
-    }
-  };
-  reader.readAsText(file);
-  event.target.value = '';
+async function refreshAdvisorList() {
+  const res = await apiGet({ action: 'getAdvisorList' });
+  if (res.ok) advisorList = res.advisors || [];
 }
 
 function closePasswordModal() {
   document.getElementById('passwordModal').classList.remove('show');
   document.getElementById('modalError').classList.remove('show');
 }
-function checkPassword() {
+
+async function checkPassword() {
   if (!pendingTab) return;
   const pwd = document.getElementById('modalPassword').value;
   const targetTab = pendingTab;
-  if (targetTab === 'admin') {
-    if (verifyPassword('admin', pwd)) {
+
+  try {
+    const advisorParam = targetTab === '__admin__' ? '__admin__' : targetTab;
+    const res = await apiPost({ action: 'login', advisor: advisorParam, password: pwd });
+
+    if (!res.ok) {
+      document.getElementById('modalError').textContent = '❌ ' + (res.error || 'Contraseña incorrecta');
+      document.getElementById('modalError').classList.add('show');
+      document.getElementById('modalPassword').value = '';
+      document.getElementById('modalPassword').focus();
+      return;
+    }
+
+    sessions[advisorParam] = { token: res.token, role: res.role };
+    saveSessions();
+
+    if (targetTab === '__admin__') {
       adminUnlocked = true;
       closePasswordModal();
       document.getElementById('adminPanel').classList.add('show');
@@ -2340,108 +1904,77 @@ function checkPassword() {
       updateAdminButton();
       showToast('🔓 Admin panel access granted');
       pendingTab = null;
-    } else {
-      document.getElementById('modalError').classList.add('show');
-      document.getElementById('modalPassword').value = '';
-      document.getElementById('modalPassword').focus();
+      return;
     }
-    return;
-  }
-  if (verifyPassword(targetTab, pwd)) {
+
     closePasswordModal();
-    activeTab = targetTab;
-    currentPage = 1;
-    renderTabs();
-    applyFiltersAndRender();
-    updateTimezoneVisibility();
-    showDefaultContent(true);
-    showHandlingContent(false);
-    showToast('🔓 Access granted to ' + targetTab);
     pendingTab = null;
-  } else {
+    showToast('🔓 Access granted to ' + targetTab);
+    await switchTab(targetTab);
+
+  } catch (err) {
+    document.getElementById('modalError').textContent = '❌ Error de conexión';
     document.getElementById('modalError').classList.add('show');
-    document.getElementById('modalPassword').value = '';
-    document.getElementById('modalPassword').focus();
   }
 }
 document.getElementById('passwordModal').addEventListener('click', function(e) {
   if (e.target === this) closePasswordModal();
 });
 
-function getClientBalance(r) {
-  const k = rowKey(r);
-  if (store[k] && store[k].balance !== undefined && !isNaN(store[k].balance)) {
-    return store[k].balance;
+async function logoutCurrentTab() {
+  const session = getSessionFor(activeTab);
+  if (session) {
+    try { await apiPost({ action: 'logout', token: session.token }); } catch(e) {}
+    delete sessions[activeTab];
+    delete advisorRows[activeTab];
+    saveSessions();
   }
-  return r.saldo || 0;
+  document.getElementById('sessionBanner').classList.remove('show');
+  renderTabs();
+  switchTab('all');
 }
 
+// ── BALANCES / MONTHS PAID (overrides locales, se sincronizan al guardar comentario) ──
+function getClientBalance(r) {
+  const k = rowKey(r);
+  if (store[k] && store[k].balance !== undefined && !isNaN(store[k].balance)) return store[k].balance;
+  return r.saldo || 0;
+}
 function updateBalance(key, newVal) {
   const num = parseFloat(newVal);
   if (isNaN(num)) { showToast('Please enter a valid number', false); return; }
   if (!store[key]) store[key] = {};
   store[key].balance = num;
   saveStore();
-  if (activeTab !== 'all') {
-    const data = allRows.filter(r => r.asesor === activeTab);
-    updateSummary(data);
-    renderTable();
-  } else {
-    updateSummary(allRows);
-    renderResumen();
-  }
+  if (activeTab !== 'all' && activeTab !== 'handling') { renderTable(); }
   showToast('Actual Monthly Payment updated ✓');
 }
-
 function updateMonthsPaid(key, newVal) {
   const num = parseFloat(newVal);
-  if (isNaN(num) || num < 0) {
-    showToast('Please enter a valid number (0 or more)', false);
-    return;
-  }
+  if (isNaN(num) || num < 0) { showToast('Please enter a valid number (0 or more)', false); return; }
   if (!store[key]) store[key] = {};
   store[key].monthsPaid = num;
   saveStore();
-  if (activeTab !== 'all') {
-    const data = allRows.filter(r => r.asesor === activeTab);
-    updateSummary(data);
-    renderTable();
-  } else {
-    updateSummary(allRows);
-    renderResumen();
-  }
+  if (activeTab !== 'all' && activeTab !== 'handling') { renderTable(); }
   showToast('Months paid updated ✓');
 }
 
 function applyFiltersAndRender() {
-  if (activeTab === 'handling') return;
-  if (activeTab === 'all') {
-    document.getElementById('filterGroup').classList.add('hidden');
-    document.getElementById('panel-title').textContent = '📊 General Report';
-    renderResumen();
-    updateTimezoneVisibility();
-    return;
-  } else {
-    document.getElementById('filterGroup').classList.remove('hidden');
-    document.getElementById('panel-title').textContent = '📋 ' + activeTab;
-  }
-  let data = allRows.filter(r => r.asesor === activeTab);
+  if (activeTab === 'all' || activeTab === 'handling') return;
+  let data = advisorRows[activeTab] || [];
   const q  = (document.getElementById('searchInput') || {}).value || '';
   const sf = (document.getElementById('statusFilter') || {}).value || '';
   if (q.trim()) {
     const ql = q.toLowerCase();
     data = data.filter(r =>
       (r.namePerson || r.nombre || '').toLowerCase().includes(ql) ||
-      (r.home || '').includes(q) ||
-      (r.mobile || '').includes(q) ||
-      (r.telefono || '').includes(q) ||
-      (r.telefono_mobile || '').includes(q)
+      (r.home || '').includes(q) || (r.mobile || '').includes(q) ||
+      (r.telefono || '').includes(q) || (r.telefono_mobile || '').includes(q)
     );
   }
   if (sf) data = data.filter(r => getStatus(r) === sf);
-  data.sort((a, b) => {
-    let va = a[sortField === 'asesor' ? 'asesor' : sortField];
-    let vb = b[sortField === 'asesor' ? 'asesor' : sortField];
+  data = data.slice().sort((a, b) => {
+    let va = a[sortField], vb = b[sortField];
     if (sortField === 'id' || sortField === 'saldo') { va = Number(va); vb = Number(vb); }
     else { va = String(va||'').toLowerCase(); vb = String(vb||'').toLowerCase(); }
     if (va < vb) return sortAsc ? -1 : 1;
@@ -2454,74 +1987,35 @@ function applyFiltersAndRender() {
 }
 
 function renderResumen() {
-  const map = new Map();
-  allRows.forEach(r => {
-    const adv = r.asesor || 'No Advisor';
-    if (!map.has(adv)) {
-      map.set(adv, { asesor: adv, total: 0, comentadosSemana: 0, clientes: [], sumaBalances: 0 });
-    }
-    const entry = map.get(adv);
-    entry.total++;
-    entry.clientes.push(r);
-    entry.sumaBalances += getClientBalance(r);
-  });
-  const hoy = new Date();
-  const semanaAtras = new Date(hoy);
-  semanaAtras.setDate(hoy.getDate() - 7);
-  map.forEach(entry => {
-    let cont = 0;
-    entry.clientes.forEach(r => {
-      const k = rowKey(r);
-      const data = store[k];
-      if (data && data.date) {
-        const partes = data.date.split('/');
-        if (partes.length === 3) {
-          const d = new Date(parseInt(partes[2]), parseInt(partes[1])-1, parseInt(partes[0]));
-          if (d >= semanaAtras && d <= hoy) cont++;
-        }
-      }
-    });
-    entry.comentadosSemana = cont;
-    delete entry.clientes;
-  });
-  const resumen = Array.from(map.values()).sort((a,b) => b.total - a.total);
   const thead = document.getElementById('tableHead');
   thead.innerHTML = `<tr>
     <th style="cursor:default;">Advisor</th>
     <th style="cursor:default;text-align:center;">Total Clients</th>
-    <th style="cursor:default;text-align:center;">Worked (7 days)</th>
-    <th style="cursor:default;text-align:center;">Progress</th>
     <th style="cursor:default;text-align:center;">Total Monthly Balance (USD)</th>
   </tr>`;
   const tbody = document.getElementById('tableBody');
-  if (!resumen.length) {
-    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:2rem;color:#999;">No advisors with clients</td></tr>';
+  if (!summaryData.length) {
+    tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:2rem;color:#999;">No advisors with clients</td></tr>';
   } else {
-    tbody.innerHTML = resumen.map(item => {
-      const pct = item.total ? Math.round((item.comentadosSemana / item.total) * 100) : 0;
-      return `<tr class="resumen-asesor">
+    tbody.innerHTML = summaryData.map(item => `<tr class="resumen-asesor">
         <td><strong>${esc(item.asesor)}</strong></td>
         <td style="text-align:center;font-weight:600;">${item.total}</td>
-        <td style="text-align:center;font-weight:600;color:var(--azul-profundo);">${item.comentadosSemana}</td>
-        <td style="text-align:center;">
-          <div style="display:flex;align-items:center;gap:8px;justify-content:center;">
-            <span style="font-size:12px;font-weight:600;">${pct}%</span>
-            <div class="barra-progreso"><span style="width:${pct}%;"></span></div>
-          </div>
-        </td>
         <td style="text-align:center;font-weight:600;">${fmtCur(item.sumaBalances)}</td>
-      </tr>`;
-    }).join('');
+      </tr>`).join('');
   }
   document.getElementById('pagination').classList.add('hidden');
-  updateSummary(allRows);
-  updateTimezoneVisibility();
+  const totalClients = summaryData.reduce((s,a)=>s+a.total,0);
+  const totalBalance = summaryData.reduce((s,a)=>s+a.sumaBalances,0);
+  document.getElementById('s-total').textContent = totalClients;
+  document.getElementById('s-interested').textContent = '—';
+  document.getElementById('s-undecided').textContent = '—';
+  document.getElementById('s-notint').textContent = '—';
+  document.getElementById('s-noanswer').textContent = '—';
+  document.getElementById('s-pending').textContent = '—';
+  document.getElementById('s-total-balance').textContent = fmtCur(totalBalance);
 }
 
 function renderTable() {
-  if (activeTab === 'all') {
-    return;
-  }
   document.getElementById('pagination').classList.remove('hidden');
 
   const columnas = [
@@ -2552,14 +2046,11 @@ function renderTable() {
   ];
 
   let headerHtml = '<tr>';
-  columnas.forEach((col, index) => {
-    const isDark = (col.label === 'Name' || col.label === 'BirthDate' || col.label === 'Age' ||
-                     col.label === 'State' || col.label === 'Home' || col.label === 'Mobile' ||
-                     col.label === 'Office');
+  columnas.forEach((col) => {
+    const isDark = ['Name','BirthDate','Age','State','Home','Mobile','Office'].includes(col.label);
     const isYellow = col.label === 'Monthly payment' || col.label === 'Actual Monthly Payment';
     let thClass = (isDark ? 'dark-header' : '');
     if (isYellow) thClass += (thClass ? ' ' : '') + 'yellow-text';
-
     if (col.sortable && col.field) {
       const arrow = (sortField === col.field) ? (sortAsc ? '↑' : '↓') : '↕';
       headerHtml += `<th class="sortable ${thClass}" data-field="${col.field}">${col.label} <span class="arrow">${arrow}</span></th>`;
@@ -2573,8 +2064,7 @@ function renderTable() {
   document.querySelectorAll('#tableHead th.sortable').forEach(th => {
     th.addEventListener('click', function() {
       const field = this.dataset.field;
-      if (sortField === field) { sortAsc = !sortAsc; }
-      else { sortField = field; sortAsc = true; }
+      if (sortField === field) { sortAsc = !sortAsc; } else { sortField = field; sortAsc = true; }
       currentPage = 1;
       applyFiltersAndRender();
     });
@@ -2616,8 +2106,7 @@ function renderTable() {
       let cells = '';
       columnas.forEach(col => {
         if (col.field && !col.editable && !col.computed) {
-          const val = r[col.field] || '';
-          cells += `<td>${esc(val)}</td>`;
+          cells += `<td>${esc(r[col.field] || '')}</td>`;
         } else if (col.label === 'Save') {
           cells += `<td><button class="btn-save-row" onclick="saveComment('${escJ(key)}','${escJ(r.namePerson || r.nombre)}','${escJ(r.asesor)}')">💾 Save</button></td>`;
         } else if (col.editable && col.inputType === 'months') {
@@ -2625,17 +2114,11 @@ function renderTable() {
         } else if (col.editable) {
           cells += `<td><input class="balance-input" type="number" step="any" value="${actualPayment}" onchange="updateBalance('${escJ(key)}', this.value)" /></td>`;
         } else if (col.computed) {
-          let val = 0;
-          if (col.label === 'Total Remaining Balance') {
-            val = totalRemaining;
-          } else if (col.label === 'Team Commission (25%)') {
-            val = teamCommission;
-          }
+          const val = col.label === 'Total Remaining Balance' ? totalRemaining : teamCommission;
           cells += `<td class="calc-cell">${fmtCur(val)}</td>`;
         } else if (col.label === 'Status') {
           cells += `<td><span class="badge ${st.cls}">${st.label}</span>` +
-            (savedAt ? `<br><span style="font-size:10px;color:#aaa">${savedAt}</span>` : '') +
-          `</td>`;
+            (savedAt ? `<br><span style="font-size:10px;color:#aaa">${savedAt}</span>` : '') + `</td>`;
         } else if (col.label === 'Action') {
           cells += `<td style="white-space:nowrap">
             <button class="btn-llamar" title="Call" onclick="openScriptModal('${escJ(r.namePerson || r.nombre)}','${escJ(r.home || r.telefono)}')">📞 <span>Call</span></button>
@@ -2645,7 +2128,6 @@ function renderTable() {
       });
 
       const dataRow = `<tr>${cells}</tr>`;
-
       const commentRow = `<tr class="comment-row"><td colspan="${columnas.length}">
         <div class="comment-panel ${hasData?'open':''}" id="cp_${safeKey}">
           <div class="presets">${presetsHtml}</div>
@@ -2655,7 +2137,6 @@ function renderTable() {
           </div>
         </div>
       </td></tr>`;
-
       return dataRow + commentRow;
     }).join('');
     tbody.innerHTML = rowsHtml;
@@ -2679,14 +2160,12 @@ function renderTable() {
     pgHtml += '<button onclick="goPage(' + totalPages + ')">' + totalPages + '</button>';
   }
   document.getElementById('pageNumbers').innerHTML = pgHtml;
-  updateTimezoneVisibility();
 }
 
 function goPage(p) { currentPage = p; renderTable(); }
 
 function updateSummary(data) {
-  let interested=0, undecided=0, notint=0, noanswer=0, pending=0;
-  let sumBalance = 0;
+  let interested=0, undecided=0, notint=0, noanswer=0, pending=0, sumBalance=0;
   data.forEach(r => {
     const s = getStatus(r);
     if (s==='interested') interested++;
@@ -2725,13 +2204,18 @@ async function saveComment(key, nombre, asesor) {
   const safeKey = key.replace(/[^a-z0-9]/gi,'_');
   const ta = document.getElementById('ta_' + safeKey);
   if (!ta || !ta.value.trim()) { showToast('Please write a comment first', false); return; }
+
+  const session = getSessionFor(asesor) || getSessionFor(activeTab);
+  if (!session) { showToast('⚠️ Tu sesión expiró, vuelve a iniciar sesión', false); return; }
+
   const comment  = ta.value.trim();
   const status   = (store[key] && store[key].status) || inferStatus(comment);
   const now      = new Date();
   const dateStr  = now.toLocaleDateString('en-US',{day:'2-digit',month:'2-digit',year:'numeric'});
   const timeStr  = now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
   const datetime = dateStr + ' ' + timeStr;
-  const rowData  = allRows.find(r => (r.id + '||' + r.nombre + '||' + r.telefono) === key) || {};
+  const rows     = advisorRows[activeTab] || [];
+  const rowData  = rows.find(r => rowKey(r) === key) || {};
   const statusLabels = {
     interested:'Interested', undecided:'Undecided', noanswer:'No contact',
     notint:'Not interested', voicemail:'Voicemail / 3rd', none:'Unmanaged'
@@ -2745,311 +2229,48 @@ async function saveComment(key, nombre, asesor) {
   const totalRemainingBalance = remainingMonthsCalc * actualMonthlyPayment;
   const teamCommission25      = totalRemainingBalance * 0.25;
 
-  if (activeTab !== 'all') {
-    const data = allRows.filter(r => r.asesor === activeTab);
-    updateSummary(data);
-    renderTable();
-  } else {
-    updateSummary(allRows);
-    renderResumen();
-  }
+  renderTable();
+  updateSummary(filteredData);
+
   const msgEl = document.getElementById('msg_' + safeKey);
   if (msgEl) msgEl.innerHTML = '<b>Saved locally</b> · ' + dateStr;
-  if (APPS_SCRIPT_URL) {
-    try {
-      const payload = {
-        action: 'saveComment', // NOTA: se agrega este campo para que el Apps Script
-                                // distinga este caso de las acciones de passwords.
-        fechaInteraccion: datetime,
-        asesor:           asesor,
-        idCliente:        String(rowData.id || ''),
-        nombreCliente:    nombre,
-        telefono:         rowData.telefono || '',
-        telefono_mobile:  rowData.telefono_mobile || '',
-        domicilio:        rowData.domicilio || '',
-        estado:           statusLabels[status] || status,
-        comentario:       comment,
-        salesPrice:       String(rowData.salesPrice || ''),
-        downPayment:      String(rowData.downPayment || ''),
-        monthlyPayment:   String(rowData.monthlyPayment || ''),
-        term:             String(rowData.term || ''),
-        scheduledLoan:    String(rowData.scheduledLoan || ''),
-        financingType:    String(rowData.financingType || ''),
-        equity:           String(rowData.equity || ''),
-        actualMonthlyPayment:  String(actualMonthlyPayment.toFixed(2)),
-        monthsAlreadyPaid:     String(monthsAlreadyPaid),
-        totalRemainingBalance: String(totalRemainingBalance.toFixed(2)),
-        teamCommission:        String(teamCommission25.toFixed(2))
-      };
-      const res = await fetch(APPS_SCRIPT_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify(payload),
-      });
-      const json = await res.json();
-      if (json.ok) {
-        if (msgEl) msgEl.innerHTML = '<b>✓ Saved to Sheets</b> · ' + datetime;
-        showToast('✓ Registered in Google Sheets');
-      } else throw new Error(json.error || 'Unknown error');
-    } catch (err) {
-      if (msgEl) msgEl.innerHTML = '<b>Saved locally</b> · ' + dateStr + ' <span style="color:var(--naranja)">(offline)</span>';
-      showToast('⚠️ Saved locally. Check Apps Script.', false);
-      console.warn('Apps Script error:', err);
-    }
-  } else {
-    showToast('✓ Saved locally');
+
+  try {
+    const payload = {
+      action: 'saveComment', token: session.token,
+      fechaInteraccion: datetime, asesor: asesor, idCliente: String(rowData.id || ''),
+      nombreCliente: nombre, telefono: rowData.telefono || '', telefono_mobile: rowData.telefono_mobile || '',
+      domicilio: rowData.domicilio || '', estado: statusLabels[status] || status, comentario: comment,
+      salesPrice: String(rowData.salesPrice || ''), downPayment: String(rowData.downPayment || ''),
+      monthlyPayment: String(rowData.monthlyPayment || ''), term: String(rowData.term || ''),
+      scheduledLoan: String(rowData.scheduledLoan || ''), financingType: String(rowData.financingType || ''),
+      equity: String(rowData.equity || ''), actualMonthlyPayment: String(actualMonthlyPayment.toFixed(2)),
+      monthsAlreadyPaid: String(monthsAlreadyPaid), totalRemainingBalance: String(totalRemainingBalance.toFixed(2)),
+      teamCommission: String(teamCommission25.toFixed(2))
+    };
+    const json = await apiPost(payload);
+    if (json.ok) {
+      if (msgEl) msgEl.innerHTML = '<b>✓ Saved to Sheets</b> · ' + datetime;
+      showToast('✓ Registered in Google Sheets');
+    } else throw new Error(json.error || 'Unknown error');
+  } catch (err) {
+    if (msgEl) msgEl.innerHTML = '<b>Saved locally</b> · ' + dateStr + ' <span style="color:var(--naranja)">(offline)</span>';
+    showToast('⚠️ Saved locally. ' + err.message, false);
   }
 }
 
-document.getElementById('searchInput').addEventListener('input', () => { if (activeTab !== 'all') { currentPage = 1; applyFiltersAndRender(); } });
-document.getElementById('statusFilter').addEventListener('change', () => { if (activeTab !== 'all') { currentPage = 1; applyFiltersAndRender(); } });
+document.getElementById('searchInput').addEventListener('input', () => { if (activeTab !== 'all' && activeTab !== 'handling') { currentPage = 1; applyFiltersAndRender(); } });
+document.getElementById('statusFilter').addEventListener('change', () => { if (activeTab !== 'all' && activeTab !== 'handling') { currentPage = 1; applyFiltersAndRender(); } });
 document.getElementById('resetBtn').addEventListener('click', () => {
   document.getElementById('searchInput').value = '';
   document.getElementById('statusFilter').value = '';
-  sortField = 'id'; sortAsc = true; currentPage = 1;
-  if (activeTab !== 'all') applyFiltersAndRender();
+  sortField = 'namePerson'; sortAsc = true; currentPage = 1;
+  if (activeTab !== 'all' && activeTab !== 'handling') applyFiltersAndRender();
 });
 document.getElementById('prevPage').addEventListener('click', () => { if (currentPage > 1) { currentPage--; renderTable(); } });
 document.getElementById('nextPage').addEventListener('click', () => {
   if (currentPage < Math.ceil(filteredData.length / PAGE_SIZE)) { currentPage++; renderTable(); }
 });
-
-// ── TIMEZONE / LADA REFERENCE ──────────────────────────────────────────────
-function updateTimezoneVisibility() {
-  const container = document.getElementById('timezoneRefContainer');
-  if (activeTab !== 'all' && activeTab !== 'handling') {
-    container.style.display = 'block';
-    updateTimezoneTable();
-    renderUSAMap();
-  } else {
-    container.style.display = 'none';
-  }
-}
-
-function getCDMXTime() {
-  return new Date();
-}
-
-function formatTime(d) {
-  return d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-}
-
-function updateTimezoneTable() {
-  const tbody = document.getElementById('timezoneTableBody');
-  const now = getCDMXTime();
-  let html = '';
-  LADA_TABLE.forEach(item => {
-    const offset = item.offset;
-    const localTime = new Date(now.getTime() + offset * 3600000);
-    const hourDiff = offset;
-    let diffClass = 'diff-zero';
-    let diffLabel = 'Same time';
-    if (hourDiff > 0) { diffClass = 'diff-pos'; diffLabel = `+${hourDiff}h`; }
-    else if (hourDiff < 0) { diffClass = 'diff-neg'; diffLabel = `${hourDiff}h`; }
-    else { diffLabel = 'Same time'; }
-    html += `<tr>
-      <td><strong>${esc(item.area)}</strong></td>
-      <td><span class="lada-badge">${esc(item.lada)}</span></td>
-      <td class="${diffClass}">${diffLabel}</td>
-      <td>${formatTime(localTime)}</td>
-    </tr>`;
-  });
-  tbody.innerHTML = html;
-}
-
-// ── USA MAP ──────────────────────────────────────────────────────────────────
-function renderUSAMap() {
-  const container = document.getElementById('usaMapContainer');
-  if (!container) return;
-  let html = `
-    <div class="usa-map-title">🗺️ Mapa de Estados Unidos · LADAs por región</div>
-    <div class="usa-map-grid">
-  `;
-  USA_REGIONS.forEach(region => {
-    const zoneClass = 'zone-' + region.id;
-    html += `<div class="usa-zone ${zoneClass}">
-      <div class="zone-header" style="background:${region.color};">
-        <span>${region.label}</span>
-        <span class="zone-offset">${region.offsetLabel}</span>
-      </div>
-      <div class="zone-body">
-    `;
-    region.states.forEach(state => {
-      html += `<div class="zone-state">
-        <span class="state-name">${esc(state.name)}</span>
-        <span class="state-code">${esc(state.codes)}</span>
-      </div>`;
-    });
-    html += `</div></div>`;
-  });
-  html += '</div>';
-
-  html += `
-    <div class="usa-map-title" style="margin-top:20px;">🍁 Mapa de Canadá · LADAs por región</div>
-    <div class="usa-map-grid">
-  `;
-  CANADA_REGIONS.forEach(region => {
-    const zoneClass = 'zone-' + region.id;
-    html += `<div class="usa-zone ${zoneClass}">
-      <div class="zone-header" style="background:${region.color};">
-        <span>${region.label}</span>
-        <span class="zone-offset">${region.offsetLabel}</span>
-      </div>
-      <div class="zone-body">
-    `;
-    region.states.forEach(state => {
-      html += `<div class="zone-state">
-        <span class="state-name">${esc(state.name)}</span>
-        <span class="state-code">${esc(state.codes)}</span>
-      </div>`;
-    });
-    html += `</div></div>`;
-  });
-  html += '</div>';
-
-  container.innerHTML = html;
-}
-
-// ── LADA LOOKUP TOOL ──────────────────────────────────────────────────────
-function normalizeString(str) {
-  return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-}
-
-function onLadaInput() {
-  const input = document.getElementById('ladaInput');
-  const val = input.value.trim();
-  const suggestions = document.getElementById('ladaSuggestions');
-  if (!val) {
-    suggestions.textContent = '';
-    document.getElementById('lookupResult').classList.remove('show');
-    return;
-  }
-
-  const normVal = normalizeString(val);
-  let matches = [];
-
-  if (LADA_MAP[val]) {
-    matches = [val];
-  } else {
-    const keys = Object.keys(STATE_INDEX);
-    for (const key of keys) {
-      if (key.includes(normVal)) {
-        matches = matches.concat(STATE_INDEX[key]);
-      }
-    }
-    if (matches.length === 0) {
-      const codeMatches = Object.keys(LADA_MAP).filter(code => code.startsWith(val));
-      if (codeMatches.length > 0 && codeMatches.length <= 5) {
-        suggestions.textContent = '💡 Sugerencias: ' + codeMatches.join(', ');
-      } else if (codeMatches.length > 5) {
-        suggestions.textContent = '💡 ' + codeMatches.length + ' coincidencias. Escribe más dígitos.';
-      } else {
-        suggestions.textContent = '❌ No se encontró ninguna LADA, estado o ciudad con "' + val + '"';
-      }
-      return;
-    }
-  }
-
-  if (matches.length > 1) {
-    const names = matches.map(code => LADA_MAP[code]?.state || code);
-    suggestions.textContent = '💡 Coincidencias: ' + names.join(', ') + ' (códigos: ' + matches.join(', ') + ')';
-  } else {
-    suggestions.textContent = '';
-  }
-}
-
-function lookupLada() {
-  const input = document.getElementById('ladaInput');
-  const val = input.value.trim();
-  const resultDiv = document.getElementById('lookupResult');
-  const content = document.getElementById('lookupContent');
-  if (!val) {
-    resultDiv.classList.remove('show');
-    return;
-  }
-
-  const normVal = normalizeString(val);
-  let codes = [];
-
-  if (LADA_MAP[val]) {
-    codes = [val];
-  } else {
-    const keys = Object.keys(STATE_INDEX);
-    for (const key of keys) {
-      if (key.includes(normVal)) {
-        codes = codes.concat(STATE_INDEX[key]);
-      }
-    }
-    if (codes.length === 0) {
-      for (const [code, info] of Object.entries(LADA_MAP)) {
-        if (normalizeString(info.state).includes(normVal)) {
-          codes.push(code);
-        }
-      }
-    }
-  }
-
-  if (codes.length === 0) {
-    content.innerHTML = `<div class="not-found">❌ No se encontró ninguna LADA, estado o ciudad con "${esc(val)}". Verifica el código o nombre.</div>`;
-    resultDiv.classList.add('show');
-    return;
-  }
-
-  const code = codes[0];
-  const info = LADA_MAP[code];
-  const now = getCDMXTime();
-  const cdmxTime = formatTime(now);
-  const localTime = new Date(now.getTime() + info.offset * 3600000);
-  const localTimeStr = formatTime(localTime);
-  const diff = info.offset;
-  let diffLabel = 'Misma hora';
-  if (diff > 0) diffLabel = `+${diff}h`;
-  else if (diff < 0) diffLabel = `${diff}h`;
-
-  let extraInfo = '';
-  if (codes.length > 1) {
-    const otherCodes = codes.slice(1).map(c => LADA_MAP[c]?.state + ' (' + c + ')').join(', ');
-    extraInfo = `<div class="result-row" style="color:#888;font-size:13px;border-top:1px dashed var(--arena);padding-top:8px;margin-top:6px;">
-      <span class="result-label">🔍 También coincide con</span>
-      <span class="result-value" style="font-weight:400;text-align:right;">${esc(otherCodes)}</span>
-    </div>`;
-  }
-
-  content.innerHTML = `
-    <div class="result-card-header">
-      <span style="font-size:20px;">📞</span>
-      <span style="font-weight:700;font-size:18px;color:var(--azul-profundo);">${esc(info.display)}</span>
-      <span class="region-badge">${esc(info.region)}</span>
-    </div>
-    <div class="result-row"><span class="result-label">📍 Estado / Ciudad</span><span class="result-value"><span class="highlight">${esc(info.state)}</span></span></div>
-    <div class="result-row"><span class="result-label">🕒 Hora CDMX</span><span class="result-value"><span class="live-time">${cdmxTime}</span></span></div>
-    <div class="result-row"><span class="result-label">🕒 Hora local</span><span class="result-value"><span class="live-time">${localTimeStr}</span> (${diffLabel})</span></div>
-    ${extraInfo}
-  `;
-  resultDiv.classList.add('show');
-}
-
-function updateLookupClock() {
-  const resultDiv = document.getElementById('lookupResult');
-  if (resultDiv.classList.contains('show')) {
-    const input = document.getElementById('ladaInput');
-    if (input.value.trim()) {
-      lookupLada();
-    }
-  }
-}
-
-function startLiveClock() {
-  if (timezoneInterval) clearInterval(timezoneInterval);
-  timezoneInterval = setInterval(() => {
-    const now = new Date();
-    document.getElementById('liveClock').textContent = '⏱️ CDMX: ' + formatTime(now);
-    if (document.getElementById('timezoneRefContainer').style.display !== 'none') {
-      updateTimezoneTable();
-      updateLookupClock();
-    }
-  }, 1000);
-}
 
 // ── CALL SCRIPT MODAL ──────────────────────────────────────────────────────
 function renderScriptStepsHtml() {
@@ -3058,16 +2279,13 @@ function renderScriptStepsHtml() {
       <div class="script-step-num">${i+1}</div>
       <div class="script-step-content">
         <div class="script-step-title">${s.title.replace(/^\d+\.\s*/,'')}${s.tag ? '<span class="script-tag">'+s.tag+'</span>' : ''}</div>
-        <div class="script-step-text">${s.html}</div>
+        <div class="script-step-text">${s.html.replace(/\n/g,'<br>')}</div>
       </div>
-    </div>
-  `).join('') + `
+    </div>`).join('') + `
     <div class="script-footer-note">
       💬 Tip: Adapt the bracketed placeholders to each client. Keep the tone conversational and natural.
-    </div>
-  `;
+    </div>`;
 }
-
 function openScriptModal(clientName, clientPhone) {
   document.getElementById('scriptModalBody').innerHTML = renderScriptStepsHtml();
   document.getElementById('scriptModalClientName').textContent = clientName ? ('Client: ' + clientName) : '';
@@ -3075,30 +2293,82 @@ function openScriptModal(clientName, clientPhone) {
   callBtn.href = clientPhone ? ('tel:' + clientPhone) : '#';
   document.getElementById('scriptModalOverlay').classList.add('show');
 }
-
-function closeScriptModal() {
-  document.getElementById('scriptModalOverlay').classList.remove('show');
-}
-document.getElementById('scriptModalOverlay').addEventListener('click', function(e) {
-  if (e.target === this) closeScriptModal();
-});
-
+function closeScriptModal() { document.getElementById('scriptModalOverlay').classList.remove('show'); }
+document.getElementById('scriptModalOverlay').addEventListener('click', function(e) { if (e.target === this) closeScriptModal(); });
 function copyScriptText() {
   const text = CALL_SCRIPT.map((s, i) =>
     (i+1) + '. ' + s.title.replace(/^\d+\.\s*/,'') + '\n' + s.html.replace(/<\/?em>/g,'').replace(/<br\s*\/?>/g,'\n').replace(/<strong>/g,'').replace(/<\/strong>/g,'') + '\n'
   ).join('\n');
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(text).then(() => showToast('📋 Script copied to clipboard'));
+  } else { showToast('⚠️ Clipboard not available', false); }
+}
+
+// ─── BUSCADOR DE LADAS ─────────────────────────────────────────────────────
+function updateAreaCodeVisibility() {
+  const container = document.getElementById('areaCodeSearch');
+  if (activeTab !== 'all' && activeTab !== 'handling' && !container._forceHidden) {
+    container.style.display = 'block';
+    // Mostrar algunos resultados iniciales (primeros 20)
+    if (!document.getElementById('areaCodeInput').value) {
+      renderAreaCodes(AREA_CODES.slice(0, 20));
+    }
   } else {
-    showToast('⚠️ Clipboard not available', false);
+    container.style.display = 'none';
   }
 }
+
+function filterAreaCodes(query) {
+  const q = query.trim().toLowerCase();
+  if (!q) return AREA_CODES.slice(0, 50);
+  return AREA_CODES.filter(item => {
+    const stateFull = STATE_NAMES[item.state] || item.state;
+    return item.code.includes(q) ||
+           item.state.toLowerCase().includes(q) ||
+           stateFull.toLowerCase().includes(q) ||
+           item.city.toLowerCase().includes(q);
+  });
+}
+
+function renderAreaCodes(results) {
+  const container = document.getElementById('areaCodeResults');
+  if (!results.length) {
+    container.innerHTML = '<div class="no-results">No se encontraron ladas.</div>';
+    return;
+  }
+  let html = '';
+  results.forEach(item => {
+    const stateFull = STATE_NAMES[item.state] || item.state;
+    html += `<div class="result-item">
+      <span class="code">${item.code}</span>
+      <span class="location">${stateFull} · ${item.city}</span>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function searchAreaCodes() {
+  const input = document.getElementById('areaCodeInput');
+  const query = input.value;
+  const results = filterAreaCodes(query);
+  renderAreaCodes(results);
+}
+
+// Eventos del buscador de ladas
+document.addEventListener('DOMContentLoaded', function() {
+  const input = document.getElementById('areaCodeInput');
+  const btn = document.getElementById('areaCodeSearchBtn');
+  if (input && btn) {
+    input.addEventListener('input', searchAreaCodes);
+    btn.addEventListener('click', searchAreaCodes);
+    input.addEventListener('keydown', function(e) { if (e.key === 'Enter') searchAreaCodes(); });
+  }
+});
 
 // ── HELPERS ────────────────────────────────────────────────────────────────────
 function fmtCur(n) { return n ? '$' + Number(n).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}) : '$0.00'; }
 function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function escJ(s) { return String(s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
-
 function showToast(msg, ok=true) {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -3108,5 +2378,7 @@ function showToast(msg, ok=true) {
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
-loadData();
+loadInitial();
 </script>
+</body>
+</html>
