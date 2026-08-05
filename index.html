@@ -641,7 +641,6 @@
     .badge-noanswer  { background: #f2f3f4; color: #566573; }
     .badge-notint    { background: #fdedec; color: #922b21; }
     .badge-voicemail { background: #eaf2ff; color: #1a5276; }
-    .badge-invalidphone { background: #f4ecf7; color: #6c3483; }
 
     .comment-row td { padding: 0; border-bottom: none; }
     .comment-panel {
@@ -1075,11 +1074,6 @@
         <div class="sc-val" id="s-voicemail">—</div>
         <div class="sc-sub">left voicemail / 3rd party</div>
       </div>
-      <div class="sum-card c-rojo">
-        <div class="sc-label">☎️ Invalid Phone</div>
-        <div class="sc-val" id="s-invalidphone">—</div>
-        <div class="sc-sub">did not connect</div>
-      </div>
       <div class="sum-card c-morado">
         <div class="sc-label">✏️ Custom Comment</div>
         <div class="sc-val" id="s-custom">—</div>
@@ -1109,7 +1103,6 @@
             <option value="noanswer">📵 No Answer</option>
             <option value="notint">🚫 Not interested</option>
             <option value="voicemail">📦 Voicemail</option>
-            <option value="invalidphone">☎️ Invalid phone</option>
             <option value="none">⏳ Unmanaged</option>
           </select>
           <button id="resetBtn">⟲ Reset</button>
@@ -1191,7 +1184,7 @@
 // ══════════════════════════════════════════════════════════════
 //  CONFIG
 // ══════════════════════════════════════════════════════════════
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxpgiDHL0HDhUMdnAEhzHupI5huce6gkERbH4KQVeBuZ9YiEZ1BSLa43NVg5coKtbro/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwkj-546ZDjpB7TL5VFghxUuzA5cGaJQ-CP_NAdfAu_8R4qyOfvD0VNdNEyMcp7gVrO/exec';
 const STORE_KEY = 'crm_vidanta_local_notes_v1';
 const PAGE_SIZE = 15;
 
@@ -1233,18 +1226,15 @@ const PRESETS = [
   { label: '🚫 Does not wish to be contacted', status: 'notint' },
   { label: '✅ Interested / Close with Fer',   status: 'interested'},
   { label: '📦 Voicemail / 3rd party',         status: 'voicemail' },
-  { label: '☎️ Not valid phone / Did not connect', status: 'invalidphone',
-    extraNote: 'How did you dial this number? (e.g. +1 area code, 011, direct 10 digits...)' },
 ];
 
 const STATUS_INFO = {
-  interested:   { label: 'Interested',       cls: 'badge-interested' },
-  undecided:    { label: 'Undecided',        cls: 'badge-undecided'  },
-  noanswer:     { label: 'No Answer',        cls: 'badge-noanswer'   },
-  notint:       { label: 'Not interested',   cls: 'badge-notint'     },
-  voicemail:    { label: 'Voicemail / 3rd',  cls: 'badge-voicemail'  },
-  invalidphone: { label: 'Invalid phone',    cls: 'badge-invalidphone' },
-  none:         { label: 'Unmanaged',        cls: 'badge-none'       },
+  interested: { label: 'Interested',       cls: 'badge-interested' },
+  undecided:  { label: 'Undecided',        cls: 'badge-undecided'  },
+  noanswer:   { label: 'No Answer',        cls: 'badge-noanswer'   },
+  notint:     { label: 'Not interested',   cls: 'badge-notint'     },
+  voicemail:  { label: 'Voicemail / 3rd',  cls: 'badge-voicemail'  },
+  none:       { label: 'Unmanaged',        cls: 'badge-none'       },
 };
 
 // ── STATE ────────────────────────────────────────────────────────────────────
@@ -1775,7 +1765,6 @@ async function loadInitial() {
         document.getElementById('s-notint').textContent = t.notint || 0;
         document.getElementById('s-noanswer').textContent = t.noanswer || 0;
         document.getElementById('s-voicemail').textContent = t.voicemail || 0;
-        document.getElementById('s-invalidphone').textContent = t.invalidphone || 0;
         document.getElementById('s-pending').textContent = t.none || 0;
         document.getElementById('s-total-balance').textContent = fmtCur(t.sumaBalances || 0);
         renderResumen(res.summary);
@@ -1801,7 +1790,6 @@ function loadData() { loadInitial(); }
 function getStatus(r) {
   const k = rowKey(r);
   if (store[k] && store[k].status) return store[k].status;
-  if (r.estatusGuardado && r.estatusGuardado !== 'none') return r.estatusGuardado;
   return inferStatus(r.comentarios);
 }
 function inferStatus(c) {
@@ -1857,7 +1845,6 @@ async function switchTab(tab) {
         document.getElementById('s-notint').textContent = t.notint || 0;
         document.getElementById('s-noanswer').textContent = t.noanswer || 0;
         document.getElementById('s-voicemail').textContent = t.voicemail || 0;
-        document.getElementById('s-invalidphone').textContent = t.invalidphone || 0;
         document.getElementById('s-pending').textContent = t.none || 0;
         document.getElementById('s-total-balance').textContent = fmtCur(t.sumaBalances || 0);
         renderResumen(res.summary);
@@ -1868,7 +1855,6 @@ async function switchTab(tab) {
         document.getElementById('s-notint').textContent = '—';
         document.getElementById('s-noanswer').textContent = '—';
         document.getElementById('s-voicemail').textContent = '—';
-        document.getElementById('s-invalidphone').textContent = '—';
         document.getElementById('s-pending').textContent = '—';
         document.getElementById('s-total-balance').textContent = '$0.00';
         renderResumen(summaryData);
@@ -2164,24 +2150,37 @@ function applyFiltersAndRender() {
   renderTable();
 }
 
-// ── RENDER RESUMEN ──────────────────────────────────────────────────────────
+// ── RENDER RESUMEN (MEJORADO CON BARRA DE PROGRESO) ────────────────────────
 function renderResumen(data) {
   const thead = document.getElementById('tableHead');
   thead.innerHTML = `<tr>
     <th style="cursor:default;">Advisor</th>
     <th style="cursor:default;text-align:center;">Total Clients</th>
+    <th style="cursor:default;text-align:center;">Managed</th>
     <th style="cursor:default;text-align:center;">Total Monthly Balance (USD)</th>
   </tr>`;
   const tbody = document.getElementById('tableBody');
   const items = data || summaryData;
   if (!items || !items.length) {
-    tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:2rem;color:#999;">No advisors with clients</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:2rem;color:#999;">No advisors with clients</td></tr>';
   } else {
-    tbody.innerHTML = items.map(item => `<tr class="resumen-asesor">
+    tbody.innerHTML = items.map(item => {
+      const total = item.total || 0;
+      const managed = item.managed || 0;
+      const unmanaged = item.unmanaged || 0;
+      const pct = total > 0 ? (managed / total * 100) : 0;
+      const barHtml = `<div style="background:#e9ecef;border-radius:6px;overflow:hidden;height:16px;width:100%;max-width:180px;display:inline-block;vertical-align:middle;">
+        <span style="display:block;height:100%;width:${pct}%;background:#28a745;border-radius:6px;transition:width 0.3s;"></span>
+      </div>
+      <span style="font-size:11px;color:#555;margin-left:4px;">${managed}/${total}</span>`;
+
+      return `<tr class="resumen-asesor">
         <td><strong>${esc(item.asesor)}</strong></td>
-        <td style="text-align:center;font-weight:600;">${item.total}</td>
+        <td style="text-align:center;font-weight:600;">${total}</td>
+        <td style="text-align:center;">${barHtml}</td>
         <td style="text-align:center;font-weight:600;">${fmtCur(item.sumaBalances)}</td>
-      </tr>`).join('');
+      </tr>`;
+    }).join('');
   }
   document.getElementById('pagination').classList.add('hidden');
 }
@@ -2338,7 +2337,7 @@ function goPage(p) { currentPage = p; renderTable(); }
 
 // ─── FUNCIÓN updateSummary MEJORADA ────────────────────────────────────────
 function updateSummary(data) {
-  let interested = 0, undecided = 0, notint = 0, noanswer = 0, voicemail = 0, invalidphone = 0, unmanaged = 0, custom = 0, sumBalance = 0;
+  let interested = 0, undecided = 0, notint = 0, noanswer = 0, voicemail = 0, unmanaged = 0, custom = 0, sumBalance = 0;
 
   data.forEach(r => {
     const s = getStatus(r);
@@ -2350,7 +2349,6 @@ function updateSummary(data) {
     else if (s === 'notint') notint++;
     else if (s === 'noanswer') noanswer++;
     else if (s === 'voicemail') voicemail++;
-    else if (s === 'invalidphone') invalidphone++;
     else if (s === 'none' && hasComment) custom++;
     else if (s === 'none') unmanaged++;
 
@@ -2363,7 +2361,6 @@ function updateSummary(data) {
   document.getElementById('s-notint').textContent = notint;
   document.getElementById('s-noanswer').textContent = noanswer;
   document.getElementById('s-voicemail').textContent = voicemail;
-  document.getElementById('s-invalidphone').textContent = invalidphone;
   document.getElementById('s-pending').textContent = unmanaged;
   document.getElementById('s-custom').textContent = custom;
   document.getElementById('s-total-balance').textContent = fmtCur(sumBalance);
@@ -2377,11 +2374,7 @@ function toggleComment(safeKey) {
 function pickPreset(e, key, status, label) {
   const safeKey = key.replace(/[^a-z0-9]/gi,'_');
   const ta = document.getElementById('ta_' + safeKey);
-  const presetDef = PRESETS.find(p => p.status === status);
-  if (ta) {
-    ta.value = (presetDef && presetDef.extraNote) ? (label + '\n\n' + presetDef.extraNote + '\n') : label;
-    if (presetDef && presetDef.extraNote) { ta.focus(); ta.selectionStart = ta.selectionEnd = ta.value.length; }
-  }
+  if (ta) ta.value = label;
   const panel = document.getElementById('cp_' + safeKey);
   if (panel) panel.querySelectorAll('.preset-chip').forEach(b => b.classList.remove('sel'));
   e.target.classList.add('sel');
@@ -2408,8 +2401,7 @@ async function saveComment(key, nombre, asesor) {
   const rowData  = rows.find(r => rowKey(r) === key) || {};
   const statusLabels = {
     interested:'Interested', undecided:'Undecided', noanswer:'No Answer',
-    notint:'Not interested', voicemail:'Voicemail / 3rd', invalidphone:'Invalid phone / Did not connect',
-    none:'Unmanaged'
+    notint:'Not interested', voicemail:'Voicemail / 3rd', none:'Unmanaged'
   };
   store[key] = { comment, status, date: dateStr, nombre, asesor };
   saveStore();
