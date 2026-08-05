@@ -812,7 +812,6 @@
       box-shadow: 0 4px 12px rgba(14,59,92,0.08);
       padding: 1rem 1.2rem;
       margin-top: 1.5rem;
-      transition: display 0.2s;
     }
     #areaCodeSearch h4 {
       color: var(--azul-profundo);
@@ -871,6 +870,7 @@
       border-bottom: 1px solid #f0f0f0;
       transition: background 0.1s;
       font-size: 13px;
+      flex-wrap: wrap;
     }
     #areaCodeResults .result-item:hover {
       background: var(--azul-suave);
@@ -883,12 +883,72 @@
     }
     #areaCodeResults .result-item .location {
       color: #555;
+      flex: 1;
+    }
+    #areaCodeResults .result-item .time-local {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--azul-vibrante);
+      margin-left: 8px;
+      white-space: nowrap;
     }
     #areaCodeResults .no-results {
       color: #888;
       font-style: italic;
       padding: 8px 0;
     }
+
+    /* ─── Tabla de zonas horarias ─── */
+    #timezoneOverview {
+      margin-top: 15px;
+      border-top: 1px solid var(--arena-dark);
+      padding-top: 10px;
+    }
+    #timezoneOverview h5 {
+      color: var(--azul-profundo);
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+    #timezoneOverview .tz-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    #timezoneOverview .tz-table th {
+      background: var(--azul-profundo);
+      color: white;
+      padding: 5px 8px;
+      text-align: left;
+      font-weight: 600;
+      border-bottom: 2px solid var(--azul-vibrante);
+    }
+    #timezoneOverview .tz-table td {
+      padding: 5px 8px;
+      border-bottom: 1px solid var(--arena-dark);
+    }
+    #timezoneOverview .tz-table tr:hover td {
+      background: var(--azul-suave);
+    }
+    #timezoneOverview .tz-table .tz-label {
+      font-weight: 600;
+      color: var(--azul-profundo);
+    }
+    #timezoneOverview .tz-table .tz-codes {
+      color: #555;
+      font-size: 11px;
+    }
+    #timezoneOverview .tz-table .tz-time {
+      font-weight: 600;
+      color: var(--azul-vibrante);
+    }
+    #timezoneOverview .tz-table .tz-diff {
+      font-size: 11px;
+      color: #888;
+      margin-left: 4px;
+    }
+    #timezoneOverview .tz-table .tz-diff.positive { color: var(--verde); }
+    #timezoneOverview .tz-table .tz-diff.negative { color: var(--rojo); }
+    #timezoneOverview .tz-table .tz-diff.zero { color: #888; }
 
     @media (max-width: 700px) {
       .navbar { flex-wrap: wrap; gap: 6px; padding: 0.5rem 1rem; }
@@ -902,6 +962,8 @@
       .tips-section ul { flex-direction: column; gap: 8px; }
       .script-step { gap: 10px; }
       #areaCodeSearch .search-row input { min-width: 100px; }
+      #timezoneOverview .tz-table { font-size: 11px; }
+      #timezoneOverview .tz-table th, #timezoneOverview .tz-table td { padding: 3px 5px; }
     }
     @media (max-width: 480px) {
       .summary-bar { grid-template-columns: 1fr; }
@@ -1057,7 +1119,7 @@
       </div>
     </div>
 
-    <!-- Buscador de ladas (USA / Canadá) -->
+    <!-- Buscador de ladas (USA / Canadá) con tabla de zonas -->
     <div id="areaCodeSearch" style="display:none;">
       <h4>📞 Buscar Ladas (USA / Canadá)</h4>
       <div class="search-row">
@@ -1065,6 +1127,12 @@
         <button id="areaCodeSearchBtn">🔍 Buscar</button>
       </div>
       <div id="areaCodeResults"></div>
+
+      <!-- Tabla de zonas horarias principales -->
+      <div id="timezoneOverview">
+        <h5>🌍 Zonas horarias principales</h5>
+        <div id="timezoneTableContainer"></div>
+      </div>
     </div>
 
   </div><!-- /defaultContent -->
@@ -1104,7 +1172,7 @@
 
 <script>
 // ══════════════════════════════════════════════════════════════
-//  CONFIG — solo el endpoint público.
+//  CONFIG
 // ══════════════════════════════════════════════════════════════
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyGRZep8clDXd28cpQCAAQp-859LN2c5zL7FHRYTK3vJ9DjzEVQ97niMR13zLiiESmS/exec';
 const STORE_KEY = 'crm_vidanta_local_notes_v1';
@@ -1193,21 +1261,68 @@ const STATE_NAMES = {
   'SK': 'Saskatchewan', 'YT': 'Yukon'
 };
 
+// ── Mapeo de estado a zona horaria IANA ──
+const stateToTimezone = {
+  'CT': 'America/New_York', 'DE': 'America/New_York', 'FL': 'America/New_York',
+  'GA': 'America/New_York', 'ME': 'America/New_York', 'MD': 'America/New_York',
+  'MA': 'America/New_York', 'MI': 'America/New_York', 'NH': 'America/New_York',
+  'NJ': 'America/New_York', 'NY': 'America/New_York', 'NC': 'America/New_York',
+  'OH': 'America/New_York', 'PA': 'America/New_York', 'RI': 'America/New_York',
+  'SC': 'America/New_York', 'VT': 'America/New_York', 'VA': 'America/New_York',
+  'WV': 'America/New_York',
+  'AL': 'America/Chicago', 'AR': 'America/Chicago', 'IL': 'America/Chicago',
+  'IA': 'America/Chicago', 'KS': 'America/Chicago', 'KY': 'America/Chicago',
+  'LA': 'America/Chicago', 'MN': 'America/Chicago', 'MS': 'America/Chicago',
+  'MO': 'America/Chicago', 'NE': 'America/Chicago', 'ND': 'America/Chicago',
+  'OK': 'America/Chicago', 'SD': 'America/Chicago', 'TN': 'America/Chicago',
+  'TX': 'America/Chicago', 'WI': 'America/Chicago',
+  'AZ': 'America/Phoenix', 'CO': 'America/Denver', 'MT': 'America/Denver',
+  'NM': 'America/Denver', 'UT': 'America/Denver', 'WY': 'America/Denver',
+  'ID': 'America/Denver',
+  'CA': 'America/Los_Angeles', 'OR': 'America/Los_Angeles', 'WA': 'America/Los_Angeles',
+  'NV': 'America/Los_Angeles',
+  'AK': 'America/Anchorage',
+  'HI': 'Pacific/Honolulu',
+  'AB': 'America/Edmonton', 'BC': 'America/Vancouver', 'MB': 'America/Winnipeg',
+  'NB': 'America/Halifax', 'NL': 'America/St_Johns', 'NT': 'America/Yellowknife',
+  'NS': 'America/Halifax', 'NU': 'America/Iqaluit', 'ON': 'America/Toronto',
+  'PE': 'America/Halifax', 'QC': 'America/Toronto', 'SK': 'America/Regina',
+  'YT': 'America/Whitehorse'
+};
+
+// ── Zonas horarias para la tabla resumen ──
+const timezoneGroups = [
+  { label: 'Eastern (USA/CA)', tz: 'America/New_York', codes: ['212','305','416','514'] },
+  { label: 'Central (USA/CA)', tz: 'America/Chicago', codes: ['312','512','204','306'] },
+  { label: 'Mountain (USA/CA)', tz: 'America/Denver', codes: ['303','403','780'] },
+  { label: 'Pacific (USA/CA)', tz: 'America/Los_Angeles', codes: ['213','604','778'] },
+  { label: 'Alaska', tz: 'America/Anchorage', codes: ['907'] },
+  { label: 'Hawaii', tz: 'Pacific/Honolulu', codes: ['808'] },
+  { label: 'Atlantic (Canada)', tz: 'America/Halifax', codes: ['902','506'] },
+  { label: 'Newfoundland', tz: 'America/St_Johns', codes: ['709'] }
+];
+
+// ── LISTA COMPLETA DE LADAS (USA y Canadá) ──
 const AREA_CODES = [
+  // Alabama
   { code: '205', state: 'AL', city: 'Birmingham' },
   { code: '251', state: 'AL', city: 'Mobile' },
   { code: '256', state: 'AL', city: 'Huntsville' },
   { code: '334', state: 'AL', city: 'Montgomery' },
   { code: '938', state: 'AL', city: 'Huntsville' },
+  // Alaska
   { code: '907', state: 'AK', city: 'Anchorage' },
+  // Arizona
   { code: '480', state: 'AZ', city: 'Phoenix' },
   { code: '520', state: 'AZ', city: 'Tucson' },
   { code: '602', state: 'AZ', city: 'Phoenix' },
   { code: '623', state: 'AZ', city: 'Phoenix' },
   { code: '928', state: 'AZ', city: 'Flagstaff' },
+  // Arkansas
   { code: '479', state: 'AR', city: 'Fayetteville' },
   { code: '501', state: 'AR', city: 'Little Rock' },
   { code: '870', state: 'AR', city: 'Jonesboro' },
+  // California
   { code: '209', state: 'CA', city: 'Stockton' },
   { code: '213', state: 'CA', city: 'Los Angeles' },
   { code: '310', state: 'CA', city: 'Los Angeles' },
@@ -1234,14 +1349,18 @@ const AREA_CODES = [
   { code: '925', state: 'CA', city: 'Walnut Creek' },
   { code: '949', state: 'CA', city: 'Irvine' },
   { code: '951', state: 'CA', city: 'Riverside' },
+  // Colorado
   { code: '303', state: 'CO', city: 'Denver' },
   { code: '719', state: 'CO', city: 'Colorado Springs' },
   { code: '720', state: 'CO', city: 'Denver' },
   { code: '970', state: 'CO', city: 'Fort Collins' },
+  // Connecticut
   { code: '203', state: 'CT', city: 'Bridgeport' },
   { code: '860', state: 'CT', city: 'Hartford' },
   { code: '959', state: 'CT', city: 'Hartford' },
+  // Delaware
   { code: '302', state: 'DE', city: 'Wilmington' },
+  // Florida
   { code: '239', state: 'FL', city: 'Fort Myers' },
   { code: '305', state: 'FL', city: 'Miami' },
   { code: '321', state: 'FL', city: 'Orlando' },
@@ -1258,6 +1377,7 @@ const AREA_CODES = [
   { code: '904', state: 'FL', city: 'Jacksonville' },
   { code: '941', state: 'FL', city: 'Sarasota' },
   { code: '954', state: 'FL', city: 'Fort Lauderdale' },
+  // Georgia
   { code: '229', state: 'GA', city: 'Albany' },
   { code: '404', state: 'GA', city: 'Atlanta' },
   { code: '470', state: 'GA', city: 'Atlanta' },
@@ -1267,8 +1387,11 @@ const AREA_CODES = [
   { code: '762', state: 'GA', city: 'Augusta' },
   { code: '770', state: 'GA', city: 'Atlanta' },
   { code: '912', state: 'GA', city: 'Savannah' },
+  // Hawaii
   { code: '808', state: 'HI', city: 'Honolulu' },
+  // Idaho
   { code: '208', state: 'ID', city: 'Boise' },
+  // Illinois
   { code: '217', state: 'IL', city: 'Springfield' },
   { code: '224', state: 'IL', city: 'Chicago' },
   { code: '309', state: 'IL', city: 'Peoria' },
@@ -1282,6 +1405,7 @@ const AREA_CODES = [
   { code: '815', state: 'IL', city: 'Rockford' },
   { code: '847', state: 'IL', city: 'Chicago' },
   { code: '872', state: 'IL', city: 'Chicago' },
+  // Indiana
   { code: '219', state: 'IN', city: 'Gary' },
   { code: '260', state: 'IN', city: 'Fort Wayne' },
   { code: '317', state: 'IN', city: 'Indianapolis' },
@@ -1290,30 +1414,37 @@ const AREA_CODES = [
   { code: '765', state: 'IN', city: 'Lafayette' },
   { code: '812', state: 'IN', city: 'Evansville' },
   { code: '930', state: 'IN', city: 'Evansville' },
+  // Iowa
   { code: '319', state: 'IA', city: 'Cedar Rapids' },
   { code: '515', state: 'IA', city: 'Des Moines' },
   { code: '563', state: 'IA', city: 'Davenport' },
   { code: '641', state: 'IA', city: 'Mason City' },
   { code: '712', state: 'IA', city: 'Sioux City' },
+  // Kansas
   { code: '316', state: 'KS', city: 'Wichita' },
   { code: '620', state: 'KS', city: 'Dodge City' },
   { code: '785', state: 'KS', city: 'Topeka' },
   { code: '913', state: 'KS', city: 'Kansas City' },
+  // Kentucky
   { code: '270', state: 'KY', city: 'Bowling Green' },
   { code: '502', state: 'KY', city: 'Louisville' },
   { code: '606', state: 'KY', city: 'Ashland' },
   { code: '859', state: 'KY', city: 'Lexington' },
+  // Louisiana
   { code: '225', state: 'LA', city: 'Baton Rouge' },
   { code: '318', state: 'LA', city: 'Shreveport' },
   { code: '337', state: 'LA', city: 'Lafayette' },
   { code: '504', state: 'LA', city: 'New Orleans' },
   { code: '985', state: 'LA', city: 'Houma' },
+  // Maine
   { code: '207', state: 'ME', city: 'Portland' },
+  // Maryland
   { code: '240', state: 'MD', city: 'Silver Spring' },
   { code: '301', state: 'MD', city: 'Silver Spring' },
   { code: '410', state: 'MD', city: 'Baltimore' },
   { code: '443', state: 'MD', city: 'Baltimore' },
   { code: '667', state: 'MD', city: 'Baltimore' },
+  // Massachusetts
   { code: '339', state: 'MA', city: 'Boston' },
   { code: '351', state: 'MA', city: 'Lowell' },
   { code: '413', state: 'MA', city: 'Springfield' },
@@ -1323,6 +1454,7 @@ const AREA_CODES = [
   { code: '781', state: 'MA', city: 'Boston' },
   { code: '857', state: 'MA', city: 'Boston' },
   { code: '978', state: 'MA', city: 'Lowell' },
+  // Michigan
   { code: '231', state: 'MI', city: 'Muskegon' },
   { code: '248', state: 'MI', city: 'Detroit' },
   { code: '269', state: 'MI', city: 'Kalamazoo' },
@@ -1335,6 +1467,7 @@ const AREA_CODES = [
   { code: '906', state: 'MI', city: 'Marquette' },
   { code: '947', state: 'MI', city: 'Detroit' },
   { code: '989', state: 'MI', city: 'Saginaw' },
+  // Minnesota
   { code: '218', state: 'MN', city: 'Duluth' },
   { code: '320', state: 'MN', city: 'St. Cloud' },
   { code: '507', state: 'MN', city: 'Rochester' },
@@ -1342,10 +1475,12 @@ const AREA_CODES = [
   { code: '651', state: 'MN', city: 'St. Paul' },
   { code: '763', state: 'MN', city: 'Minneapolis' },
   { code: '952', state: 'MN', city: 'Minneapolis' },
+  // Mississippi
   { code: '228', state: 'MS', city: 'Biloxi' },
   { code: '601', state: 'MS', city: 'Jackson' },
   { code: '662', state: 'MS', city: 'Tupelo' },
   { code: '769', state: 'MS', city: 'Jackson' },
+  // Missouri
   { code: '314', state: 'MO', city: 'St. Louis' },
   { code: '417', state: 'MO', city: 'Springfield' },
   { code: '573', state: 'MO', city: 'Columbia' },
@@ -1353,13 +1488,18 @@ const AREA_CODES = [
   { code: '660', state: 'MO', city: 'Sedalia' },
   { code: '816', state: 'MO', city: 'Kansas City' },
   { code: '975', state: 'MO', city: 'Kansas City' },
+  // Montana
   { code: '406', state: 'MT', city: 'Billings' },
+  // Nebraska
   { code: '308', state: 'NE', city: 'North Platte' },
   { code: '402', state: 'NE', city: 'Omaha' },
   { code: '531', state: 'NE', city: 'Omaha' },
+  // Nevada
   { code: '702', state: 'NV', city: 'Las Vegas' },
   { code: '775', state: 'NV', city: 'Reno' },
+  // New Hampshire
   { code: '603', state: 'NH', city: 'Manchester' },
+  // New Jersey
   { code: '201', state: 'NJ', city: 'Jersey City' },
   { code: '609', state: 'NJ', city: 'Trenton' },
   { code: '732', state: 'NJ', city: 'New Brunswick' },
@@ -1368,8 +1508,10 @@ const AREA_CODES = [
   { code: '862', state: 'NJ', city: 'Newark' },
   { code: '908', state: 'NJ', city: 'Elizabeth' },
   { code: '973', state: 'NJ', city: 'Newark' },
+  // New Mexico
   { code: '505', state: 'NM', city: 'Albuquerque' },
   { code: '575', state: 'NM', city: 'Las Cruces' },
+  // New York
   { code: '212', state: 'NY', city: 'New York' },
   { code: '315', state: 'NY', city: 'Syracuse' },
   { code: '347', state: 'NY', city: 'New York' },
@@ -1385,6 +1527,7 @@ const AREA_CODES = [
   { code: '914', state: 'NY', city: 'White Plains' },
   { code: '917', state: 'NY', city: 'New York' },
   { code: '929', state: 'NY', city: 'New York' },
+  // North Carolina
   { code: '252', state: 'NC', city: 'Greenville' },
   { code: '336', state: 'NC', city: 'Greensboro' },
   { code: '704', state: 'NC', city: 'Charlotte' },
@@ -1393,7 +1536,9 @@ const AREA_CODES = [
   { code: '919', state: 'NC', city: 'Raleigh' },
   { code: '980', state: 'NC', city: 'Charlotte' },
   { code: '984', state: 'NC', city: 'Raleigh' },
+  // North Dakota
   { code: '701', state: 'ND', city: 'Fargo' },
+  // Ohio
   { code: '216', state: 'OH', city: 'Cleveland' },
   { code: '234', state: 'OH', city: 'Akron' },
   { code: '330', state: 'OH', city: 'Akron' },
@@ -1404,12 +1549,15 @@ const AREA_CODES = [
   { code: '614', state: 'OH', city: 'Columbus' },
   { code: '740', state: 'OH', city: 'Columbus' },
   { code: '937', state: 'OH', city: 'Dayton' },
+  // Oklahoma
   { code: '405', state: 'OK', city: 'Oklahoma City' },
   { code: '580', state: 'OK', city: 'Lawton' },
   { code: '918', state: 'OK', city: 'Tulsa' },
+  // Oregon
   { code: '503', state: 'OR', city: 'Portland' },
   { code: '541', state: 'OR', city: 'Eugene' },
   { code: '971', state: 'OR', city: 'Portland' },
+  // Pennsylvania
   { code: '215', state: 'PA', city: 'Philadelphia' },
   { code: '267', state: 'PA', city: 'Philadelphia' },
   { code: '412', state: 'PA', city: 'Pittsburgh' },
@@ -1420,18 +1568,23 @@ const AREA_CODES = [
   { code: '724', state: 'PA', city: 'Pittsburgh' },
   { code: '814', state: 'PA', city: 'Erie' },
   { code: '878', state: 'PA', city: 'Pittsburgh' },
+  // Rhode Island
   { code: '401', state: 'RI', city: 'Providence' },
+  // South Carolina
   { code: '803', state: 'SC', city: 'Columbia' },
   { code: '843', state: 'SC', city: 'Charleston' },
   { code: '854', state: 'SC', city: 'Charleston' },
   { code: '864', state: 'SC', city: 'Greenville' },
+  // South Dakota
   { code: '605', state: 'SD', city: 'Sioux Falls' },
+  // Tennessee
   { code: '423', state: 'TN', city: 'Chattanooga' },
   { code: '615', state: 'TN', city: 'Nashville' },
   { code: '731', state: 'TN', city: 'Jackson' },
   { code: '865', state: 'TN', city: 'Knoxville' },
   { code: '901', state: 'TN', city: 'Memphis' },
   { code: '931', state: 'TN', city: 'Clarksville' },
+  // Texas
   { code: '210', state: 'TX', city: 'San Antonio' },
   { code: '214', state: 'TX', city: 'Dallas' },
   { code: '254', state: 'TX', city: 'Waco' },
@@ -1457,10 +1610,13 @@ const AREA_CODES = [
   { code: '956', state: 'TX', city: 'Laredo' },
   { code: '972', state: 'TX', city: 'Dallas' },
   { code: '979', state: 'TX', city: 'Bryan' },
+  // Utah
   { code: '385', state: 'UT', city: 'Salt Lake City' },
   { code: '435', state: 'UT', city: 'St. George' },
   { code: '801', state: 'UT', city: 'Salt Lake City' },
+  // Vermont
   { code: '802', state: 'VT', city: 'Burlington' },
+  // Virginia
   { code: '276', state: 'VA', city: 'Bristol' },
   { code: '434', state: 'VA', city: 'Lynchburg' },
   { code: '540', state: 'VA', city: 'Roanoke' },
@@ -1468,21 +1624,26 @@ const AREA_CODES = [
   { code: '703', state: 'VA', city: 'Arlington' },
   { code: '757', state: 'VA', city: 'Norfolk' },
   { code: '804', state: 'VA', city: 'Richmond' },
+  // Washington
   { code: '206', state: 'WA', city: 'Seattle' },
   { code: '253', state: 'WA', city: 'Tacoma' },
   { code: '360', state: 'WA', city: 'Olympia' },
   { code: '425', state: 'WA', city: 'Bellevue' },
   { code: '509', state: 'WA', city: 'Spokane' },
   { code: '564', state: 'WA', city: 'Seattle' },
+  // West Virginia
   { code: '304', state: 'WV', city: 'Charleston' },
   { code: '681', state: 'WV', city: 'Charleston' },
+  // Wisconsin
   { code: '262', state: 'WI', city: 'Kenosha' },
   { code: '414', state: 'WI', city: 'Milwaukee' },
   { code: '534', state: 'WI', city: 'Milwaukee' },
   { code: '608', state: 'WI', city: 'Madison' },
   { code: '715', state: 'WI', city: 'Eau Claire' },
   { code: '920', state: 'WI', city: 'Green Bay' },
+  // Wyoming
   { code: '307', state: 'WY', city: 'Cheyenne' },
+  // Canadá
   { code: '403', state: 'AB', city: 'Calgary' },
   { code: '587', state: 'AB', city: 'Calgary' },
   { code: '780', state: 'AB', city: 'Edmonton' },
@@ -1584,7 +1745,6 @@ async function loadInitial() {
     updateAdminButton();
 
     if (activeTab === 'all') {
-      // Cargar el resumen con estados
       const res = await apiGet({ action: 'getSummary' });
       if (res.ok && res.totals) {
         const t = res.totals;
@@ -1604,6 +1764,9 @@ async function loadInitial() {
     } else {
       applyFiltersAndRender();
     }
+    // Iniciar actualización de zonas horarias
+    updateTimezoneOverview();
+    setInterval(updateTimezoneOverview, 60000);
   } catch(e) {
     document.getElementById('tableBody').innerHTML =
       '<tr><td colspan="12" style="text-align:center;padding:2rem;color:var(--rojo);">⚠️ Error: ' + esc(e.message) + '</td></tr>';
@@ -1648,7 +1811,7 @@ function renderTabs() {
   document.getElementById('tabs').innerHTML = html;
 }
 
-// ── SWITCH TAB (MODIFICADO) ──────────────────────────────────────────────────
+// ── SWITCH TAB ──────────────────────────────────────────────────────────────────
 async function switchTab(tab) {
   if (tab === 'all') {
     activeTab = 'all';
@@ -1661,7 +1824,6 @@ async function switchTab(tab) {
     document.getElementById('sessionBanner').classList.remove('show');
     updateAreaCodeVisibility();
 
-    // Obtener resumen con estados desde el servidor
     try {
       const res = await apiGet({ action: 'getSummary' });
       if (res.ok && res.totals) {
@@ -1975,7 +2137,7 @@ function applyFiltersAndRender() {
   renderTable();
 }
 
-// ── RENDER RESUMEN (modificado) ──────────────────────────────────────────────
+// ── RENDER RESUMEN ──────────────────────────────────────────────────────────
 function renderResumen(data) {
   const thead = document.getElementById('tableHead');
   thead.innerHTML = `<tr>
@@ -2183,7 +2345,7 @@ function pickPreset(e, key, status, label) {
   store[key].status = status;
 }
 
-// ── SAVE COMMENT (MODIFICADO: envía estadoCode) ─────────────────────────────
+// ── SAVE COMMENT ─────────────────────────────────────────────────────────────
 async function saveComment(key, nombre, asesor) {
   const safeKey = key.replace(/[^a-z0-9]/gi,'_');
   const ta = document.getElementById('ta_' + safeKey);
@@ -2225,7 +2387,7 @@ async function saveComment(key, nombre, asesor) {
       fechaInteraccion: datetime, asesor: asesor, idCliente: String(rowData.id || ''),
       nombreCliente: nombre, telefono: rowData.telefono || '', telefono_mobile: rowData.telefono_mobile || '',
       domicilio: rowData.domicilio || '', estado: statusLabels[status] || status,
-      estadoCode: status,   // ← NUEVO: código para la columna "Estatus"
+      estadoCode: status,
       comentario: comment,
       salesPrice: String(rowData.salesPrice || ''), downPayment: String(rowData.downPayment || ''),
       monthlyPayment: String(rowData.monthlyPayment || ''), term: String(rowData.term || ''),
@@ -2290,31 +2452,73 @@ function copyScriptText() {
   } else { showToast('⚠️ Clipboard not available', false); }
 }
 
-// ─── BUSCADOR DE LADAS ─────────────────────────────────────────────────────
-function updateAreaCodeVisibility() {
-  const container = document.getElementById('areaCodeSearch');
-  if (activeTab !== 'all' && activeTab !== 'handling' && !container._forceHidden) {
-    container.style.display = 'block';
-    if (!document.getElementById('areaCodeInput').value) {
-      renderAreaCodes(AREA_CODES.slice(0, 20));
-    }
-  } else {
-    container.style.display = 'none';
+// ─── NUEVAS FUNCIONES PARA ZONAS HORARIAS ──────────────────────────────────
+function getTimezoneForState(state) {
+  return stateToTimezone[state] || null;
+}
+
+function getCurrentTimeInZone(timezone) {
+  try {
+    const now = new Date();
+    const formatter = new Intl.DateTimeFormat('en-US', {
+      timeZone: timezone,
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    });
+    const parts = formatter.formatToParts(now);
+    let hours = parts.find(p => p.type === 'hour')?.value || '00';
+    let minutes = parts.find(p => p.type === 'minute')?.value || '00';
+    return { time: hours + ':' + minutes };
+  } catch(e) {
+    return { time: '--:--' };
   }
 }
 
-function filterAreaCodes(query) {
-  const q = query.trim().toLowerCase();
-  if (!q) return AREA_CODES.slice(0, 50);
-  return AREA_CODES.filter(item => {
-    const stateFull = STATE_NAMES[item.state] || item.state;
-    return item.code.includes(q) ||
-           item.state.toLowerCase().includes(q) ||
-           stateFull.toLowerCase().includes(q) ||
-           item.city.toLowerCase().includes(q);
-  });
+function getCDMXTime() {
+  return getCurrentTimeInZone('America/Mexico_City');
 }
 
+function getDiffString(timezone) {
+  try {
+    const now = new Date();
+    const cdmx = new Date(now.toLocaleString('en-US', { timeZone: 'America/Mexico_City' }));
+    const target = new Date(now.toLocaleString('en-US', { timeZone: timezone }));
+    const diffHours = (target.getTime() - cdmx.getTime()) / (1000 * 60 * 60);
+    const diff = Math.round(diffHours);
+    if (diff === 0) return '0h';
+    const sign = diff > 0 ? '+' : '';
+    return sign + diff + 'h';
+  } catch(e) { return '--'; }
+}
+
+function updateTimezoneOverview() {
+  const container = document.getElementById('timezoneTableContainer');
+  if (!container) return;
+  const cdmxTime = getCDMXTime();
+  let html = `<div style="font-size:13px; margin-bottom:6px;">🕒 CDMX (México): <strong>${cdmxTime.time}</strong></div>
+    <table class="tz-table">
+      <thead><tr><th>Zona</th><th>Ladas ejemplo</th><th>Hora local</th><th>vs CDMX</th></tr></thead>
+      <tbody>`;
+  timezoneGroups.forEach(group => {
+    const tz = group.tz;
+    const timeObj = getCurrentTimeInZone(tz);
+    const diff = getDiffString(tz);
+    let diffClass = 'zero';
+    if (diff.startsWith('+')) diffClass = 'positive';
+    else if (diff.startsWith('-')) diffClass = 'negative';
+    html += `<tr>
+      <td class="tz-label">${esc(group.label)}</td>
+      <td class="tz-codes">${group.codes.map(c => `<span style="font-weight:600;">${c}</span>`).join(' · ')}</td>
+      <td class="tz-time">${timeObj.time}</td>
+      <td><span class="tz-diff ${diffClass}">${diff}</span></td>
+    </tr>`;
+  });
+  html += `</tbody></table>`;
+  container.innerHTML = html;
+}
+
+// ─── MODIFICAR renderAreaCodes PARA INCLUIR HORA ──────────────────────────
 function renderAreaCodes(results) {
   const container = document.getElementById('areaCodeResults');
   if (!results.length) {
@@ -2324,12 +2528,47 @@ function renderAreaCodes(results) {
   let html = '';
   results.forEach(item => {
     const stateFull = STATE_NAMES[item.state] || item.state;
+    const tz = getTimezoneForState(item.state);
+    let timeStr = '--:--';
+    if (tz) {
+      const t = getCurrentTimeInZone(tz);
+      timeStr = t.time;
+    }
     html += `<div class="result-item">
       <span class="code">${item.code}</span>
       <span class="location">${stateFull} · ${item.city}</span>
+      <span class="time-local">🕒 ${timeStr}</span>
     </div>`;
   });
   container.innerHTML = html;
+}
+
+// ─── updateAreaCodeVisibility (modificado) ──────────────────────────────
+function updateAreaCodeVisibility() {
+  const container = document.getElementById('areaCodeSearch');
+  if (activeTab !== 'all' && activeTab !== 'handling' && !container._forceHidden) {
+    container.style.display = 'block';
+    if (!document.getElementById('areaCodeInput').value) {
+      renderAreaCodes(AREA_CODES.slice(0, 20));
+    }
+    updateTimezoneOverview();
+  } else {
+    container.style.display = 'none';
+  }
+}
+
+// ─── FILTRAR LADAS (mejorado) ──────────────────────────────────────────────
+function filterAreaCodes(query) {
+  const q = query.trim().toLowerCase();
+  if (!q) return AREA_CODES.slice(0, 50);
+  return AREA_CODES.filter(item => {
+    const stateFull = STATE_NAMES[item.state] || '';
+    const cityLower = item.city.toLowerCase();
+    return item.code.includes(q) ||
+           item.state.toLowerCase().includes(q) ||
+           stateFull.toLowerCase().includes(q) ||
+           cityLower.includes(q);
+  });
 }
 
 function searchAreaCodes() {
@@ -2339,6 +2578,7 @@ function searchAreaCodes() {
   renderAreaCodes(results);
 }
 
+// ── EVENTOS DEL BUSCADOR ───────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
   const input = document.getElementById('areaCodeInput');
   const btn = document.getElementById('areaCodeSearchBtn');
