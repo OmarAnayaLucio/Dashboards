@@ -805,7 +805,6 @@
     }
     .session-banner button:hover { background: #1e8449; color: white; }
 
-    /* ─── Nuevo: buscador de ladas ─── */
     #areaCodeSearch {
       background: var(--blanco);
       border-radius: 12px;
@@ -1058,7 +1057,7 @@
       </div>
     </div>
 
-    <!-- ─── NUEVO: BUSCADOR DE LADAS (USA / Canadá) ─── -->
+    <!-- Buscador de ladas (USA / Canadá) -->
     <div id="areaCodeSearch" style="display:none;">
       <h4>📞 Buscar Ladas (USA / Canadá)</h4>
       <div class="search-row">
@@ -1105,12 +1104,10 @@
 
 <script>
 // ══════════════════════════════════════════════════════════════
-//  CONFIG — solo el endpoint público. Ya NO hay token estático
-//  ni contraseñas en este archivo. Toda autenticación ocurre en
-//  el servidor (Apps Script) vía sesiones temporales.
+//  CONFIG — solo el endpoint público.
 // ══════════════════════════════════════════════════════════════
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyGRZep8clDXd28cpQCAAQp-859LN2c5zL7FHRYTK3vJ9DjzEVQ97niMR13zLiiESmS/exec';
-const STORE_KEY = 'crm_vidanta_local_notes_v1'; // solo notas/estatus locales pendientes de sincronizar
+const STORE_KEY = 'crm_vidanta_local_notes_v1';
 const PAGE_SIZE = 15;
 
 // ── OBJECTIONS DATA ────────────────────────────────────────────────────────
@@ -1162,12 +1159,12 @@ const STATUS_INFO = {
 };
 
 // ── STATE ────────────────────────────────────────────────────────────────────
-let advisorList  = [];      // [{name, count, locked}]
-let summaryData  = [];      // [{asesor, total, sumaBalances}]
+let advisorList  = [];
+let summaryData  = [];
 let activeTab    = 'all';
-let store        = {};      // notas/estatus/balance locales pendientes de sync (por cliente)
-let sessions     = {};      // { advisorName: { token, role } }  — en memoria + sessionStorage
-let advisorRows  = {};      // cache de filas ya descargadas por asesor autenticado: { advisorName: [...] }
+let store        = {};
+let sessions     = {};
+let advisorRows  = {};
 let currentPage  = 1;
 let sortField    = 'namePerson';
 let sortAsc      = true;
@@ -1176,7 +1173,6 @@ let pendingTab   = null;
 let adminUnlocked = false;
 
 // ── ÁREA DE CÓDIGOS DE LADA (USA y Canadá) ──────────────────────────────
-// Mapeo de abreviaturas a nombres completos de estados y provincias
 const STATE_NAMES = {
   'AL': 'Alabama', 'AK': 'Alaska', 'AZ': 'Arizona', 'AR': 'Arkansas',
   'CA': 'California', 'CO': 'Colorado', 'CT': 'Connecticut', 'DE': 'Delaware',
@@ -1191,7 +1187,6 @@ const STATE_NAMES = {
   'SD': 'South Dakota', 'TN': 'Tennessee', 'TX': 'Texas', 'UT': 'Utah',
   'VT': 'Vermont', 'VA': 'Virginia', 'WA': 'Washington', 'WV': 'West Virginia',
   'WI': 'Wisconsin', 'WY': 'Wyoming',
-  // Canadá
   'AB': 'Alberta', 'BC': 'British Columbia', 'MB': 'Manitoba', 'NB': 'New Brunswick',
   'NL': 'Newfoundland and Labrador', 'NT': 'Northwest Territories', 'NS': 'Nova Scotia',
   'NU': 'Nunavut', 'ON': 'Ontario', 'PE': 'Prince Edward Island', 'QC': 'Quebec',
@@ -1199,25 +1194,20 @@ const STATE_NAMES = {
 };
 
 const AREA_CODES = [
-  // Alabama
   { code: '205', state: 'AL', city: 'Birmingham' },
   { code: '251', state: 'AL', city: 'Mobile' },
   { code: '256', state: 'AL', city: 'Huntsville' },
   { code: '334', state: 'AL', city: 'Montgomery' },
   { code: '938', state: 'AL', city: 'Huntsville' },
-  // Alaska
   { code: '907', state: 'AK', city: 'Anchorage' },
-  // Arizona
   { code: '480', state: 'AZ', city: 'Phoenix' },
   { code: '520', state: 'AZ', city: 'Tucson' },
   { code: '602', state: 'AZ', city: 'Phoenix' },
   { code: '623', state: 'AZ', city: 'Phoenix' },
   { code: '928', state: 'AZ', city: 'Flagstaff' },
-  // Arkansas
   { code: '479', state: 'AR', city: 'Fayetteville' },
   { code: '501', state: 'AR', city: 'Little Rock' },
   { code: '870', state: 'AR', city: 'Jonesboro' },
-  // California
   { code: '209', state: 'CA', city: 'Stockton' },
   { code: '213', state: 'CA', city: 'Los Angeles' },
   { code: '310', state: 'CA', city: 'Los Angeles' },
@@ -1244,18 +1234,14 @@ const AREA_CODES = [
   { code: '925', state: 'CA', city: 'Walnut Creek' },
   { code: '949', state: 'CA', city: 'Irvine' },
   { code: '951', state: 'CA', city: 'Riverside' },
-  // Colorado
   { code: '303', state: 'CO', city: 'Denver' },
   { code: '719', state: 'CO', city: 'Colorado Springs' },
   { code: '720', state: 'CO', city: 'Denver' },
   { code: '970', state: 'CO', city: 'Fort Collins' },
-  // Connecticut
   { code: '203', state: 'CT', city: 'Bridgeport' },
   { code: '860', state: 'CT', city: 'Hartford' },
   { code: '959', state: 'CT', city: 'Hartford' },
-  // Delaware
   { code: '302', state: 'DE', city: 'Wilmington' },
-  // Florida
   { code: '239', state: 'FL', city: 'Fort Myers' },
   { code: '305', state: 'FL', city: 'Miami' },
   { code: '321', state: 'FL', city: 'Orlando' },
@@ -1272,7 +1258,6 @@ const AREA_CODES = [
   { code: '904', state: 'FL', city: 'Jacksonville' },
   { code: '941', state: 'FL', city: 'Sarasota' },
   { code: '954', state: 'FL', city: 'Fort Lauderdale' },
-  // Georgia
   { code: '229', state: 'GA', city: 'Albany' },
   { code: '404', state: 'GA', city: 'Atlanta' },
   { code: '470', state: 'GA', city: 'Atlanta' },
@@ -1282,11 +1267,8 @@ const AREA_CODES = [
   { code: '762', state: 'GA', city: 'Augusta' },
   { code: '770', state: 'GA', city: 'Atlanta' },
   { code: '912', state: 'GA', city: 'Savannah' },
-  // Hawaii
   { code: '808', state: 'HI', city: 'Honolulu' },
-  // Idaho
   { code: '208', state: 'ID', city: 'Boise' },
-  // Illinois
   { code: '217', state: 'IL', city: 'Springfield' },
   { code: '224', state: 'IL', city: 'Chicago' },
   { code: '309', state: 'IL', city: 'Peoria' },
@@ -1300,7 +1282,6 @@ const AREA_CODES = [
   { code: '815', state: 'IL', city: 'Rockford' },
   { code: '847', state: 'IL', city: 'Chicago' },
   { code: '872', state: 'IL', city: 'Chicago' },
-  // Indiana
   { code: '219', state: 'IN', city: 'Gary' },
   { code: '260', state: 'IN', city: 'Fort Wayne' },
   { code: '317', state: 'IN', city: 'Indianapolis' },
@@ -1309,37 +1290,30 @@ const AREA_CODES = [
   { code: '765', state: 'IN', city: 'Lafayette' },
   { code: '812', state: 'IN', city: 'Evansville' },
   { code: '930', state: 'IN', city: 'Evansville' },
-  // Iowa
   { code: '319', state: 'IA', city: 'Cedar Rapids' },
   { code: '515', state: 'IA', city: 'Des Moines' },
   { code: '563', state: 'IA', city: 'Davenport' },
   { code: '641', state: 'IA', city: 'Mason City' },
   { code: '712', state: 'IA', city: 'Sioux City' },
-  // Kansas
   { code: '316', state: 'KS', city: 'Wichita' },
   { code: '620', state: 'KS', city: 'Dodge City' },
   { code: '785', state: 'KS', city: 'Topeka' },
   { code: '913', state: 'KS', city: 'Kansas City' },
-  // Kentucky
   { code: '270', state: 'KY', city: 'Bowling Green' },
   { code: '502', state: 'KY', city: 'Louisville' },
   { code: '606', state: 'KY', city: 'Ashland' },
   { code: '859', state: 'KY', city: 'Lexington' },
-  // Louisiana
   { code: '225', state: 'LA', city: 'Baton Rouge' },
   { code: '318', state: 'LA', city: 'Shreveport' },
   { code: '337', state: 'LA', city: 'Lafayette' },
   { code: '504', state: 'LA', city: 'New Orleans' },
   { code: '985', state: 'LA', city: 'Houma' },
-  // Maine
   { code: '207', state: 'ME', city: 'Portland' },
-  // Maryland
   { code: '240', state: 'MD', city: 'Silver Spring' },
   { code: '301', state: 'MD', city: 'Silver Spring' },
   { code: '410', state: 'MD', city: 'Baltimore' },
   { code: '443', state: 'MD', city: 'Baltimore' },
   { code: '667', state: 'MD', city: 'Baltimore' },
-  // Massachusetts
   { code: '339', state: 'MA', city: 'Boston' },
   { code: '351', state: 'MA', city: 'Lowell' },
   { code: '413', state: 'MA', city: 'Springfield' },
@@ -1349,7 +1323,6 @@ const AREA_CODES = [
   { code: '781', state: 'MA', city: 'Boston' },
   { code: '857', state: 'MA', city: 'Boston' },
   { code: '978', state: 'MA', city: 'Lowell' },
-  // Michigan
   { code: '231', state: 'MI', city: 'Muskegon' },
   { code: '248', state: 'MI', city: 'Detroit' },
   { code: '269', state: 'MI', city: 'Kalamazoo' },
@@ -1362,7 +1335,6 @@ const AREA_CODES = [
   { code: '906', state: 'MI', city: 'Marquette' },
   { code: '947', state: 'MI', city: 'Detroit' },
   { code: '989', state: 'MI', city: 'Saginaw' },
-  // Minnesota
   { code: '218', state: 'MN', city: 'Duluth' },
   { code: '320', state: 'MN', city: 'St. Cloud' },
   { code: '507', state: 'MN', city: 'Rochester' },
@@ -1370,12 +1342,10 @@ const AREA_CODES = [
   { code: '651', state: 'MN', city: 'St. Paul' },
   { code: '763', state: 'MN', city: 'Minneapolis' },
   { code: '952', state: 'MN', city: 'Minneapolis' },
-  // Mississippi
   { code: '228', state: 'MS', city: 'Biloxi' },
   { code: '601', state: 'MS', city: 'Jackson' },
   { code: '662', state: 'MS', city: 'Tupelo' },
   { code: '769', state: 'MS', city: 'Jackson' },
-  // Missouri
   { code: '314', state: 'MO', city: 'St. Louis' },
   { code: '417', state: 'MO', city: 'Springfield' },
   { code: '573', state: 'MO', city: 'Columbia' },
@@ -1383,18 +1353,13 @@ const AREA_CODES = [
   { code: '660', state: 'MO', city: 'Sedalia' },
   { code: '816', state: 'MO', city: 'Kansas City' },
   { code: '975', state: 'MO', city: 'Kansas City' },
-  // Montana
   { code: '406', state: 'MT', city: 'Billings' },
-  // Nebraska
   { code: '308', state: 'NE', city: 'North Platte' },
   { code: '402', state: 'NE', city: 'Omaha' },
   { code: '531', state: 'NE', city: 'Omaha' },
-  // Nevada
   { code: '702', state: 'NV', city: 'Las Vegas' },
   { code: '775', state: 'NV', city: 'Reno' },
-  // New Hampshire
   { code: '603', state: 'NH', city: 'Manchester' },
-  // New Jersey
   { code: '201', state: 'NJ', city: 'Jersey City' },
   { code: '609', state: 'NJ', city: 'Trenton' },
   { code: '732', state: 'NJ', city: 'New Brunswick' },
@@ -1403,10 +1368,8 @@ const AREA_CODES = [
   { code: '862', state: 'NJ', city: 'Newark' },
   { code: '908', state: 'NJ', city: 'Elizabeth' },
   { code: '973', state: 'NJ', city: 'Newark' },
-  // New Mexico
   { code: '505', state: 'NM', city: 'Albuquerque' },
   { code: '575', state: 'NM', city: 'Las Cruces' },
-  // New York
   { code: '212', state: 'NY', city: 'New York' },
   { code: '315', state: 'NY', city: 'Syracuse' },
   { code: '347', state: 'NY', city: 'New York' },
@@ -1422,7 +1385,6 @@ const AREA_CODES = [
   { code: '914', state: 'NY', city: 'White Plains' },
   { code: '917', state: 'NY', city: 'New York' },
   { code: '929', state: 'NY', city: 'New York' },
-  // North Carolina
   { code: '252', state: 'NC', city: 'Greenville' },
   { code: '336', state: 'NC', city: 'Greensboro' },
   { code: '704', state: 'NC', city: 'Charlotte' },
@@ -1431,9 +1393,7 @@ const AREA_CODES = [
   { code: '919', state: 'NC', city: 'Raleigh' },
   { code: '980', state: 'NC', city: 'Charlotte' },
   { code: '984', state: 'NC', city: 'Raleigh' },
-  // North Dakota
   { code: '701', state: 'ND', city: 'Fargo' },
-  // Ohio
   { code: '216', state: 'OH', city: 'Cleveland' },
   { code: '234', state: 'OH', city: 'Akron' },
   { code: '330', state: 'OH', city: 'Akron' },
@@ -1444,15 +1404,12 @@ const AREA_CODES = [
   { code: '614', state: 'OH', city: 'Columbus' },
   { code: '740', state: 'OH', city: 'Columbus' },
   { code: '937', state: 'OH', city: 'Dayton' },
-  // Oklahoma
   { code: '405', state: 'OK', city: 'Oklahoma City' },
   { code: '580', state: 'OK', city: 'Lawton' },
   { code: '918', state: 'OK', city: 'Tulsa' },
-  // Oregon
   { code: '503', state: 'OR', city: 'Portland' },
   { code: '541', state: 'OR', city: 'Eugene' },
   { code: '971', state: 'OR', city: 'Portland' },
-  // Pennsylvania
   { code: '215', state: 'PA', city: 'Philadelphia' },
   { code: '267', state: 'PA', city: 'Philadelphia' },
   { code: '412', state: 'PA', city: 'Pittsburgh' },
@@ -1463,23 +1420,18 @@ const AREA_CODES = [
   { code: '724', state: 'PA', city: 'Pittsburgh' },
   { code: '814', state: 'PA', city: 'Erie' },
   { code: '878', state: 'PA', city: 'Pittsburgh' },
-  // Rhode Island
   { code: '401', state: 'RI', city: 'Providence' },
-  // South Carolina
   { code: '803', state: 'SC', city: 'Columbia' },
   { code: '843', state: 'SC', city: 'Charleston' },
   { code: '854', state: 'SC', city: 'Charleston' },
   { code: '864', state: 'SC', city: 'Greenville' },
-  // South Dakota
   { code: '605', state: 'SD', city: 'Sioux Falls' },
-  // Tennessee
   { code: '423', state: 'TN', city: 'Chattanooga' },
   { code: '615', state: 'TN', city: 'Nashville' },
   { code: '731', state: 'TN', city: 'Jackson' },
   { code: '865', state: 'TN', city: 'Knoxville' },
   { code: '901', state: 'TN', city: 'Memphis' },
   { code: '931', state: 'TN', city: 'Clarksville' },
-  // Texas
   { code: '210', state: 'TX', city: 'San Antonio' },
   { code: '214', state: 'TX', city: 'Dallas' },
   { code: '254', state: 'TX', city: 'Waco' },
@@ -1505,13 +1457,10 @@ const AREA_CODES = [
   { code: '956', state: 'TX', city: 'Laredo' },
   { code: '972', state: 'TX', city: 'Dallas' },
   { code: '979', state: 'TX', city: 'Bryan' },
-  // Utah
   { code: '385', state: 'UT', city: 'Salt Lake City' },
   { code: '435', state: 'UT', city: 'St. George' },
   { code: '801', state: 'UT', city: 'Salt Lake City' },
-  // Vermont
   { code: '802', state: 'VT', city: 'Burlington' },
-  // Virginia
   { code: '276', state: 'VA', city: 'Bristol' },
   { code: '434', state: 'VA', city: 'Lynchburg' },
   { code: '540', state: 'VA', city: 'Roanoke' },
@@ -1519,26 +1468,21 @@ const AREA_CODES = [
   { code: '703', state: 'VA', city: 'Arlington' },
   { code: '757', state: 'VA', city: 'Norfolk' },
   { code: '804', state: 'VA', city: 'Richmond' },
-  // Washington
   { code: '206', state: 'WA', city: 'Seattle' },
   { code: '253', state: 'WA', city: 'Tacoma' },
   { code: '360', state: 'WA', city: 'Olympia' },
   { code: '425', state: 'WA', city: 'Bellevue' },
   { code: '509', state: 'WA', city: 'Spokane' },
   { code: '564', state: 'WA', city: 'Seattle' },
-  // West Virginia
   { code: '304', state: 'WV', city: 'Charleston' },
   { code: '681', state: 'WV', city: 'Charleston' },
-  // Wisconsin
   { code: '262', state: 'WI', city: 'Kenosha' },
   { code: '414', state: 'WI', city: 'Milwaukee' },
   { code: '534', state: 'WI', city: 'Milwaukee' },
   { code: '608', state: 'WI', city: 'Madison' },
   { code: '715', state: 'WI', city: 'Eau Claire' },
   { code: '920', state: 'WI', city: 'Green Bay' },
-  // Wyoming
   { code: '307', state: 'WY', city: 'Cheyenne' },
-  // CANADÁ
   { code: '403', state: 'AB', city: 'Calgary' },
   { code: '587', state: 'AB', city: 'Calgary' },
   { code: '780', state: 'AB', city: 'Edmonton' },
@@ -1584,11 +1528,10 @@ const AREA_CODES = [
   { code: '867', state: 'YT', city: 'Whitehorse' }
 ];
 
-// ── LOCAL STORE (notas/estatus, NO credenciales) ────────────────────────────
+// ── LOCAL STORE ──────────────────────────────────────────────────────────────
 function loadStore() { try { store = JSON.parse(localStorage.getItem(STORE_KEY) || '{}'); } catch(e) { store = {}; } }
 function saveStore() { try { localStorage.setItem(STORE_KEY, JSON.stringify(store)); } catch(e) {} }
 
-// ── SESSIONS (sessionStorage: se borran al cerrar la pestaña) ──────────────
 function loadSessions() {
   try { sessions = JSON.parse(sessionStorage.getItem('crm_sessions') || '{}'); } catch(e) { sessions = {}; }
 }
@@ -1609,14 +1552,14 @@ async function apiGet(params) {
 async function apiPost(body) {
   const res = await fetch(APPS_SCRIPT_URL, {
     method: 'POST',
-    headers: { 'Content-Type': 'text/plain' }, // evita preflight CORS
+    headers: { 'Content-Type': 'text/plain' },
     body: JSON.stringify(body),
   });
   if (!res.ok) throw new Error('HTTP ' + res.status);
   return res.json();
 }
 
-// ── INITIAL LOAD (público: solo lista de asesores + resumen agregado) ──────
+// ── INITIAL LOAD ──────────────────────────────────────────────────────────────
 async function loadInitial() {
   document.getElementById('tableBody').innerHTML =
     '<tr><td colspan="12"><div class="loading"><div class="spinner"></div>Loading data...</div></td></tr>';
@@ -1641,7 +1584,21 @@ async function loadInitial() {
     updateAdminButton();
 
     if (activeTab === 'all') {
-      renderResumen();
+      // Cargar el resumen con estados
+      const res = await apiGet({ action: 'getSummary' });
+      if (res.ok && res.totals) {
+        const t = res.totals;
+        document.getElementById('s-total').textContent = t.total || 0;
+        document.getElementById('s-interested').textContent = t.interested || 0;
+        document.getElementById('s-undecided').textContent = t.undecided || 0;
+        document.getElementById('s-notint').textContent = t.notint || 0;
+        document.getElementById('s-noanswer').textContent = (t.noanswer || 0) + (t.voicemail || 0);
+        document.getElementById('s-pending').textContent = t.none || 0;
+        document.getElementById('s-total-balance').textContent = fmtCur(t.sumaBalances || 0);
+        renderResumen(res.summary);
+      } else {
+        renderResumen(summaryData);
+      }
     } else if (activeTab === 'handling') {
       showDefaultContent(false); showHandlingContent(true); renderHandling();
     } else {
@@ -1653,9 +1610,9 @@ async function loadInitial() {
     showToast('Error loading data', false);
   }
 }
-function loadData() { loadInitial(); } // alias usado por el botón Refresh
+function loadData() { loadInitial(); }
 
-// ── STATUS (local overrides / inferred) ──────────────────────────────────────
+// ── STATUS ────────────────────────────────────────────────────────────────────
 function getStatus(r) {
   const k = rowKey(r);
   if (store[k] && store[k].status) return store[k].status;
@@ -1691,22 +1648,54 @@ function renderTabs() {
   document.getElementById('tabs').innerHTML = html;
 }
 
+// ── SWITCH TAB (MODIFICADO) ──────────────────────────────────────────────────
 async function switchTab(tab) {
   if (tab === 'all') {
-    activeTab = 'all'; currentPage = 1;
-    renderTabs(); showDefaultContent(true); showHandlingContent(false);
+    activeTab = 'all';
+    currentPage = 1;
+    renderTabs();
+    showDefaultContent(true);
+    showHandlingContent(false);
     document.getElementById('filterGroup').classList.add('hidden');
     document.getElementById('panel-title').textContent = '📊 General Report';
     document.getElementById('sessionBanner').classList.remove('show');
-    renderResumen();
-    updateAreaCodeVisibility(); // ocultar ladas
+    updateAreaCodeVisibility();
+
+    // Obtener resumen con estados desde el servidor
+    try {
+      const res = await apiGet({ action: 'getSummary' });
+      if (res.ok && res.totals) {
+        const t = res.totals;
+        document.getElementById('s-total').textContent = t.total || 0;
+        document.getElementById('s-interested').textContent = t.interested || 0;
+        document.getElementById('s-undecided').textContent = t.undecided || 0;
+        document.getElementById('s-notint').textContent = t.notint || 0;
+        document.getElementById('s-noanswer').textContent = (t.noanswer || 0) + (t.voicemail || 0);
+        document.getElementById('s-pending').textContent = t.none || 0;
+        document.getElementById('s-total-balance').textContent = fmtCur(t.sumaBalances || 0);
+        renderResumen(res.summary);
+      } else {
+        document.getElementById('s-total').textContent = '—';
+        document.getElementById('s-interested').textContent = '—';
+        document.getElementById('s-undecided').textContent = '—';
+        document.getElementById('s-notint').textContent = '—';
+        document.getElementById('s-noanswer').textContent = '—';
+        document.getElementById('s-pending').textContent = '—';
+        document.getElementById('s-total-balance').textContent = '$0.00';
+        renderResumen(summaryData);
+      }
+    } catch (e) {
+      showToast('Error al cargar el resumen general', false);
+      renderResumen(summaryData);
+    }
     return;
   }
+
   if (tab === 'handling') {
     activeTab = 'handling';
     renderTabs(); showDefaultContent(false); showHandlingContent(true);
     renderHandling();
-    updateAreaCodeVisibility(); // ocultar ladas
+    updateAreaCodeVisibility();
     return;
   }
 
@@ -1739,20 +1728,20 @@ async function switchTab(tab) {
 
   await ensureAdvisorData(tab);
   applyFiltersAndRender();
-  updateAreaCodeVisibility(); // mostrar ladas en pestañas de asesor
+  updateAreaCodeVisibility();
 }
 
 function showDefaultContent(show) { document.getElementById('defaultContent').style.display = show ? 'block' : 'none'; }
 function showHandlingContent(show) { document.getElementById('handlingContainer').style.display = show ? 'block' : 'none'; }
 
-// ── DATA FETCH POR ASESOR AUTENTICADO ───────────────────────────────────────
+// ── DATA FETCH POR ASESOR ────────────────────────────────────────────────────
 async function ensureAdvisorData(advisor) {
   const session = getSessionFor(advisor);
   if (!session) {
     advisorRows[advisor] = [];
     return;
   }
-  if (advisorRows[advisor]) return; // ya en cache
+  if (advisorRows[advisor]) return;
   try {
     const res = await apiGet({ action: 'getData', token: session.token });
     if (!res.ok) {
@@ -1934,7 +1923,7 @@ async function logoutCurrentTab() {
   switchTab('all');
 }
 
-// ── BALANCES / MONTHS PAID (overrides locales, se sincronizan al guardar comentario) ──
+// ── BALANCES / MONTHS PAID ──────────────────────────────────────────────────
 function getClientBalance(r) {
   const k = rowKey(r);
   if (store[k] && store[k].balance !== undefined && !isNaN(store[k].balance)) return store[k].balance;
@@ -1986,7 +1975,8 @@ function applyFiltersAndRender() {
   renderTable();
 }
 
-function renderResumen() {
+// ── RENDER RESUMEN (modificado) ──────────────────────────────────────────────
+function renderResumen(data) {
   const thead = document.getElementById('tableHead');
   thead.innerHTML = `<tr>
     <th style="cursor:default;">Advisor</th>
@@ -1994,27 +1984,20 @@ function renderResumen() {
     <th style="cursor:default;text-align:center;">Total Monthly Balance (USD)</th>
   </tr>`;
   const tbody = document.getElementById('tableBody');
-  if (!summaryData.length) {
+  const items = data || summaryData;
+  if (!items || !items.length) {
     tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:2rem;color:#999;">No advisors with clients</td></tr>';
   } else {
-    tbody.innerHTML = summaryData.map(item => `<tr class="resumen-asesor">
+    tbody.innerHTML = items.map(item => `<tr class="resumen-asesor">
         <td><strong>${esc(item.asesor)}</strong></td>
         <td style="text-align:center;font-weight:600;">${item.total}</td>
         <td style="text-align:center;font-weight:600;">${fmtCur(item.sumaBalances)}</td>
       </tr>`).join('');
   }
   document.getElementById('pagination').classList.add('hidden');
-  const totalClients = summaryData.reduce((s,a)=>s+a.total,0);
-  const totalBalance = summaryData.reduce((s,a)=>s+a.sumaBalances,0);
-  document.getElementById('s-total').textContent = totalClients;
-  document.getElementById('s-interested').textContent = '—';
-  document.getElementById('s-undecided').textContent = '—';
-  document.getElementById('s-notint').textContent = '—';
-  document.getElementById('s-noanswer').textContent = '—';
-  document.getElementById('s-pending').textContent = '—';
-  document.getElementById('s-total-balance').textContent = fmtCur(totalBalance);
 }
 
+// ── RENDER TABLE ──────────────────────────────────────────────────────────────
 function renderTable() {
   document.getElementById('pagination').classList.remove('hidden');
 
@@ -2200,6 +2183,7 @@ function pickPreset(e, key, status, label) {
   store[key].status = status;
 }
 
+// ── SAVE COMMENT (MODIFICADO: envía estadoCode) ─────────────────────────────
 async function saveComment(key, nombre, asesor) {
   const safeKey = key.replace(/[^a-z0-9]/gi,'_');
   const ta = document.getElementById('ta_' + safeKey);
@@ -2209,7 +2193,7 @@ async function saveComment(key, nombre, asesor) {
   if (!session) { showToast('⚠️ Tu sesión expiró, vuelve a iniciar sesión', false); return; }
 
   const comment  = ta.value.trim();
-  const status   = (store[key] && store[key].status) || inferStatus(comment);
+  const status   = store[key]?.status || inferStatus(comment);
   const now      = new Date();
   const dateStr  = now.toLocaleDateString('en-US',{day:'2-digit',month:'2-digit',year:'numeric'});
   const timeStr  = now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
@@ -2240,7 +2224,9 @@ async function saveComment(key, nombre, asesor) {
       action: 'saveComment', token: session.token,
       fechaInteraccion: datetime, asesor: asesor, idCliente: String(rowData.id || ''),
       nombreCliente: nombre, telefono: rowData.telefono || '', telefono_mobile: rowData.telefono_mobile || '',
-      domicilio: rowData.domicilio || '', estado: statusLabels[status] || status, comentario: comment,
+      domicilio: rowData.domicilio || '', estado: statusLabels[status] || status,
+      estadoCode: status,   // ← NUEVO: código para la columna "Estatus"
+      comentario: comment,
       salesPrice: String(rowData.salesPrice || ''), downPayment: String(rowData.downPayment || ''),
       monthlyPayment: String(rowData.monthlyPayment || ''), term: String(rowData.term || ''),
       scheduledLoan: String(rowData.scheduledLoan || ''), financingType: String(rowData.financingType || ''),
@@ -2309,7 +2295,6 @@ function updateAreaCodeVisibility() {
   const container = document.getElementById('areaCodeSearch');
   if (activeTab !== 'all' && activeTab !== 'handling' && !container._forceHidden) {
     container.style.display = 'block';
-    // Mostrar algunos resultados iniciales (primeros 20)
     if (!document.getElementById('areaCodeInput').value) {
       renderAreaCodes(AREA_CODES.slice(0, 20));
     }
@@ -2354,7 +2339,6 @@ function searchAreaCodes() {
   renderAreaCodes(results);
 }
 
-// Eventos del buscador de ladas
 document.addEventListener('DOMContentLoaded', function() {
   const input = document.getElementById('areaCodeInput');
   const btn = document.getElementById('areaCodeSearchBtn');
