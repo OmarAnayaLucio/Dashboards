@@ -372,24 +372,25 @@
 
     .summary-bar {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 10px;
       margin-bottom: 1.5rem;
     }
     .sum-card {
-      background: var(--blanco); border-radius: 12px; padding: 0.85rem 1rem;
+      background: var(--blanco); border-radius: 12px; padding: 0.7rem 0.8rem;
       box-shadow: 0 4px 12px rgba(14,59,92,0.10); border-left: 4px solid var(--azul-vibrante);
       transition: transform 0.15s, box-shadow 0.15s;
     }
     .sum-card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(14,59,92,0.18); }
-    .sc-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--azul-profundo); font-weight: 600; }
-    .sc-val { font-size: 22px; font-weight: 700; color: var(--azul-profundo); }
-    .sc-sub { font-size: 10px; color: #888; margin-top: 2px; }
+    .sc-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--azul-profundo); font-weight: 700; }
+    .sc-val { font-size: 20px; font-weight: 700; color: var(--azul-profundo); }
+    .sc-sub { font-size: 9px; color: #888; margin-top: 1px; }
     .sum-card.c-verde .sc-val { color: var(--verde); }
     .sum-card.c-naranja .sc-val { color: var(--naranja); }
     .sum-card.c-rojo .sc-val { color: var(--rojo); }
     .sum-card.c-azul .sc-val { color: var(--azul-vibrante); }
     .sum-card.c-dorado .sc-val { color: #b7950b; }
+    .sum-card.c-morado .sc-val { color: #8e44ad; }
 
     .panel { background: var(--blanco); border-radius: 12px; border: 1px solid var(--azul-claro); box-shadow: 0 4px 16px rgba(14,59,92,0.08); overflow: hidden; }
     .panel-header {
@@ -1064,14 +1065,24 @@
         <div class="sc-sub">no follow-up</div>
       </div>
       <div class="sum-card">
-        <div class="sc-label">📵 No contact</div>
+        <div class="sc-label">📵 No Answer</div>
         <div class="sc-val" id="s-noanswer">—</div>
-        <div class="sc-sub">no answer / voicemail</div>
+        <div class="sc-sub">no answer / no voicemail</div>
+      </div>
+      <div class="sum-card c-azul">
+        <div class="sc-label">📦 Voicemail</div>
+        <div class="sc-val" id="s-voicemail">—</div>
+        <div class="sc-sub">left voicemail / 3rd party</div>
+      </div>
+      <div class="sum-card c-morado">
+        <div class="sc-label">✏️ Custom Comment</div>
+        <div class="sc-val" id="s-custom">—</div>
+        <div class="sc-sub">commented without preset</div>
       </div>
       <div class="sum-card c-azul">
         <div class="sc-label">⏳ Unmanaged</div>
         <div class="sc-val" id="s-pending">—</div>
-        <div class="sc-sub">pending</div>
+        <div class="sc-sub">no interaction yet</div>
       </div>
       <div class="sum-card c-dorado">
         <div class="sc-label">💰 Total Monthly Balance</div>
@@ -1089,7 +1100,7 @@
             <option value="">All statuses</option>
             <option value="interested">✅ Interested</option>
             <option value="undecided">🤔 Undecided</option>
-            <option value="noanswer">📵 No contact</option>
+            <option value="noanswer">📵 No Answer</option>
             <option value="notint">🚫 Not interested</option>
             <option value="voicemail">📦 Voicemail</option>
             <option value="none">⏳ Unmanaged</option>
@@ -1128,7 +1139,6 @@
       </div>
       <div id="areaCodeResults"></div>
 
-      <!-- Tabla de zonas horarias principales -->
       <div id="timezoneOverview">
         <h5>🌍 Zonas horarias principales</h5>
         <div id="timezoneTableContainer"></div>
@@ -1209,10 +1219,11 @@ const CALL_SCRIPT = [
   { title: '9. Call to Action', tag: 'Next Step', html: `Do you have any questions?\n\nPerfect!\n\nOur next step is to schedule an appointment with Mrs. Aldman. It is important for this appointment that you have a full understanding that this process is based on your terms and conditions. Therefore, it is essential that you have the covers of your contracts and any notes or questions you may have regarding your purchase process on hand for the appointment.` }
 ];
 
+// ─── PRESETS ACTUALIZADOS ─────────────────────────────────────────────────────
 const PRESETS = [
-  { label: '📵 Phone not connecting',         status: 'noanswer'  },
-  { label: '🤔 Undecided / Reschedule',        status: 'undecided' },
-  { label: '🚫 Does not wish to be contacted', status: 'notint'    },
+  { label: '🔕 No Answer (No Voicemail)', status: 'noanswer' },
+  { label: '🤔 Undecided / Reschedule',   status: 'undecided' },
+  { label: '🚫 Does not wish to be contacted', status: 'notint' },
   { label: '✅ Interested / Close with Fer',   status: 'interested'},
   { label: '📦 Voicemail / 3rd party',         status: 'voicemail' },
 ];
@@ -1220,7 +1231,7 @@ const PRESETS = [
 const STATUS_INFO = {
   interested: { label: 'Interested',       cls: 'badge-interested' },
   undecided:  { label: 'Undecided',        cls: 'badge-undecided'  },
-  noanswer:   { label: 'No contact',       cls: 'badge-noanswer'   },
+  noanswer:   { label: 'No Answer',        cls: 'badge-noanswer'   },
   notint:     { label: 'Not interested',   cls: 'badge-notint'     },
   voicemail:  { label: 'Voicemail / 3rd',  cls: 'badge-voicemail'  },
   none:       { label: 'Unmanaged',        cls: 'badge-none'       },
@@ -1752,7 +1763,8 @@ async function loadInitial() {
         document.getElementById('s-interested').textContent = t.interested || 0;
         document.getElementById('s-undecided').textContent = t.undecided || 0;
         document.getElementById('s-notint').textContent = t.notint || 0;
-        document.getElementById('s-noanswer').textContent = (t.noanswer || 0) + (t.voicemail || 0);
+        document.getElementById('s-noanswer').textContent = t.noanswer || 0;
+        document.getElementById('s-voicemail').textContent = t.voicemail || 0;
         document.getElementById('s-pending').textContent = t.none || 0;
         document.getElementById('s-total-balance').textContent = fmtCur(t.sumaBalances || 0);
         renderResumen(res.summary);
@@ -1764,7 +1776,6 @@ async function loadInitial() {
     } else {
       applyFiltersAndRender();
     }
-    // Iniciar actualización de zonas horarias
     updateTimezoneOverview();
     setInterval(updateTimezoneOverview, 60000);
   } catch(e) {
@@ -1832,7 +1843,8 @@ async function switchTab(tab) {
         document.getElementById('s-interested').textContent = t.interested || 0;
         document.getElementById('s-undecided').textContent = t.undecided || 0;
         document.getElementById('s-notint').textContent = t.notint || 0;
-        document.getElementById('s-noanswer').textContent = (t.noanswer || 0) + (t.voicemail || 0);
+        document.getElementById('s-noanswer').textContent = t.noanswer || 0;
+        document.getElementById('s-voicemail').textContent = t.voicemail || 0;
         document.getElementById('s-pending').textContent = t.none || 0;
         document.getElementById('s-total-balance').textContent = fmtCur(t.sumaBalances || 0);
         renderResumen(res.summary);
@@ -1842,6 +1854,7 @@ async function switchTab(tab) {
         document.getElementById('s-undecided').textContent = '—';
         document.getElementById('s-notint').textContent = '—';
         document.getElementById('s-noanswer').textContent = '—';
+        document.getElementById('s-voicemail').textContent = '—';
         document.getElementById('s-pending').textContent = '—';
         document.getElementById('s-total-balance').textContent = '$0.00';
         renderResumen(summaryData);
@@ -2309,23 +2322,34 @@ function renderTable() {
 
 function goPage(p) { currentPage = p; renderTable(); }
 
+// ─── FUNCIÓN updateSummary MEJORADA ────────────────────────────────────────
 function updateSummary(data) {
-  let interested=0, undecided=0, notint=0, noanswer=0, pending=0, sumBalance=0;
+  let interested = 0, undecided = 0, notint = 0, noanswer = 0, voicemail = 0, unmanaged = 0, custom = 0, sumBalance = 0;
+
   data.forEach(r => {
     const s = getStatus(r);
-    if (s==='interested') interested++;
-    else if (s==='undecided') undecided++;
-    else if (s==='notint') notint++;
-    else if (s==='noanswer'||s==='voicemail') noanswer++;
-    else pending++;
+    const key = rowKey(r);
+    const hasComment = !!(store[key]?.comment || r.comentarios);
+
+    if (s === 'interested') interested++;
+    else if (s === 'undecided') undecided++;
+    else if (s === 'notint') notint++;
+    else if (s === 'noanswer') noanswer++;
+    else if (s === 'voicemail') voicemail++;
+    else if (s === 'none' && hasComment) custom++;
+    else if (s === 'none') unmanaged++;
+
     sumBalance += getClientBalance(r);
   });
-  document.getElementById('s-total').textContent      = data.length;
+
+  document.getElementById('s-total').textContent = data.length;
   document.getElementById('s-interested').textContent = interested;
-  document.getElementById('s-undecided').textContent  = undecided;
-  document.getElementById('s-notint').textContent     = notint;
-  document.getElementById('s-noanswer').textContent   = noanswer;
-  document.getElementById('s-pending').textContent    = pending;
+  document.getElementById('s-undecided').textContent = undecided;
+  document.getElementById('s-notint').textContent = notint;
+  document.getElementById('s-noanswer').textContent = noanswer;
+  document.getElementById('s-voicemail').textContent = voicemail;
+  document.getElementById('s-pending').textContent = unmanaged;
+  document.getElementById('s-custom').textContent = custom;
   document.getElementById('s-total-balance').textContent = fmtCur(sumBalance);
 }
 
@@ -2363,7 +2387,7 @@ async function saveComment(key, nombre, asesor) {
   const rows     = advisorRows[activeTab] || [];
   const rowData  = rows.find(r => rowKey(r) === key) || {};
   const statusLabels = {
-    interested:'Interested', undecided:'Undecided', noanswer:'No contact',
+    interested:'Interested', undecided:'Undecided', noanswer:'No Answer',
     notint:'Not interested', voicemail:'Voicemail / 3rd', none:'Unmanaged'
   };
   store[key] = { comment, status, date: dateStr, nombre, asesor };
@@ -2452,7 +2476,7 @@ function copyScriptText() {
   } else { showToast('⚠️ Clipboard not available', false); }
 }
 
-// ─── NUEVAS FUNCIONES PARA ZONAS HORARIAS ──────────────────────────────────
+// ─── ZONAS HORARIAS ──────────────────────────────────────────────────────────
 function getTimezoneForState(state) {
   return stateToTimezone[state] || null;
 }
@@ -2518,7 +2542,6 @@ function updateTimezoneOverview() {
   container.innerHTML = html;
 }
 
-// ─── MODIFICAR renderAreaCodes PARA INCLUIR HORA ──────────────────────────
 function renderAreaCodes(results) {
   const container = document.getElementById('areaCodeResults');
   if (!results.length) {
@@ -2543,7 +2566,6 @@ function renderAreaCodes(results) {
   container.innerHTML = html;
 }
 
-// ─── updateAreaCodeVisibility (modificado) ──────────────────────────────
 function updateAreaCodeVisibility() {
   const container = document.getElementById('areaCodeSearch');
   if (activeTab !== 'all' && activeTab !== 'handling' && !container._forceHidden) {
@@ -2557,7 +2579,6 @@ function updateAreaCodeVisibility() {
   }
 }
 
-// ─── FILTRAR LADAS (mejorado) ──────────────────────────────────────────────
 function filterAreaCodes(query) {
   const q = query.trim().toLowerCase();
   if (!q) return AREA_CODES.slice(0, 50);
@@ -2578,7 +2599,6 @@ function searchAreaCodes() {
   renderAreaCodes(results);
 }
 
-// ── EVENTOS DEL BUSCADOR ───────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
   const input = document.getElementById('areaCodeInput');
   const btn = document.getElementById('areaCodeSearchBtn');
