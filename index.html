@@ -1022,7 +1022,7 @@
     </div>
 
     <div class="contact-card">
-      <h4>📞 Phone for Client Callbacks (Sarah Altman receive the call)</h4>
+      <h4>📞 Phone for Client Callbacks (Sarah Aldman receive the call)</h4>
       <span class="phone-number">+1 (224) 201‑3647</span>
       <span class="phone-note">Clients can reach our office calling at this number.</span>
     </div>
@@ -1777,7 +1777,15 @@ async function loadInitial() {
         document.getElementById('s-voicemail').textContent = t.voicemail || 0;
         document.getElementById('s-invalidphone').textContent = t.invalidphone || 0;
         document.getElementById('s-pending').textContent = t.none || 0;
-        document.getElementById('s-total-balance').textContent = fmtCur(t.sumaBalances || 0);
+        // Total balance desde store
+        let totalBalanceStore = 0;
+        Object.keys(store).forEach(key => {
+          const entry = store[key];
+          if (entry && entry.balance !== undefined && !isNaN(entry.balance)) {
+            totalBalanceStore += entry.balance;
+          }
+        });
+        document.getElementById('s-total-balance').textContent = fmtCur(totalBalanceStore);
         renderResumen(res.summary);
       } else {
         renderResumen(summaryData);
@@ -1859,7 +1867,15 @@ async function switchTab(tab) {
         document.getElementById('s-voicemail').textContent = t.voicemail || 0;
         document.getElementById('s-invalidphone').textContent = t.invalidphone || 0;
         document.getElementById('s-pending').textContent = t.none || 0;
-        document.getElementById('s-total-balance').textContent = fmtCur(t.sumaBalances || 0);
+        // Total balance desde store
+        let totalBalanceStore = 0;
+        Object.keys(store).forEach(key => {
+          const entry = store[key];
+          if (entry && entry.balance !== undefined && !isNaN(entry.balance)) {
+            totalBalanceStore += entry.balance;
+          }
+        });
+        document.getElementById('s-total-balance').textContent = fmtCur(totalBalanceStore);
         renderResumen(res.summary);
       } else {
         document.getElementById('s-total').textContent = '—';
@@ -2116,7 +2132,7 @@ async function logoutCurrentTab() {
 function getClientBalance(r) {
   const k = rowKey(r);
   if (store[k] && store[k].balance !== undefined && !isNaN(store[k].balance)) return store[k].balance;
-  return r.saldo || 0;
+  return 0;  // ← valor por defecto 0, no copia de r.saldo
 }
 function updateBalance(key, newVal) {
   const num = parseFloat(newVal);
@@ -2153,8 +2169,14 @@ function applyFiltersAndRender() {
   if (sf) data = data.filter(r => getStatus(r) === sf);
   data = data.slice().sort((a, b) => {
     let va = a[sortField], vb = b[sortField];
-    if (sortField === 'id' || sortField === 'saldo') { va = Number(va); vb = Number(vb); }
-    else { va = String(va||'').toLowerCase(); vb = String(vb||'').toLowerCase(); }
+    if (sortField === 'status') {
+      va = getStatus(a) === 'none' ? 0 : 1;
+      vb = getStatus(b) === 'none' ? 0 : 1;
+    } else if (sortField === 'id' || sortField === 'saldo') {
+      va = Number(va); vb = Number(vb);
+    } else {
+      va = String(va||'').toLowerCase(); vb = String(vb||'').toLowerCase();
+    }
     if (va < vb) return sortAsc ? -1 : 1;
     if (va > vb) return sortAsc ? 1 : -1;
     return 0;
@@ -2178,12 +2200,24 @@ function renderResumen(data) {
   if (!items || !items.length) {
     tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:2rem;color:#999;">No advisors with clients</td></tr>';
   } else {
+    // Calcular suma de balances por asesor a partir de store
+    const balancesPorAsesor = {};
+    Object.keys(store).forEach(key => {
+      const entry = store[key];
+      if (entry && entry.asesor && entry.balance !== undefined && !isNaN(entry.balance)) {
+        const asesor = entry.asesor;
+        balancesPorAsesor[asesor] = (balancesPorAsesor[asesor] || 0) + entry.balance;
+      }
+    });
+
     tbody.innerHTML = items.map(item => {
       const total = item.total || 0;
       const managed = item.managed || 0;
       const unmanaged = item.unmanaged || 0;
       const managedPct = total ? (managed / total) * 100 : 0;
       const unmanagedPct = total ? (unmanaged / total) * 100 : 0;
+      // Usar el balance calculado desde store, o 0 si no hay
+      const sumaBalances = balancesPorAsesor[item.asesor] || 0;
       return `<tr class="resumen-asesor">
         <td><strong>${esc(item.asesor)}</strong></td>
         <td style="text-align:center;font-weight:600;">${total}</td>
@@ -2194,7 +2228,7 @@ function renderResumen(data) {
           </div>
           <br><span style="font-size:10px; color:#555;">${managed} managed · ${unmanaged} unmanaged</span>
         </td>
-        <td style="text-align:center;font-weight:600;">${fmtCur(item.sumaBalances)}</td>
+        <td style="text-align:center;font-weight:600;">${fmtCur(sumaBalances)}</td>
       </tr>`;
     }).join('');
   }
@@ -2206,7 +2240,7 @@ function renderTable() {
   document.getElementById('pagination').classList.remove('hidden');
 
   const columnas = [
-    { label: 'Status', field: null, sortable: false },
+    { label: 'Status', field: 'status', sortable: true },
     { label: 'Save', field: null, sortable: false },
     { label: 'Action', field: null, sortable: false },
     { label: 'Name', field: 'namePerson', sortable: true },
@@ -2292,7 +2326,7 @@ function renderTable() {
 
       let cells = '';
       columnas.forEach(col => {
-        if (col.field && !col.editable && !col.computed) {
+        if (col.field && !col.editable && !col.computed && col.label !== 'Status') {
           cells += `<td>${esc(r[col.field] || '')}</td>`;
         } else if (col.label === 'Save') {
           cells += `<td><button class="btn-save-row" onclick="saveComment('${escJ(key)}','${escJ(r.namePerson || r.nombre)}','${escJ(r.asesor)}')">💾 Save</button></td>`;
